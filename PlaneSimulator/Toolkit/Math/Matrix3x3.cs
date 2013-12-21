@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -350,25 +351,12 @@ namespace PlaneSimulator.Toolkit.Math
             return !left.Equals(right);
         }
         
-        /// <summary>
-        /// Returns a <see c="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see c="System.String"/> that represents this instance.
-        /// </returns>
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]",
                 M11, M12, M13, M21, M22, M23, M31, M32, M33);
         }
 
-        /// <summary>
-        /// Returns a <see c="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="format">The format.</param>
-        /// <returns>
-        /// A <see c="System.String"/> that represents this instance.
-        /// </returns>
         public string ToString(string format)
         {
             if (format == null)
@@ -380,13 +368,6 @@ namespace PlaneSimulator.Toolkit.Math
                 M31.ToString(format, CultureInfo.CurrentCulture), M32.ToString(format, CultureInfo.CurrentCulture), M33.ToString(format, CultureInfo.CurrentCulture));
         }
 
-        /// <summary>
-        /// Returns a <see c="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <returns>
-        /// A <see c="System.String"/> that represents this instance.
-        /// </returns>
         public string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]",
@@ -395,14 +376,6 @@ namespace PlaneSimulator.Toolkit.Math
                 M31.ToString(formatProvider), M32.ToString(formatProvider), M33.ToString(formatProvider));
         }
 
-        /// <summary>
-        /// Returns a <see c="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="format">The format.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <returns>
-        /// A <see c="System.String"/> that represents this instance.
-        /// </returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
             if (format == null)
@@ -414,12 +387,6 @@ namespace PlaneSimulator.Toolkit.Math
                 M31.ToString(format, formatProvider), M32.ToString(format, formatProvider), M33.ToString(format, formatProvider));
         }
 
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
         public override int GetHashCode()
         {
             unchecked
@@ -436,62 +403,34 @@ namespace PlaneSimulator.Toolkit.Math
                 return hashCode;
             }
         }
-
-        /// <summary>
-        /// Determines whether the specified <see c="SharpDX.Matrix3x3"/> is equal to this instance.
-        /// </summary>
-        /// <param name="other">The <see c="SharpDX.Matrix3x3"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see c="SharpDX.Matrix3x3"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Equals(Matrix3x3 other)
+        public static bool Equals(Matrix3x3 a, Matrix3x3 b)
         {
-            return (MathUtil.NearEqual(other.M11, M11) &&
-                MathUtil.NearEqual(other.M12, M12) &&
-                MathUtil.NearEqual(other.M13, M13) &&
-                MathUtil.NearEqual(other.M21, M21) &&
-                MathUtil.NearEqual(other.M22, M22) &&
-                MathUtil.NearEqual(other.M23, M23) &&
-                MathUtil.NearEqual(other.M31, M31) &&
-                MathUtil.NearEqual(other.M32, M32) &&
-                MathUtil.NearEqual(other.M33, M33));
-        }
+            return
+                Util.NearEqual(a.M11, b.M11) &&
+                Util.NearEqual(a.M12, b.M12) &&
+                Util.NearEqual(a.M13, b.M13) &&
 
-        /// <summary>
-        /// Determines whether the specified <see c="SharpDX.Matrix3x3"/> are equal.
-        /// </summary>
-        public static bool Equals( Matrix3x3 a, Matrix3x3 b)
-        {
-            return 
-                MathUtil.NearEqual(a.M11, b.M11) &&
-                MathUtil.NearEqual(a.M12, b.M12) &&
-                MathUtil.NearEqual(a.M13, b.M13) &&
-                                        
-                MathUtil.NearEqual(a.M21, b.M21) &&
-                MathUtil.NearEqual(a.M22, b.M22) &&
-                MathUtil.NearEqual(a.M23, b.M23) &&
-                                        
-                MathUtil.NearEqual(a.M31, b.M31) &&
-                MathUtil.NearEqual(a.M32, b.M32) &&
-                MathUtil.NearEqual(a.M33, b.M33)
+                Util.NearEqual(a.M21, b.M21) &&
+                Util.NearEqual(a.M22, b.M22) &&
+                Util.NearEqual(a.M23, b.M23) &&
+
+                Util.NearEqual(a.M31, b.M31) &&
+                Util.NearEqual(a.M32, b.M32) &&
+                Util.NearEqual(a.M33, b.M33)
                 ;
         }
 
-        /// <summary>
-        /// Determines whether the specified <see c="System.Object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="value">The <see c="System.Object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see c="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
+        public bool Equals(Matrix3x3 other)
+        {
+            return Equals(this, other);
+        }
+
         public override bool Equals(object value)
         {
             if (value == null)
                 return false;
-
-            if (!erenceEquals(value.GetType(), typeof(Matrix3x3)))
+            if (!ReferenceEquals(value.GetType(), typeof(Matrix3x3)))
                 return false;
-
             return Equals((Matrix3x3)value);
         }
     }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PlaneSimulator.Toolkit.Math
 {
-    public class Vector3 : IComparable, IComparable<Vector3>, IEquatable<Vector3>, IFormattable
+    public class Vector3 : IEquatable<Vector3>, IFormattable
     {
         public static readonly Vector3 Origin = new Vector3(0,0,0);
         public double X { get; set; }
@@ -40,15 +41,6 @@ namespace PlaneSimulator.Toolkit.Math
             get
             {
                 return System.Math.Sqrt(SumOfSquaredComponents);
-            }
-            set
-            {
-                if(value<0)
-                    throw new ArgumentOutOfRangeException("Magnitude must be positive", "Magnitude");
-                if(this == Origin)
-                    throw new DivideByZeroException("Can not set the magnitude on the origin vector");
-                this = this * (value/Magnitude);
-
             }
         }
         public double SumOfSquaredComponents
@@ -162,5 +154,63 @@ namespace PlaneSimulator.Toolkit.Math
             return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z);
         }
 
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.CurrentCulture, "[X:{0} Y:{1} Z:{2}]", X, Y, Z);
+        }
+
+        public string ToString(string format)
+        {
+            if (format == null)
+                return ToString();
+
+            return string.Format(format, CultureInfo.CurrentCulture, "[X:{0} Y:{1} Z:{2}]",
+                X.ToString(format, CultureInfo.CurrentCulture), Y.ToString(format, CultureInfo.CurrentCulture), Z.ToString(format, CultureInfo.CurrentCulture));
+        }
+
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return string.Format(formatProvider, "[X:{0} Y:{1} Z:{2}]",
+                X.ToString(formatProvider), Y.ToString(formatProvider), Z.ToString(formatProvider));
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (format == null)
+                return ToString(formatProvider);
+
+            return string.Format(format, formatProvider, "[X:{0} Y:{1} Z:{2}]",
+                X.ToString(format, formatProvider), Y.ToString(format, formatProvider), Z.ToString(format, formatProvider));
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((X.GetHashCode() * 397) ^ Y.GetHashCode() * 397) ^ Z.GetHashCode();
+            }
+        }
+        public static bool Equals(Vector3 a, Vector3 b)
+        {
+            return
+                Util.NearEqual(a.X, b.X) &&
+                Util.NearEqual(a.Y, b.Y) &&
+                Util.NearEqual(a.Z, b.Z) 
+                ;
+        }
+
+        public bool Equals(Vector3 other)
+        {
+            return Equals(this, other);
+        }
+
+        public override bool Equals(object value)
+        {
+            if (value == null)
+                return false;
+            if (!ReferenceEquals(value.GetType(), typeof(Vector3)))
+                return false;
+            return Equals((Vector3)value);
+        }
     }
 }
