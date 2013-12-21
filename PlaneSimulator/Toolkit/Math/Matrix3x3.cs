@@ -198,45 +198,22 @@ namespace PlaneSimulator.Toolkit.Math
             );
         }
         
-        /// <summary>
-        /// Scales a Matrix3x3 by the given value.
-        /// </summary>
-        /// <param name="left">The Matrix3x3 to scale.</param>
-        /// <param name="right">The amount by which to scale.</param>
-        /// <param name="result">When the method completes, contains the scaled Matrix3x3.</param>
-        public static void Multiply(ref Matrix3x3 left, double right, out Matrix3x3 result)
+        public static Matrix3x3 Multiply( Matrix3x3 left, double multiplicator)
         {
-            result.M11 = left.M11 * right;
-            result.M12 = left.M12 * right;
-            result.M13 = left.M13 * right;
-            result.M21 = left.M21 * right;
-            result.M22 = left.M22 * right;
-            result.M23 = left.M23 * right;
-            result.M31 = left.M31 * right;
-            result.M32 = left.M32 * right;
-            result.M33 = left.M33 * right;
+            return new Matrix3x3(
+                left.M11 * multiplicator,
+                left.M12 * multiplicator,
+                left.M13 * multiplicator,
+                left.M21 * multiplicator,
+                left.M22 * multiplicator,
+                left.M23 * multiplicator,
+                left.M31 * multiplicator,
+                left.M32 * multiplicator,
+                left.M33 * multiplicator
+            );
         }
 
-        /// <summary>
-        /// Scales a Matrix3x3 by the given value.
-        /// </summary>
-        /// <param name="left">The Matrix3x3 to scale.</param>
-        /// <param name="right">The amount by which to scale.</param>
-        /// <returns>The scaled Matrix3x3.</returns>
-        public static Matrix3x3 Multiply(Matrix3x3 left, double right)
-        {
-            Matrix3x3 result;
-            Multiply(ref left, right, out result);
-            return result;
-        }
-
-        /// <summary>
-        /// Determines the product of two matrices.
-        /// </summary>
-        /// <param name="left">The first Matrix3x3 to multiply.</param>
-        /// <param name="right">The second Matrix3x3 to multiply.</param>
-        /// <param name="result">The product of the two matrices.</param>
-        public static void Multiply(ref Matrix3x3 left, ref Matrix3x3 right, out Matrix3x3 result)
+        public static void Multiply( Matrix3x3 left,  Matrix3x3 right, out Matrix3x3 result)
         {
             Matrix3x3 temp = new Matrix3x3();
             temp.M11 = (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31);
@@ -250,55 +227,15 @@ namespace PlaneSimulator.Toolkit.Math
             temp.M33 = (left.M31 * right.M13) + (left.M32 * right.M23) + (left.M33 * right.M33);
             result = temp;
         }
-
-        /// <summary>
-        /// Determines the product of two matrices.
-        /// </summary>
-        /// <param name="left">The first Matrix3x3 to multiply.</param>
-        /// <param name="right">The second Matrix3x3 to multiply.</param>
-        /// <returns>The product of the two matrices.</returns>
-        public static Matrix3x3 Multiply(Matrix3x3 left, Matrix3x3 right)
-        {
-            Matrix3x3 result;
-            Multiply(ref left, ref right, out result);
-            return result;
-        }
-
-        /// <summary>
-        /// Scales a Matrix3x3 by the given value.
-        /// </summary>
-        /// <param name="left">The Matrix3x3 to scale.</param>
-        /// <param name="right">The amount by which to scale.</param>
-        /// <param name="result">When the method completes, contains the scaled Matrix3x3.</param>
-        public static void Divide(ref Matrix3x3 left, double right, out Matrix3x3 result)
-        {
-            double inv = 1.0f / right;
-
-            result.M11 = left.M11 * inv;
-            result.M12 = left.M12 * inv;
-            result.M13 = left.M13 * inv;
-            result.M21 = left.M21 * inv;
-            result.M22 = left.M22 * inv;
-            result.M23 = left.M23 * inv;
-            result.M31 = left.M31 * inv;
-            result.M32 = left.M32 * inv;
-            result.M33 = left.M33 * inv;
-        }
-
-        /// <summary>
-        /// Scales a Matrix3x3 by the given value.
-        /// </summary>
-        /// <param name="left">The Matrix3x3 to scale.</param>
-        /// <param name="right">The amount by which to scale.</param>
-        /// <returns>The scaled Matrix3x3.</returns>
+        
         public static Matrix3x3 Divide(Matrix3x3 left, double right)
         {
-            Matrix3x3 result;
-            Divide(ref left, right, out result);
-            return result;
+            if (right == 0.0)
+                throw new DivideByZeroException();
+            return Multiply(left, 1.0 / right);
         }
-        
-        public static void Negate(ref Matrix3x3 value, out Matrix3x3 result)
+
+        public static void Negate( Matrix3x3 value, out Matrix3x3 result)
         {
             result.M11 = -value.M11;
             result.M12 = -value.M12;
@@ -319,11 +256,11 @@ namespace PlaneSimulator.Toolkit.Math
         public static Matrix3x3 Negate(Matrix3x3 value)
         {
             Matrix3x3 result;
-            Negate(ref value, out result);
+            Negate( value, out result);
             return result;
         }
 
-        public static void Transpose(ref Matrix3x3 value, out Matrix3x3 result)
+        public static void Transpose( Matrix3x3 value, out Matrix3x3 result)
         {
             Matrix3x3 temp = new Matrix3x3();
             temp.M11 = value.M11;
@@ -348,7 +285,7 @@ namespace PlaneSimulator.Toolkit.Math
         public static Matrix3x3 Transpose(Matrix3x3 value)
         {
             Matrix3x3 result;
-            Transpose(ref value, out result);
+            Transpose( value, out result);
             return result;
         }
 
@@ -357,7 +294,7 @@ namespace PlaneSimulator.Toolkit.Math
         /// </summary>
         /// <param name="value">The Matrix3x3 whose inverse is to be calculated.</param>
         /// <param name="result">When the method completes, contains the inverse of the specified Matrix3x3.</param>
-        public static void Invert(ref Matrix3x3 value, out Matrix3x3 result)
+        public static void Invert( Matrix3x3 value, out Matrix3x3 result)
         {
             double d11 = value.M22 * value.M33 + value.M23 * -value.M32;
             double d12 = value.M21 * value.M33 + value.M23 * -value.M31;
@@ -398,117 +335,45 @@ namespace PlaneSimulator.Toolkit.Math
 
         public static Matrix3x3 operator +(Matrix3x3 left, Matrix3x3 right)
         {
-            Matrix3x3 result;
-            Add(ref left, ref right, out result);
-            return result;
+            return Add(left, right);
         }
-
-        /// <summary>
-        /// Assert a Matrix3x3 (return it unchanged).
-        /// </summary>
-        /// <param name="value">The Matrix3x3 to assert (unchanged).</param>
-        /// <returns>The asserted (unchanged) Matrix3x3.</returns>
         public static Matrix3x3 operator +(Matrix3x3 value)
         {
             return value;
         }
-
-        /// <summary>
-        /// Subtracts two matrices.
-        /// </summary>
-        /// <param name="left">The first Matrix3x3 to subtract.</param>
-        /// <param name="right">The second Matrix3x3 to subtract.</param>
-        /// <returns>The difference between the two matrices.</returns>
         public static Matrix3x3 operator -(Matrix3x3 left, Matrix3x3 right)
         {
-            Matrix3x3 result;
-            Subtract(ref left, ref right, out result);
-            return result;
+            return Substract(left, right);
         }
-
-        /// <summary>
-        /// Negates a Matrix3x3.
-        /// </summary>
-        /// <param name="value">The Matrix3x3 to negate.</param>
-        /// <returns>The negated Matrix3x3.</returns>
         public static Matrix3x3 operator -(Matrix3x3 value)
         {
-            Matrix3x3 result;
-            Negate(ref value, out result);
-            return result;
+            return Negate(value);
         }
 
-        /// <summary>
-        /// Scales a Matrix3x3 by a given value.
-        /// </summary>
-        /// <param name="right">The Matrix3x3 to scale.</param>
-        /// <param name="left">The amount by which to scale.</param>
-        /// <returns>The scaled Matrix3x3.</returns>
         public static Matrix3x3 operator *(double left, Matrix3x3 right)
         {
-            Matrix3x3 result;
-            Multiply(ref right, left, out result);
-            return result;
+            return Multiply(right, left);
         }
-
-        /// <summary>
-        /// Scales a Matrix3x3 by a given value.
-        /// </summary>
-        /// <param name="left">The Matrix3x3 to scale.</param>
-        /// <param name="right">The amount by which to scale.</param>
-        /// <returns>The scaled Matrix3x3.</returns>
         public static Matrix3x3 operator *(Matrix3x3 left, double right)
         {
-            Matrix3x3 result;
-            Multiply(ref left, right, out result);
-            return result;
+            return Multiply(left, right);
         }
-
-        /// <summary>
-        /// Multiplies two matrices.
-        /// </summary>
-        /// <param name="left">The first Matrix3x3 to multiply.</param>
-        /// <param name="right">The second Matrix3x3 to multiply.</param>
-        /// <returns>The product of the two matrices.</returns>
         public static Matrix3x3 operator *(Matrix3x3 left, Matrix3x3 right)
         {
-            Matrix3x3 result;
-            Multiply(ref left, ref right, out result);
-            return result;
+            return Multiply(left, right);
         }
 
-        /// <summary>
-        /// Scales a Matrix3x3 by a given value.
-        /// </summary>
-        /// <param name="left">The Matrix3x3 to scale.</param>
-        /// <param name="right">The amount by which to scale.</param>
-        /// <returns>The scaled Matrix3x3.</returns>
         public static Matrix3x3 operator /(Matrix3x3 left, double right)
         {
-            Matrix3x3 result;
-            Divide(ref left, right, out result);
-            return result;
+            return Divide(left, right);
         }
-
-        /// <summary>
-        /// Divides two matrices.
-        /// </summary>
-        /// <param name="left">The first Matrix3x3 to divide.</param>
-        /// <param name="right">The second Matrix3x3 to divide.</param>
-        /// <returns>The quotient of the two matrices.</returns>
-        public static Matrix3x3 operator /(Matrix3x3 left, Matrix3x3 right)
-        {
-            Matrix3x3 result;
-            Divide(ref left, ref right, out result);
-            return result;
-        }
-
+        
         /// <summary>
         /// Tests for equality between two objects.
         /// </summary>
         /// <param name="left">The first value to compare.</param>
         /// <param name="right">The second value to compare.</param>
-        /// <returns><c>true</c> if <paramref name="left"/> has the same value as <paramref name="right"/>; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if <param name="left"/> has the same value as <param name="right"/>; otherwise, <c>false</c>.</returns>
         public static bool operator ==(Matrix3x3 left, Matrix3x3 right)
         {
             return left.Equals(right);
@@ -519,44 +384,17 @@ namespace PlaneSimulator.Toolkit.Math
         /// </summary>
         /// <param name="left">The first value to compare.</param>
         /// <param name="right">The second value to compare.</param>
-        /// <returns><c>true</c> if <paramref name="left"/> has a different value than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if <param name="left"/> has a different value than <param name="right"/>; otherwise, <c>false</c>.</returns>
         public static bool operator !=(Matrix3x3 left, Matrix3x3 right)
         {
             return !left.Equals(right);
         }
         
         /// <summary>
-        /// Convert the 3x3 Matrix to a 4x4 Matrix.
-        /// </summary>
-        /// <returns>A 4x4 Matrix with zero translation and M44=1</returns>
-        public static explicit operator Matrix(Matrix3x3 Value)
-        {
-            return new Matrix(
-                Value.M11, Value.M12, Value.M13 , 0 ,
-                Value.M21, Value.M22, Value.M23 , 0 ,
-                Value.M31, Value.M32, Value.M33 , 0 ,
-                0, 0, 0 , 1
-                );
-        }
-
-        /// <summary>
-        /// Convert the 4x4 Matrix to a 3x3 Matrix.
-        /// </summary>
-        /// <returns>A 3x3 Matrix</returns>
-        public static explicit operator Matrix3x3(Matrix Value)
-        {
-            return new Matrix3x3(
-                Value.M11, Value.M12, Value.M13,
-                Value.M21, Value.M22, Value.M23,
-                Value.M31, Value.M32, Value.M33
-                );
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see c="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see c="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -565,11 +403,11 @@ namespace PlaneSimulator.Toolkit.Math
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see c="System.String"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see c="System.String"/> that represents this instance.
         /// </returns>
         public string ToString(string format)
         {
@@ -583,11 +421,11 @@ namespace PlaneSimulator.Toolkit.Math
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see c="System.String"/> that represents this instance.
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see c="System.String"/> that represents this instance.
         /// </returns>
         public string ToString(IFormatProvider formatProvider)
         {
@@ -598,12 +436,12 @@ namespace PlaneSimulator.Toolkit.Math
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see c="System.String"/> that represents this instance.
         /// </summary>
         /// <param name="format">The format.</param>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see c="System.String"/> that represents this instance.
         /// </returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
@@ -640,11 +478,11 @@ namespace PlaneSimulator.Toolkit.Math
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="SharpDX.Matrix3x3"/> is equal to this instance.
+        /// Determines whether the specified <see c="SharpDX.Matrix3x3"/> is equal to this instance.
         /// </summary>
-        /// <param name="other">The <see cref="SharpDX.Matrix3x3"/> to compare with this instance.</param>
+        /// <param name="other">The <see c="SharpDX.Matrix3x3"/> to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="SharpDX.Matrix3x3"/> is equal to this instance; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see c="SharpDX.Matrix3x3"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Matrix3x3 other)
         {
@@ -660,9 +498,9 @@ namespace PlaneSimulator.Toolkit.Math
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="SharpDX.Matrix3x3"/> are equal.
+        /// Determines whether the specified <see c="SharpDX.Matrix3x3"/> are equal.
         /// </summary>
-        public static bool Equals(ref Matrix3x3 a,ref Matrix3x3 b)
+        public static bool Equals( Matrix3x3 a, Matrix3x3 b)
         {
             return 
                 MathUtil.NearEqual(a.M11, b.M11) &&
@@ -680,18 +518,18 @@ namespace PlaneSimulator.Toolkit.Math
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see c="System.Object"/> is equal to this instance.
         /// </summary>
-        /// <param name="value">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name="value">The <see c="System.Object"/> to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see c="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object value)
         {
             if (value == null)
                 return false;
 
-            if (!ReferenceEquals(value.GetType(), typeof(Matrix3x3)))
+            if (!erenceEquals(value.GetType(), typeof(Matrix3x3)))
                 return false;
 
             return Equals((Matrix3x3)value);
