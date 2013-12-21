@@ -8,7 +8,7 @@ namespace PlaneSimulator
 {
     public abstract class Component
     {
-        virtual public double Mass { get { return 0; } }
+        public abstract double Mass { get; }
 
         public Component()
         {

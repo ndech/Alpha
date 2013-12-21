@@ -8,5 +8,9 @@ namespace PlaneSimulator
 {
     class EntryPoint
     {
+        public static void Main()
+        {
+
+        }
     }
 }
