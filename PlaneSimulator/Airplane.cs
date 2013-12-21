@@ -32,6 +32,11 @@ namespace PlaneSimulator
             Tanks = new List<Tank>();
             Thrusters = new List<Thruster>();
         }
+        public void Initialize(double altitude, double speed)
+        {
+            Position = new Vector3(0, 0, -altitude);
+            Speed = new Vector3(speed, 0, 0);
+        }
 
         public void Update(double step)
         {

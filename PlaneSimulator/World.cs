@@ -8,9 +8,9 @@ namespace PlaneSimulator
 {
     class World
     {
-        public float Gravity()
+        public double Gravity()
         {
-            return 9.81F;
+            return 9.81;
         }
     }
 }

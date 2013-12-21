@@ -20,11 +20,11 @@ namespace PlaneSimulator
         }
         public void Fill(double liters)
         {
-            Level = Math.Max(1.0, Level + (liters / Capacity));
+            Level = Math.Min(1.0, Level + (liters / Capacity));
         }
         public void Consume(double liters)
         {
-            Level = Math.Min(0.0, Level - (liters / Capacity));
+            Level = Math.Max(0.0, Level - (liters / Capacity));
         }
         public bool IsEmpty()
         {
