@@ -10,7 +10,8 @@ namespace PlaneSimulator
     {
         public static void Main()
         {
-
+            Airplane plane = new Airplane();
+            plane.Tanks.Add(new Tank(100,500));
         }
     }
 }

@@ -347,7 +347,7 @@ namespace PlaneSimulator.Toolkit.Math
         {
             return Multiply(left, right);
         }
-        public static Matrix3x3 operator *(Matrix3x3 left, Vector3 right)
+        public static Vector3 operator *(Matrix3x3 left, Vector3 right)
         {
             return Multiply(left, right);
         }

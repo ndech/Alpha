@@ -30,5 +30,11 @@ namespace PlaneSimulator
         {
             return Level <= 0.0;
         }
+        public Tank(double mass, double capacity, bool full = true)
+        {
+            BaseMass = mass;
+            Capacity = capacity;
+            if (full) Fill();
+        }
     }
 }

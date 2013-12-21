@@ -28,7 +28,10 @@ namespace PlaneSimulator
         }
 
         public Airplane()
-        { }
+        {
+            Tanks = new List<Tank>();
+            Thrusters = new List<Thruster>();
+        }
 
         public void Update(double step)
         {
