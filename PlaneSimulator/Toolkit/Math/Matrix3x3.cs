@@ -228,6 +228,15 @@ namespace PlaneSimulator.Toolkit.Math
                 (left.M31 * right.M13) + (left.M32 * right.M23) + (left.M33 * right.M33)
             );
         }
+
+        public static Vector3 Multiply(Matrix3x3 left, Vector3 right)
+        {
+            return new Vector3(
+                (left.M11 * right.X) + (left.M12 * right.Y) + (left.M13 * right.Z),
+                (left.M11 * right.X) + (left.M12 * right.Y) + (left.M13 * right.Z),
+                (left.M11 * right.X) + (left.M12 * right.Y) + (left.M13 * right.Z)
+            );
+        }
         
         public static Matrix3x3 Divide(Matrix3x3 left, double right)
         {
@@ -335,6 +344,10 @@ namespace PlaneSimulator.Toolkit.Math
             return Multiply(left, right);
         }
         public static Matrix3x3 operator *(Matrix3x3 left, Matrix3x3 right)
+        {
+            return Multiply(left, right);
+        }
+        public static Matrix3x3 operator *(Matrix3x3 left, Vector3 right)
         {
             return Multiply(left, right);
         }
