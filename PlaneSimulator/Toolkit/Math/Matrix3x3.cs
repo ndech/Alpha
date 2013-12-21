@@ -213,19 +213,19 @@ namespace PlaneSimulator.Toolkit.Math
             );
         }
 
-        public static void Multiply( Matrix3x3 left,  Matrix3x3 right, out Matrix3x3 result)
+        public static Matrix3x3 Multiply(Matrix3x3 left, Matrix3x3 right)
         {
-            Matrix3x3 temp = new Matrix3x3();
-            temp.M11 = (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31);
-            temp.M12 = (left.M11 * right.M12) + (left.M12 * right.M22) + (left.M13 * right.M32);
-            temp.M13 = (left.M11 * right.M13) + (left.M12 * right.M23) + (left.M13 * right.M33);
-            temp.M21 = (left.M21 * right.M11) + (left.M22 * right.M21) + (left.M23 * right.M31);
-            temp.M22 = (left.M21 * right.M12) + (left.M22 * right.M22) + (left.M23 * right.M32);
-            temp.M23 = (left.M21 * right.M13) + (left.M22 * right.M23) + (left.M23 * right.M33);
-            temp.M31 = (left.M31 * right.M11) + (left.M32 * right.M21) + (left.M33 * right.M31);
-            temp.M32 = (left.M31 * right.M12) + (left.M32 * right.M22) + (left.M33 * right.M32);
-            temp.M33 = (left.M31 * right.M13) + (left.M32 * right.M23) + (left.M33 * right.M33);
-            result = temp;
+            return new Matrix3x3(
+                (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31),
+                (left.M11 * right.M12) + (left.M12 * right.M22) + (left.M13 * right.M32),
+                (left.M11 * right.M13) + (left.M12 * right.M23) + (left.M13 * right.M33),
+                (left.M21 * right.M11) + (left.M22 * right.M21) + (left.M23 * right.M31),
+                (left.M21 * right.M12) + (left.M22 * right.M22) + (left.M23 * right.M32),
+                (left.M21 * right.M13) + (left.M22 * right.M23) + (left.M23 * right.M33),
+                (left.M31 * right.M11) + (left.M32 * right.M21) + (left.M33 * right.M31),
+                (left.M31 * right.M12) + (left.M32 * right.M22) + (left.M33 * right.M32),
+                (left.M31 * right.M13) + (left.M32 * right.M23) + (left.M33 * right.M33)
+            );
         }
         
         public static Matrix3x3 Divide(Matrix3x3 left, double right)
@@ -235,102 +235,77 @@ namespace PlaneSimulator.Toolkit.Math
             return Multiply(left, 1.0 / right);
         }
 
-        public static void Negate( Matrix3x3 value, out Matrix3x3 result)
-        {
-            result.M11 = -value.M11;
-            result.M12 = -value.M12;
-            result.M13 = -value.M13;
-            result.M21 = -value.M21;
-            result.M22 = -value.M22;
-            result.M23 = -value.M23;
-            result.M31 = -value.M31;
-            result.M32 = -value.M32;
-            result.M33 = -value.M33;
-        }
-
-        /// <summary>
-        /// Negates a Matrix3x3.
-        /// </summary>
-        /// <param name="value">The Matrix3x3 to be negated.</param>
-        /// <returns>The negated Matrix3x3.</returns>
         public static Matrix3x3 Negate(Matrix3x3 value)
         {
-            Matrix3x3 result;
-            Negate( value, out result);
-            return result;
+            return new Matrix3x3(
+                -value.M11,
+                -value.M12,
+                -value.M13,
+                -value.M21,
+                -value.M22,
+                -value.M23,
+                -value.M31,
+                -value.M32,
+                -value.M33
+             );
         }
 
-        public static void Transpose( Matrix3x3 value, out Matrix3x3 result)
-        {
-            Matrix3x3 temp = new Matrix3x3();
-            temp.M11 = value.M11;
-            temp.M12 = value.M21;
-            temp.M13 = value.M31;
-            temp.M21 = value.M12;
-            temp.M22 = value.M22;
-            temp.M23 = value.M32;
-            temp.M31 = value.M13;
-            temp.M32 = value.M23;
-            temp.M33 = value.M33;
-
-            result = temp;
-        }
-
-
-        /// <summary>
-        /// Calculates the transpose of the specified Matrix3x3.
-        /// </summary>
-        /// <param name="value">The Matrix3x3 whose transpose is to be calculated.</param>
-        /// <returns>The transpose of the specified Matrix3x3.</returns>
         public static Matrix3x3 Transpose(Matrix3x3 value)
         {
-            Matrix3x3 result;
-            Transpose( value, out result);
-            return result;
+            return new Matrix3x3(
+                value.M11,
+                value.M21,
+                value.M31,
+                value.M12,
+                value.M22,
+                value.M32,
+                value.M13,
+                value.M23,
+                value.M33
+            );
+        }
+        public Matrix3x3 Transpose()
+        {
+            return Transpose(this);
         }
 
-        /// <summary>
-        /// Calculates the inverse of the specified Matrix3x3.
-        /// </summary>
-        /// <param name="value">The Matrix3x3 whose inverse is to be calculated.</param>
-        /// <param name="result">When the method completes, contains the inverse of the specified Matrix3x3.</param>
-        public static void Invert( Matrix3x3 value, out Matrix3x3 result)
+        public static Matrix3x3 Invert(Matrix3x3 value)
         {
-            double d11 = value.M22 * value.M33 + value.M23 * -value.M32;
-            double d12 = value.M21 * value.M33 + value.M23 * -value.M31;
-            double d13 = value.M21 * value.M32 + value.M22 * -value.M31;
 
-            double det = value.M11 * d11 - value.M12 * d12 + value.M13 * d13;
-            if (Math.Abs(det) == 0.0f)
-            {
-                result = Matrix3x3.Zero;
-                return;
-            }
+            double determinant = value.Determinant();
+            if (determinant == 0.0)
+                throw new DivideByZeroException("Matrix not inversible");
 
-            det = 1f / det;
+            determinant = 1.0 / determinant;
 
-            double d21 = value.M12 * value.M33 + value.M13 * -value.M32;
-            double d22 = value.M11 * value.M33 + value.M13 * -value.M31;
-            double d23 = value.M11 * value.M32 + value.M12 * -value.M31;
+            double d11 = (value.M22 * value.M33) - (value.M23 * value.M32);
+            double d12 = (value.M21 * value.M33) - (value.M23 * value.M31);
+            double d13 = (value.M21 * value.M32) - (value.M22 * value.M31);
+
+            double d21 = (value.M12 * value.M33) - (value.M13 * value.M32);
+            double d22 = (value.M11 * value.M33) - (value.M13 * value.M31);
+            double d23 = (value.M11 * value.M32) - (value.M12 * value.M31);
 
             double d31 = (value.M12 * value.M23) - (value.M13 * value.M22);
             double d32 = (value.M11 * value.M23) - (value.M13 * value.M21);
             double d33 = (value.M11 * value.M22) - (value.M12 * value.M21);
 
-            result.M11 = +d11 * det; result.M12 = -d21 * det; result.M13 = +d31 * det;
-            result.M21 = -d12 * det; result.M22 = +d22 * det; result.M23 = -d32 * det;
-            result.M31 = +d13 * det; result.M32 = -d23 * det; result.M33 = +d33 * det;
+            return new Matrix3x3(
+                 d11 * determinant,
+                -d21 * determinant,
+                 d31 * determinant,
+                -d12 * determinant,
+                 d22 * determinant,
+                -d32 * determinant,
+                 d13 * determinant,
+                -d23 * determinant,
+                 d33 * determinant
+            );
         }
 
-        /// <summary>
-        /// Calculates the inverse of the specified Matrix3x3.
-        /// </summary>
-        /// <param name="value">The Matrix3x3 whose inverse is to be calculated.</param>
-        /// <returns>The inverse of the specified Matrix3x3.</returns>
-        public static Matrix3x3 Invert(Matrix3x3 value)
+        public Matrix3x3 Invert()
         {
-            value.Invert();
-            return value;
+            return Invert(this);
         }
 
         public static Matrix3x3 operator +(Matrix3x3 left, Matrix3x3 right)
@@ -362,29 +337,14 @@ namespace PlaneSimulator.Toolkit.Math
         {
             return Multiply(left, right);
         }
-
         public static Matrix3x3 operator /(Matrix3x3 left, double right)
         {
             return Divide(left, right);
         }
-        
-        /// <summary>
-        /// Tests for equality between two objects.
-        /// </summary>
-        /// <param name="left">The first value to compare.</param>
-        /// <param name="right">The second value to compare.</param>
-        /// <returns><c>true</c> if <param name="left"/> has the same value as <param name="right"/>; otherwise, <c>false</c>.</returns>
         public static bool operator ==(Matrix3x3 left, Matrix3x3 right)
         {
             return left.Equals(right);
         }
-
-        /// <summary>
-        /// Tests for inequality between two objects.
-        /// </summary>
-        /// <param name="left">The first value to compare.</param>
-        /// <param name="right">The second value to compare.</param>
-        /// <returns><c>true</c> if <param name="left"/> has a different value than <param name="right"/>; otherwise, <c>false</c>.</returns>
         public static bool operator !=(Matrix3x3 left, Matrix3x3 right)
         {
             return !left.Equals(right);
