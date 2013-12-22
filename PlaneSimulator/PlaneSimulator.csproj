@@ -64,7 +64,7 @@
     <Compile Include="Thruster.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Toolkit\Math\Matrix3x3.cs" />
-    <Compile Include="Toolkit\Math\Util.cs" />
+    <Compile Include="Toolkit\Math\MathUtil.cs" />
     <Compile Include="Toolkit\Math\Vector3.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>

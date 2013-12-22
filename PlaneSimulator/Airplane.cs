@@ -95,8 +95,8 @@ namespace PlaneSimulator
         {
             return string.Format(
                 CultureInfo.CurrentCulture,
-                "Position : ({0}, {1})\nAltitude : {2}", 
-                CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z);
+                "Position : ({0}, {1})\nAltitude : {2}\nSpeed : {3}", 
+                CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z, CurrentState.Speed.Magnitude);
         }
     }
 }

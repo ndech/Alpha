@@ -433,17 +433,17 @@ namespace PlaneSimulator.Toolkit.Math
         public static bool Equals(Matrix3x3 a, Matrix3x3 b)
         {
             return
-                Util.NearEqual(a.M11, b.M11) &&
-                Util.NearEqual(a.M12, b.M12) &&
-                Util.NearEqual(a.M13, b.M13) &&
+                MathUtil.NearEqual(a.M11, b.M11) &&
+                MathUtil.NearEqual(a.M12, b.M12) &&
+                MathUtil.NearEqual(a.M13, b.M13) &&
 
-                Util.NearEqual(a.M21, b.M21) &&
-                Util.NearEqual(a.M22, b.M22) &&
-                Util.NearEqual(a.M23, b.M23) &&
+                MathUtil.NearEqual(a.M21, b.M21) &&
+                MathUtil.NearEqual(a.M22, b.M22) &&
+                MathUtil.NearEqual(a.M23, b.M23) &&
 
-                Util.NearEqual(a.M31, b.M31) &&
-                Util.NearEqual(a.M32, b.M32) &&
-                Util.NearEqual(a.M33, b.M33)
+                MathUtil.NearEqual(a.M31, b.M31) &&
+                MathUtil.NearEqual(a.M32, b.M32) &&
+                MathUtil.NearEqual(a.M33, b.M33)
                 ;
         }
 

@@ -193,9 +193,9 @@ namespace PlaneSimulator.Toolkit.Math
         public static bool Equals(Vector3 a, Vector3 b)
         {
             return
-                Util.NearEqual(a.X, b.X) &&
-                Util.NearEqual(a.Y, b.Y) &&
-                Util.NearEqual(a.Z, b.Z) 
+                MathUtil.NearEqual(a.X, b.X) &&
+                MathUtil.NearEqual(a.Y, b.Y) &&
+                MathUtil.NearEqual(a.Z, b.Z) 
                 ;
         }
 

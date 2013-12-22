@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlaneSimulator.Toolkit.Math
 {
-    class Util
+    class MathUtil
     {
         public const float ZeroTolerance = 1e-6f;
 
