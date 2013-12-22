@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlaneSimulator
+﻿namespace PlaneSimulator
 {
+    using System;
+    using System.Diagnostics;
+
     class EntryPoint
     {
         public static void Main()
@@ -18,16 +14,16 @@ namespace PlaneSimulator
             plane.Tanks.Add(new Tank(100, 500));
             plane.Tanks.Add(new Tank(100, 500));
             plane.Thrusters.Add(new Thruster());
-            plane.Initialize(10000, 200);
+            plane.Initialize(1000, 200);
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             while(true)
             {
                 timer.Tick();
                 plane.Update(timer.Delta);
-                Console.Clear();
-                Console.WriteLine(timer.ToString());
-                Console.Write(plane.ToString());
+                //Console.Clear();
+                //Console.WriteLine(timer.ToString());
+                //Console.Write(plane.ToString());
                 if (plane.IsCrashed())
                     break;
             }
