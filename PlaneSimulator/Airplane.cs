@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlaneSimulator.Toolkit.Math;
+using System.Globalization;
 
 namespace PlaneSimulator
 {
@@ -47,7 +48,7 @@ namespace PlaneSimulator
             State k4 = CalculateDerivedState(CurrentState + (k3 * step));
             CurrentState += (k1 + 2 * k2 + 2 * k3 + k4) * (step / 6);
             //Fuel consumption management :
-            distributeFuelConsumption((ImmediateHourlyFuelConsumption() / 3600) * step);
+            DistributeFuelConsumption((ImmediateHourlyFuelConsumption() / 3600) * step);
         }
 
         public State CalculateDerivedState(State state)
@@ -74,7 +75,8 @@ namespace PlaneSimulator
                 hourlyConsumption += thruster.HourlyConsumption;
             return hourlyConsumption;
         }
-        public void distributeFuelConsumption(double liters)
+
+        public void DistributeFuelConsumption(double liters)
         {
             foreach(Tank tank in Tanks)
                 if(!tank.IsEmpty())
@@ -82,6 +84,19 @@ namespace PlaneSimulator
                     tank.Consume(liters);
                     return;
                 }
+        }
+
+        public bool IsCrashed()
+        {
+            return CurrentState.Position.Z > 0;
+        }
+
+        public override String ToString()
+        {
+            return string.Format(
+                CultureInfo.CurrentCulture,
+                "Position : ({0}, {1})\nAltitude : {2}", 
+                CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z);
         }
     }
 }

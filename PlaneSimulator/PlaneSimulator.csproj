@@ -62,6 +62,7 @@
     <Compile Include="State.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="Thruster.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="Toolkit\Math\Matrix3x3.cs" />
     <Compile Include="Toolkit\Math\Util.cs" />
     <Compile Include="Toolkit\Math\Vector3.cs" />
