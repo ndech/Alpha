@@ -161,10 +161,12 @@ namespace PlaneSimulator.Toolkit.Math
                 this[(row * 3) + column] = value;
             }
         }
+
         public double[] ToArray()
         {
             return new[] { M11, M12, M13, M21, M22, M23, M31, M32, M33 };
         }
+
         public double Determinant()
         {
             return M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 - M13 * M22 * M31 - M12 * M21 * M33 - M11 * M23 * M32;
@@ -256,8 +258,7 @@ namespace PlaneSimulator.Toolkit.Math
                 -value.M23,
                 -value.M31,
                 -value.M32,
-                -value.M33
-             );
+                -value.M33);
         }
 
         public static Matrix3x3 Transpose(Matrix3x3 value)
@@ -274,6 +275,7 @@ namespace PlaneSimulator.Toolkit.Math
                 value.M33
             );
         }
+
         public Matrix3x3 Transpose()
         {
             return Transpose(this);
@@ -322,14 +324,17 @@ namespace PlaneSimulator.Toolkit.Math
         {
             return Add(left, right);
         }
+
         public static Matrix3x3 operator +(Matrix3x3 value)
         {
             return value;
         }
+
         public static Matrix3x3 operator -(Matrix3x3 left, Matrix3x3 right)
         {
             return Substract(left, right);
         }
+
         public static Matrix3x3 operator -(Matrix3x3 value)
         {
             return Negate(value);
@@ -339,26 +344,32 @@ namespace PlaneSimulator.Toolkit.Math
         {
             return Multiply(right, left);
         }
+
         public static Matrix3x3 operator *(Matrix3x3 left, double right)
         {
             return Multiply(left, right);
         }
+
         public static Matrix3x3 operator *(Matrix3x3 left, Matrix3x3 right)
         {
             return Multiply(left, right);
         }
+
         public static Vector3 operator *(Matrix3x3 left, Vector3 right)
         {
             return Multiply(left, right);
         }
+
         public static Matrix3x3 operator /(Matrix3x3 left, double right)
         {
             return Divide(left, right);
         }
+
         public static bool operator ==(Matrix3x3 left, Matrix3x3 right)
         {
             return left.Equals(right);
         }
+
         public static bool operator !=(Matrix3x3 left, Matrix3x3 right)
         {
             return !left.Equals(right);
@@ -366,7 +377,9 @@ namespace PlaneSimulator.Toolkit.Math
         
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]",
+            return string.Format(
+                CultureInfo.CurrentCulture, 
+                "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]",
                 M11, M12, M13, M21, M22, M23, M31, M32, M33);
         }
 
@@ -416,6 +429,7 @@ namespace PlaneSimulator.Toolkit.Math
                 return hashCode;
             }
         }
+
         public static bool Equals(Matrix3x3 a, Matrix3x3 b)
         {
             return

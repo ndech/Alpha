@@ -9,8 +9,7 @@ namespace PlaneSimulator
 {
     class Airplane
     {
-        public Vector3 Position { get; private set; }
-        public Vector3 Speed { get; private set; }
+        public State CurrentState { get; private set; }
         public List<Thruster> Thrusters { get; private set; }
         public List<Tank> Tanks { get; private set; }
 
@@ -34,8 +33,11 @@ namespace PlaneSimulator
         }
         public void Initialize(double altitude, double speed)
         {
-            Position = new Vector3(0, 0, -altitude);
-            Speed = new Vector3(speed, 0, 0);
+            CurrentState.Position = new Vector3(0, 0, -altitude);
+            CurrentState.Speed = new Vector3(speed, 0, 0);
+            CurrentState.AngularPosition = new Vector3(0, 0, 0);
+            CurrentState.Acceleration = new Vector3(0);
+            CurrentState.AngularSpeed = new Vector3(0);
         }
 
         public void Update(double step)
