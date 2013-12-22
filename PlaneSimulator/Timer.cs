@@ -13,7 +13,7 @@ namespace PlaneSimulator
         Stopwatch stopWatch;
         Int64 elapsedMilliseconds;
         Int64 deltaMilliseconds;
-
+        int averageFramePerSeconds;
         public void Initialize()
         {
             stopWatch = new Stopwatch();
@@ -50,10 +50,11 @@ namespace PlaneSimulator
                 framePerSeconds = 0;
             else
                 framePerSeconds = (int)(1000.0 / deltaMilliseconds);
+            averageFramePerSeconds = (int)((0.95 * averageFramePerSeconds) + (0.05 * framePerSeconds));
             return string.Format(
                 CultureInfo.CurrentCulture,
                 "Time : {0} - Frames per seconds : {1}",
-                elapsedMilliseconds, framePerSeconds);
+                elapsedMilliseconds, averageFramePerSeconds);
         }
     }
 }
