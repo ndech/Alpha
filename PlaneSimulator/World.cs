@@ -2,9 +2,12 @@
 {
     class World
     {
-        public double Gravity()
+        public double Gravity
         {
-            return 9.81;
+            get
+            {
+                return 9.81;
+            }
         }
     }
 }

@@ -10,7 +10,8 @@ namespace PlaneSimulator
     {
         public static void Main()
         {
-            Airplane plane = new Airplane();
+            World world = new World();
+            Airplane plane = new Airplane(world);
             plane.Tanks.Add(new Tank(100, 500));
             plane.Tanks.Add(new Tank(100, 500));
             plane.Thrusters.Add(new Thruster());
