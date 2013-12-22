@@ -33,11 +33,7 @@ namespace PlaneSimulator
         }
         public void Initialize(double altitude, double speed)
         {
-            CurrentState.Position = new Vector3(0, 0, -altitude);
-            CurrentState.Speed = new Vector3(speed, 0, 0);
-            CurrentState.AngularPosition = new Vector3(0, 0, 0);
-            CurrentState.Acceleration = new Vector3(0);
-            CurrentState.AngularSpeed = new Vector3(0);
+            CurrentState = new State(this, altitude, speed);
         }
 
         public void Update(double step)
