@@ -7,7 +7,7 @@ using PlaneSimulator.Toolkit.Math;
 
 namespace PlaneSimulator
 {
-    class State
+    class State : IIntegrable<State>
     {
         public Vector3 Position { get; set; }
         public Vector3 Speed { get; set; }

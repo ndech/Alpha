@@ -63,8 +63,12 @@
     <Compile Include="Tank.cs" />
     <Compile Include="Thruster.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="Toolkit\Math\EulerIntegrator.cs" />
+    <Compile Include="Toolkit\Math\IIntegrable.cs" />
+    <Compile Include="Toolkit\Math\Integrator.cs" />
     <Compile Include="Toolkit\Math\Matrix3x3.cs" />
     <Compile Include="Toolkit\Math\MathUtil.cs" />
+    <Compile Include="Toolkit\Math\RK4Integrator.cs" />
     <Compile Include="Toolkit\Math\Vector3.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>

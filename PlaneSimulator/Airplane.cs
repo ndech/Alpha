@@ -10,6 +10,7 @@ namespace PlaneSimulator
 {
     class Airplane
     {
+        public Integrator<State> integrator;
         public World World { get; private set; }
         public State CurrentState { get; private set; }
         public List<Thruster> Thrusters { get; private set; }
@@ -33,6 +34,8 @@ namespace PlaneSimulator
             World = world;
             Tanks = new List<Tank>();
             Thrusters = new List<Thruster>();
+            Integrator<State>.derived derivationSystem = CalculateDerivedState;
+            integrator = new RK4Integrator<State>(CalculateDerivedState);
         }
         public void Initialize(double altitude, double speed)
         {
@@ -41,6 +44,7 @@ namespace PlaneSimulator
 
         public void Update(double step)
         {
+            State delegateState = integrator.Integrate(CurrentState, step);
             //Runge kutta integration of the state :
             State k1 = CalculateDerivedState(CurrentState);
             State k2 = CalculateDerivedState(CurrentState + (k1 * (step / 2)));

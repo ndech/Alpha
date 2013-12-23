@@ -17,8 +17,10 @@
             plane.Initialize(1000, 200);
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
+            int i = 0;
             while(true)
             {
+                i++;
                 timer.Tick();
                 plane.Update(timer.Delta);
                 //Console.Clear();
@@ -29,6 +31,7 @@
             }
             stopWatch.Stop();
             Console.WriteLine();
+            Console.WriteLine("Number of integration steps : " + i);
             Console.WriteLine("Elapsed : " + stopWatch.ElapsedMilliseconds);
             Console.WriteLine("Your plane crashed");
             Console.ReadKey();
