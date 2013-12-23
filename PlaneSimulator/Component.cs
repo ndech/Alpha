@@ -12,7 +12,6 @@ namespace PlaneSimulator
 
         public Component()
         {
-
         }
     }
 }

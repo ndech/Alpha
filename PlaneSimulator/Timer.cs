@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace PlaneSimulator
 {
-    class Timer
+    internal class Timer
     {
-        Stopwatch stopWatch;
-        Int64 elapsedMilliseconds;
-        Int64 deltaMilliseconds;
-        int averageFramePerSeconds;
+        private Stopwatch stopWatch;
+        private Int64 elapsedMilliseconds;
+        private Int64 deltaMilliseconds;
+        private int averageFramePerSeconds;
+
         public void Initialize()
         {
             stopWatch = new Stopwatch();
@@ -27,20 +28,14 @@ namespace PlaneSimulator
             elapsedMilliseconds = currentElapsed;
         }
 
-        public double Delta 
+        public double Delta
         {
-            get
-            {
-                return ((double)deltaMilliseconds / 1000.0);
-            }
+            get { return ((double) deltaMilliseconds/1000.0); }
         }
-        
+
         public double Elapsed
         {
-            get
-            {
-                return (double)elapsedMilliseconds / 1000.0;
-            }
+            get { return (double) elapsedMilliseconds/1000.0; }
         }
 
         public override String ToString()
@@ -49,8 +44,8 @@ namespace PlaneSimulator
             if (deltaMilliseconds == 0)
                 framePerSeconds = 0;
             else
-                framePerSeconds = (int)(1000.0 / deltaMilliseconds);
-            averageFramePerSeconds = (int)((0.95 * averageFramePerSeconds) + (0.05 * framePerSeconds));
+                framePerSeconds = (int) (1000.0/deltaMilliseconds);
+            averageFramePerSeconds = (int) ((0.95*averageFramePerSeconds) + (0.05*framePerSeconds));
             return string.Format(
                 CultureInfo.CurrentCulture,
                 "Time : {0} - Frames per seconds : {1}",

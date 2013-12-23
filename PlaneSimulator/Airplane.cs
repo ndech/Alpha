@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace PlaneSimulator
 {
-    class Airplane
+    internal class Airplane
     {
         public Integrator<State> integrator;
         public World World { get; private set; }
@@ -34,9 +34,10 @@ namespace PlaneSimulator
             World = world;
             Tanks = new List<Tank>();
             Thrusters = new List<Thruster>();
-            Integrator<State>.derived derivationSystem = CalculateDerivedState;
-            integrator = new RK4Integrator<State>(CalculateDerivedState);
+            Integrator<State>.Derived derivationSystem = CalculateDerivedState;
+            integrator = new Rk4Integrator<State>(CalculateDerivedState);
         }
+
         public void Initialize(double altitude, double speed)
         {
             CurrentState = new State(altitude, speed);
@@ -44,25 +45,19 @@ namespace PlaneSimulator
 
         public void Update(double step)
         {
-            State delegateState = integrator.Integrate(CurrentState, step);
-            //Runge kutta integration of the state :
-            State k1 = CalculateDerivedState(CurrentState);
-            State k2 = CalculateDerivedState(CurrentState + (k1 * (step / 2)));
-            State k3 = CalculateDerivedState(CurrentState + (k2 * (step / 2)));
-            State k4 = CalculateDerivedState(CurrentState + (k3 * step));
-            CurrentState += (k1 + 2 * k2 + 2 * k3 + k4) * (step / 6);
+            CurrentState = integrator.Integrate(CurrentState, step);
             //Fuel consumption management :
-            DistributeFuelConsumption((ImmediateHourlyFuelConsumption() / 3600) * step);
+            DistributeFuelConsumption((ImmediateHourlyFuelConsumption()/3600)*step);
         }
 
         public State CalculateDerivedState(State state)
         {
-            return new State(state.Speed, CalculateForces(state) / Mass, state.AngularSpeed, CalculateMoments(state));
+            return new State(state.Speed, CalculateForces(state)/Mass, state.AngularSpeed, CalculateMoments(state));
         }
 
         public Vector3 CalculateForces(State state)
         {
-            Vector3 weight = new Vector3(0.0, 0.0, World.Gravity * Mass);
+            Vector3 weight = new Vector3(0.0, 0.0, World.Gravity*Mass);
             Vector3 thrust = new Vector3(1000, 0, 0);
             return weight + thrust;
         }
@@ -82,8 +77,8 @@ namespace PlaneSimulator
 
         public void DistributeFuelConsumption(double liters)
         {
-            foreach(Tank tank in Tanks)
-                if(!tank.IsEmpty())
+            foreach (Tank tank in Tanks)
+                if (!tank.IsEmpty())
                 {
                     tank.Consume(liters);
                     return;
@@ -99,7 +94,7 @@ namespace PlaneSimulator
         {
             return string.Format(
                 CultureInfo.CurrentCulture,
-                "Position : ({0}, {1})\nAltitude : {2}\nSpeed : {3}", 
+                "Position : ({0}, {1})\nAltitude : {2}\nSpeed : {3}",
                 CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z, CurrentState.Speed.Magnitude);
         }
     }

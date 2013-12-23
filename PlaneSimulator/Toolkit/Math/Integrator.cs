@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace PlaneSimulator.Toolkit.Math
 {
-    abstract class Integrator <T> where T : IIntegrable <T>
+    internal abstract class Integrator<T> where T : IIntegrable<T>
     {
+        protected readonly Derived _integrationSystem;
 
-        public delegate T derived(T current);
+        protected Integrator(Derived integrationSystem)
+        {
+            this._integrationSystem = integrationSystem;
+        }
+
+        public delegate T Derived(T current);
+
         public abstract T Integrate(T current, double step);
     }
 }

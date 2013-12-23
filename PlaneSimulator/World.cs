@@ -1,13 +1,10 @@
 ﻿namespace PlaneSimulator
 {
-    class World
+    internal class World
     {
         public double Gravity
         {
-            get
-            {
-                return 9.81;
-            }
+            get { return 9.81; }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System;
 
-    class Tank : Component
+    internal class Tank : Component
     {
         public Tank(double mass, double capacity, bool full = true)
         {
@@ -15,21 +15,16 @@
 
         public double Level { get; private set; }
 
-        public double RemainingFuelAmount 
-        { 
-            get { 
-                return this.Capacity * this.Level; 
-            } 
+        public double RemainingFuelAmount
+        {
+            get { return this.Capacity*this.Level; }
         }
 
         public double BaseMass { get; private set; }
 
-        public override double Mass 
-        { 
-            get 
-            { 
-                return BaseMass + RemainingFuelAmount * 0.8;
-            }
+        public override double Mass
+        {
+            get { return BaseMass + RemainingFuelAmount*0.8; }
         }
 
         public void Fill()
@@ -39,12 +34,12 @@
 
         public void Fill(double liters)
         {
-            this.Level = Math.Min(1.0, this.Level + (liters / this.Capacity));
+            this.Level = Math.Min(1.0, this.Level + (liters/this.Capacity));
         }
 
         public void Consume(double liters)
         {
-            this.Level = Math.Max(0.0, this.Level - (liters / this.Capacity));
+            this.Level = Math.Max(0.0, this.Level - (liters/this.Capacity));
         }
 
         public bool IsEmpty()

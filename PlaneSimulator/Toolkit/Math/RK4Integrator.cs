@@ -1,35 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlaneSimulator.Toolkit.Math
+﻿namespace PlaneSimulator.Toolkit.Math
 {
-    class RK4Integrator<T> : Integrator<T> where T : IIntegrable<T>
+    internal class Rk4Integrator<T> : Integrator<T> where T : IIntegrable<T>
     {
-        T k1;
-        T k2;
-        T k3;
-        T k4;
-        derived integrationSystem;
+        private T _k1, _k2, _k3, _k4;
 
-        public RK4Integrator(derived _integrationSystem)
+        public Rk4Integrator(Derived integrationSystem) : base(integrationSystem)
         {
-            this.integrationSystem = _integrationSystem;
         }
-        public T integrate(T current, double step)
+
+        public override T Integrate(T current, double step)
         {
             // k1 = f(yn)
-            k1 = integrationSystem(current);
+            _k1 = _integrationSystem(current);
             // k2 = f(yn + k1 * (h/2))
-            k2 = integrationSystem(current.Add(k1.Times(step / 2)));
+            _k2 = _integrationSystem(current.Add(_k1.Times(step/2)));
             // k3 = f(yn + k2 * (h/2))
-            k3 = integrationSystem(current.Add(k2.Times(step / 2)));
+            _k3 = _integrationSystem(current.Add(_k2.Times(step/2)));
             // k4 = f(yn + k3 * h)
-            k4 = integrationSystem(current.Add(k3.Times(step)));
+            _k4 = _integrationSystem(current.Add(_k3.Times(step)));
             // y(n+1) = yn + (k1 + 2*k2 + 2*k3 + k4) * (h/6)
-            return current.Add((k1.Add(k2.Times(2).Add(k3.Times(2)).Add(k4))).Times(step / 6));
+            return current.Add((_k1.Add(_k2.Times(2).Add(_k3.Times(2)).Add(_k4))).Times(step/6));
         }
     }
 }

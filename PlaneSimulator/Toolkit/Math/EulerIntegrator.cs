@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace PlaneSimulator.Toolkit.Math
 {
-    class EulerIntegrator<T> : Integrator<T> where T : IIntegrable <T>
+    internal class EulerIntegrator<T> : Integrator<T> where T : IIntegrable<T>
     {
+        public EulerIntegrator(Derived integrationSystem) : base(integrationSystem)
+        {
+        }
+
+        public override T Integrate(T current, double step)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

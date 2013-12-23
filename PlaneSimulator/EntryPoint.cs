@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
 
-    class EntryPoint
+    internal class EntryPoint
     {
         public static void Main()
         {
@@ -18,7 +18,7 @@
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             int i = 0;
-            while(true)
+            while (true)
             {
                 i++;
                 timer.Tick();

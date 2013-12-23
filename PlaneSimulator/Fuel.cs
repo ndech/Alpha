@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlaneSimulator
 {
-    class Fuel
+    internal class Fuel
     {
-
     }
 }
