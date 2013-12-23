@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlaneSimulator
+﻿namespace PlaneSimulator
 {
-    internal class Timer
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    public class Timer
     {
         private Stopwatch stopWatch;
         private Int64 elapsedMilliseconds;

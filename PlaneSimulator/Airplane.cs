@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PlaneSimulator.Toolkit.Math;
-using System.Globalization;
+﻿using System.Linq;
 
 namespace PlaneSimulator
 {
+    using System;
+    using System.Collections.Generic;
+    using Toolkit.Math;
+    using System.Globalization;
     internal class Airplane
     {
-        public Integrator<State> integrator;
+        protected Integrator<State> Integrator;
         public World World { get; private set; }
         public State CurrentState { get; private set; }
         public List<Thruster> Thrusters { get; private set; }
@@ -20,12 +18,7 @@ namespace PlaneSimulator
         {
             get
             {
-                double mass = 0;
-                foreach (Tank tank in Tanks)
-                    mass += tank.Mass;
-                foreach (Thruster thruster in Thrusters)
-                    mass += thruster.Mass;
-                return mass;
+                return Tanks.Sum(tank => tank.Mass) + Thrusters.Sum(thruster => thruster.Mass);
             }
         }
 
@@ -34,8 +27,7 @@ namespace PlaneSimulator
             World = world;
             Tanks = new List<Tank>();
             Thrusters = new List<Thruster>();
-            Integrator<State>.Derived derivationSystem = CalculateDerivedState;
-            integrator = new Rk4Integrator<State>(CalculateDerivedState);
+            Integrator = new Rk4Integrator<State>(CalculateDerivedState);
         }
 
         public void Initialize(double altitude, double speed)
@@ -45,8 +37,8 @@ namespace PlaneSimulator
 
         public void Update(double step)
         {
-            CurrentState = integrator.Integrate(CurrentState, step);
-            //Fuel consumption management :
+            CurrentState = Integrator.Integrate(CurrentState, step);
+
             DistributeFuelConsumption((ImmediateHourlyFuelConsumption()/3600)*step);
         }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PlaneSimulator.Toolkit.Math;
+﻿using PlaneSimulator.Toolkit.Math;
 
 namespace PlaneSimulator
 {
@@ -27,10 +22,10 @@ namespace PlaneSimulator
 
         public State(Vector3 position, Vector3 speed, Vector3 angularPosition, Vector3 angularSpeed)
         {
-            this.Position = position;
-            this.Speed = speed;
-            this.AngularPosition = angularPosition;
-            this.AngularSpeed = angularSpeed;
+            Position = position;
+            Speed = speed;
+            AngularPosition = angularPosition;
+            AngularSpeed = angularSpeed;
         }
 
         public static State operator +(State s1, State s2)
