@@ -22,8 +22,8 @@
             {
                 i++;
                 timer.Tick();
-                plane.Update(timer.Delta);
-                plane.Update(0.01);
+                //plane.Update(timer.Delta);
+                plane.Update(0.0001);
                 //Console.Clear();
                 //Console.WriteLine(timer.ToString());
                 //Console.Write(plane.ToString());
@@ -35,7 +35,7 @@
             Console.WriteLine("Number of integration steps : " + i);
             Console.WriteLine("Elapsed : " + stopWatch.ElapsedMilliseconds);
             Console.WriteLine("Your plane crashed");
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }
