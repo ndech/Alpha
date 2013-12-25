@@ -17,15 +17,12 @@ Global
 		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Debug|x64.ActiveCfg = Debug|x64
 		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Debug|x64.Build.0 = Debug|x64
-		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Release|Any CPU.ActiveCfg = Release|x64
+		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Release|Any CPU.Build.0 = Release|x64
 		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Release|x64.ActiveCfg = Release|x64
 		{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

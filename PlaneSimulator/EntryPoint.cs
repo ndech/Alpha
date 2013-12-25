@@ -23,7 +23,7 @@
                 i++;
                 timer.Tick();
                 //plane.Update(timer.Delta);
-                plane.Update(0.0001);
+                plane.Update(0.00001);
                 //Console.Clear();
                 //Console.WriteLine(timer.ToString());
                 //Console.Write(plane.ToString());

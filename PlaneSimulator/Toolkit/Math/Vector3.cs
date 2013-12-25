@@ -3,34 +3,34 @@ using System.Globalization;
 
 namespace PlaneSimulator.Toolkit.Math
 {
-    public class Vector3 : IEquatable<Vector3>, IFormattable
+    public struct Vector3 : IEquatable<Vector3>, IFormattable
     {
         public static readonly Vector3 Origin = new Vector3(0, 0, 0);
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public double X;
+        public double Y;
+        public double Z;
 
         public double this[int index]
         {
             get
             {
-                if (index == 0)
-                    return X;
-                else if (index == 1)
-                    return Y;
-                else if (index == 2)
-                    return Z;
-                throw new ArgumentOutOfRangeException("index must be less than three", "index");
+                switch (index)
+                {
+                    case 0: return X;                     
+                    case 1: return Y;
+                    case 2: return Z;
+                }
+                throw new ArgumentOutOfRangeException("index", "index must be less than three");
             }
             set
             {
-                if (index == 0)
-                    X = value;
-                else if (index == 1)
-                    Y = value;
-                else if (index == 2)
-                    Z = value;
-                throw new ArgumentOutOfRangeException("index must be less than three", "index");
+                switch (index)
+                {
+                    case 0: X = value; break;
+                    case 1: Y = value; break;
+                    case 2: Z = value; break;
+                }
+                throw new ArgumentOutOfRangeException("index", "index must be less than three");
             }
         }
 
