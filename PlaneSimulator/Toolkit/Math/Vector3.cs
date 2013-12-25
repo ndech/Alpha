@@ -222,9 +222,7 @@ namespace PlaneSimulator.Toolkit.Math
         {
             if (value == null)
                 return false;
-            if (!ReferenceEquals(value.GetType(), typeof (Vector3)))
-                return false;
-            return Equals((Vector3) value);
+            return ReferenceEquals(value.GetType(), typeof (Vector3)) && Equals((Vector3) value);
         }
     }
 }
