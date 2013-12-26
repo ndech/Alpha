@@ -1,6 +1,6 @@
 ﻿namespace PlaneSimulator.Toolkit.Math
 {
-    internal abstract class Integrator<T> where T : IIntegrable<T>
+    public abstract class Integrator<T> where T : IIntegrable<T>
     {
         protected readonly Derived _integrationSystem;
 

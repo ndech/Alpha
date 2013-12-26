@@ -1,9 +1,11 @@
-﻿namespace PlaneSimulator
+﻿using PlaneSimulator.Toolkit.IO;
+
+namespace PlaneSimulator
 {
     using System;
     using System.Diagnostics;
     using System.Globalization;
-    public class Timer
+    public class Timer : ICsvLoggable
     {
         private Stopwatch stopWatch;
         private Int64 elapsedMilliseconds;
@@ -45,6 +47,11 @@
                 CultureInfo.CurrentCulture,
                 "Time : {0} - Frames per seconds : {1}",
                 elapsedMilliseconds, averageFramePerSeconds);
+        }
+
+        public string ToCsv()
+        {
+            return elapsedMilliseconds.ToString();
         }
     }
 }

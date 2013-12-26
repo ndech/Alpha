@@ -2,7 +2,7 @@
 {
     using System;
 
-    internal class Tank : Component
+    public class Tank : Component
     {
         public Tank(double mass, double capacity, bool full = true)
         {

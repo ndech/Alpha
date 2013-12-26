@@ -1,6 +1,6 @@
 ﻿namespace PlaneSimulator
 {
-    internal class World
+    public class World
     {
         public double Gravity
         {

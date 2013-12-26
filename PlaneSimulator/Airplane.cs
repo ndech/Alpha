@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using PlaneSimulator.Toolkit.IO;
 
 namespace PlaneSimulator
 {
@@ -6,7 +7,7 @@ namespace PlaneSimulator
     using System.Collections.Generic;
     using Toolkit.Math;
     using System.Globalization;
-    internal class Airplane
+    public class Airplane : ICsvLoggable
     {
         protected Integrator<State> Integrator;
         public World World { get; private set; }
@@ -50,7 +51,7 @@ namespace PlaneSimulator
         public Vector3 CalculateForces(State state)
         {
             Vector3 weight = new Vector3(0.0, 0.0, World.Gravity*Mass);
-            Vector3 thrust = new Vector3(1000, 0, 0);
+            Vector3 thrust = new Vector3(10000, 0, 0);
             return weight + thrust;
         }
 
@@ -70,11 +71,13 @@ namespace PlaneSimulator
         public void DistributeFuelConsumption(double liters)
         {
             foreach (Tank tank in Tanks)
+            {
                 if (!tank.IsEmpty())
                 {
                     tank.Consume(liters);
                     return;
                 }
+            }
         }
 
         public bool IsCrashed()
@@ -87,6 +90,12 @@ namespace PlaneSimulator
             return string.Format(
                 CultureInfo.CurrentCulture,
                 "Position : ({0}, {1})\nAltitude : {2}\nSpeed : {3}",
+                CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z, CurrentState.Speed.Magnitude);
+        }
+
+        public string ToCsv()
+        {
+            return string.Format(CultureInfo.CurrentCulture,"{0};{1};{2};{3}",
                 CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z, CurrentState.Speed.Magnitude);
         }
     }
