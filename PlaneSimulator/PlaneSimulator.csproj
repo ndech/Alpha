@@ -64,8 +64,11 @@
     <Compile Include="Tank.cs" />
     <Compile Include="Thruster.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="Toolkit\CpuUsageCounter.cs" />
+    <Compile Include="Toolkit\FpsCounter.cs" />
     <Compile Include="Toolkit\IO\CsvLogger.cs" />
     <Compile Include="Toolkit\IO\ICsvLoggable.cs" />
+    <Compile Include="Toolkit\IUpdatable.cs" />
     <Compile Include="Toolkit\Math\EulerIntegrator.cs" />
     <Compile Include="Toolkit\Math\IIntegrable.cs" />
     <Compile Include="Toolkit\Math\Integrator.cs" />

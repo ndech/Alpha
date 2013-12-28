@@ -1,11 +1,9 @@
-﻿using System.Reflection;
-using PlaneSimulator.Toolkit.IO;
+﻿using PlaneSimulator.Toolkit.IO;
 
 namespace PlaneSimulator
 {
     using System;
     using System.Diagnostics;
-    using System.IO;
 
     internal class EntryPoint
     {
