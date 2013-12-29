@@ -37,16 +37,7 @@ namespace PlaneSimulator
 
         public override String ToString()
         {
-            int framePerSeconds;
-            if (deltaMilliseconds == 0)
-                framePerSeconds = 0;
-            else
-                framePerSeconds = (int) (1000.0/deltaMilliseconds);
-            averageFramePerSeconds = (int) ((0.95*averageFramePerSeconds) + (0.05*framePerSeconds));
-            return string.Format(
-                CultureInfo.CurrentCulture,
-                "Time : {0} - Frames per seconds : {1}",
-                elapsedMilliseconds, averageFramePerSeconds);
+            return elapsedMilliseconds.ToString();
         }
 
         public string ToCsv()

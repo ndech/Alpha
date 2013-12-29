@@ -66,6 +66,7 @@
     <Compile Include="Timer.cs" />
     <Compile Include="Toolkit\CpuUsageCounter.cs" />
     <Compile Include="Toolkit\FpsCounter.cs" />
+    <Compile Include="Toolkit\ICounter.cs" />
     <Compile Include="Toolkit\IO\CsvLogger.cs" />
     <Compile Include="Toolkit\IO\ICsvLoggable.cs" />
     <Compile Include="Toolkit\IUpdatable.cs" />

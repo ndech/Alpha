@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace PlaneSimulator.Toolkit
 {
-    class CpuUsageCounter : IDisposable, IUpdatable
+    class CpuUsageCounter : IDisposable, ICounter
     {
         public float Value 
 		{
@@ -13,16 +13,18 @@ namespace PlaneSimulator.Toolkit
 			}
 		}
 
+        public string Unit { get { return "%"; } }
+
         private readonly bool _canReadCpu;
         private readonly PerformanceCounter _counter;
-        private double timeCounter;
-		float _lastCpuUsage;
+        private double _timeCounter;
+		private float _lastCpuUsage;
 
         public CpuUsageCounter()
 		{
 			_canReadCpu = true;
 		    _lastCpuUsage = 0;
-            timeCounter = 0;
+            _timeCounter = 0;
 
 			try
 			{
@@ -48,11 +50,11 @@ namespace PlaneSimulator.Toolkit
 		public void Update(double seconds)
 		{
 		    if (!_canReadCpu) return;
-		    timeCounter += seconds;
-		    if (timeCounter > 1)
+		    _timeCounter += seconds;
+		    if (_timeCounter > 2)
             {
                 _lastCpuUsage = _counter.NextValue();
-                timeCounter %= 1;
+                _timeCounter %= 1;
             }
 		}
 	}

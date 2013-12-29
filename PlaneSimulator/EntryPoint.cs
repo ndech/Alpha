@@ -1,4 +1,5 @@
-﻿using PlaneSimulator.Toolkit.IO;
+﻿using PlaneSimulator.Toolkit;
+using PlaneSimulator.Toolkit.IO;
 
 namespace PlaneSimulator
 {
@@ -18,6 +19,8 @@ namespace PlaneSimulator
             plane.Thrusters.Add(new Thruster());
             plane.Initialize(1000, 200);
             Stopwatch stopWatch = new Stopwatch();
+            CpuUsageCounter cpuUsageCounter = new CpuUsageCounter();
+            FpsCounter fpsCounter = new FpsCounter();
             CsvLogger flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") +".csv", 100, ';');
             flightRecorder.Register(timer, plane);
             stopWatch.Start();
@@ -25,9 +28,12 @@ namespace PlaneSimulator
             while (true)
             {
                 i++;
+                if(i%100000==0)
+                    Console.WriteLine(cpuUsageCounter.Value.ToString() +" "+fpsCounter.Value.ToString());
                 timer.Tick();
-                //plane.Update(timer.Delta);
-                plane.Update(0.00001);
+                plane.Update(timer.Delta);
+                cpuUsageCounter.Update(timer.Delta);
+                fpsCounter.Update(timer.Delta);
                 flightRecorder.Log();
                 if (plane.IsCrashed())
                     break;
@@ -35,6 +41,8 @@ namespace PlaneSimulator
             stopWatch.Stop();
             flightRecorder.Dispose();
             Console.WriteLine();
+            Console.WriteLine(cpuUsageCounter.Value);
+            Console.WriteLine(fpsCounter.Value);
             Console.WriteLine("Flight recorded to : " + flightRecorder.FileName);
             Console.WriteLine("Number of integration steps : " + i);
             Console.WriteLine("Elapsed : " + stopWatch.ElapsedMilliseconds);
