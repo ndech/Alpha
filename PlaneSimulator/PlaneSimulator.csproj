@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Airplane.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="DX11.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Fuel.cs" />
     <Compile Include="Renderer.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Tank.cs" />
     <Compile Include="Thruster.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="ConfigurationManager.cs" />
     <Compile Include="Toolkit\CpuUsageCounter.cs" />
     <Compile Include="Toolkit\FpsCounter.cs" />
     <Compile Include="Toolkit\ICounter.cs" />
@@ -80,9 +82,21 @@
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.DXGI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Toolkit\Configuration\" />
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
