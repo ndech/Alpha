@@ -5,9 +5,9 @@ using SharpDX.Windows;
 
 namespace PlaneSimulator
 {
-    class Renderer
+    class Renderer : IDisposable
     {
-        private RenderForm _form;
+        public RenderForm Form { get; private set; }
         private readonly int _videoCardMemorySize;
         private readonly String _videoCardName;
         public int VideoCardMemorySize { get { return _videoCardMemorySize; } }
@@ -20,19 +20,31 @@ namespace PlaneSimulator
             CreateWindow();
             DirectX = new Dx11();
             DirectX.AcquireGpu(out _videoCardMemorySize, out _videoCardName);
-            DirectX.CreateDeviceAndSwapChain(_form);
+            DirectX.CreateDeviceAndSwapChain(Form);
             DirectX.InitializeBuffers();
+            DirectX.CreateMatrices();
         }
 
         private void CreateWindow()
         {
-            _form = new RenderForm(ConfigurationManager.Config.Title)
+            Form = new RenderForm(ConfigurationManager.Config.Title)
             {
                 ClientSize = new Size(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height),
                 FormBorderStyle = FormBorderStyle.FixedSingle
             };
 
-            _form.Show();
+            Form.Show();
+        }
+
+        public void Render()
+        {
+            DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
+            DirectX.DrawScene();
+        }
+
+        public void Dispose()
+        {
+            DirectX.Dispose();
         }
     }
 }
