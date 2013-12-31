@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using SharpDX.Windows;
 
-namespace PlaneSimulator
+namespace PlaneSimulator.Graphics
 {
     class Renderer : IDisposable
     {

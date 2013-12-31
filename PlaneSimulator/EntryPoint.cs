@@ -2,6 +2,7 @@
 using PlaneSimulator.Toolkit;
 using PlaneSimulator.Toolkit.IO;
 using SharpDX.Windows;
+using PlaneSimulator.Graphics;
 
 namespace PlaneSimulator
 {
