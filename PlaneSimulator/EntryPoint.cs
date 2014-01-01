@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using PlaneSimulator.Toolkit;
 using PlaneSimulator.Toolkit.IO;
+using SharpDX;
 using SharpDX.Windows;
 using PlaneSimulator.Graphics;
 
@@ -14,7 +15,6 @@ namespace PlaneSimulator
         public static void Main()
         {
             Timer timer = new Timer();
-            timer.Initialize();
             World world = new World();
             Airplane plane = new Airplane(world);
             plane.Tanks.Add(new Tank(100, 500));
@@ -27,15 +27,17 @@ namespace PlaneSimulator
             CsvLogger flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") +".csv", 1, ';');
             Renderer renderer = new Renderer();
             flightRecorder.Register(timer, plane);
-            stopWatch.Start();
             renderer.Form.MouseEnter += (o, args) => Cursor.Hide();
             renderer.Form.MouseLeave += (o, args) => Cursor.Show();
+            timer.Initialize();
+            stopWatch.Start();
             RenderLoop.Run(renderer.Form, () =>
             {
                 timer.Tick();
                 plane.Update(timer.Delta);
                 cpuUsageCounter.Update(timer.Delta);
                 fpsCounter.Update(timer.Delta);
+                renderer.Camera.Position = new Vector3(0, 0, -3*(1 - ((float)plane.CurrentState.Position.Z/100)));
                 flightRecorder.Log();
                 if (plane.IsCrashed())
                     renderer.Form.Close();

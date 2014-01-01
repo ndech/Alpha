@@ -10,7 +10,6 @@ namespace PlaneSimulator
         private Stopwatch stopWatch;
         private Int64 elapsedMilliseconds;
         private Int64 deltaMilliseconds;
-        private int averageFramePerSeconds;
 
         public void Initialize()
         {

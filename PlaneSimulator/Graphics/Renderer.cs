@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SharpDX;
 using SharpDX.Windows;
+using PlaneSimulator.Graphics.Shaders;
 
 namespace PlaneSimulator.Graphics
 {
@@ -12,8 +14,12 @@ namespace PlaneSimulator.Graphics
         private readonly String _videoCardName;
         public int VideoCardMemorySize { get { return _videoCardMemorySize; } }
         public String VideoCardName { get { return _videoCardName; } }
-
         public Dx11 DirectX { get; private set; }
+        public Camera Camera { get; set; }
+
+        public Model Model { get; set; }
+
+        public ColorShader ColorShader { get; set; }
 
         public Renderer()
         {
@@ -23,6 +29,9 @@ namespace PlaneSimulator.Graphics
             DirectX.CreateDeviceAndSwapChain(Form);
             DirectX.InitializeBuffers();
             DirectX.CreateMatrices();
+            Camera = new Camera(new Vector3(0, 0, -10), Vector3.Zero);
+            Model = new Model(DirectX.Device);
+            ColorShader = new ColorShader(DirectX.Device);
         }
 
         private void CreateWindow()
@@ -39,6 +48,13 @@ namespace PlaneSimulator.Graphics
         public void Render()
         {
             DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
+            
+            // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+            Model.Render(DirectX.Device.ImmediateContext);
+
+            // Render the model using the color shader.
+            ColorShader.Render(DirectX.Device.ImmediateContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+
             DirectX.DrawScene();
         }
 

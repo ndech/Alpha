@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using PlaneSimulator.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -13,7 +14,6 @@ namespace PlaneSimulator.Graphics
     class Dx11
     {
         private Rational _refreshRate;
-        private Device _device;
         private DeviceContext _deviceContext;
         private SwapChain _swapChain;
         private RenderTargetView _renderTargetView;
@@ -21,6 +21,7 @@ namespace PlaneSimulator.Graphics
         private DepthStencilState _depthStencilState;
         private DepthStencilView _depthStencilView;
         private RasterizerState _rasterState;
+        public Device Device { get; private set; }
         public Matrix ProjectionMatrix { get; private set; }
         public Matrix WorldMatrix { get; private set; }
         public Matrix OrthoMatrix { get; private set; }
@@ -64,9 +65,11 @@ namespace PlaneSimulator.Graphics
                 Usage = Usage.RenderTargetOutput,
             };
             FeatureLevel[] featureLevels = {FeatureLevel.Level_11_0, FeatureLevel.Level_10_0};
-            
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, featureLevels, desc, out _device, out _swapChain);
-            _deviceContext = _device.ImmediateContext;
+
+            Device device;
+            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, featureLevels, desc, out device, out _swapChain);
+            Device = device;
+            _deviceContext = Device.ImmediateContext;
 
             _swapChain.GetParent<Factory>().MakeWindowAssociation(form.Handle, WindowAssociationFlags.IgnoreAll);
         }
@@ -75,7 +78,7 @@ namespace PlaneSimulator.Graphics
         {
             //Create back buffer
             Texture2D backBuffer = Resource.FromSwapChain<Texture2D>(_swapChain, 0);
-            _renderTargetView = new RenderTargetView(_device, backBuffer);
+            _renderTargetView = new RenderTargetView(Device, backBuffer);
             backBuffer.Dispose();
 
             //Create the depth/stencil buffer
@@ -92,7 +95,7 @@ namespace PlaneSimulator.Graphics
 				CpuAccessFlags = CpuAccessFlags.None,
 				OptionFlags = ResourceOptionFlags.None
 			};
-			_depthStencilBuffer = new Texture2D(_device, depthBufferDesc);
+			_depthStencilBuffer = new Texture2D(Device, depthBufferDesc);
 
             DepthStencilStateDescription depthStencilDesc = new DepthStencilStateDescription
             {
@@ -121,7 +124,7 @@ namespace PlaneSimulator.Graphics
             };
 
             // Create the depth stencil state.
-            _depthStencilState = new DepthStencilState(_device, depthStencilDesc);
+            _depthStencilState = new DepthStencilState(Device, depthStencilDesc);
 
             // Set the depth stencil state.
             _deviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
@@ -138,7 +141,7 @@ namespace PlaneSimulator.Graphics
             };
 
             // Create the depth stencil view.
-            _depthStencilView = new DepthStencilView(_device, _depthStencilBuffer, depthStencilViewDesc);
+            _depthStencilView = new DepthStencilView(Device, _depthStencilBuffer, depthStencilViewDesc);
 
             // Bind the render target view and depth stencil buffer to the output render pipeline.
             _deviceContext.OutputMerger.SetTargets(_depthStencilView, _renderTargetView);
@@ -159,7 +162,7 @@ namespace PlaneSimulator.Graphics
             };
 
             // Create the rasterizer state from the description we just filled out.
-            _rasterState = new RasterizerState(_device, rasterDesc);
+            _rasterState = new RasterizerState(Device, rasterDesc);
 
             // Now set the rasterizer state.
             _deviceContext.Rasterizer.State = _rasterState;
@@ -191,17 +194,7 @@ namespace PlaneSimulator.Graphics
         {
             if (_swapChain != null) // Before shutting down set swap chain to windowed mode 
                 _swapChain.SetFullscreenState(false, null);
-            DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthStencilBuffer, _renderTargetView, _device, _swapChain);
-        }
-
-        private void DisposeAndSetToNull(params IDisposable[] disposables)
-        {
-            for(int i = 0; i< disposables.GetLength(0); i++)
-                if (disposables[i] != null)
-                {
-                    disposables[i].Dispose();
-                    disposables[i] = null;
-                }
+            DisposeHelper.DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthStencilBuffer, _renderTargetView, Device, _swapChain);
         }
 
         public void BeginScene(float red, float green, float blue, float alpha)

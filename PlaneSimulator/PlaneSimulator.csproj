@@ -53,6 +53,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\Shaders\Color.ps">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shaders\Color.vs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Airplane.cs" />
@@ -61,7 +67,9 @@
     <Compile Include="Graphics\DX11.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Fuel.cs" />
+    <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\Renderer.cs" />
+    <Compile Include="Graphics\Shaders\ColorShader.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Tank.cs" />
@@ -69,6 +77,7 @@
     <Compile Include="Timer.cs" />
     <Compile Include="ConfigurationManager.cs" />
     <Compile Include="Toolkit\CpuUsageCounter.cs" />
+    <Compile Include="Toolkit\DisposeHelper.cs" />
     <Compile Include="Toolkit\FpsCounter.cs" />
     <Compile Include="Toolkit\ICounter.cs" />
     <Compile Include="Toolkit\IO\CsvLogger.cs" />
@@ -88,6 +97,9 @@
     <Reference Include="SharpDX">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.Direct3D11">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
@@ -99,7 +111,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Graphics\Shaders\" />
     <Folder Include="Toolkit\Configuration\" />
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
