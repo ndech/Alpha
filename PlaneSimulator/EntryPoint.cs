@@ -46,12 +46,9 @@ namespace PlaneSimulator
             stopWatch.Stop();
             flightRecorder.Dispose();
             Console.WriteLine();
-            Console.WriteLine(cpuUsageCounter.Value);
-            Console.WriteLine(fpsCounter.Value);
             Console.WriteLine("Flight recorded to : " + flightRecorder.FileName);
             Console.WriteLine("Elapsed : " + stopWatch.ElapsedMilliseconds);
             Console.WriteLine("Your plane crashed");
-            Console.ReadKey();
         }
     }
 }

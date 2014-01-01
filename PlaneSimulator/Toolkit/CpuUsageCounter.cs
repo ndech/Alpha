@@ -34,6 +34,7 @@ namespace PlaneSimulator.Toolkit
 				    CounterName = "% Processor Time",
 				    InstanceName = "_Total"
 				};
+			    _lastCpuUsage = _counter.NextValue();
 			}
 			catch
 			{
