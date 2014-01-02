@@ -14,14 +14,14 @@ namespace PlaneSimulator.Graphics
     class Dx11
     {
         private Rational _refreshRate;
-        private DeviceContext _deviceContext;
-        private SwapChain _swapChain;
         private RenderTargetView _renderTargetView;
         private Texture2D _depthStencilBuffer;
         private DepthStencilState _depthStencilState;
         private DepthStencilView _depthStencilView;
         private RasterizerState _rasterState;
         public Device Device { get; private set; }
+        public DeviceContext DeviceContext { get; private set; }
+        public SwapChain SwapChain { get; private set; }
         public Matrix ProjectionMatrix { get; private set; }
         public Matrix WorldMatrix { get; private set; }
         public Matrix OrthoMatrix { get; private set; }
@@ -54,7 +54,12 @@ namespace PlaneSimulator.Graphics
 
         public void CreateDeviceAndSwapChain(RenderForm form)
         {
-            var desc = new SwapChainDescription
+            FeatureLevel[] featureLevels = { FeatureLevel.Level_11_0, FeatureLevel.Level_10_0 };
+            Device = new Device(DriverType.Hardware, DeviceCreationFlags.None, featureLevels);
+
+            Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);
+
+            var swapChainDescription = new SwapChainDescription
             {
                 BufferCount = 1, // Set to a single back buffer (double buffering)
                 ModeDescription = new ModeDescription(form.ClientSize.Width, form.ClientSize.Height, _refreshRate, Format.R8G8B8A8_UNorm),
@@ -62,22 +67,20 @@ namespace PlaneSimulator.Graphics
                 OutputHandle = form.Handle,
                 SampleDescription = new SampleDescription(1, 0),
                 SwapEffect = SwapEffect.Discard,
-                Usage = Usage.RenderTargetOutput,
+                Usage = Usage.RenderTargetOutput
             };
-            FeatureLevel[] featureLevels = {FeatureLevel.Level_11_0, FeatureLevel.Level_10_0};
 
-            Device device;
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, featureLevels, desc, out device, out _swapChain);
-            Device = device;
-            _deviceContext = Device.ImmediateContext;
+            SwapChain = new SwapChain(new Factory(), Device, swapChainDescription);
 
-            _swapChain.GetParent<Factory>().MakeWindowAssociation(form.Handle, WindowAssociationFlags.IgnoreAll);
+            DeviceContext = Device.ImmediateContext;
+
+            SwapChain.GetParent<Factory>().MakeWindowAssociation(form.Handle, WindowAssociationFlags.IgnoreAll);
         }
 
         public void InitializeBuffers()
         {
             //Create back buffer
-            Texture2D backBuffer = Resource.FromSwapChain<Texture2D>(_swapChain, 0);
+            Texture2D backBuffer = Resource.FromSwapChain<Texture2D>(SwapChain, 0);
             _renderTargetView = new RenderTargetView(Device, backBuffer);
             backBuffer.Dispose();
 
@@ -127,7 +130,7 @@ namespace PlaneSimulator.Graphics
             _depthStencilState = new DepthStencilState(Device, depthStencilDesc);
 
             // Set the depth stencil state.
-            _deviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
+            DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
 
             // Initialize and set up the depth stencil view.
             var depthStencilViewDesc = new DepthStencilViewDescription
@@ -144,7 +147,7 @@ namespace PlaneSimulator.Graphics
             _depthStencilView = new DepthStencilView(Device, _depthStencilBuffer, depthStencilViewDesc);
 
             // Bind the render target view and depth stencil buffer to the output render pipeline.
-            _deviceContext.OutputMerger.SetTargets(_depthStencilView, _renderTargetView);
+            DeviceContext.OutputMerger.SetTargets(_depthStencilView, _renderTargetView);
 
             // Setup the raster description which will determine how and what polygon will be drawn.
             var rasterDesc = new RasterizerStateDescription
@@ -165,10 +168,10 @@ namespace PlaneSimulator.Graphics
             _rasterState = new RasterizerState(Device, rasterDesc);
 
             // Now set the rasterizer state.
-            _deviceContext.Rasterizer.State = _rasterState;
+            DeviceContext.Rasterizer.State = _rasterState;
 
             // Setup and create the viewport for rendering.
-            _deviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0, 1);
+            DeviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0, 1);
         }
 
         public void CreateMatrices()
@@ -192,22 +195,22 @@ namespace PlaneSimulator.Graphics
 
         public void Dispose()
         {
-            if (_swapChain != null) // Before shutting down set swap chain to windowed mode 
-                _swapChain.SetFullscreenState(false, null);
-            DisposeHelper.DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthStencilBuffer, _renderTargetView, Device, _swapChain);
+            if (SwapChain != null) // Before shutting down set swap chain to windowed mode 
+                SwapChain.SetFullscreenState(false, null);
+            DisposeHelper.DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
         }
 
         public void BeginScene(float red, float green, float blue, float alpha)
         {
             // Clear the depth buffer.
-            _deviceContext.ClearDepthStencilView(_depthStencilView, DepthStencilClearFlags.Depth, 1, 0);
+            DeviceContext.ClearDepthStencilView(_depthStencilView, DepthStencilClearFlags.Depth, 1, 0);
             // Clear the back buffer.
-            _deviceContext.ClearRenderTargetView(_renderTargetView, new Color4(red, green, blue, alpha));
+            DeviceContext.ClearRenderTargetView(_renderTargetView, new Color4(red, green, blue, alpha));
         }
 
         public void DrawScene() // Present the back buffer to the screen
         {
-            _swapChain.Present(ConfigurationManager.Config.VSync ? 1 : 0, 0);
+            SwapChain.Present(ConfigurationManager.Config.VSync ? 1 : 0, 0);
         }
     }
 }

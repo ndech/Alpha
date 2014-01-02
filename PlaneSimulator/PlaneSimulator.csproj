@@ -70,6 +70,7 @@
     <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Shaders\ColorShader.cs" />
+    <Compile Include="Graphics\Texture.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Tank.cs" />
@@ -111,6 +112,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Textures\" />
     <Folder Include="Toolkit\Configuration\" />
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
