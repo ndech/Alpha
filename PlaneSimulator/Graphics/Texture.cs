@@ -8,7 +8,7 @@ namespace PlaneSimulator.Graphics
 {
     class Texture : IDisposable
     {
-        public ShaderResourceView TextureResource { get; private set; };
+        public ShaderResourceView TextureResource { get; private set; }
         public Texture(Device device, String fileName)
         {
 		    TextureResource = ShaderResourceView.FromFile(device, fileName);
