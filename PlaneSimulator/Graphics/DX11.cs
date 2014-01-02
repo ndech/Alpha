@@ -57,7 +57,7 @@ namespace PlaneSimulator.Graphics
             FeatureLevel[] featureLevels = { FeatureLevel.Level_11_0, FeatureLevel.Level_10_0 };
             Device = new Device(DriverType.Hardware, DeviceCreationFlags.None, featureLevels);
 
-            Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);
+            int quality = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);
 
             var swapChainDescription = new SwapChainDescription
             {
