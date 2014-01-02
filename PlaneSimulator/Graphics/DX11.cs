@@ -19,6 +19,7 @@ namespace PlaneSimulator.Graphics
         private DepthStencilState _depthStencilState;
         private DepthStencilView _depthStencilView;
         private RasterizerState _rasterState;
+        private int _maxQualityLevel = 0;
         public Device Device { get; private set; }
         public DeviceContext DeviceContext { get; private set; }
         public SwapChain SwapChain { get; private set; }
@@ -57,7 +58,8 @@ namespace PlaneSimulator.Graphics
             FeatureLevel[] featureLevels = { FeatureLevel.Level_11_0, FeatureLevel.Level_10_0 };
             Device = new Device(DriverType.Hardware, DeviceCreationFlags.None, featureLevels);
 
-            int quality = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);
+            if(ConfigurationManager.Config.AntiAliasing)
+                _maxQualityLevel = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);
 
             var swapChainDescription = new SwapChainDescription
             {
@@ -65,7 +67,7 @@ namespace PlaneSimulator.Graphics
                 ModeDescription = new ModeDescription(form.ClientSize.Width, form.ClientSize.Height, _refreshRate, Format.R8G8B8A8_UNorm),
                 IsWindowed = ConfigurationManager.Config.WindowedMode,
                 OutputHandle = form.Handle,
-                SampleDescription = new SampleDescription(1, 0),
+                SampleDescription = ConfigurationManager.Config.AntiAliasing ? new SampleDescription(4, _maxQualityLevel-1) : new SampleDescription(1, 0),
                 SwapEffect = SwapEffect.Discard,
                 Usage = Usage.RenderTargetOutput
             };
@@ -92,7 +94,7 @@ namespace PlaneSimulator.Graphics
 				MipLevels = 1,
 				ArraySize = 1,
 				Format = Format.D24_UNorm_S8_UInt,
-				SampleDescription = new SampleDescription(1, 0),
+				SampleDescription = ConfigurationManager.Config.AntiAliasing ? new SampleDescription(4, _maxQualityLevel-1) : new SampleDescription(1, 0),
 				Usage = ResourceUsage.Default,
 				BindFlags = BindFlags.DepthStencil,
 				CpuAccessFlags = CpuAccessFlags.None,
@@ -133,15 +135,22 @@ namespace PlaneSimulator.Graphics
             DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
 
             // Initialize and set up the depth stencil view.
-            var depthStencilViewDesc = new DepthStencilViewDescription
-            {
-                Format = Format.D24_UNorm_S8_UInt,
-                Dimension = DepthStencilViewDimension.Texture2D,
-                Texture2D = new DepthStencilViewDescription.Texture2DResource
+            DepthStencilViewDescription depthStencilViewDesc;
+            if(ConfigurationManager.Config.AntiAliasing)
+                depthStencilViewDesc = new DepthStencilViewDescription
                 {
-                    MipSlice = 0
-                }
-            };
+                    Format = Format.D24_UNorm_S8_UInt,
+                    Dimension = DepthStencilViewDimension.Texture2DMultisampled,
+                    Texture2DMS = new DepthStencilViewDescription.Texture2DMultisampledResource()
+                };
+            else
+                depthStencilViewDesc = new DepthStencilViewDescription
+                {
+                    Format = Format.D24_UNorm_S8_UInt,
+                    Dimension = DepthStencilViewDimension.Texture2D,
+                    Texture2D = new DepthStencilViewDescription.Texture2DResource()
+                    { MipSlice = 0 }
+                };
 
             // Create the depth stencil view.
             _depthStencilView = new DepthStencilView(Device, _depthStencilBuffer, depthStencilViewDesc);
