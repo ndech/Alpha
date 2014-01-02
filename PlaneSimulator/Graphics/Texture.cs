@@ -1,13 +1,22 @@
 ﻿using System;
-using SharpDX.DXGI;
+using System.Net.Mime;
+using PlaneSimulator.Toolkit;
+using SharpDX.Direct3D11;
+using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics
 {
-    class Texture
+    class Texture : IDisposable
     {
-        public Texture(Device device, String filename)
+        public ShaderResourceView TextureResource { get; private set; };
+        public Texture(Device device, String fileName)
         {
-            //Todo: implement
+		    TextureResource = ShaderResourceView.FromFile(device, fileName);
+        }
+
+        public void Dispose()
+        {
+            DisposeHelper.DisposeAndSetToNull(TextureResource);
         }
     }
 }

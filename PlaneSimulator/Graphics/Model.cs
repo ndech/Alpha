@@ -65,7 +65,7 @@ namespace PlaneSimulator.Graphics
 
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(VertexBuffer,IndexBuffer);
+            DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer);
         }
     }
 }
