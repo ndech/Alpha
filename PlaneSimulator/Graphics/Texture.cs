@@ -11,7 +11,7 @@ namespace PlaneSimulator.Graphics
         public ShaderResourceView TextureResource { get; private set; }
         public Texture(Device device, String fileName)
         {
-		    TextureResource = ShaderResourceView.FromFile(device, fileName);
+		    TextureResource = ShaderResourceView.FromFile(device, "Data/Textures/"+fileName);
         }
 
         public void Dispose()

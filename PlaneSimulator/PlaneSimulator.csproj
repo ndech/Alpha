@@ -59,12 +59,16 @@
     <None Include="Data\Shaders\Color.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Shaders\Texture.ps" />
+    <None Include="Data\Shaders\Texture.ps">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Airplane.cs" />
     <Compile Include="Component.cs" />
-    <None Include="Data\Shaders\Texture.vs" />
+    <None Include="Data\Shaders\Texture.vs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\DX11.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -72,6 +76,7 @@
     <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Shaders\ColorShader.cs" />
+    <Compile Include="Graphics\Shaders\TextureShader.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Simulator.cs" />
@@ -114,9 +119,13 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Textures\" />
     <Folder Include="Toolkit\Configuration\" />
     <Folder Include="Toolkit\Physics\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Textures\seafloor.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

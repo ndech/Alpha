@@ -21,6 +21,8 @@ namespace PlaneSimulator.Graphics
 
         public ColorShader ColorShader { get; set; }
 
+        public TextureShader TextureShader { get; set; }
+
         public Renderer()
         {
             CreateWindow();
@@ -32,6 +34,7 @@ namespace PlaneSimulator.Graphics
             Camera = new Camera(new Vector3(0, 0, -10), Vector3.Zero);
             Model = new Model(DirectX.Device);
             ColorShader = new ColorShader(DirectX.Device);
+            TextureShader = new TextureShader(DirectX.Device);
         }
 
         private void CreateWindow()
@@ -53,7 +56,7 @@ namespace PlaneSimulator.Graphics
             Model.Render(DirectX.Device.ImmediateContext);
 
             // Render the model using the color shader.
-            ColorShader.Render(DirectX.Device.ImmediateContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+            ColorShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
 
             DirectX.DrawScene();
         }

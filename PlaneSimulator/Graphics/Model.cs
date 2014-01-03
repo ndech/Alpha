@@ -16,6 +16,7 @@ namespace PlaneSimulator.Graphics
         Buffer IndexBuffer { get; set; }
         public int VertexCount { get; private set; }
         public int IndexCount { get; private set; }
+        public Texture Texture { get; private set; }
 
         public Model(Device device)
         {
@@ -25,25 +26,25 @@ namespace PlaneSimulator.Graphics
             // Create the vertex array and load it with data.
             var vertices = new[]
 			{   
-                new ColorShader.Vertex()
+                new TextureShader.Vertex
 				{
 					position = new Vector3(-1, -1, 0),
-					color = new Vector4(1, 0, 0, 1)
+					texture = new Vector2(0, 0)
 				},
-				new ColorShader.Vertex()
+				new TextureShader.Vertex
 				{
 					position = new Vector3(-1, 1, 0),
-					color = new Vector4(1, 0, 0, 1)
+					texture = new Vector2(0, 0.5f)
 				},
-				new ColorShader.Vertex()
+				new TextureShader.Vertex
 				{
 					position = new Vector3(1, 1, 0),
-					color = new Vector4(1, 0, 0, 1)
+					texture = new Vector2(1, 1)
 				},
-				new ColorShader.Vertex()
+				new TextureShader.Vertex
 				{
 					position = new Vector3(1, -1, 0),
-					color = new Vector4(1, 0, 0, 1)
+					texture = new Vector2(1, 0)
 				}
 			};
             var indices = new[]
@@ -51,21 +52,21 @@ namespace PlaneSimulator.Graphics
                 0, 1, 3,
                 1, 2, 3
             };
-
+            Texture = new Texture(device, "seafloor.dds");
             VertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
             IndexBuffer = Buffer.Create(device, BindFlags.IndexBuffer, indices);
         }
 
         public void Render(DeviceContext deviceContext)
         {
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<ColorShader.Vertex>(), 0));
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<TextureShader.Vertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
         }
 
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer);
+            DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer, Texture);
         }
     }
 }
