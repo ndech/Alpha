@@ -59,10 +59,12 @@
     <None Include="Data\Shaders\Color.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Shaders\Texture.ps" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Airplane.cs" />
     <Compile Include="Component.cs" />
+    <None Include="Data\Shaders\Texture.vs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\DX11.cs" />
     <Compile Include="EntryPoint.cs" />
