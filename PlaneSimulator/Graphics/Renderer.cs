@@ -56,7 +56,7 @@ namespace PlaneSimulator.Graphics
             Model.Render(DirectX.Device.ImmediateContext);
 
             // Render the model using the color shader.
-            ColorShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+            TextureShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture);
 
             DirectX.DrawScene();
         }

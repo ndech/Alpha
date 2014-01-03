@@ -5,7 +5,6 @@ using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using Buffer = System.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics.Shaders
@@ -113,7 +112,7 @@ namespace PlaneSimulator.Graphics.Shaders
             deviceContext.MapSubresource(ConstantMatrixBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
 
             // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
-            var matrixBuffer = new MatrixBuffer()
+            var matrixBuffer = new MatrixBuffer
             {
                 world = worldMatrix,
                 view = viewMatrix,
