@@ -34,7 +34,7 @@ namespace PlaneSimulator.Graphics
 				new TextureShader.Vertex
 				{
 					position = new Vector3(-1, 1, 0),
-					texture = new Vector2(0, 0.5f)
+					texture = new Vector2(0, 1)
 				},
 				new TextureShader.Vertex
 				{
