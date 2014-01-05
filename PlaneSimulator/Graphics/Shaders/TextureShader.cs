@@ -61,7 +61,7 @@ namespace PlaneSimulator.Graphics.Shaders
 					SemanticIndex = 0,
 					Format = Format.R32G32_Float,
 					Slot = 0,
-					AlignedByteOffset = ColorShader.Vertex.AppendAlignedElement,
+					AlignedByteOffset = TextureShader.Vertex.AppendAlignedElement,
 					Classification = InputClassification.PerVertexData,
 					InstanceDataStepRate = 0
 				}
@@ -75,7 +75,7 @@ namespace PlaneSimulator.Graphics.Shaders
             var matrixBufferDesc = new BufferDescription
             {
                 Usage = ResourceUsage.Dynamic, // Updated each frame
-                SizeInBytes = Utilities.SizeOf<ColorShader.MatrixBuffer>(), // Contains three matrices
+                SizeInBytes = Utilities.SizeOf<TextureShader.MatrixBuffer>(), // Contains three matrices
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None,

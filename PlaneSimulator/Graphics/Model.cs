@@ -26,25 +26,29 @@ namespace PlaneSimulator.Graphics
             // Create the vertex array and load it with data.
             var vertices = new[]
 			{   
-                new TextureShader.Vertex
+                new LightShader.Vertex
 				{
 					position = new Vector3(-1, -1, 0),
-					texture = new Vector2(0, 0)
+					texture = new Vector2(0, 0),
+                    normal = new Vector3(0, 0, -1.0f)
 				},
-				new TextureShader.Vertex
+				new LightShader.Vertex
 				{
 					position = new Vector3(-1, 1, 0),
-					texture = new Vector2(0, 1)
+					texture = new Vector2(0, 1),
+                    normal = new Vector3(0, 0, -1.0f)
 				},
-				new TextureShader.Vertex
+				new LightShader.Vertex
 				{
 					position = new Vector3(1, 1, 0),
-					texture = new Vector2(1, 1)
+					texture = new Vector2(1, 1),
+                    normal = new Vector3(0, 0, -1.0f)
 				},
-				new TextureShader.Vertex
+				new LightShader.Vertex
 				{
 					position = new Vector3(1, -1, 0),
-					texture = new Vector2(1, 0)
+					texture = new Vector2(1, 0),
+                    normal = new Vector3(0, 0, -1.0f)
 				}
 			};
             var indices = new[]
@@ -59,7 +63,7 @@ namespace PlaneSimulator.Graphics
 
         public void Render(DeviceContext deviceContext)
         {
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<TextureShader.Vertex>(), 0));
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<LightShader.Vertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
         }

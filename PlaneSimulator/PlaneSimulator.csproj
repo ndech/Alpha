@@ -59,8 +59,12 @@
     <None Include="Data\Shaders\Color.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Shaders\Light.ps" />
-    <None Include="Data\Shaders\Light.vs" />
+    <None Include="Data\Shaders\Light.ps">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Shaders\Light.vs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Shaders\Texture.ps">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -75,6 +79,7 @@
     <Compile Include="Graphics\DX11.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Fuel.cs" />
+    <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\ObjModel.cs" />
     <Compile Include="Graphics\Renderer.cs" />
