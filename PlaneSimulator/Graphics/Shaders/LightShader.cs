@@ -37,9 +37,16 @@ namespace PlaneSimulator.Graphics.Shaders
             public Vector4 ambiantColor;
             public Vector4 diffuseColor;
             public Vector3 direction;
-            public float padding; // Structure size must be a multiple of 16 bytes
+            public float specularPower;
+            public Vector4 specularColor;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct CameraBuffer
+        {
+            public Vector3 cameraPosition;
+            public float padding; // Structure size must be a multiple of 16 bytes
+        }
         private const string VertexShaderFileName = @"Data/Shaders/Light.vs";
         private const string PixelShaderFileName = @"Data/Shaders/Light.ps";
         VertexShader VertexShader { get; set; }
@@ -47,6 +54,7 @@ namespace PlaneSimulator.Graphics.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantLightBuffer { get; set; }
+        Buffer ConstantCameraBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
         public LightShader(Device device)
@@ -107,7 +115,6 @@ namespace PlaneSimulator.Graphics.Shaders
             };
             ConstantMatrixBuffer = new Buffer(device, matrixBufferDesc);
 
-
             // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
             var lightBufferDesc = new BufferDescription
             {
@@ -119,6 +126,18 @@ namespace PlaneSimulator.Graphics.Shaders
                 StructureByteStride = 0
             };
             ConstantLightBuffer = new Buffer(device, lightBufferDesc);
+
+            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+            var cameraBufferDesc = new BufferDescription
+            {
+                Usage = ResourceUsage.Dynamic, // Updated each frame
+                SizeInBytes = Utilities.SizeOf<CameraBuffer>(), // Contains three matrices
+                BindFlags = BindFlags.ConstantBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                StructureByteStride = 0
+            };
+            ConstantCameraBuffer = new Buffer(device, cameraBufferDesc);
 
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
@@ -139,7 +158,7 @@ namespace PlaneSimulator.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Texture texture, Light light)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Texture texture, Light light, Camera camera)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -156,18 +175,39 @@ namespace PlaneSimulator.Graphics.Shaders
                 projection = projectionMatrix
             };
             mappedResource.Write(matrixBuffer);
-
-            // Finally set the constant buffer in the vertex shader with the updated values.
-            deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
-
+            
             // Unlock the constant buffer.
             deviceContext.UnmapSubresource(ConstantMatrixBuffer, 0);
 
             deviceContext.MapSubresource(ConstantLightBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
 
-            mappedResource.Write(new LightBuffer{ ambiantColor = light.AmbiantColor, diffuseColor = light.Color, direction = light.Direction});
+            mappedResource.Write(
+                new LightBuffer
+                {
+                    ambiantColor = light.AmbiantColor, 
+                    diffuseColor = light.Color, 
+                    direction = light.Direction,
+                    specularPower = light.SpecularPower,
+                    specularColor = light.SpecularColor
+                });
 
             deviceContext.UnmapSubresource(ConstantLightBuffer, 0);
+
+
+            deviceContext.MapSubresource(ConstantCameraBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
+
+            mappedResource.Write(
+                new CameraBuffer
+                {
+                    cameraPosition = camera.Position
+                });
+
+            deviceContext.UnmapSubresource(ConstantCameraBuffer, 0);
+
+            
+            // Finally set the constant buffers in the vertex shader with the updated values.
+            deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
+            deviceContext.VertexShader.SetConstantBuffer(1, ConstantCameraBuffer);
 
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantLightBuffer);
 
@@ -189,7 +229,7 @@ namespace PlaneSimulator.Graphics.Shaders
         }
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, ConstantLightBuffer, Layout, PixelShader, VertexShader);
+            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, ConstantLightBuffer, ConstantCameraBuffer, Layout, PixelShader, VertexShader);
         }
     }
 }

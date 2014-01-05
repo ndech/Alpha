@@ -39,7 +39,12 @@ namespace PlaneSimulator.Graphics
             DirectX.InitializeBuffers();
             DirectX.CreateMatrices();
             Camera = new Camera(new Vector3(0, 0, -10), Vector3.Zero);
-            Light = new Light(new Vector3(1.0f, 0.0f, 0.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(0.16f, 0.16f, 0.16f, 1.0f));
+            Light = new Light(
+                new Vector3(1.0f, 0.0f, 0.0f), 
+                new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 
+                new Vector4(0.16f, 0.16f, 0.16f, 1.0f),
+                32.0f,
+                new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
             Model = new ObjModel(DirectX.Device, "model.obj", "stone01.dds");
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
@@ -67,7 +72,7 @@ namespace PlaneSimulator.Graphics
             Model.Render(DirectX.Device.ImmediateContext);
 
             // Render the model using the color shader.
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light);
+            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
             
             DirectX.DrawScene();
         }
