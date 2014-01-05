@@ -122,12 +122,12 @@ namespace PlaneSimulator.Graphics.Shaders
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
-                Filter = Filter.MinMagMipLinear,
+                Filter = Filter.ComparisonAnisotropic,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,
                 MipLodBias = 0,
-                MaximumAnisotropy = 1,
+                MaximumAnisotropy = 16,
                 ComparisonFunction = Comparison.Always,
                 BorderColor = new Color4(0, 0, 0, 0),
                 MinimumLod = 0,

@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Windows;
 using PlaneSimulator.Graphics.Shaders;
+using MathUtil = PlaneSimulator.Toolkit.Math.MathUtil;
 
 namespace PlaneSimulator.Graphics
 {
@@ -19,13 +20,15 @@ namespace PlaneSimulator.Graphics
 
         public Light Light { get; set; }
 
-        public Model Model { get; set; }
+        public ObjModel Model { get; set; }
 
         public ColorShader ColorShader { get; set; }
 
         public TextureShader TextureShader { get; set; }
 
         public LightShader LightShader { get; set; }
+
+        public float Rotation { get; private set; }
 
         public Renderer()
         {
@@ -36,11 +39,12 @@ namespace PlaneSimulator.Graphics
             DirectX.InitializeBuffers();
             DirectX.CreateMatrices();
             Camera = new Camera(new Vector3(0, 0, -10), Vector3.Zero);
-            Light = new Light(new Vector3(0.0f, 0.0f, 1.0f),  new Vector4(1.0f, 0.0f, 1.0f, 1.0f));
-            Model = new Model(DirectX.Device);
+            Light = new Light(new Vector3(1.0f, 0.0f, 0.0f),  new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+            Model = new ObjModel(DirectX.Device, "model.obj", "seafloor.dds");
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
+            Rotation = 0;
         }
 
         private void CreateWindow()
@@ -54,15 +58,16 @@ namespace PlaneSimulator.Graphics
             Form.Show();
         }
 
-        public void Render()
+        public void Render(double delta)
         {
             DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
-            
+
+            Rotation += (float)(MathUtil.PiOverFour*delta);
             // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
             Model.Render(DirectX.Device.ImmediateContext);
 
             // Render the model using the color shader.
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light.Color, Light.Direction);
+            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light.Color, Light.Direction);
             //TextureShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture);
 
             DirectX.DrawScene();

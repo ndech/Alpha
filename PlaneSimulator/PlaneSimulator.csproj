@@ -53,6 +53,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\Models\cube.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Models\model.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Shaders\Color.ps">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -75,6 +81,7 @@
     <None Include="Data\Shaders\Texture.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="Game.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\DX11.cs" />
     <Compile Include="EntryPoint.cs" />

@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Globalization;
+using System.Threading;
+using System.Windows.Forms;
 using PlaneSimulator.Toolkit;
 using PlaneSimulator.Toolkit.IO;
 using SharpDX;
@@ -14,6 +16,7 @@ namespace PlaneSimulator
     {
         public static void Main()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Timer timer = new Timer();
             World world = new World();
             Airplane plane = new Airplane(world);
@@ -41,7 +44,7 @@ namespace PlaneSimulator
                 flightRecorder.Log();
                 if (plane.IsCrashed())
                     renderer.Form.Close();
-                renderer.Render();
+                renderer.Render(timer.Delta);
             });
             stopWatch.Stop();
             flightRecorder.Dispose();
