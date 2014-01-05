@@ -40,7 +40,7 @@ namespace PlaneSimulator
                 plane.Update(timer.Delta);
                 cpuUsageCounter.Update(timer.Delta);
                 fpsCounter.Update(timer.Delta);
-                renderer.Camera.Position = new Vector3(0, 0, -3*(1 - ((float)plane.CurrentState.Position.Z/100)));
+                renderer.Camera.Position = new Vector3(0, 0, -5*(1 - ((float)plane.CurrentState.Position.Z/100)));
                 flightRecorder.Log();
                 if (plane.IsCrashed())
                     renderer.Form.Close();

@@ -11,11 +11,13 @@ namespace PlaneSimulator.Graphics
     {
         public Vector3 Direction { get; set; }
         public Vector4 Color { get; set; }
+        public Vector4 AmbiantColor { get; set; }
 
-        public Light(Vector3 direction, Vector4 color)
+        public Light(Vector3 direction, Vector4 color, Vector4 ambiantColor)
         {
             Direction = direction;
             Color = color;
+            AmbiantColor = ambiantColor;
         }
     }
 }

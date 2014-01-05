@@ -34,6 +34,7 @@ namespace PlaneSimulator.Graphics.Shaders
         [StructLayout(LayoutKind.Sequential)]
         internal struct LightBuffer
         {
+            public Vector4 ambiantColor;
             public Vector4 diffuseColor;
             public Vector3 direction;
             public float padding; // Structure size must be a multiple of 16 bytes
@@ -138,7 +139,7 @@ namespace PlaneSimulator.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Texture texture, Vector4 lightColor, Vector3 lightDirection)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Texture texture, Light light)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -164,7 +165,7 @@ namespace PlaneSimulator.Graphics.Shaders
 
             deviceContext.MapSubresource(ConstantLightBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
 
-            mappedResource.Write(new LightBuffer{ diffuseColor = lightColor, direction = lightDirection});
+            mappedResource.Write(new LightBuffer{ ambiantColor = light.AmbiantColor, diffuseColor = light.Color, direction = light.Direction});
 
             deviceContext.UnmapSubresource(ConstantLightBuffer, 0);
 

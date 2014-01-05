@@ -139,7 +139,13 @@
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Textures\dirt01.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Textures\seafloor.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Textures\stone01.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
