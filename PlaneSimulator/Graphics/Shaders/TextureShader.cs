@@ -12,7 +12,7 @@ namespace PlaneSimulator.Graphics.Shaders
     class TextureShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        internal struct Vertex
+        public struct Vertex
         {
             public static int AppendAlignedElement = 12;
             public Vector3 position;
@@ -20,7 +20,7 @@ namespace PlaneSimulator.Graphics.Shaders
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        internal struct MatrixBuffer
+        public struct MatrixBuffer
         {
             public Matrix world;
             public Matrix view;

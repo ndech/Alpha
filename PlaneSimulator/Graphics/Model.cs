@@ -57,6 +57,7 @@ namespace PlaneSimulator.Graphics
                 1, 2, 3
             };
             Texture = new Texture(device, "seafloor.dds");
+
             VertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, vertices);
             IndexBuffer = Buffer.Create(device, BindFlags.IndexBuffer, indices);
         }

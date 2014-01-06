@@ -39,12 +39,14 @@ namespace PlaneSimulator.Graphics
             DirectX.InitializeBuffers();
             DirectX.CreateMatrices();
             Camera = new Camera(new Vector3(0, 0, -10), Vector3.Zero);
-            Light = new Light(
-                new Vector3(1.0f, 0.0f, 0.0f), 
-                new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 
-                new Vector4(0.16f, 0.16f, 0.16f, 1.0f),
-                32.0f,
-                new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+            Light = new Light
+            {
+                Direction = new Vector3(1.0f, 0.0f, 0.0f),
+                Color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                AmbiantColor = new Vector4(0.16f, 0.16f, 0.16f, 1.0f),
+                SpecularPower = 32.0f,
+                SpecularColor = new Vector4(1.0f, 1.0f, 0.7f, 1.0f)
+            };
             Model = new ObjModel(DirectX.Device, "model.obj", "stone01.dds");
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
