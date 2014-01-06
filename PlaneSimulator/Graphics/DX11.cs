@@ -17,6 +17,7 @@ namespace PlaneSimulator.Graphics
         private RenderTargetView _renderTargetView;
         private Texture2D _depthStencilBuffer;
         private DepthStencilState _depthStencilState;
+        private DepthStencilState _depthDisabledStencilState;
         private DepthStencilView _depthStencilView;
         private RasterizerState _rasterState;
         private int _maxQualityLevel = 0;
@@ -131,6 +132,34 @@ namespace PlaneSimulator.Graphics
             // Create the depth stencil state.
             _depthStencilState = new DepthStencilState(Device, depthStencilDesc);
 
+            DepthStencilStateDescription depthDisabledStencilDesc = new DepthStencilStateDescription
+            {
+                IsDepthEnabled = false,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Less,
+                IsStencilEnabled = true,
+                StencilReadMask = 0xFF,
+                StencilWriteMask = 0xFF,
+                // Stencil operation if pixel front-facing.
+                FrontFace = new DepthStencilOperationDescription
+                {
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Increment,
+                    PassOperation = StencilOperation.Keep,
+                    Comparison = Comparison.Always
+                },
+                // Stencil operation if pixel is back-facing.
+                BackFace = new DepthStencilOperationDescription
+                {
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Decrement,
+                    PassOperation = StencilOperation.Keep,
+                    Comparison = Comparison.Always
+                }
+            };
+
+            _depthDisabledStencilState = new DepthStencilState(Device, depthDisabledStencilDesc);
+
             // Set the depth stencil state.
             DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
 
@@ -206,7 +235,7 @@ namespace PlaneSimulator.Graphics
         {
             if (SwapChain != null) // Before shutting down set swap chain to windowed mode 
                 SwapChain.SetFullscreenState(false, null);
-            DisposeHelper.DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
+            DisposeHelper.DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
         }
 
         public void BeginScene(float red, float green, float blue, float alpha)
@@ -220,6 +249,16 @@ namespace PlaneSimulator.Graphics
         public void DrawScene() // Present the back buffer to the screen
         {
             SwapChain.Present(ConfigurationManager.Config.VSync ? 1 : 0, 0);
+        }
+
+        public void EnableZBuffer()
+        {
+            DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
+        }
+
+        public void DisableZBuffer()
+        {
+            DeviceContext.OutputMerger.SetDepthStencilState(_depthDisabledStencilState, 1);
         }
     }
 }
