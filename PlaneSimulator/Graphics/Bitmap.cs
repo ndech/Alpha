@@ -80,6 +80,7 @@ namespace PlaneSimulator.Graphics
                 float top = (float)(ScreenSize.Y / 2) - (float)Position.Y;
                 float bottom = top - (float)Size.Y;
 
+                //Todo : refactor to use only 4 vertices
                 _vertices[0] = new TextureShader.Vertex { position = new Vector3(left, top, 0.0f), texture = new Vector2(0.0f, 0.0f) };
                 _vertices[1] = new TextureShader.Vertex { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1.0f, 1.0f) };
                 _vertices[2] = new TextureShader.Vertex { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0.0f, 1.0f) };
