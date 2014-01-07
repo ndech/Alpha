@@ -47,10 +47,11 @@ namespace PlaneSimulator.Graphics
             Size = new Vector2(width, height);
             _changed = true;
 
-            VertexCount = IndexCount = 6;
+            VertexCount = 4;
+            IndexCount = 6;
 
             _vertices = new TextureShader.Vertex[VertexCount];
-            UInt32[] indices =  {0, 1, 2, 3, 4, 5};
+            UInt32[] indices =  {0, 1, 2, 0, 3, 1};
 
             VertexBuffer = Buffer.Create(device, _vertices, 
                 new BufferDescription
@@ -80,18 +81,14 @@ namespace PlaneSimulator.Graphics
                 float top = (float)(ScreenSize.Y / 2) - (float)Position.Y;
                 float bottom = top - (float)Size.Y;
 
-                //Todo : refactor to use only 4 vertices
                 _vertices[0] = new TextureShader.Vertex { position = new Vector3(left, top, 0.0f), texture = new Vector2(0.0f, 0.0f) };
                 _vertices[1] = new TextureShader.Vertex { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1.0f, 1.0f) };
                 _vertices[2] = new TextureShader.Vertex { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0.0f, 1.0f) };
-
-                _vertices[3] = new TextureShader.Vertex { position = new Vector3(left, top, 0.0f), texture = new Vector2(0.0f, 0.0f) };
-                _vertices[4] = new TextureShader.Vertex { position = new Vector3(right, top, 0.0f), texture = new Vector2(1.0f, 0.0f) };
-                _vertices[5] = new TextureShader.Vertex { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1.0f, 1.0f) };
+                _vertices[3] = new TextureShader.Vertex { position = new Vector3(right, top, 0.0f), texture = new Vector2(1.0f, 0.0f) };
 
                 DataStream mappedResource;
                 deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-			    mappedResource.WriteRange<TextureShader.Vertex>(_vertices);
+			    mappedResource.WriteRange(_vertices);
 			    deviceContext.UnmapSubresource(VertexBuffer, 0);
             }
 
