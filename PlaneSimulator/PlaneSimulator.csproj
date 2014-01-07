@@ -53,6 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\Fonts\Arial.20px.fnt" />
     <None Include="Data\Models\cube.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -140,6 +141,7 @@
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Fonts\Arial.20px.dds" />
     <Content Include="Data\Textures\dirt01.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

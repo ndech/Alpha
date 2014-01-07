@@ -93,8 +93,8 @@ namespace PlaneSimulator.Graphics
             }
 
             // Set vertex buffer stride and offset.
-            var stride = Utilities.SizeOf<TextureShader.Vertex>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
-            var offset = 0; //Gets or sets the offset from the start of the buffer of the first vertex to use (in bytes). 
+            int stride = Utilities.SizeOf<TextureShader.Vertex>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
+            int offset = 0; //Gets or sets the offset from the start of the buffer of the first vertex to use (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, offset));
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
