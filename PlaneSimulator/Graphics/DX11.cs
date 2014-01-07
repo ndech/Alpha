@@ -11,7 +11,7 @@ using Resource = SharpDX.Direct3D11.Resource;
 
 namespace PlaneSimulator.Graphics
 {
-    class Dx11
+    class Dx11 : IDisposable
     {
         private Rational _refreshRate;
         private RenderTargetView _renderTargetView;

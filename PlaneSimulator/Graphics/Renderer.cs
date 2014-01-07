@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using PlaneSimulator.Toolkit;
 using SharpDX;
 using SharpDX.Windows;
 using PlaneSimulator.Graphics.Shaders;
@@ -21,6 +22,8 @@ namespace PlaneSimulator.Graphics
         public Light Light { get; set; }
 
         public ObjModel Model { get; set; }
+
+        public Bitmap Model2D { get; set; }
 
         public ColorShader ColorShader { get; set; }
 
@@ -51,6 +54,10 @@ namespace PlaneSimulator.Graphics
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
+            Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 200, 200)
+            {
+                Position = new Vector2(0, 0)
+            };
             Rotation = 0;
         }
 
@@ -71,16 +78,23 @@ namespace PlaneSimulator.Graphics
 
             Rotation += (float)(MathUtil.PiOverFour*delta);
             // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-            Model.Render(DirectX.Device.ImmediateContext);
-
+            Model.Render(DirectX.DeviceContext);
             // Render the model using the color shader.
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
             
+            DirectX.DisableZBuffer();
+
+            Model2D.Render(DirectX.DeviceContext);
+            TextureShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture);
+
+            DirectX.EnableZBuffer();
+
             DirectX.DrawScene();
         }
 
         public void Dispose()
         {
+            DisposeHelper.DisposeAndSetToNull(DirectX, Model, Model2D);
             DirectX.Dispose();
         }
     }

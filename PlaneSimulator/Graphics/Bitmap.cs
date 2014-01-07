@@ -45,7 +45,7 @@ namespace PlaneSimulator.Graphics
             Texture = new Texture(device, textureName);
             ScreenSize = new Vector2(screenWidth, screenHeight);
             Size = new Vector2(width, height);
-            _changed = false;
+            _changed = true;
 
             VertexCount = IndexCount = 6;
 
