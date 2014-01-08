@@ -25,13 +25,13 @@ namespace PlaneSimulator.Graphics
 
         public SortedList<int, Character> Characters { get; set; }
 
-        public int Size { get; private set; }
+        public int Height { get; private set; }
 
-        public Font(Device device, String font, int size)
+        public Font(Device device, String font, int height)
         {
-            Texture = new Texture(device, font + "-" + size + "px.png", @"Data/Fonts/");
-            ParseFileData(@"Data/Fonts/"+font+"-"+size+"px.fnt",Texture.Width, Texture.Height, size);
-            Size = size;
+            Texture = new Texture(device, font + "-" + height + "px.png", @"Data/Fonts/");
+            ParseFileData(@"Data/Fonts/"+font+"-"+height+"px.fnt",Texture.Width, Texture.Height, 22);
+            Height = 22; //Todo to change
         }
 
         private void ParseFileData(string fileName, int textureWidth, int textureHeight, int textHeight)
@@ -61,13 +61,13 @@ namespace PlaneSimulator.Graphics
         public void BuildVertexArray(String text, int positionX, int positionY, ref FontShader.Vertex[] vertices, out int width, out int height)
         {
             width = 0;
-            height = Size;
+            height = Height;
             for (int i = 0; i < text.Length; i++)
             {
                 Character c = Characters[text[i]];
                 vertices[i * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop) }; //Top left
-                vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - Size, 0.0f), texture = new Vector2(c.uRight, c.vBottom) }; //Right bottom
-                vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - Size, 0.0f), texture = new Vector2(c.uLeft, c.vBottom) }; //Left bottom
+                vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - Height, 0.0f), texture = new Vector2(c.uRight, c.vBottom) }; //Right bottom
+                vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - Height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom) }; //Left bottom
                 vertices[i * 4 + 3] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY, 0.0f), texture = new Vector2(c.uRight, c.vTop) }; //Top right
                 
                 positionX += c.width + 1;

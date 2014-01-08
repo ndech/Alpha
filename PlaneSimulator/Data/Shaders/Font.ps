@@ -35,12 +35,10 @@ float4 FontPixelShader(PixelInputType input) : SV_TARGET
     {
         color.a = 0.0f;
     }
-	
-    // If the color is other than black on the texture then this is a pixel in the font so draw it using the font pixel color.
-    else
+	else
     {
-        color.a = 1.0f;
-        color = color * pixelColor;
+        color.a = color.r;
+        color.rgb = pixelColor.rgb;
     }
 
     return color;

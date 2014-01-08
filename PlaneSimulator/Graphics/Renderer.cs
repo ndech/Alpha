@@ -64,8 +64,8 @@ namespace PlaneSimulator.Graphics
             };
             Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
-            Text = TextManager.Create("Arial", 20, 10, new Vector4(1,1,1,1));
-            Text.Content = "Test 2j";
+            Text = TextManager.Create("Arial", 20, 10, new Vector4(1,0,0,1));
+            Text.Content = "Test 2jl";
             Text.Position = new Vector2(700,500);
         }
 
@@ -96,7 +96,11 @@ namespace PlaneSimulator.Graphics
 
             TextureShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture);
 
+            DirectX.EnableAlphaBlending();
+
             Text.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
+
+            DirectX.DisableAlphaBlending();
 
             DirectX.EnableZBuffer();
 

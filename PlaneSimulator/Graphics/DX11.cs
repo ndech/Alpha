@@ -20,6 +20,8 @@ namespace PlaneSimulator.Graphics
         private DepthStencilState _depthDisabledStencilState;
         private DepthStencilView _depthStencilView;
         private RasterizerState _rasterState;
+        private BlendState _alphaEnabledBlendState;
+        private BlendState _alphaDisabledBlendState;
         private int _maxQualityLevel = 0;
         public Device Device { get; private set; }
         public DeviceContext DeviceContext { get; private set; }
@@ -210,6 +212,22 @@ namespace PlaneSimulator.Graphics
 
             // Setup and create the viewport for rendering.
             DeviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0, 1);
+
+            var blendStateDescription = new BlendStateDescription();
+            blendStateDescription.RenderTarget[0].IsBlendEnabled = true;
+            blendStateDescription.RenderTarget[0].SourceBlend = BlendOption.SourceAlpha;
+            blendStateDescription.RenderTarget[0].DestinationBlend = BlendOption.InverseSourceAlpha;
+            blendStateDescription.RenderTarget[0].BlendOperation = BlendOperation.Add;
+            blendStateDescription.RenderTarget[0].SourceAlphaBlend = BlendOption.One;
+            blendStateDescription.RenderTarget[0].DestinationAlphaBlend = BlendOption.Zero;
+            blendStateDescription.RenderTarget[0].AlphaBlendOperation = BlendOperation.Add;
+            blendStateDescription.RenderTarget[0].RenderTargetWriteMask = ColorWriteMaskFlags.All;
+            // Create the blend state using the description.
+            _alphaEnabledBlendState = new BlendState(Device, blendStateDescription);
+
+            blendStateDescription.RenderTarget[0].IsBlendEnabled = false;
+            // Create the blend state using the description.
+            _alphaDisabledBlendState = new BlendState(Device, blendStateDescription);
         }
 
         public void CreateMatrices()
@@ -259,6 +277,16 @@ namespace PlaneSimulator.Graphics
         public void DisableZBuffer()
         {
             DeviceContext.OutputMerger.SetDepthStencilState(_depthDisabledStencilState, 1);
+        }
+
+        public void EnableAlphaBlending()
+        {
+            DeviceContext.OutputMerger.SetBlendState(_alphaEnabledBlendState, new Color4(0.0f));  
+        }
+
+        public void DisableAlphaBlending()
+        {
+            DeviceContext.OutputMerger.SetBlendState(_alphaDisabledBlendState, new Color4(0.0f)); 
         }
     }
 }
