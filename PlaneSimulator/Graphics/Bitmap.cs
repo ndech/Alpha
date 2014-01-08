@@ -90,6 +90,7 @@ namespace PlaneSimulator.Graphics
                 deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
 			    mappedResource.WriteRange(_vertices);
 			    deviceContext.UnmapSubresource(VertexBuffer, 0);
+                _changed = false;
             }
 
             // Set vertex buffer stride and offset.

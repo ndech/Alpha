@@ -9,14 +9,42 @@ namespace PlaneSimulator.Graphics
     class Texture : IDisposable
     {
         public ShaderResourceView TextureResource { get; private set; }
-        public Texture(Device device, String fileName)
+        public Texture(Device device, String fileName, String path = "Data/Textures/")
         {
-		    TextureResource = ShaderResourceView.FromFile(device, "Data/Textures/"+fileName);
+            TextureResource = ShaderResourceView.FromFile(device, path + fileName);
         }
 
         public void Dispose()
         {
             DisposeHelper.DisposeAndSetToNull(TextureResource);
+        }
+
+        public int Width
+        {
+            get
+            {
+                using (var resource = TextureResource.Resource)
+                {
+                    using (var texture2D = resource.QueryInterface<Texture2D>())
+                    {
+                        return texture2D.Description.Width;
+                    }
+                }   
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                using (var resource = TextureResource.Resource)
+                {
+                    using (var texture2D = resource.QueryInterface<Texture2D>())
+                    {
+                        return texture2D.Description.Height;
+                    }
+                }
+            }
         }
     }
 }

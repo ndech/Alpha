@@ -33,6 +33,10 @@ namespace PlaneSimulator.Graphics
 
         public float Rotation { get; private set; }
 
+        public TextManager TextManager { get; private set; }
+
+        public Text Text { get; private set; }
+
         public Renderer()
         {
             CreateWindow();
@@ -54,11 +58,15 @@ namespace PlaneSimulator.Graphics
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
-            Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 200, 200)
+            Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 256, 256)
             {
                 Position = new Vector2(0, 0)
             };
             Rotation = 0;
+            TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
+            Text = TextManager.Create("Arial", 20, 10, new Vector4(1,1,1,1));
+            Text.Content = "Test 2j";
+            Text.Position = new Vector2(700,500);
         }
 
         private void CreateWindow()
@@ -85,7 +93,10 @@ namespace PlaneSimulator.Graphics
             DirectX.DisableZBuffer();
 
             Model2D.Render(DirectX.DeviceContext);
+
             TextureShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture);
+
+            Text.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
 
             DirectX.EnableZBuffer();
 
