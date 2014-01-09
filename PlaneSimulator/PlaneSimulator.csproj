@@ -108,6 +108,7 @@
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Simulator.cs" />
     <Compile Include="Tank.cs" />

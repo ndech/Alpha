@@ -35,11 +35,15 @@ namespace PlaneSimulator.Graphics
 
         public TextManager TextManager { get; private set; }
 
-        public Text Text { get; private set; }
+        public Text cpuText { get; private set; }
+        public Text fpsText { get; private set; }
+
+        private CpuUsageCounter _cpuUsageCounter;
+        private FpsCounter _fpsCounter;
 
         private int i;
 
-        public Renderer()
+        public Renderer(CpuUsageCounter cpuUsageCounter, FpsCounter fpsCounter)
         {
             CreateWindow();
             DirectX = new Dx11();
@@ -66,9 +70,12 @@ namespace PlaneSimulator.Graphics
             };
             Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
-            Text = TextManager.Create("Arial", 20, 10, new Vector4(1,0,0,1));
-            Text.Content = "Test 2jl";
-            Text.Position = new Vector2(700,500);
+            _cpuUsageCounter = cpuUsageCounter;
+            _fpsCounter = fpsCounter;
+            cpuText = TextManager.Create("Arial", 20, 10, new Vector4(1,1,1,1));
+            cpuText.Position = new Vector2(600, 500);
+            fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
+            fpsText.Position = new Vector2(600, 550);
             i = 0;
         }
 
@@ -100,9 +107,12 @@ namespace PlaneSimulator.Graphics
             TextureShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture);
 
             DirectX.EnableAlphaBlending();
+            
+            cpuText.Content = String.Format("CPU : {0:P2}.", _cpuUsageCounter.Value/100);
+            cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
+            fpsText.Content = "FPS : " + (int)_fpsCounter.Value;
+            fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
 
-            Text.Content = (i++).ToString();
-            Text.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
 
             DirectX.DisableAlphaBlending();
 

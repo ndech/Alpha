@@ -52,7 +52,7 @@ namespace PlaneSimulator.Toolkit
 		{
 		    if (!_canReadCpu) return;
 		    _timeCounter += seconds;
-		    if (_timeCounter > 2)
+		    if (_timeCounter > 1)
             {
                 _lastCpuUsage = _counter.NextValue();
                 _timeCounter %= 1;
