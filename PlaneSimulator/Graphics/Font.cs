@@ -19,22 +19,20 @@ namespace PlaneSimulator.Graphics
             public float vTop;
             public float vBottom;
             public int width;
+            public int height;
         }
 
         public Texture Texture { get; set; }
 
         public SortedList<int, Character> Characters { get; set; }
 
-        public int Height { get; private set; }
-
         public Font(Device device, String font, int height)
         {
             Texture = new Texture(device, font + "-" + height + "px.png", @"Data/Fonts/");
-            ParseFileData(@"Data/Fonts/"+font+"-"+height+"px.fnt",Texture.Width, Texture.Height, 22);
-            Height = 22; //Todo to change
+            ParseFileData(@"Data/Fonts/"+font+"-"+height+"px.fnt",Texture.Width, Texture.Height);
         }
 
-        private void ParseFileData(string fileName, int textureWidth, int textureHeight, int textHeight)
+        private void ParseFileData(string fileName, int textureWidth, int textureHeight)
         {
             using (XmlReader reader = new XmlTextReader(fileName))
             {
@@ -49,11 +47,12 @@ namespace PlaneSimulator.Graphics
                         Characters.Add(Int32.Parse(reader.GetAttribute("id")), 
                             new Character
                             { // x = 0 => left, y = 0 => top
+                                height = int.Parse(reader.GetAttribute("height")),
                                 width = int.Parse(reader.GetAttribute("width")),
                                 uLeft = (float.Parse(reader.GetAttribute("x"))/textureWidth),
                                 uRight = ((float.Parse(reader.GetAttribute("x")) + float.Parse(reader.GetAttribute("width"))) / textureWidth),
                                 vTop = (float.Parse(reader.GetAttribute("y")) / textureHeight),
-                                vBottom = ((float.Parse(reader.GetAttribute("y")) + textHeight) / textureHeight)
+                                vBottom = ((float.Parse(reader.GetAttribute("y")) + float.Parse(reader.GetAttribute("height"))) / textureHeight)
                             });
             }
         }
@@ -61,13 +60,13 @@ namespace PlaneSimulator.Graphics
         public void BuildVertexArray(String text, int positionX, int positionY, ref FontShader.Vertex[] vertices, out int width, out int height)
         {
             width = 0;
-            height = Height;
+            height = Characters.First().Value.height;
             for (int i = 0; i < text.Length; i++)
             {
                 Character c = Characters[text[i]];
                 vertices[i * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop) }; //Top left
-                vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - Height, 0.0f), texture = new Vector2(c.uRight, c.vBottom) }; //Right bottom
-                vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - Height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom) }; //Left bottom
+                vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - c.height, 0.0f), texture = new Vector2(c.uRight, c.vBottom) }; //Right bottom
+                vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - c.height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom) }; //Left bottom
                 vertices[i * 4 + 3] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY, 0.0f), texture = new Vector2(c.uRight, c.vTop) }; //Top right
                 
                 positionX += c.width + 1;

@@ -107,8 +107,8 @@ namespace PlaneSimulator.Graphics
             TextureShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture);
 
             DirectX.EnableAlphaBlending();
-            
-            cpuText.Content = String.Format("CPU : {0:P2}.", _cpuUsageCounter.Value/100);
+
+            cpuText.Content = String.Format("CPU : {0:0.00}%.", _cpuUsageCounter.Value);
             cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
             fpsText.Content = "FPS : " + (int)_fpsCounter.Value;
             fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
