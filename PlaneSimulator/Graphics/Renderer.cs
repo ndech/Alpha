@@ -37,6 +37,8 @@ namespace PlaneSimulator.Graphics
 
         public Text Text { get; private set; }
 
+        private int i;
+
         public Renderer()
         {
             CreateWindow();
@@ -67,6 +69,7 @@ namespace PlaneSimulator.Graphics
             Text = TextManager.Create("Arial", 20, 10, new Vector4(1,0,0,1));
             Text.Content = "Test 2jl";
             Text.Position = new Vector2(700,500);
+            i = 0;
         }
 
         private void CreateWindow()
@@ -98,6 +101,7 @@ namespace PlaneSimulator.Graphics
 
             DirectX.EnableAlphaBlending();
 
+            Text.Content = (i++).ToString();
             Text.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
 
             DirectX.DisableAlphaBlending();
