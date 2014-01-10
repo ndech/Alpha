@@ -28,7 +28,7 @@ namespace PlaneSimulator
             CpuUsageCounter cpuUsageCounter = new CpuUsageCounter();
             FpsCounter fpsCounter = new FpsCounter();
             CsvLogger flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") +".csv", 1, ';');
-            Renderer renderer = new Renderer(cpuUsageCounter, fpsCounter);
+            Renderer renderer = new Renderer(cpuUsageCounter, fpsCounter, plane);
             flightRecorder.Register(timer, plane);
             renderer.Form.MouseEnter += (o, args) => Cursor.Hide();
             renderer.Form.MouseLeave += (o, args) => Cursor.Show();
