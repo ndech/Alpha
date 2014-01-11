@@ -15,6 +15,8 @@ namespace PlaneSimulator
         public List<Thruster> Thrusters { get; private set; }
         public List<Tank> Tanks { get; private set; }
 
+        public float Altitude { get { return (float) -CurrentState.Position.Z; } }
+
         public double Mass
         {
             get

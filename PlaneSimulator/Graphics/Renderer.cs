@@ -30,6 +30,7 @@ namespace PlaneSimulator.Graphics
         public TextureShader TextureShader { get; set; }
 
         public LightShader LightShader { get; set; }
+        public TranslateShader TranslateShader { get; set; }
 
         public float Rotation { get; private set; }
 
@@ -67,6 +68,7 @@ namespace PlaneSimulator.Graphics
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
+            TranslateShader = new TranslateShader(DirectX.Device);
             Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 256, 256)
             {
                 Position = new Vector2(0, 0)
@@ -80,7 +82,7 @@ namespace PlaneSimulator.Graphics
             cpuText.Position = new Vector2(600, 500);
             fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
             fpsText.Position = new Vector2(600, 550);
-            altitudeText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
+            altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
             altitudeText.Position = new Vector2(600, 450);
             i = 0;
         }
@@ -98,6 +100,7 @@ namespace PlaneSimulator.Graphics
 
         public void Render(double delta)
         {
+            i++;
             DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
 
             Rotation += (float)(MathUtil.PiOverFour*delta);
@@ -110,15 +113,15 @@ namespace PlaneSimulator.Graphics
 
             Model2D.Render(DirectX.DeviceContext);
 
-            TextureShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture);
+            TranslateShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector2(((float)i) / 1000, ((float)i) / 1000));
 
             DirectX.EnableAlphaBlending();
 
-            cpuText.Content = String.Format("CPU : {0:0.00}%.", _cpuUsageCounter.Value);
+            cpuText.Content = String.Format("CPU : {0:0.00}%", _cpuUsageCounter.Value);
             cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
             fpsText.Content = "FPS : " + (int)_fpsCounter.Value;
             fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
-            altitudeText.Content = (-_airplane.CurrentState.Position.Z)+" m";
+            altitudeText.Content = String.Format("Atitude : {0:0.0} m", _airplane.Altitude);
             altitudeText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
 
 

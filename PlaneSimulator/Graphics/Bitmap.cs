@@ -37,7 +37,7 @@ namespace PlaneSimulator.Graphics
             }
         }
         private Vector2 _position;
-        private TextureShader.Vertex[] _vertices;
+        private TranslateShader.Vertex[] _vertices;
         private bool _changed;
 
         public Bitmap(Device device, String textureName, int screenWidth, int screenHeight, int width, int height)
@@ -50,14 +50,14 @@ namespace PlaneSimulator.Graphics
             VertexCount = 4;
             IndexCount = 6;
 
-            _vertices = new TextureShader.Vertex[VertexCount];
+            _vertices = new TranslateShader.Vertex[VertexCount];
             UInt32[] indices =  {0, 1, 2, 0, 3, 1};
 
             VertexBuffer = Buffer.Create(device, _vertices, 
                 new BufferDescription
                 {
 					Usage = ResourceUsage.Dynamic,
-					SizeInBytes = Utilities.SizeOf<TextureShader.Vertex>() * VertexCount,
+					SizeInBytes = Utilities.SizeOf<TranslateShader.Vertex>() * VertexCount,
 					BindFlags = BindFlags.VertexBuffer,
 					CpuAccessFlags = CpuAccessFlags.Write,
 					OptionFlags = ResourceOptionFlags.None,
@@ -81,10 +81,10 @@ namespace PlaneSimulator.Graphics
                 float top = (float)(ScreenSize.Y / 2) - (float)Position.Y;
                 float bottom = top - (float)Size.Y;
 
-                _vertices[0] = new TextureShader.Vertex { position = new Vector3(left, top, 0.0f), texture = new Vector2(0.0f, 0.0f) };
-                _vertices[1] = new TextureShader.Vertex { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1.0f, 1.0f) };
-                _vertices[2] = new TextureShader.Vertex { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0.0f, 1.0f) };
-                _vertices[3] = new TextureShader.Vertex { position = new Vector3(right, top, 0.0f), texture = new Vector2(1.0f, 0.0f) };
+                _vertices[0] = new TranslateShader.Vertex { position = new Vector3(left, top, 0.0f), texture = new Vector2(0.0f, 0.0f) };
+                _vertices[1] = new TranslateShader.Vertex { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1.0f, 1.0f) };
+                _vertices[2] = new TranslateShader.Vertex { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0.0f, 1.0f) };
+                _vertices[3] = new TranslateShader.Vertex { position = new Vector3(right, top, 0.0f), texture = new Vector2(1.0f, 0.0f) };
 
                 DataStream mappedResource;
                 deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
@@ -94,7 +94,7 @@ namespace PlaneSimulator.Graphics
             }
 
             // Set vertex buffer stride and offset.
-            int stride = Utilities.SizeOf<TextureShader.Vertex>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
+            int stride = Utilities.SizeOf<TranslateShader.Vertex>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             int offset = 0; //Gets or sets the offset from the start of the buffer of the first vertex to use (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, offset));
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
