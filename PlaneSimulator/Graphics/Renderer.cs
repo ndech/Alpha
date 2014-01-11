@@ -78,12 +78,12 @@ namespace PlaneSimulator.Graphics
             _cpuUsageCounter = cpuUsageCounter;
             _fpsCounter = fpsCounter;
             _airplane = airplane;
-            cpuText = TextManager.Create("Arial", 20, 10, new Vector4(1,1,1,1));
-            cpuText.Position = new Vector2(600, 500);
+            cpuText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
+            cpuText.Position = new Vector2(50, 50);
             fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
-            fpsText.Position = new Vector2(600, 550);
+            fpsText.Position = new Vector2(50, 80);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
-            altitudeText.Position = new Vector2(600, 450);
+            altitudeText.Position = new Vector2(50, 110);
             Terrain = new Terrain(DirectX.Device, 200, 200, 100);
             i = 0;
         }
@@ -129,11 +129,11 @@ namespace PlaneSimulator.Graphics
             DirectX.EnableAlphaBlending();
 
             cpuText.Content = String.Format("CPU : {0:0.00}%", _cpuUsageCounter.Value);
-            cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
+            cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
             fpsText.Content = "FPS : " + (int)_fpsCounter.Value;
-            fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
+            fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
             altitudeText.Content = String.Format("Atitude : {0:0.0} m", _airplane.Altitude);
-            altitudeText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix);
+            altitudeText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
 
 
             DirectX.DisableAlphaBlending();

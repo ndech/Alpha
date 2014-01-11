@@ -13,8 +13,8 @@ namespace PlaneSimulator
             WindowedMode = true;
             VSync = false;
             AntiAliasing = true;
-            Height = 600;
-            Width = 800;
+            Height = 768;
+            Width = 1024;
             FarLimit = 100000.0f;
             NearLimit = 0.1f;
         }

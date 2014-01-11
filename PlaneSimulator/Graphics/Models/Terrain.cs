@@ -34,8 +34,8 @@ namespace PlaneSimulator.Graphics
                 for (int j = 0; j < (_height + 1); j++)
                     vertices[i*(_width + 1) + j] = new ColorShader.Vertex
                     {
-                        position = new Vector3((-(_width / 2) + i) * _pitch, -10.0f, (-(_height / 2) + j) * _pitch), 
-                        color = new Vector4(1, 0, 1, 1)
+                        position = new Vector3((-(_width / 2) + i) * _pitch, 0.0f, (-(_height / 2) + j) * _pitch), 
+                        color = new Vector4(1, 0, 0, 1)
                     };
             IndexCount = _width*_height*6;
             UInt32[] indices = new UInt32[IndexCount];
