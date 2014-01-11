@@ -19,7 +19,8 @@ namespace PlaneSimulator.Graphics
         private DepthStencilState _depthStencilState;
         private DepthStencilState _depthDisabledStencilState;
         private DepthStencilView _depthStencilView;
-        private RasterizerState _rasterState;
+        private RasterizerState _rasterStateSolid;
+        private RasterizerState _rasterStateWireFrame;
         private BlendState _alphaEnabledBlendState;
         private BlendState _alphaDisabledBlendState;
         private int _maxQualityLevel = 0;
@@ -205,10 +206,14 @@ namespace PlaneSimulator.Graphics
             };
 
             // Create the rasterizer state from the description we just filled out.
-            _rasterState = new RasterizerState(Device, rasterDesc);
+            _rasterStateSolid = new RasterizerState(Device, rasterDesc);
+
+            rasterDesc.FillMode = FillMode.Wireframe;
+            
+            _rasterStateWireFrame = new RasterizerState(Device, rasterDesc);
 
             // Now set the rasterizer state.
-            DeviceContext.Rasterizer.State = _rasterState;
+            DeviceContext.Rasterizer.State = _rasterStateSolid;
 
             // Setup and create the viewport for rendering.
             DeviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0, 1);
@@ -253,7 +258,7 @@ namespace PlaneSimulator.Graphics
         {
             if (SwapChain != null) // Before shutting down set swap chain to windowed mode 
                 SwapChain.SetFullscreenState(false, null);
-            DisposeHelper.DisposeAndSetToNull(_rasterState, _depthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
+            DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, _depthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
         }
 
         public void BeginScene(float red, float green, float blue, float alpha)
@@ -287,6 +292,16 @@ namespace PlaneSimulator.Graphics
         public void DisableAlphaBlending()
         {
             DeviceContext.OutputMerger.SetBlendState(_alphaDisabledBlendState, new Color4(0.0f)); 
+        }
+
+        public void EnableWireFrame()
+        {
+            DeviceContext.Rasterizer.State = _rasterStateWireFrame;
+        }
+
+        public void DisableWireFrame()
+        {
+            DeviceContext.Rasterizer.State = _rasterStateSolid;
         }
     }
 }

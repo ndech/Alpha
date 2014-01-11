@@ -44,7 +44,7 @@ namespace PlaneSimulator.Graphics
         private CpuUsageCounter _cpuUsageCounter;
         private FpsCounter _fpsCounter;
         private Airplane _airplane;
-
+        public Terrain Terrain { get; private set; }
         private int i;
 
         public Renderer(CpuUsageCounter cpuUsageCounter, FpsCounter fpsCounter,  Airplane airplane)
@@ -55,7 +55,7 @@ namespace PlaneSimulator.Graphics
             DirectX.CreateDeviceAndSwapChain(Form);
             DirectX.InitializeBuffers();
             DirectX.CreateMatrices();
-            Camera = new Camera(new Vector3(0, 0, -10), Vector3.Zero);
+            Camera = new Camera(new Vector3(0, 0, -10), new Vector3(0,0,0));
             Light = new Light
             {
                 Direction = new Vector3(1.0f, 0.0f, 0.0f),
@@ -84,6 +84,7 @@ namespace PlaneSimulator.Graphics
             fpsText.Position = new Vector2(600, 550);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
             altitudeText.Position = new Vector2(600, 450);
+            Terrain = new Terrain(DirectX.Device, 200, 200, 100);
             i = 0;
         }
 
@@ -100,6 +101,9 @@ namespace PlaneSimulator.Graphics
 
         public void Render(double delta)
         {
+            Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude, (float)_airplane.CurrentState.Position.X-3450);
+            //Camera.Position = new Vector3(0,100,-_airplane.Altitude);
+            
             i++;
             DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
 
@@ -108,12 +112,19 @@ namespace PlaneSimulator.Graphics
             Model.Render(DirectX.DeviceContext);
             // Render the model using the color shader.
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
-            
+
+            DirectX.EnableWireFrame();
+
+            Terrain.Render(DirectX.DeviceContext);
+            ColorShader.Render(DirectX.DeviceContext, Terrain.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+
+            DirectX.DisableWireFrame();
+
             DirectX.DisableZBuffer();
 
-            Model2D.Render(DirectX.DeviceContext);
+            //Model2D.Render(DirectX.DeviceContext);
 
-            TranslateShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector2(((float)i) / 1000, ((float)i) / 1000));
+            //TranslateShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector2(((float)i) / 1000, ((float)i) / 1000));
 
             DirectX.EnableAlphaBlending();
 

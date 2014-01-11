@@ -15,7 +15,7 @@ namespace PlaneSimulator
             AntiAliasing = true;
             Height = 600;
             Width = 800;
-            FarLimit = 1000.0f;
+            FarLimit = 100000.0f;
             NearLimit = 0.1f;
         }
 
