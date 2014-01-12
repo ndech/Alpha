@@ -84,7 +84,7 @@ namespace PlaneSimulator.Graphics
             fpsText.Position = new Vector2(50, 80);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
             altitudeText.Position = new Vector2(50, 110);
-            Terrain = new Terrain(DirectX.Device, 200, 200, 100);
+            Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
             i = 0;
         }
 

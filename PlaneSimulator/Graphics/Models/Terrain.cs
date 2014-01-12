@@ -18,11 +18,13 @@ namespace PlaneSimulator.Graphics
         private Buffer VertexBuffer { get; set; }
         private Buffer IndexBuffer { get; set; }
         public int IndexCount { get; private set; }
+        private System.Drawing.Bitmap HeightMap { get; set; }
 
-        public Terrain(Device device, int width, int height, int pitch)
+        public Terrain(Device device, String texture, int pitch)
         {
-            _width = width;
-            _height = height;
+            HeightMap = new System.Drawing.Bitmap(@"Data/Textures/"+texture);
+            _width = HeightMap.Width-1;
+            _height = HeightMap.Height-1;
             _pitch = pitch;
             BuildBuffers(device);
         }
@@ -34,8 +36,8 @@ namespace PlaneSimulator.Graphics
                 for (int j = 0; j < (_height + 1); j++)
                     vertices[i*(_width + 1) + j] = new ColorShader.Vertex
                     {
-                        position = new Vector3((-(_width / 2) + i) * _pitch, 0.0f, (-(_height / 2) + j) * _pitch), 
-                        color = new Vector4(1, 0, 0, 1)
+                        position = new Vector3((-(_width / 2) + i) * _pitch, (HeightMap.GetPixel(i, j).G-128)*5, (-(_height / 2) + j) * _pitch), 
+                        color = new Vector4(1, 0, 1, 1)
                     };
             IndexCount = _width*_height*6;
             UInt32[] indices = new UInt32[IndexCount];

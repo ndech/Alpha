@@ -172,6 +172,9 @@
     <Content Include="Data\Textures\dirt01.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Textures\Heightmap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Textures\seafloor.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
