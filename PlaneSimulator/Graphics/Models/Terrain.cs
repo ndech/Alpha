@@ -29,6 +29,15 @@ namespace PlaneSimulator.Graphics
             BuildBuffers(device);
         }
 
+        public float GetHeight(int x, int y)
+        {
+            return (HeightMap.GetPixel(x, y).G - 80)*5;
+        }
+
+        public float GetHeight(float x, float y)
+        {
+            return 0;
+        }
         private void BuildBuffers(Device device)
         {
             ColorShader.Vertex[] vertices = new ColorShader.Vertex[(_width+1)*(_height+1)];
@@ -36,8 +45,8 @@ namespace PlaneSimulator.Graphics
                 for (int j = 0; j < (_height + 1); j++)
                     vertices[i*(_width + 1) + j] = new ColorShader.Vertex
                     {
-                        position = new Vector3((-(_width / 2) + i) * _pitch, (HeightMap.GetPixel(i, j).G-128)*5, (-(_height / 2) + j) * _pitch), 
-                        color = new Vector4(1, 0, 1, 1)
+                        position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i,j) , (-(_height / 2) + j) * _pitch), 
+                        color = GetHeight(i,j) > 0 ? new Vector4(1, 0, 0, 1) : new Vector4(0,0,1,1)
                     };
             IndexCount = _width*_height*6;
             UInt32[] indices = new UInt32[IndexCount];

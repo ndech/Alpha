@@ -23,7 +23,7 @@ namespace PlaneSimulator
             plane.Tanks.Add(new Tank(100, 500));
             plane.Tanks.Add(new Tank(100, 500));
             plane.Thrusters.Add(new Thruster());
-            plane.Initialize(1000, 200);
+            plane.Initialize(3500, 200);
             Stopwatch stopWatch = new Stopwatch();
             CpuUsageCounter cpuUsageCounter = new CpuUsageCounter();
             FpsCounter fpsCounter = new FpsCounter();

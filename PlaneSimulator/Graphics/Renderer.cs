@@ -69,9 +69,9 @@ namespace PlaneSimulator.Graphics
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
             TranslateShader = new TranslateShader(DirectX.Device);
-            Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 256, 256)
+            Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 100, 100)
             {
-                Position = new Vector2(0, 0)
+                Position = new Vector2(ConfigurationManager.Config.Width-100, 0)
             };
             Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
@@ -79,11 +79,11 @@ namespace PlaneSimulator.Graphics
             _fpsCounter = fpsCounter;
             _airplane = airplane;
             cpuText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
-            cpuText.Position = new Vector2(50, 50);
+            cpuText.Position = new Vector2(10, 10);
             fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
-            fpsText.Position = new Vector2(50, 80);
+            fpsText.Position = new Vector2(10, 40);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
-            altitudeText.Position = new Vector2(50, 110);
+            altitudeText.Position = new Vector2(10, 70);
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
             i = 0;
         }
@@ -108,9 +108,8 @@ namespace PlaneSimulator.Graphics
             DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
 
             Rotation += (float)(MathUtil.PiOverFour*delta);
-            // Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+
             Model.Render(DirectX.DeviceContext);
-            // Render the model using the color shader.
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             DirectX.EnableWireFrame();
@@ -122,9 +121,8 @@ namespace PlaneSimulator.Graphics
 
             DirectX.DisableZBuffer();
 
-            //Model2D.Render(DirectX.DeviceContext);
-
-            //TranslateShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector2(((float)i) / 1000, ((float)i) / 1000));
+            Model2D.Render(DirectX.DeviceContext);
+            TranslateShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector2(0.0f, -((float)i) / 1000));
 
             DirectX.EnableAlphaBlending();
 
