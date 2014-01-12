@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlaneSimulator.Data.Shaders
+﻿//////////////////////
+////   TYPES
+//////////////////////
+struct PixelInputType
 {
-    class Water
-    {
-    }
+	float4 position : SV_POSITION;
+	float4 color : COLOR;
+};
+
+//////////////////////
+////   Pixel Shader
+/////////////////////
+float4 WaterPixelShader(PixelInputType input) : SV_TARGET
+{
+	return input.color * 0.5f;
 }

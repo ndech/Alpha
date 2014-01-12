@@ -112,12 +112,11 @@ namespace PlaneSimulator.Graphics
             Model.Render(DirectX.DeviceContext);
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
-            DirectX.EnableWireFrame();
+            //DirectX.EnableWireFrame();
 
-            Terrain.Render(DirectX.DeviceContext);
-            ColorShader.Render(DirectX.DeviceContext, Terrain.IndexCount, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
 
-            DirectX.DisableWireFrame();
+            //DirectX.DisableWireFrame();
 
             DirectX.DisableZBuffer();
 
