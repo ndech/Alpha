@@ -70,7 +70,7 @@ namespace PlaneSimulator.Graphics
                     terrainVertices[i * (_width + 1) + j] = new VertexDefinition.PositionColorNormal
                     {
                         position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i,j) , (-(_height / 2) + j) * _pitch), 
-                        color = new Vector4(1, 0, 0, 1),
+                        color = new Vector4(0.7f, 0.6f, 0.3f, 1),
                         normal = GetNormal(i,j)
                     };
             TerrainIndexCount = _width*_height*6;
@@ -94,7 +94,7 @@ namespace PlaneSimulator.Graphics
                     waterVertices[i * (_width + 1) + j] = new ColorShader.Vertex
                     {
                         position = new Vector3((-(_width / 2) + i) * _pitch, 0.0f, (-(_height / 2) + j) * _pitch),
-                        color = new Vector4(0, 0, 1, 1)
+                        color = new Vector4(0.2f, 0.4f, 0.9f, 1)
                     };
             WaterIndexCount = _width * _height * 6;
             UInt32[] waterIndices = new UInt32[WaterIndexCount];
