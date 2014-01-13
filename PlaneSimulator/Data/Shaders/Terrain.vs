@@ -51,9 +51,8 @@ PixelInputType TerrainVertexShader(VertexInputType input)
     float4 cameraPosition = mul(input.position, worldMatrix);
     cameraPosition = mul(cameraPosition, viewMatrix);
 
-    // Calculate linear fog.    
-    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.00018);
-	//output.fogFactor = 1;
+    // Calculate linear fog.
+    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.00012);
 
     return output;
 }

@@ -5,6 +5,7 @@ struct PixelInputType
 {
 	float4 position : SV_POSITION;
 	float4 color : COLOR;
+	float fogFactor : FOG;
 };
 
 //////////////////////
@@ -12,5 +13,5 @@ struct PixelInputType
 /////////////////////
 float4 WaterPixelShader(PixelInputType input) : SV_TARGET
 {
-	return input.color * 0.5f;
+	return (input.color)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
 }

@@ -18,6 +18,7 @@ struct PixelInputType
 {
 	float4 position : SV_POSITION;
 	float4 color : COLOR;
+	float fogFactor : FOG;
 };
 
 /////////////////////////////////////
@@ -37,6 +38,14 @@ PixelInputType WaterVertexShader(VertexInputType input)
 
 	// Store the input color for the pixel shader to use.
 	output.color = input.color;
+
+	
+	// Calculate the camera position.
+    float4 cameraPosition = mul(input.position, worldMatrix);
+    cameraPosition = mul(cameraPosition, viewMatrix);
+
+    // Calculate linear fog.
+    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.00012);
 
 	return output;
 }
