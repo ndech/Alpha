@@ -23,6 +23,7 @@ struct PixelInputType
     float4 position : SV_POSITION;
     float4 color : COLOR;
     float3 normal : NORMAL;
+	float fogFactor : FOG;
 };
 
 
@@ -45,6 +46,14 @@ PixelInputType TerrainVertexShader(VertexInputType input)
 
     // Calculate the normal vector against the world matrix only.
     output.normal = normalize(mul(input.normal, (float3x3)worldMatrix));
-	
+
+	// Calculate the camera position.
+    float4 cameraPosition = mul(input.position, worldMatrix);
+    cameraPosition = mul(cameraPosition, viewMatrix);
+
+    // Calculate linear fog.    
+    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.00018);
+	//output.fogFactor = 1;
+
     return output;
 }

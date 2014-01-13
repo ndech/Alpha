@@ -20,6 +20,7 @@ struct PixelInputType
     float4 position : SV_POSITION;
     float4 color : COLOR;
     float3 normal : NORMAL;
+	float fogFactor : FOG;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,9 +28,9 @@ struct PixelInputType
 ////////////////////////////////////////////////////////////////////////////////
 float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 {
-    float lightIntensity;
+    float lightIntensity = saturate(dot(input.normal, -lightDirection));
 	
-    lightIntensity = saturate(dot(input.normal, -lightDirection));
-	
-    return (ambiantColor + (diffuseColor * lightIntensity)) * input.color;
+    float4 pixelColor = (ambiantColor + (diffuseColor * lightIntensity)) * input.color;
+
+	return (pixelColor)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
 }

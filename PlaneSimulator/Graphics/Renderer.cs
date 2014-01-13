@@ -101,16 +101,17 @@ namespace PlaneSimulator.Graphics
 
         public void Render(double delta)
         {
-            Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude, (float)_airplane.CurrentState.Position.X-3450);
+            Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude+10, (float)_airplane.CurrentState.Position.X-3450);
             //Camera.Position = new Vector3(0,100,-_airplane.Altitude);
             
             i++;
-            DirectX.BeginScene(0.5f, 0.5f, 0.5f, 1f);
+            DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
 
             Rotation += (float)(MathUtil.PiOverFour*delta);
 
             Model.Render(DirectX.DeviceContext);
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
+            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation) *
+                Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 3390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             //DirectX.EnableWireFrame();
 
