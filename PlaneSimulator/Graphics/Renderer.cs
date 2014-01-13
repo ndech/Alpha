@@ -58,7 +58,7 @@ namespace PlaneSimulator.Graphics
             Camera = new Camera(new Vector3(0, 0, -10), new Vector3(0,0,0));
             Light = new Light
             {
-                Direction = new Vector3(1.0f, 0.0f, 0.0f),
+                Direction = new Vector3(1.0f, -1.0f, 0.0f),
                 Color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
                 AmbiantColor = new Vector4(0.16f, 0.16f, 0.16f, 1.0f),
                 SpecularPower = 32.0f,
@@ -114,7 +114,7 @@ namespace PlaneSimulator.Graphics
 
             //DirectX.EnableWireFrame();
 
-            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
 
             //DirectX.DisableWireFrame();
 

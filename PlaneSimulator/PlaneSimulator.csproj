@@ -126,6 +126,7 @@
     <Compile Include="Graphics\Shaders\TextureShader.cs" />
     <Compile Include="Graphics\Shaders\TranslateShader.cs" />
     <Compile Include="Graphics\Models\Terrain.cs" />
+    <Compile Include="Graphics\Shaders\VertexDefinition.cs" />
     <Compile Include="Graphics\Shaders\WaterShader.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\TextManager.cs" />
