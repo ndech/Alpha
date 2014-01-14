@@ -64,7 +64,7 @@ namespace PlaneSimulator.Graphics
                 SpecularPower = 32.0f,
                 SpecularColor = new Vector4(1.0f, 1.0f, 0.7f, 1.0f)
             };
-            Model = new ObjModel(DirectX.Device, "model.obj", "stone01.dds");
+            Model = new ObjModel(DirectX.Device, "Airplane.obj", "Metal.png");
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
@@ -101,7 +101,7 @@ namespace PlaneSimulator.Graphics
 
         public void Render(double delta)
         {
-            Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude+10, (float)_airplane.CurrentState.Position.X-3450);
+            Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude+10, (float)_airplane.CurrentState.Position.X-6450);
             //Camera.Position = new Vector3(0,100,-_airplane.Altitude);
             
             i++;
@@ -111,7 +111,7 @@ namespace PlaneSimulator.Graphics
 
             Model.Render(DirectX.DeviceContext);
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation) *
-                Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 3390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
+                Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 6390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             //DirectX.EnableWireFrame();
 

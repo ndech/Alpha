@@ -10,11 +10,11 @@ namespace PlaneSimulator
     {
         private ConfigurationManager()
         {
-            WindowedMode = false;
-            VSync = true;
+            WindowedMode = true;
+            VSync = false;
             AntiAliasing = true;
-            Height = 900;
-            Width = 1600;
+            Height = 768;
+            Width = 1024;
             FarLimit = 100000.0f;
             NearLimit = 0.1f;
         }
