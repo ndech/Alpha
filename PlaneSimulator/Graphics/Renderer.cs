@@ -41,6 +41,8 @@ namespace PlaneSimulator.Graphics
 
         public Text altitudeText { get; private set; }
 
+        public Text gpuText { get; private set; }
+
         private CpuUsageCounter _cpuUsageCounter;
         private FpsCounter _fpsCounter;
         private Airplane _airplane;
@@ -79,11 +81,13 @@ namespace PlaneSimulator.Graphics
             _fpsCounter = fpsCounter;
             _airplane = airplane;
             cpuText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
-            cpuText.Position = new Vector2(10, 10);
+            cpuText.Position = new Vector2(10, 40);
             fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
-            fpsText.Position = new Vector2(10, 40);
+            fpsText.Position = new Vector2(10, 70);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
-            altitudeText.Position = new Vector2(10, 70);
+            altitudeText.Position = new Vector2(10, 100);
+            gpuText = TextManager.Create("Arial", 20, 50, new Vector4(1, 1, 1, 1));
+            gpuText.Position = new Vector2(10, 10);
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
             i = 0;
         }
@@ -110,7 +114,8 @@ namespace PlaneSimulator.Graphics
             Rotation += (float)(MathUtil.PiOverFour*delta);
 
             Model.Render(DirectX.DeviceContext);
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(Rotation) *
+            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) * 
+                Matrix.RotationZ(Rotation/2) *
                 Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 6390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             //DirectX.EnableWireFrame();
@@ -132,7 +137,8 @@ namespace PlaneSimulator.Graphics
             fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
             altitudeText.Content = String.Format("Atitude : {0:0.0} m", _airplane.Altitude);
             altitudeText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
-
+            gpuText.Content = VideoCardName;
+            gpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
 
             DirectX.DisableAlphaBlending();
 
