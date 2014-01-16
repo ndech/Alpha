@@ -17,6 +17,9 @@ namespace PlaneSimulator
         public static void Main()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Game game = new Game();
+            game.Run();
+            game.Dispose();
             Timer timer = new Timer();
             World world = new World();
             Airplane plane = new Airplane(world);
@@ -30,9 +33,6 @@ namespace PlaneSimulator
             CsvLogger flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") +".csv", 1, ';');
             Renderer renderer = new Renderer(cpuUsageCounter, fpsCounter, plane);
             flightRecorder.Register(timer, plane);
-            renderer.Form.MouseEnter += (o, args) => Cursor.Hide();
-            renderer.Form.MouseLeave += (o, args) => Cursor.Show();
-            timer.Initialize();
             stopWatch.Start();
             RenderLoop.Run(renderer.Form, () =>
             {

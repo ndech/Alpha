@@ -22,6 +22,7 @@ namespace PlaneSimulator.Graphics
         public Light Light { get; set; }
 
         public ObjModel Model { get; set; }
+        public ObjModel Model2 { get; set; }
 
         public Bitmap Model2D { get; set; }
 
@@ -67,6 +68,7 @@ namespace PlaneSimulator.Graphics
                 SpecularColor = new Vector4(1.0f, 1.0f, 0.7f, 1.0f)
             };
             Model = new ObjModel(DirectX.Device, "Airplane.obj", "Metal.png");
+            Model2 = new ObjModel(DirectX.Device, "Airplane.obj", "Metal.png");
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
@@ -114,9 +116,16 @@ namespace PlaneSimulator.Graphics
             Rotation += (float)(MathUtil.PiOverFour*delta);
 
             Model.Render(DirectX.DeviceContext);
+
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) * 
                 Matrix.RotationZ(Rotation/2) *
                 Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 6390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
+
+            Model2.Render(DirectX.DeviceContext);
+
+            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
+                Matrix.RotationZ(-Rotation / 2) *
+                Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5590), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             //DirectX.EnableWireFrame();
 

@@ -8,5 +8,19 @@ namespace PlaneSimulator
 {
     class Game
     {
+        public Game()
+        {
+            
+        }
+
+        public void Run()
+        {
+
+        }
+
+        public void Dispose()
+        {
+
+        }
     }
 }

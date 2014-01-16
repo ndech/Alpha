@@ -7,41 +7,41 @@ namespace PlaneSimulator
     using System.Globalization;
     public class Timer : ICsvLoggable
     {
-        private Stopwatch stopWatch;
-        private Int64 elapsedMilliseconds;
-        private Int64 deltaMilliseconds;
+        private readonly Stopwatch _stopWatch;
+        private Int64 _elapsedMilliseconds;
+        private Int64 _deltaMilliseconds;
 
-        public void Initialize()
+        public Timer()
         {
-            stopWatch = new Stopwatch();
-            stopWatch.Start();
+            _stopWatch = new Stopwatch();
+            _stopWatch.Start();
         }
 
         public void Tick()
         {
-            Int64 currentElapsed = stopWatch.ElapsedMilliseconds;
-            deltaMilliseconds = currentElapsed - elapsedMilliseconds;
-            elapsedMilliseconds = currentElapsed;
+            Int64 currentElapsed = _stopWatch.ElapsedMilliseconds;
+            _deltaMilliseconds = currentElapsed - _elapsedMilliseconds;
+            _elapsedMilliseconds = currentElapsed;
         }
 
         public double Delta
         {
-            get { return ((double) deltaMilliseconds/1000.0); }
+            get { return  _deltaMilliseconds/1000.0; }
         }
 
         public double Elapsed
         {
-            get { return (double) elapsedMilliseconds/1000.0; }
+            get { return _elapsedMilliseconds/1000.0; }
         }
 
         public override String ToString()
         {
-            return elapsedMilliseconds.ToString();
+            return _elapsedMilliseconds.ToString(CultureInfo.InvariantCulture);
         }
 
         public string ToCsv()
         {
-            return elapsedMilliseconds.ToString();
+            return _elapsedMilliseconds.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
