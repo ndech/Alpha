@@ -187,6 +187,7 @@
     <Content Include="Data\Fonts\Arial-20px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Textures\Circle.png" />
     <Content Include="Data\Textures\dirt01.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
