@@ -32,6 +32,7 @@ namespace PlaneSimulator.Graphics
 
         public LightShader LightShader { get; set; }
         public TranslateShader TranslateShader { get; set; }
+        public FontShader CircleShader { get; set; }
 
         public float Rotation { get; private set; }
 
@@ -73,7 +74,8 @@ namespace PlaneSimulator.Graphics
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
             TranslateShader = new TranslateShader(DirectX.Device);
-            Model2D = new Bitmap(DirectX.Device, "seafloor.dds", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 100, 100)
+            CircleShader = new FontShader(DirectX.Device);
+            Model2D = new Bitmap(DirectX.Device, "Circle.png", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 100, 100)
             {
                 Position = new Vector2(ConfigurationManager.Config.Width-100, 0)
             };
@@ -115,30 +117,41 @@ namespace PlaneSimulator.Graphics
 
             Rotation += (float)(MathUtil.PiOverFour*delta);
 
+            //DirectX.EnableWireFrame();
+
+            Matrix matrix = DirectX.WorldMatrix * Camera.ViewMatrix * DirectX.ProjectionMatrix;
+            var vec = new Vector3(300 - (float)i/5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090);
+            var vector = Vector3.Project(vec, 0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0.0f, 1.0f,
+                matrix);
+
+            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
+
+            //DirectX.DisableWireFrame();
+
+
             Model.Render(DirectX.DeviceContext);
 
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) * 
-                Matrix.RotationZ(Rotation/2) *
+            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
+                //Matrix.RotationZ(Rotation/2) *
                 Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 6390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             Model2.Render(DirectX.DeviceContext);
 
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
                 Matrix.RotationZ(-Rotation / 2) *
-                Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5590), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
+                Matrix.Translation(300 - (float)i / 5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
-            //DirectX.EnableWireFrame();
 
-            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
-
-            //DirectX.DisableWireFrame();
-
-            DirectX.DisableZBuffer();
-
-            Model2D.Render(DirectX.DeviceContext);
-            TranslateShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector2(0.0f, -((float)i) / 1000));
 
             DirectX.EnableAlphaBlending();
+
+            Model2D.Position = new Vector2(vector.X - 20, vector.Y - 20);
+            Model2D.Size = new Vector2(40,40);
+            Model2D.Depth = 0;
+            //DirectX.DisableZBuffer();
+            Model2D.Render(DirectX.DeviceContext);
+            CircleShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector4(0.2f,0,0,0.5f));
+
 
             cpuText.Content = String.Format("CPU : {0:0.00}%", _cpuUsageCounter.Value);
             cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
@@ -151,7 +164,7 @@ namespace PlaneSimulator.Graphics
 
             DirectX.DisableAlphaBlending();
 
-            DirectX.EnableZBuffer();
+            //DirectX.EnableZBuffer();
 
             DirectX.DrawScene();
         }

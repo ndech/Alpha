@@ -39,13 +39,15 @@ namespace PlaneSimulator.Graphics
         private Vector2 _position;
         private TranslateShader.Vertex[] _vertices;
         private bool _changed;
+        public float Depth { get; set; }
 
-        public Bitmap(Device device, String textureName, int screenWidth, int screenHeight, int width, int height)
+        public Bitmap(Device device, String textureName, int screenWidth, int screenHeight, int width, int height, float depth = 0.0f)
         {
             Texture = new Texture(device, textureName);
             ScreenSize = new Vector2(screenWidth, screenHeight);
             Size = new Vector2(width, height);
             _changed = true;
+            Depth = depth;
 
             VertexCount = 4;
             IndexCount = 6;
@@ -81,10 +83,10 @@ namespace PlaneSimulator.Graphics
                 float top = (float)(ScreenSize.Y / 2) - (float)Position.Y;
                 float bottom = top - (float)Size.Y;
 
-                _vertices[0] = new TranslateShader.Vertex { position = new Vector3(left, top, 0.0f), texture = new Vector2(0.0f, 0.0f) };
-                _vertices[1] = new TranslateShader.Vertex { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1.0f, 1.0f) };
-                _vertices[2] = new TranslateShader.Vertex { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0.0f, 1.0f) };
-                _vertices[3] = new TranslateShader.Vertex { position = new Vector3(right, top, 0.0f), texture = new Vector2(1.0f, 0.0f) };
+                _vertices[0] = new TranslateShader.Vertex { position = new Vector3(left, top, Depth), texture = new Vector2(0.0f, 0.0f) };
+                _vertices[1] = new TranslateShader.Vertex { position = new Vector3(right, bottom, Depth), texture = new Vector2(1.0f, 1.0f) };
+                _vertices[2] = new TranslateShader.Vertex { position = new Vector3(left, bottom, Depth), texture = new Vector2(0.0f, 1.0f) };
+                _vertices[3] = new TranslateShader.Vertex { position = new Vector3(right, top, Depth), texture = new Vector2(1.0f, 0.0f) };
 
                 DataStream mappedResource;
                 deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);

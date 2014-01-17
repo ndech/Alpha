@@ -44,8 +44,8 @@ namespace PlaneSimulator.Graphics.Shaders
 
         public FontShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "FontVertexShader", "vs_4_0", ShaderFlags.None, EffectFlags.None);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "FontPixelShader", "ps_4_0", ShaderFlags.None, EffectFlags.None);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "FontVertexShader", "vs_4_0", ShaderFlags.Debug, EffectFlags.None);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "FontPixelShader", "ps_4_0", ShaderFlags.Debug, EffectFlags.None);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
