@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlaneSimulator
+namespace PlaneSimulator.Graphics.Shaders
 {
-    class Simulator
+    public abstract class Shader
     {
+
     }
 }

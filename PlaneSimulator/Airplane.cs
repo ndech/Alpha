@@ -53,7 +53,8 @@ namespace PlaneSimulator
         public Vector3 CalculateForces(State state)
         {
             Vector3 weight = new Vector3(0.0, 0.0, World.Gravity*Mass);
-            Vector3 thrust = new Vector3(10000, 0, 0);
+            Vector3 thrust = new Vector3();
+            thrust = Thrusters.Aggregate(thrust, (current, thruster) => current + thruster.Trust);
             return weight + thrust;
         }
 
@@ -64,10 +65,7 @@ namespace PlaneSimulator
 
         private double ImmediateHourlyFuelConsumption()
         {
-            double hourlyConsumption = 0;
-            foreach (Thruster thruster in Thrusters)
-                hourlyConsumption += thruster.HourlyConsumption;
-            return hourlyConsumption;
+            return Thrusters.Sum(thruster => thruster.HourlyConsumption);
         }
 
         public void DistributeFuelConsumption(double liters)

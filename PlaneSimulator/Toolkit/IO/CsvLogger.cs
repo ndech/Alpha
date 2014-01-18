@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace PlaneSimulator.Toolkit.IO
 {
-    class CsvLogger
+    class CsvLogger : IDisposable
     {
         public String FileName { get; set; }
         public int Sampling { get; set; }

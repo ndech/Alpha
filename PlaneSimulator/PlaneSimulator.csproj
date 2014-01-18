@@ -78,6 +78,9 @@
     <None Include="Data\Fonts\Arial-20px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Fonts\Courrier-14px.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Models\Airplane.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -147,6 +150,7 @@
     <Compile Include="Graphics\Shaders\ColorShader.cs" />
     <Compile Include="Graphics\Shaders\FontShader.cs" />
     <Compile Include="Graphics\Shaders\LightShader.cs" />
+    <Compile Include="Graphics\Shaders\Shader.cs" />
     <Compile Include="Graphics\Shaders\TerrainShader.cs" />
     <Compile Include="Graphics\Shaders\TextureShader.cs" />
     <Compile Include="Graphics\Shaders\TranslateShader.cs" />
@@ -158,7 +162,6 @@
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="State.cs" />
-    <Compile Include="Simulator.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="Thruster.cs" />
     <Compile Include="Timer.cs" />
@@ -207,6 +210,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Fonts\Arial-20px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Fonts\Courrier-14px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Textures\Circle.png">

@@ -84,13 +84,13 @@ namespace PlaneSimulator.Graphics
             _cpuUsageCounter = cpuUsageCounter;
             _fpsCounter = fpsCounter;
             _airplane = airplane;
-            cpuText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
+            cpuText = TextManager.Create("Courrier", 14, 10, new Vector4(1, 1, 1, 1));
             cpuText.Position = new Vector2(10, 40);
             fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
             fpsText.Position = new Vector2(10, 70);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
             altitudeText.Position = new Vector2(10, 100);
-            gpuText = TextManager.Create("Arial", 20, 50, new Vector4(1, 1, 1, 1));
+            gpuText = TextManager.Create("Courrier", 14, 50, new Vector4(1, 1, 1, 1));
             gpuText.Position = new Vector2(10, 10);
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
             i = 0;
@@ -107,7 +107,7 @@ namespace PlaneSimulator.Graphics
             Form.Show();
         }
 
-        public void Render(double delta)
+        public void Render()
         {
             Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude+10, (float)_airplane.CurrentState.Position.X-6450);
             //Camera.Position = new Vector3(0,100,-_airplane.Altitude);
@@ -115,7 +115,7 @@ namespace PlaneSimulator.Graphics
             i++;
             DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
 
-            Rotation += (float)(MathUtil.PiOverFour*delta);
+            Rotation += ((float)i / 10000);
 
             //DirectX.EnableWireFrame();
 
