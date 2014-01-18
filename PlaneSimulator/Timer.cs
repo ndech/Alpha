@@ -17,11 +17,12 @@ namespace PlaneSimulator
             _stopWatch.Start();
         }
 
-        public void Tick()
+        public double Tick()
         {
             Int64 currentElapsed = _stopWatch.ElapsedMilliseconds;
             _deltaMilliseconds = currentElapsed - _elapsedMilliseconds;
             _elapsedMilliseconds = currentElapsed;
+            return Delta;
         }
 
         public double Delta

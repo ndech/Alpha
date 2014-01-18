@@ -33,10 +33,10 @@ namespace PlaneSimulator
             Renderer renderer = new Renderer(cpuUsageCounter, fpsCounter, _playerPlane);
             RenderLoop.Run(renderer.Form, () =>
             {
-                _timer.Tick();
-                _playerPlane.Update(_timer.Delta);
-                cpuUsageCounter.Update(_timer.Delta);
-                fpsCounter.Update(_timer.Delta);
+                double delta = _timer.Tick();
+                _playerPlane.Update(delta);
+                cpuUsageCounter.Update(delta);
+                fpsCounter.Update(delta);
                 _flightRecorder.Log();
                 if (_playerPlane.IsCrashed())
                     renderer.Form.Close();

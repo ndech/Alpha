@@ -206,9 +206,6 @@
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Fonts\Arial-20px.dds">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Data\Fonts\Arial-20px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
