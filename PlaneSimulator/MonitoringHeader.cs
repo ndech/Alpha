@@ -6,7 +6,7 @@
     using SharpDX.Direct3D11;
     using Graphics;
     using Rectangle = Graphics.Rectangle;
-    class MonitoringHeader : IUpdatable, IRenderable
+    class MonitoringHeader : IUpdatable, IRenderable, IDisposable
     {
         private readonly CpuUsageCounter _cpuUsageCounter;
         private readonly FpsCounter _fpsCounter;
@@ -20,7 +20,7 @@
             _fpsCounter = new FpsCounter();
             _text = renderer.TextManager.Create("Courrier", 14, 80, new Vector4(1,1,1,0.5f));
             _text.Position = new Vector2(3,0);
-            _videoCardInfo = renderer.VideoCardName + " ("+renderer.VideoCardMemorySize+" MB)";
+            _videoCardInfo = renderer.DirectX.VideoCardName + " ("+renderer.DirectX.VideoCardMemorySize+" MB)";
             _overlay = new Rectangle(renderer, renderer.ScreenSize, new Vector2(0,0), new Vector2(485,16), new Vector4(1,0,0,0.2f));
         }
 
@@ -37,6 +37,12 @@
             _overlay.Size = new Vector2( _text.Width+2, 16);
             _overlay.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+        }
+
+        public void Dispose()
+        {
+            _cpuUsageCounter.Dispose();
+            _overlay.Dispose();
         }
     }
 }

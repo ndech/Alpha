@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace PlaneSimulator.Toolkit
+﻿namespace PlaneSimulator.Toolkit
 {
     class FpsCounter : ICounter
     {
@@ -28,7 +21,7 @@ namespace PlaneSimulator.Toolkit
             _timeCounter += seconds;
             if (_timeCounter > 1.0)
             {
-                Value = (float)((float)_frameCount/_timeCounter);
+                Value = _frameCount;
                 _frameCount = 0;
                 _timeCounter = 0;
             }

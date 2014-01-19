@@ -31,8 +31,18 @@ namespace PlaneSimulator.Graphics
         public Matrix ProjectionMatrix { get; private set; }
         public Matrix WorldMatrix { get; private set; }
         public Matrix OrthoMatrix { get; private set; }
+        public int VideoCardMemorySize { get; private set; }
+        public String VideoCardName { get; private set; }
 
-        public void AcquireGpu(out int videoCardMemorySize, out string videoCardName)
+
+        public Dx11(RenderForm form)
+        {
+            AcquireGpu();
+            CreateDeviceAndSwapChain(form);
+            InitializeBuffers();
+            CreateMatrices();
+        }
+        public void AcquireGpu()
         {
             Factory factory = new Factory();
             Adapter gpuAdapter = factory.Adapters.First();
@@ -40,8 +50,8 @@ namespace PlaneSimulator.Graphics
 
             _refreshRate = GetHighestAvailableRefreshFrequency(monitor);
 
-            videoCardMemorySize = gpuAdapter.Description.DedicatedVideoMemory >> 10 >> 10; //Convert bits to MB
-            videoCardName = gpuAdapter.Description.Description;
+            VideoCardMemorySize = gpuAdapter.Description.DedicatedVideoMemory >> 10 >> 10; //Convert bits to MB
+            VideoCardName = gpuAdapter.Description.Description;
 
             monitor.Dispose();
             gpuAdapter.Dispose();

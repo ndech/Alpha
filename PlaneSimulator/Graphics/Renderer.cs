@@ -12,10 +12,6 @@ namespace PlaneSimulator.Graphics
     class Renderer : IDisposable
     {
         public RenderForm Form { get; private set; }
-        private readonly int _videoCardMemorySize;
-        private readonly String _videoCardName;
-        public int VideoCardMemorySize { get { return _videoCardMemorySize; } }
-        public String VideoCardName { get { return _videoCardName; } }
         public Dx11 DirectX { get; private set; }
         public Camera Camera { get; set; }
 
@@ -51,11 +47,7 @@ namespace PlaneSimulator.Graphics
         public Renderer(Airplane airplane)
         {
             CreateWindow();
-            DirectX = new Dx11();
-            DirectX.AcquireGpu(out _videoCardMemorySize, out _videoCardName);
-            DirectX.CreateDeviceAndSwapChain(Form);
-            DirectX.InitializeBuffers();
-            DirectX.CreateMatrices();
+            DirectX = new Dx11(Form);
             ScreenSize = new Vector2(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
             Camera = new Camera(new Vector3(0, 0, -10), new Vector3(0,0,0));
             Light = new Light
@@ -101,17 +93,17 @@ namespace PlaneSimulator.Graphics
 
         public void Render()
         {
+            DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
+
             Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude+10, (float)_airplane.CurrentState.Position.X-6450);
-            //Camera.Position = new Vector3(0,100,-_airplane.Altitude);
             
             i++;
-            DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
 
             Rotation += ((float)i / 10000);
 
             //DirectX.EnableWireFrame();
 
-            Matrix matrix = DirectX.WorldMatrix * Camera.ViewMatrix * DirectX.ProjectionMatrix;
+            Matrix matrix = Camera.ViewMatrix * DirectX.ProjectionMatrix;
             var vec = new Vector3(300 - (float)i/5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090);
             var vector = Vector3.Project(vec, 0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0.0f, 1.0f,
                 matrix);
@@ -119,7 +111,6 @@ namespace PlaneSimulator.Graphics
             Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
 
             //DirectX.DisableWireFrame();
-
 
             Model.Render(DirectX.DeviceContext);
 
@@ -132,7 +123,6 @@ namespace PlaneSimulator.Graphics
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
                 Matrix.RotationZ(-Rotation / 2) *
                 Matrix.Translation(300 - (float)i / 5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
-
 
             DirectX.DisableZBuffer();
             DirectX.EnableAlphaBlending();

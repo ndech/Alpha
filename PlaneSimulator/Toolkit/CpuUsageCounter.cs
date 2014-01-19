@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace PlaneSimulator.Toolkit
+﻿namespace PlaneSimulator.Toolkit
 {
+    using System;
+    using System.Diagnostics;
     class CpuUsageCounter : IDisposable, ICounter
     {
         public float Value 

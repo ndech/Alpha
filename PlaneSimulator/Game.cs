@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms.VisualStyles;
 using PlaneSimulator.Graphics;
 using PlaneSimulator.Toolkit.IO;
-using SharpDX.D3DCompiler;
 using SharpDX.Windows;
 
 namespace PlaneSimulator
