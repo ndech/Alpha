@@ -176,7 +176,6 @@
     <Compile Include="Toolkit\ICounter.cs" />
     <Compile Include="Toolkit\IO\CsvLogger.cs" />
     <Compile Include="Toolkit\IO\ICsvLoggable.cs" />
-    <Compile Include="Toolkit\IUpdatable.cs" />
     <Compile Include="Toolkit\Math\Conversion.cs" />
     <Compile Include="Toolkit\Math\EulerIntegrator.cs" />
     <Compile Include="Toolkit\Math\IIntegrable.cs" />

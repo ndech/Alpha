@@ -7,7 +7,7 @@ namespace PlaneSimulator
     using System.Collections.Generic;
     using Toolkit.Math;
     using System.Globalization;
-    public class Airplane : ICsvLoggable
+    public class Airplane : ICsvLoggable, IUpdatable
     {
         protected Integrator<State> Integrator;
         public World World { get; private set; }
@@ -82,7 +82,7 @@ namespace PlaneSimulator
 
         public bool IsCrashed()
         {
-            return CurrentState.Position.Z > 0;
+            return Altitude < 0;
         }
 
         public override String ToString()

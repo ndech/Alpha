@@ -25,7 +25,7 @@ namespace PlaneSimulator
             _playerPlane.Tanks.Add(new Tank(100, 500));
             _playerPlane.Thrusters.Add(new Thruster());
             _playerPlane.Initialize(1000, 200);
-
+            Register(_playerPlane);
 
             _flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv", 1, ';');
             _flightRecorder.Register(_timer, _playerPlane);
@@ -49,7 +49,6 @@ namespace PlaneSimulator
                 double delta = _timer.Tick();
                 foreach (IUpdatable item in _updatables)
                     item.Update(delta);
-                _playerPlane.Update(delta);
                 if (_playerPlane.IsCrashed())
                     Close();
                 _renderer.Render();
