@@ -146,6 +146,7 @@
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\ObjModel.cs" />
+    <Compile Include="Graphics\Rectangle.cs" />
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Shaders\ColorShader.cs" />
     <Compile Include="Graphics\Shaders\FontShader.cs" />
@@ -161,6 +162,9 @@
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Input.cs" />
+    <Compile Include="IRenderable.cs" />
+    <Compile Include="IUpdatable.cs" />
+    <Compile Include="MonitoringHeader.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="Thruster.cs" />

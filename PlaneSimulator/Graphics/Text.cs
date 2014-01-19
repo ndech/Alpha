@@ -88,7 +88,7 @@ namespace PlaneSimulator.Graphics
                 }
             }
         }
-
+        
         public Vector4 Color { get; set; }
         public Font Font { get; private set; }
 

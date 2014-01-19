@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using PlaneSimulator.Toolkit;
 using SharpDX;
 using SharpDX.Windows;
 using PlaneSimulator.Graphics.Shaders;
-using MathUtil = PlaneSimulator.Toolkit.Math.MathUtil;
 
 namespace PlaneSimulator.Graphics
 {
@@ -37,21 +37,16 @@ namespace PlaneSimulator.Graphics
         public float Rotation { get; private set; }
 
         public TextManager TextManager { get; private set; }
-
-        public Text cpuText { get; private set; }
-        public Text fpsText { get; private set; }
-
+        
         public Text altitudeText { get; private set; }
-
-        public Text gpuText { get; private set; }
-
-        private CpuUsageCounter _cpuUsageCounter;
-        private FpsCounter _fpsCounter;
+        
         private Airplane _airplane;
         public Terrain Terrain { get; private set; }
+
+        private List<IRenderable> _renderables;
         private int i;
 
-        public Renderer(CpuUsageCounter cpuUsageCounter, FpsCounter fpsCounter,  Airplane airplane)
+        public Renderer(Airplane airplane)
         {
             CreateWindow();
             DirectX = new Dx11();
@@ -81,19 +76,13 @@ namespace PlaneSimulator.Graphics
             };
             Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
-            _cpuUsageCounter = cpuUsageCounter;
-            _fpsCounter = fpsCounter;
+
             _airplane = airplane;
-            cpuText = TextManager.Create("Courrier", 14, 10, new Vector4(1, 1, 1, 1));
-            cpuText.Position = new Vector2(10, 40);
-            fpsText = TextManager.Create("Arial", 20, 10, new Vector4(1, 1, 1, 1));
-            fpsText.Position = new Vector2(10, 70);
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
             altitudeText.Position = new Vector2(10, 100);
-            gpuText = TextManager.Create("Courrier", 14, 50, new Vector4(1, 1, 1, 1));
-            gpuText.Position = new Vector2(10, 10);
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
             i = 0;
+            _renderables = new List<IRenderable>();
         }
 
         private void CreateWindow()
@@ -142,8 +131,12 @@ namespace PlaneSimulator.Graphics
                 Matrix.Translation(300 - (float)i / 5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
 
-
             DirectX.EnableAlphaBlending();
+            foreach (IRenderable item in _renderables)
+            {
+                item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
+            }
+
 
             Model2D.Position = new Vector2(vector.X - 20, vector.Y - 20);
             Model2D.Size = new Vector2(40,40);
@@ -152,15 +145,8 @@ namespace PlaneSimulator.Graphics
             Model2D.Render(DirectX.DeviceContext);
             CircleShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector4(0.2f,0,0,0.5f));
 
-
-            cpuText.Content = String.Format("CPU : {0:0.00}%", _cpuUsageCounter.Value);
-            cpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
-            fpsText.Content = "FPS : " + (int)_fpsCounter.Value;
-            fpsText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
             altitudeText.Content = String.Format("Atitude : {0:0.0} m", _airplane.Altitude);
             altitudeText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
-            gpuText.Content = VideoCardName;
-            gpuText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
 
             DirectX.DisableAlphaBlending();
 
@@ -173,6 +159,11 @@ namespace PlaneSimulator.Graphics
         {
             DisposeHelper.DisposeAndSetToNull(DirectX, Model, Model2D);
             DirectX.Dispose();
+        }
+
+        public void Register(IRenderable item)
+        {
+            _renderables.Add(item);
         }
     }
 }

@@ -4,7 +4,6 @@ using PlaneSimulator.Graphics.Shaders;
 using PlaneSimulator.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D11;
-using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace PlaneSimulator.Graphics
 {
@@ -26,7 +25,6 @@ namespace PlaneSimulator.Graphics
             _screenHeight = screenHeight;
             _device = device;
         }
-
 
         public void Dispose()
         {

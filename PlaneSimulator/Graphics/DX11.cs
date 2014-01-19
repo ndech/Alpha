@@ -13,6 +13,7 @@ namespace PlaneSimulator.Graphics
 {
     class Dx11 : IDisposable
     {
+        private bool _disposed = false;
         private Rational _refreshRate;
         private RenderTargetView _renderTargetView;
         private Texture2D _depthStencilBuffer;
@@ -256,9 +257,13 @@ namespace PlaneSimulator.Graphics
 
         public void Dispose()
         {
-            if (SwapChain != null) // Before shutting down set swap chain to windowed mode 
-                SwapChain.SetFullscreenState(false, null);
-            DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, _depthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
+            if (!_disposed)
+            {
+                if (SwapChain != null && SwapChain.IsFullScreen == true) // Before shutting down set swap chain to windowed mode 
+                    SwapChain.SetFullscreenState(false, null);
+                DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, _depthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
+                _disposed = true;
+            }
         }
 
         public void BeginScene(float red, float green, float blue, float alpha)
