@@ -32,8 +32,10 @@
         
         public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _overlay.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _text.Content = ((int)_fpsCounter.Value) + " FPS | " + String.Format("{0:0.00}", _cpuUsageCounter.Value) + " % CPU | " + _videoCardInfo;
+            _text.Update(deviceContext);
+            _overlay.Size = new Vector2( _text.Width+2, 16);
+            _overlay.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
     }

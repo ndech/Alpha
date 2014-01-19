@@ -55,6 +55,9 @@ namespace PlaneSimulator.Graphics
         public Buffer VertexBuffer { get; private set; }
         public int MaxLength { get; private set; }
 
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
         private FontShader.Vertex[] _vertices;
         private bool _changed = true;
         private String _content;
@@ -95,21 +98,7 @@ namespace PlaneSimulator.Graphics
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix orthoMatrix)
         {
             if (_changed) // The vertex buffer need to be rebuilt and transfered to the GPU
-            {
-                // Calculate the X and Y pixel position on screen to start drawing to.
-                int drawX = -(_screenWidth / 2) + (int)_position.X;
-                int drawY = (_screenHeight >> 1) - (int)_position.Y;
-
-                int width, height;
-                // Use the font class to build the vertex array from the sentence text and sentence draw location.
-                Font.BuildVertexArray(_content, drawX, drawY, ref _vertices, out width, out height);
-
-                DataStream mappedResource;
-                deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-                mappedResource.WriteRange<FontShader.Vertex>(_vertices);
-                deviceContext.UnmapSubresource(VertexBuffer, 0);
-                _changed = false;
-            }
+                Update(deviceContext);
             
             var stride = Utilities.SizeOf<TextureShader.Vertex>();
 			deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, 0));
@@ -117,6 +106,26 @@ namespace PlaneSimulator.Graphics
 			deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
 			_shader.Render(deviceContext, _content.Length*6, worldMatrix, viewMatrix, orthoMatrix, Font.Texture, Color);
+        }
+
+        public void Update(DeviceContext deviceContext)
+        {
+            // Calculate the X and Y pixel position on screen to start drawing to.
+            int drawX = -(_screenWidth/2) + (int) _position.X;
+            int drawY = (_screenHeight >> 1) - (int) _position.Y;
+
+            int width, height;
+            // Use the font class to build the vertex array from the sentence text and sentence draw location.
+            Font.BuildVertexArray(_content, drawX, drawY, ref _vertices, out width, out height);
+            Width = width;
+            Height = height;
+
+            DataStream mappedResource;
+            deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,
+                out mappedResource);
+            mappedResource.WriteRange<FontShader.Vertex>(_vertices);
+            deviceContext.UnmapSubresource(VertexBuffer, 0);
+            _changed = false;
         }
     }
 }
