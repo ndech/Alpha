@@ -1,10 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using System.Threading.Tasks;
 using PlaneSimulator.Graphics.Shaders;
 using PlaneSimulator.Toolkit;
 using SharpDX;
@@ -25,7 +19,19 @@ namespace PlaneSimulator.Graphics
         public int IndexCount { get; private set; }
 
         public Vector2 ScreenSize { get; set; }
-        public Vector2 Size { get; set; }
+
+        public Vector2 Size
+        {
+            get { return _size; }
+            set
+            {
+                if (value != _size)
+                    _changed = true;
+                _size = value;
+            }
+        }
+
+        private Vector2 _size;
         public Vector2 Position
         {
             get { return _position; }

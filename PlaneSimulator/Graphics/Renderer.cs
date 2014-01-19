@@ -34,6 +34,8 @@ namespace PlaneSimulator.Graphics
         public TranslateShader TranslateShader { get; set; }
         public FontShader CircleShader { get; set; }
 
+        public Vector2 ScreenSize { get; private set; }
+
         public float Rotation { get; private set; }
 
         public TextManager TextManager { get; private set; }
@@ -54,6 +56,7 @@ namespace PlaneSimulator.Graphics
             DirectX.CreateDeviceAndSwapChain(Form);
             DirectX.InitializeBuffers();
             DirectX.CreateMatrices();
+            ScreenSize = new Vector2(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
             Camera = new Camera(new Vector3(0, 0, -10), new Vector3(0,0,0));
             Light = new Light
             {
@@ -131,6 +134,7 @@ namespace PlaneSimulator.Graphics
                 Matrix.Translation(300 - (float)i / 5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
 
+            DirectX.DisableZBuffer();
             DirectX.EnableAlphaBlending();
             foreach (IRenderable item in _renderables)
             {
@@ -141,7 +145,6 @@ namespace PlaneSimulator.Graphics
             Model2D.Position = new Vector2(vector.X - 20, vector.Y - 20);
             Model2D.Size = new Vector2(40,40);
             Model2D.Depth = 0;
-            //DirectX.DisableZBuffer();
             Model2D.Render(DirectX.DeviceContext);
             CircleShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector4(0.2f,0,0,0.5f));
 
@@ -150,7 +153,7 @@ namespace PlaneSimulator.Graphics
 
             DirectX.DisableAlphaBlending();
 
-            //DirectX.EnableZBuffer();
+            DirectX.EnableZBuffer();
 
             DirectX.DrawScene();
         }

@@ -18,8 +18,8 @@ namespace PlaneSimulator
 
         public Game()
         {
+            _updatables = new List<IUpdatable>();
             _timer = new Timer();
-            _flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv", 1, ';');
 
             World world = new World();
             _playerPlane = new Airplane(world);
@@ -28,9 +28,9 @@ namespace PlaneSimulator
             _playerPlane.Thrusters.Add(new Thruster());
             _playerPlane.Initialize(1000, 200);
 
-            _flightRecorder.Register(_timer, _playerPlane);
 
-            _updatables = new List<IUpdatable>();
+            _flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv", 1, ';');
+            _flightRecorder.Register(_timer, _playerPlane);
 
             _renderer = new Renderer(_playerPlane);
 
