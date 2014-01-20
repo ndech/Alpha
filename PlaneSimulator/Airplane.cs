@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using PlaneSimulator.Toolkit.IO;
+using SharpDX;
+using SharpDX.Direct3D11;
 
 namespace PlaneSimulator
 {
@@ -7,14 +9,13 @@ namespace PlaneSimulator
     using System.Collections.Generic;
     using Toolkit.Math;
     using System.Globalization;
-    public class Airplane : ICsvLoggable, IUpdatable
+    public class Airplane : RenderableGameComponent, ICsvLoggable
     {
         protected Integrator<State> Integrator;
         public World World { get; private set; }
         public State CurrentState { get; private set; }
         public List<Thruster> Thrusters { get; private set; }
         public List<Tank> Tanks { get; private set; }
-
         public float Altitude { get { return (float) -CurrentState.Position.Z; } }
 
         public double Mass
@@ -38,11 +39,16 @@ namespace PlaneSimulator
             CurrentState = new State(altitude, speed);
         }
 
-        public void Update(double step)
+        public override void Update(double step)
         {
             CurrentState = Integrator.Integrate(CurrentState, step);
 
             DistributeFuelConsumption((ImmediateHourlyFuelConsumption()/3600)*step);
+        }
+
+        public override void Dispose()
+        {
+            
         }
 
         public State CalculateDerivedState(State state)
@@ -91,6 +97,16 @@ namespace PlaneSimulator
                 CultureInfo.CurrentCulture,
                 "Position : ({0}, {1})\nAltitude : {2}\nSpeed : {3}",
                 CurrentState.Position.X, CurrentState.Position.Y, -CurrentState.Position.Z, CurrentState.Speed.Magnitude);
+        }
+
+        public override bool IsUi
+        {
+            get { return true; }
+        }
+
+        public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+
         }
 
         public string ToCsv()

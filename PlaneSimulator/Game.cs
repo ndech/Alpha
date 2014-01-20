@@ -12,26 +12,24 @@ namespace PlaneSimulator
         private readonly Timer _timer;
         private readonly Airplane _playerPlane;
         private readonly Renderer _renderer;
-        private readonly List<IUpdatable> _updatables; 
+        private readonly List<IUpdatable> _updatables;
+        private readonly World _world;
 
         public Game()
         {
             _updatables = new List<IUpdatable>();
             _timer = new Timer();
 
-            World world = new World();
-            _playerPlane = new Airplane(world);
-            _playerPlane.Tanks.Add(new Tank(100, 500));
-            _playerPlane.Tanks.Add(new Tank(100, 500));
-            _playerPlane.Thrusters.Add(new Thruster());
+            _world = new World();
+            _playerPlane = AirplaneFactory.Create(_world);
             _playerPlane.Initialize(1000, 200);
-            Register(_playerPlane);
 
             _flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv", 1, ';');
             _flightRecorder.Register(_timer, _playerPlane);
 
             _renderer = new Renderer(_playerPlane);
 
+            Register(_playerPlane);
             Register(new MonitoringHeader(_renderer));
         }
 
@@ -50,13 +48,13 @@ namespace PlaneSimulator
                 foreach (IUpdatable item in _updatables)
                     item.Update(delta);
                 if (_playerPlane.IsCrashed())
-                    Close();
+                    Exit();
                 _renderer.Render();
                 _flightRecorder.Log();
             });
         }
 
-        private void Close()
+        private void Exit()
         {
             _renderer.Form.Close();
         }

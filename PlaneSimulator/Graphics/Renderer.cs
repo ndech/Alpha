@@ -99,12 +99,12 @@ namespace PlaneSimulator.Graphics
             
             i++;
 
-            Rotation += ((float)i / 10000);
+            Rotation += ((float)i / 1000000);
 
             //DirectX.EnableWireFrame();
 
             Matrix matrix = Camera.ViewMatrix * DirectX.ProjectionMatrix;
-            var vec = new Vector3(300 - (float)i/5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090);
+            var vec = new Vector3(300 - (float)i/10, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090);
             var vector = Vector3.Project(vec, 0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0.0f, 1.0f,
                 matrix);
 
@@ -122,15 +122,17 @@ namespace PlaneSimulator.Graphics
 
             LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
                 Matrix.RotationZ(-Rotation / 2) *
-                Matrix.Translation(300 - (float)i / 5, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
+                Matrix.Translation(300 - (float)i / 10, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
 
             DirectX.DisableZBuffer();
             DirectX.EnableAlphaBlending();
             foreach (IRenderable item in _renderables)
             {
-                item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
+                if(item.IsUi)
+                    item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
+                else
+                    item.Render(DirectX.DeviceContext, Camera.ViewMatrix, DirectX.ProjectionMatrix);
             }
-
 
             Model2D.Position = new Vector2(vector.X - 20, vector.Y - 20);
             Model2D.Size = new Vector2(40,40);

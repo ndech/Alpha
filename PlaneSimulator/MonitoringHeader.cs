@@ -6,13 +6,15 @@
     using SharpDX.Direct3D11;
     using Graphics;
     using Rectangle = Graphics.Rectangle;
-    class MonitoringHeader : IUpdatable, IRenderable, IDisposable
+    class MonitoringHeader : RenderableGameComponent
     {
         private readonly CpuUsageCounter _cpuUsageCounter;
         private readonly FpsCounter _fpsCounter;
         private readonly Text _text;
         private readonly String _videoCardInfo;
         private readonly Rectangle _overlay;
+
+        public override bool IsUi { get { return true; } }
 
         public MonitoringHeader(Renderer renderer)
         {
@@ -24,13 +26,13 @@
             _overlay = new Rectangle(renderer, renderer.ScreenSize, new Vector2(0,0), new Vector2(485,16), new Vector4(1,0,0,0.2f));
         }
 
-        public void Update(double delta)
+        public override void Update(double delta)
         {
             _cpuUsageCounter.Update(delta);
             _fpsCounter.Update(delta);
         }
-        
-        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+
+        public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _text.Content = ((int)_fpsCounter.Value) + " FPS | " + String.Format("{0:0.00}", _cpuUsageCounter.Value) + " % CPU | " + _videoCardInfo;
             _text.Update(deviceContext);
@@ -39,7 +41,7 @@
             _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             _cpuUsageCounter.Dispose();
             _overlay.Dispose();
