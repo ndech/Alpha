@@ -6,38 +6,33 @@ using SharpDX.Windows;
 
 namespace PlaneSimulator
 {
-    class Game
+    public class Game
     {
-        private readonly CsvLogger _flightRecorder;
+        private readonly FlightRecorder _flightRecorder;
         private readonly Timer _timer;
         private readonly Airplane _playerPlane;
         private readonly Renderer _renderer;
-        private readonly List<IUpdatable> _updatables;
+        private readonly List<GameComponent> _gameComponents;
         private readonly World _world;
 
         public Game()
         {
-            _updatables = new List<IUpdatable>();
+            _gameComponents = new List<GameComponent>();
             _timer = new Timer();
+            _renderer = new Renderer();
 
             _world = new World();
             _playerPlane = AirplaneFactory.Create(_world);
             _playerPlane.Initialize(1000, 200);
 
-            _flightRecorder = new CsvLogger(@"Logs\FlightRecording_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv", 1, ';');
-            _flightRecorder.Register(_timer, _playerPlane);
-
-            _renderer = new Renderer(_playerPlane);
-
-            Register(_playerPlane);
-            Register(new MonitoringHeader(_renderer));
+            _flightRecorder = new FlightRecorder(this, _timer, _playerPlane);
         }
 
-        private void Register(IUpdatable item)
+        public void Register(GameComponent item)
         {
-            _updatables.Add(item);
-            if (item is IRenderable)
-                _renderer.Register(item as IRenderable);
+            _gameComponents.Add(item);
+            if (item is RenderableGameComponent)
+                _renderer.Register(item as RenderableGameComponent);
         }
 
         public void Run()
@@ -45,12 +40,13 @@ namespace PlaneSimulator
             RenderLoop.Run(_renderer.Form, () =>
             {
                 double delta = _timer.Tick();
-                foreach (IUpdatable item in _updatables)
+                foreach (GameComponent item in _gameComponents)
                     item.Update(delta);
+
                 if (_playerPlane.IsCrashed())
                     Exit();
+
                 _renderer.Render();
-                _flightRecorder.Log();
             });
         }
 
@@ -62,7 +58,8 @@ namespace PlaneSimulator
         public void Dispose()
         {
             _renderer.Dispose();
-            _flightRecorder.Dispose();
+            foreach (GameComponent item in _gameComponents)
+                item.Dispose();
         }
     }
 }

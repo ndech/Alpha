@@ -1,6 +1,6 @@
 ﻿namespace PlaneSimulator
 {
-    interface IUpdatable
+    public interface IUpdatable
     {
         void Update(double delta);
     }

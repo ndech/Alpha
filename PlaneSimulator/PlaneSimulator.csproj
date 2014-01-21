@@ -133,10 +133,12 @@
   <ItemGroup>
     <Compile Include="Airplane.cs" />
     <Compile Include="AirplaneFactory.cs" />
+    <Compile Include="AirplanePhysicalModel.cs" />
     <Compile Include="Component.cs" />
     <None Include="Data\Shaders\Texture.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="FlightRecorder.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameComponent.cs" />
     <Compile Include="Graphics\Bitmap.cs" />

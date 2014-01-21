@@ -37,14 +37,13 @@ namespace PlaneSimulator.Graphics
         public TextManager TextManager { get; private set; }
         
         public Text altitudeText { get; private set; }
-        
-        private Airplane _airplane;
+
         public Terrain Terrain { get; private set; }
 
         private List<IRenderable> _renderables;
         private int i;
 
-        public Renderer(Airplane airplane)
+        public Renderer()
         {
             CreateWindow();
             DirectX = new Dx11(Form);
@@ -72,7 +71,6 @@ namespace PlaneSimulator.Graphics
             Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
 
-            _airplane = airplane;
             altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
             altitudeText.Position = new Vector2(10, 100);
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);

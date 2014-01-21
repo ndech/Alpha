@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace PlaneSimulator.Toolkit.IO
 {
@@ -10,8 +9,8 @@ namespace PlaneSimulator.Toolkit.IO
         public String FileName { get; set; }
         public int Sampling { get; set; }
         public char Separator { get; set; }
-        private StreamWriter _streamWriter;
-        public List<ICsvLoggable> _items;
+        private readonly StreamWriter _streamWriter;
+        public readonly List<ICsvLoggable> _items;
         private int _counter;
         public CsvLogger(string fileName, int sampling, char separator = ',')
         {
