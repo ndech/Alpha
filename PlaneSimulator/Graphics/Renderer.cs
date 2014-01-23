@@ -9,7 +9,7 @@ using PlaneSimulator.Graphics.Shaders;
 
 namespace PlaneSimulator.Graphics
 {
-    class Renderer : IDisposable
+    public class Renderer : IDisposable
     {
         public RenderForm Form { get; private set; }
         public Dx11 DirectX { get; private set; }
@@ -36,12 +36,9 @@ namespace PlaneSimulator.Graphics
 
         public TextManager TextManager { get; private set; }
         
-        public Text altitudeText { get; private set; }
-
         public Terrain Terrain { get; private set; }
 
-        private List<IRenderable> _renderables;
-        private int i;
+        private readonly List<RenderableGameComponent> _renderables;
 
         public Renderer()
         {
@@ -71,11 +68,8 @@ namespace PlaneSimulator.Graphics
             Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
 
-            altitudeText = TextManager.Create("Arial", 20, 25, new Vector4(1, 1, 1, 1));
-            altitudeText.Position = new Vector2(10, 100);
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
-            i = 0;
-            _renderables = new List<IRenderable>();
+            _renderables = new List<RenderableGameComponent>();
         }
 
         private void CreateWindow()
@@ -93,58 +87,27 @@ namespace PlaneSimulator.Graphics
         {
             DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
 
-            Camera.Position = new Vector3((float)_airplane.CurrentState.Position.Y, _airplane.Altitude+10, (float)_airplane.CurrentState.Position.X-6450);
-            
-            i++;
-
-            Rotation += ((float)i / 1000000);
-
-            //DirectX.EnableWireFrame();
-
-            Matrix matrix = Camera.ViewMatrix * DirectX.ProjectionMatrix;
-            var vec = new Vector3(300 - (float)i/10, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090);
-            var vector = Vector3.Project(vec, 0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 0.0f, 1.0f,
-                matrix);
-
-            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
-
-            //DirectX.DisableWireFrame();
-
-            Model.Render(DirectX.DeviceContext);
-
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
-                //Matrix.RotationZ(Rotation/2) *
-                Matrix.Translation(0, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 6390), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
-
-            Model2.Render(DirectX.DeviceContext);
-
-            LightShader.Render(DirectX.DeviceContext, Model.IndexCount, DirectX.WorldMatrix * Matrix.RotationY(SharpDX.MathUtil.Pi) *
-                Matrix.RotationZ(-Rotation / 2) *
-                Matrix.Translation(300 - (float)i / 10, _airplane.Altitude, (float)_airplane.CurrentState.Position.X - 5090), Camera.ViewMatrix, DirectX.ProjectionMatrix, Model.Texture, Light, Camera);
-
-            DirectX.DisableZBuffer();
-            DirectX.EnableAlphaBlending();
-            foreach (IRenderable item in _renderables)
+            foreach (RenderableGameComponent item in _renderables)
             {
-                if(item.IsUi)
-                    item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
+                if(item.BlendingEnabled)
+                    DirectX.EnableAlphaBlending();
                 else
+                    DirectX.DisableAlphaBlending();
+                if(item.DisplayWireframe)
+                    DirectX.EnableWireFrame();
+                else
+                    DirectX.DisableWireFrame();
+                if (item.ZBufferEnabled)
+                {
+                    DirectX.EnableZBuffer();
+                    item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
+                }
+                else
+                {
+                    DirectX.DisableZBuffer();
                     item.Render(DirectX.DeviceContext, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+                }
             }
-
-            Model2D.Position = new Vector2(vector.X - 20, vector.Y - 20);
-            Model2D.Size = new Vector2(40,40);
-            Model2D.Depth = 0;
-            Model2D.Render(DirectX.DeviceContext);
-            CircleShader.Render(DirectX.DeviceContext, Model2D.IndexCount, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix, Model2D.Texture, new Vector4(0.2f,0,0,0.5f));
-
-            altitudeText.Content = String.Format("Atitude : {0:0.0} m", _airplane.Altitude);
-            altitudeText.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.UiMatrix, DirectX.OrthoMatrix);
-
-            DirectX.DisableAlphaBlending();
-
-            DirectX.EnableZBuffer();
-
             DirectX.DrawScene();
         }
 
@@ -154,7 +117,7 @@ namespace PlaneSimulator.Graphics
             DirectX.Dispose();
         }
 
-        public void Register(IRenderable item)
+        public void Register(RenderableGameComponent item)
         {
             _renderables.Add(item);
         }

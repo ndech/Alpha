@@ -13,10 +13,8 @@
         private readonly Text _text;
         private readonly String _videoCardInfo;
         private readonly Rectangle _overlay;
-
-        public override bool IsUi { get { return true; } }
-
-        public MonitoringHeader(Renderer renderer)
+        
+        public MonitoringHeader(Game game, Renderer renderer) : base(game, 0, false, true)
         {
             _cpuUsageCounter = new CpuUsageCounter();
             _fpsCounter = new FpsCounter();

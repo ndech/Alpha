@@ -6,7 +6,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics
 {
-    class Texture : IDisposable
+    public class Texture : IDisposable
     {
         public ShaderResourceView TextureResource { get; private set; }
         public Texture(Device device, String fileName, String path = "Data/Textures/")

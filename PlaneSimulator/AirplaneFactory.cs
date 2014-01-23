@@ -11,9 +11,9 @@ namespace PlaneSimulator
         public static Airplane Create(World world)
         {
             Airplane plane = new Airplane(world);
-            plane.Tanks.Add(new Tank(100, 500));
-            plane.Tanks.Add(new Tank(100, 500));
-            plane.Thrusters.Add(new Thruster());
+            plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
+            plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
+            plane.PhysicalModel.Thrusters.Add(new Thruster());
             return plane;
         }
     }

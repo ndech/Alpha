@@ -12,7 +12,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics
 {
-    class ObjModel : IDisposable
+    public class ObjModel : IDisposable
     {
         private Buffer VertexBuffer { get; set; }
         private Buffer IndexBuffer { get; set; }

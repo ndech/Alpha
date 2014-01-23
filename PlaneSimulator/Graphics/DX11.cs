@@ -25,6 +25,10 @@ namespace PlaneSimulator.Graphics
         private BlendState _alphaEnabledBlendState;
         private BlendState _alphaDisabledBlendState;
         private int _maxQualityLevel = 0;
+
+        private bool _isZBufferEnabled;
+        private bool _isBlendingEnabled;
+        private bool _isWireframeEnabled;
         public Device Device { get; private set; }
         public DeviceContext DeviceContext { get; private set; }
         public SwapChain SwapChain { get; private set; }
@@ -175,6 +179,7 @@ namespace PlaneSimulator.Graphics
             _depthDisabledStencilState = new DepthStencilState(Device, depthDisabledStencilDesc);
 
             // Set the depth stencil state.
+            _isZBufferEnabled = true;
             DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
 
             // Initialize and set up the depth stencil view.
@@ -291,32 +296,44 @@ namespace PlaneSimulator.Graphics
 
         public void EnableZBuffer()
         {
+            if (_isZBufferEnabled) return;
             DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
+            _isZBufferEnabled = true;
         }
 
         public void DisableZBuffer()
         {
+            if (!_isZBufferEnabled) return;
             DeviceContext.OutputMerger.SetDepthStencilState(_depthDisabledStencilState, 1);
+            _isZBufferEnabled = false;
         }
 
         public void EnableAlphaBlending()
         {
-            DeviceContext.OutputMerger.SetBlendState(_alphaEnabledBlendState, new Color4(0.0f));  
+            if (_isBlendingEnabled) return;
+            DeviceContext.OutputMerger.SetBlendState(_alphaEnabledBlendState, new Color4(0.0f));
+            _isBlendingEnabled = true;
         }
 
         public void DisableAlphaBlending()
         {
-            DeviceContext.OutputMerger.SetBlendState(_alphaDisabledBlendState, new Color4(0.0f)); 
+            if (!_isBlendingEnabled) return;
+            DeviceContext.OutputMerger.SetBlendState(_alphaDisabledBlendState, new Color4(0.0f));
+            _isBlendingEnabled = false;
         }
 
         public void EnableWireFrame()
         {
+            if (_isWireframeEnabled) return;
             DeviceContext.Rasterizer.State = _rasterStateWireFrame;
+            _isWireframeEnabled = true;
         }
 
         public void DisableWireFrame()
         {
+            if (!_isWireframeEnabled) return;
             DeviceContext.Rasterizer.State = _rasterStateSolid;
+            _isBlendingEnabled = false;
         }
     }
 }

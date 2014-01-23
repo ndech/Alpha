@@ -8,12 +8,12 @@ namespace PlaneSimulator
 {
     public class Game
     {
-        private readonly FlightRecorder _flightRecorder;
         private readonly Timer _timer;
         private readonly Airplane _playerPlane;
         private readonly Renderer _renderer;
         private readonly List<GameComponent> _gameComponents;
         private readonly World _world;
+        private bool _newRegisteredElement = false;
 
         public Game()
         {
@@ -25,11 +25,13 @@ namespace PlaneSimulator
             _playerPlane = AirplaneFactory.Create(_world);
             _playerPlane.Initialize(1000, 200);
 
-            _flightRecorder = new FlightRecorder(this, _timer, _playerPlane);
+            Register(new MonitoringHeader(this, _renderer));
+            Register(new FlightRecorder(this, _timer, _playerPlane));
         }
 
         public void Register(GameComponent item)
         {
+            _newRegisteredElement = true;
             _gameComponents.Add(item);
             if (item is RenderableGameComponent)
                 _renderer.Register(item as RenderableGameComponent);
@@ -40,8 +42,15 @@ namespace PlaneSimulator
             RenderLoop.Run(_renderer.Form, () =>
             {
                 double delta = _timer.Tick();
+                if (_newRegisteredElement)
+                {
+                    _gameComponents.Sort();
+                    _newRegisteredElement = false;
+                }
+
                 foreach (GameComponent item in _gameComponents)
-                    item.Update(delta);
+                    if(item.Enabled)
+                        item.Update(delta);
 
                 if (_playerPlane.IsCrashed())
                     Exit();

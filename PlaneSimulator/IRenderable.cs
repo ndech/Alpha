@@ -5,7 +5,6 @@ namespace PlaneSimulator
 {
     interface IRenderable
     {
-        bool IsUi { get; }
         bool DisplayWireframe { get; }
         bool BlendingEnabled { get; }
         bool ZBufferEnabled { get; }
