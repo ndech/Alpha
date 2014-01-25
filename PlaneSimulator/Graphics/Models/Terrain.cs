@@ -58,10 +58,23 @@ namespace PlaneSimulator.Graphics
             return (HeightMap.GetPixel(x, y).G - 80)*5;
         }
 
-        public float GetHeight(float x, float y)
+        public float GetHeight(double x, double y)
         {
-            return 0;
+            double positionX = (y/_pitch) + (_width/2.0);
+            double positionY = (x/_pitch) + (_height/2.0);
+            int coordX = (int) positionX;
+            int coordY = (int) positionY;
+            positionX %= 1;
+            positionY %= 1;
+
+            float height = (float)
+                (GetHeight(coordX, coordY)*(1-positionX)*(1-positionY)
+                +GetHeight(coordX+1, coordY+1)*(positionX)*(positionY)
+                +GetHeight(coordX, coordY+1)*(1-positionX)*(positionY)
+                +GetHeight(coordX+1, coordY)*(positionX)*(1-positionY));
+            return Math.Max(height, 0.0f);
         }
+
         private void BuildBuffers(Device device)
         {
             VertexDefinition.PositionColorNormal[] terrainVertices = new VertexDefinition.PositionColorNormal[(_width+1)*(_height+1)];
@@ -69,7 +82,7 @@ namespace PlaneSimulator.Graphics
                 for (int j = 0; j < (_height + 1); j++)
                     terrainVertices[i * (_width + 1) + j] = new VertexDefinition.PositionColorNormal
                     {
-                        position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i,j) , (-(_height / 2) + j) * _pitch), 
+                        position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch), 
                         color = new Vector4(0.7f, 0.6f, 0.3f, 1),
                         normal = GetNormal(i,j)
                     };

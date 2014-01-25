@@ -65,6 +65,10 @@ namespace PlaneSimulator
 
         private void Exit()
         {
+            while (true)
+            {
+                
+            }
             _renderer.Form.Close();
         }
 

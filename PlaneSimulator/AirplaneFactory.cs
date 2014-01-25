@@ -12,7 +12,7 @@ namespace PlaneSimulator
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Thrusters.Add(new Thruster());
-            plane.CurrentState.Position = new Vector3(plane.CurrentState.Position.X - 6500,
+            plane.CurrentState.Position = new Vector3(plane.CurrentState.Position.X - 2500,
                 plane.CurrentState.Position.Y, plane.CurrentState.Position.Z);
             return plane;
         }

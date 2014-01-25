@@ -27,7 +27,7 @@ namespace PlaneSimulator.Graphics
                 (float)_playerAirplane.CurrentState.Position.Y, 
                 _playerAirplane.Altitude + 10, 
                 (float)_playerAirplane.CurrentState.Position.X-60);
-            Vector3 orientation = new Vector3(0);
+            Vector3 orientation = new Vector3(0,10,0);
             // Create the rotation matrix from the yaw, pitch, and roll values (in radians).
             Matrix rotationMatrix = Matrix.RotationYawPitchRoll(
                                      Conversion.AngleToRadian(orientation.X),

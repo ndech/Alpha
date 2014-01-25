@@ -33,20 +33,14 @@
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             Model.Render(deviceContext);
-            Renderer.LightShader.Render(
-                deviceContext, 
-                Model.IndexCount,
+            Renderer.LightShader.Render(deviceContext, Model.IndexCount,
                 Matrix.RotationY(MathUtil.Pi) * Matrix.Translation(0, Altitude, (float)CurrentState.Position.X), 
-                viewMatrix, 
-                projectionMatrix, 
-                Model.Texture, 
-                Renderer.Light, 
-                Renderer.Camera);
+                viewMatrix, projectionMatrix, Model.Texture, Renderer.Light, Renderer.Camera);
         }
 
         public bool IsCrashed()
         {
-            return Altitude < 0;
+            return World.Altitude(CurrentState.Position) > Altitude;
         }
         public override void Dispose() { }
         public override String ToString()
