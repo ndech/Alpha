@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace PlaneSimulator.Graphics
 {
-    class Light
+    public class Light
     {
         public Vector3 Direction { get; set; }
         public Vector4 Color { get; set; }

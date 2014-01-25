@@ -7,7 +7,7 @@ using SharpDX.Direct3D11;
 
 namespace PlaneSimulator.Graphics
 {
-    class TextManager : IDisposable
+    public class TextManager : IDisposable
     {
         private readonly FontShader _fontShader;
         private readonly Dictionary<String, Font> _fontDictionary;

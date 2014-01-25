@@ -10,7 +10,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics
 {
-    class Bitmap : IDisposable
+    public class Bitmap : IDisposable
     {
         public Texture Texture { get; private set; }
         public Buffer VertexBuffer { get; private set; }

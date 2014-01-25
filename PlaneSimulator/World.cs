@@ -4,7 +4,7 @@
     {
         public double Gravity
         {
-            get { return 0.81; }
+            get { return 9.81; }
         }
     }
 }

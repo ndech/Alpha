@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics.Shaders
 {
-    class FontShader : IDisposable
+    public class FontShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct Vertex

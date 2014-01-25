@@ -16,7 +16,7 @@ namespace PlaneSimulator
             ZBufferEnabled = zBufferEnabled;
         }
 
-        private Renderer _renderer;
+        protected Renderer _renderer;
         public bool DisplayWireframe { get; private set; }
         public bool BlendingEnabled { get; private set; }
         public bool ZBufferEnabled { get; private set; }

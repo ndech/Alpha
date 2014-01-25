@@ -11,7 +11,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace PlaneSimulator.Graphics.Shaders
 {
-    class TerrainShader : IDisposable
+    public class TerrainShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         internal struct MatrixBuffer

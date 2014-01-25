@@ -10,7 +10,7 @@ using SharpDX.Direct3D11;
 
 namespace PlaneSimulator.Graphics
 {
-    class Font : IDisposable
+    public class Font : IDisposable
     {
         public struct Character
         {

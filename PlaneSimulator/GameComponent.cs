@@ -9,7 +9,6 @@ namespace PlaneSimulator
 
         protected GameComponent(Game game, int updateOrder = 0)
         {
-            game.Register(this);
             UpdateOrder = updateOrder;
             Enabled = true;
         }
@@ -17,7 +16,7 @@ namespace PlaneSimulator
         public abstract void Dispose();
         public int CompareTo(GameComponent other)
         {
-            return other.UpdateOrder - UpdateOrder;
+            return UpdateOrder- other.UpdateOrder;
         }
     }
 }

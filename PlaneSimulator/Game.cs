@@ -22,9 +22,12 @@ namespace PlaneSimulator
             _renderer = new Renderer();
 
             _world = new World();
-            _playerPlane = AirplaneFactory.Create(_world);
-            _playerPlane.Initialize(1000, 200);
+            _playerPlane = AirplaneFactory.Create(_world, this, _renderer, true);
+            Register(_playerPlane);
 
+            Camera camera = new Camera(this, _playerPlane); 
+            Register(camera);
+            _renderer.Camera = camera;
             Register(new MonitoringHeader(this, _renderer));
             Register(new FlightRecorder(this, _timer, _playerPlane));
         }

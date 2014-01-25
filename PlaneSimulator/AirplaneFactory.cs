@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlaneSimulator.Graphics;
+using PlaneSimulator.Toolkit.Math;
 
 namespace PlaneSimulator
 {
-    class AirplaneFactory
+    static class AirplaneFactory
     {
-        public static Airplane Create(World world)
+        public static Airplane Create(World world, Game game, Renderer renderer, bool isPlayer = false)
         {
-            Airplane plane = new Airplane(world);
+            State state = new State(1000, 200);
+            Airplane plane = new Airplane(world, state, game, renderer, isPlayer);
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Thrusters.Add(new Thruster());
+            plane.CurrentState.Position = new Vector3(plane.CurrentState.Position.X - 6500,
+                plane.CurrentState.Position.Y, plane.CurrentState.Position.Z);
             return plane;
         }
     }

@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics
 {
-    class Text
+    public class Text
     {
         public Text(Device device, FontShader shader, int screenWidth, int screenHeight, Font font, Int32 maxLength, Vector4 color)
         {

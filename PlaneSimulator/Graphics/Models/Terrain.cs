@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace PlaneSimulator.Graphics
 {
-    class Terrain
+    public class Terrain
     {
         private int _width;
         private int _height;

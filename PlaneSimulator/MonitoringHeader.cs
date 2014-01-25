@@ -14,7 +14,7 @@
         private readonly String _videoCardInfo;
         private readonly Rectangle _overlay;
         
-        public MonitoringHeader(Game game, Renderer renderer) : base(game, 0, false, true)
+        public MonitoringHeader(Game game, Renderer renderer) : base(game, renderer, 0, false, true)
         {
             _cpuUsageCounter = new CpuUsageCounter();
             _fpsCounter = new FpsCounter();

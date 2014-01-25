@@ -18,7 +18,6 @@ namespace PlaneSimulator.Graphics
         public Light Light { get; set; }
 
         public ObjModel Model { get; set; }
-        public ObjModel Model2 { get; set; }
 
         public Bitmap Model2D { get; set; }
 
@@ -31,9 +30,7 @@ namespace PlaneSimulator.Graphics
         public FontShader CircleShader { get; set; }
 
         public Vector2 ScreenSize { get; private set; }
-
-        public float Rotation { get; private set; }
-
+        
         public TextManager TextManager { get; private set; }
         
         public Terrain Terrain { get; private set; }
@@ -45,7 +42,6 @@ namespace PlaneSimulator.Graphics
             CreateWindow();
             DirectX = new Dx11(Form);
             ScreenSize = new Vector2(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
-            Camera = new Camera(new Vector3(0, 0, -10), new Vector3(0,0,0));
             Light = new Light
             {
                 Direction = new Vector3(1.0f, -1.0f, 0.0f),
@@ -54,8 +50,6 @@ namespace PlaneSimulator.Graphics
                 SpecularPower = 32.0f,
                 SpecularColor = new Vector4(1.0f, 1.0f, 0.7f, 1.0f)
             };
-            Model = new ObjModel(DirectX.Device, "Airplane.obj", "Metal.png");
-            Model2 = new ObjModel(DirectX.Device, "Airplane.obj", "Metal.png");
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
@@ -65,7 +59,6 @@ namespace PlaneSimulator.Graphics
             {
                 Position = new Vector2(ConfigurationManager.Config.Width-100, 0)
             };
-            Rotation = 0;
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
 
             Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
@@ -86,7 +79,7 @@ namespace PlaneSimulator.Graphics
         public void Render()
         {
             DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
-
+            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
             foreach (RenderableGameComponent item in _renderables)
             {
                 if(item.BlendingEnabled)
@@ -100,12 +93,12 @@ namespace PlaneSimulator.Graphics
                 if (item.ZBufferEnabled)
                 {
                     DirectX.EnableZBuffer();
-                    item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
+                    item.Render(DirectX.DeviceContext, Camera.ViewMatrix, DirectX.ProjectionMatrix);
                 }
                 else
                 {
                     DirectX.DisableZBuffer();
-                    item.Render(DirectX.DeviceContext, Camera.ViewMatrix, DirectX.ProjectionMatrix);
+                    item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
                 }
             }
             DirectX.DrawScene();
