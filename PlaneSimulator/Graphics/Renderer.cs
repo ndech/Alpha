@@ -33,7 +33,6 @@ namespace PlaneSimulator.Graphics
         
         public TextManager TextManager { get; private set; }
         
-        public Terrain Terrain { get; private set; }
 
         private readonly List<RenderableGameComponent> _renderables;
 
@@ -61,7 +60,6 @@ namespace PlaneSimulator.Graphics
             };
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
 
-            Terrain = new Terrain(DirectX.Device, "Heightmap.png", 100);
             _renderables = new List<RenderableGameComponent>();
         }
 
@@ -79,7 +77,6 @@ namespace PlaneSimulator.Graphics
         public void Render()
         {
             DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
-            Terrain.Render(DirectX.DeviceContext, DirectX.WorldMatrix, Camera.ViewMatrix, DirectX.ProjectionMatrix, Light);
             foreach (RenderableGameComponent item in _renderables)
             {
                 if(item.BlendingEnabled)

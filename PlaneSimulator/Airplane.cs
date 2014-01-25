@@ -33,15 +33,15 @@
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             Model.Render(deviceContext);
-            _renderer.LightShader.Render(
+            Renderer.LightShader.Render(
                 deviceContext, 
                 Model.IndexCount,
                 Matrix.RotationY(MathUtil.Pi) * Matrix.Translation(0, Altitude, (float)CurrentState.Position.X), 
                 viewMatrix, 
                 projectionMatrix, 
                 Model.Texture, 
-                _renderer.Light, 
-                _renderer.Camera);
+                Renderer.Light, 
+                Renderer.Camera);
         }
 
         public bool IsCrashed()

@@ -21,7 +21,8 @@ namespace PlaneSimulator
             _timer = new Timer();
             _renderer = new Renderer();
 
-            _world = new World();
+            _world = new World(this, _renderer);
+            Register(_world);
             _playerPlane = AirplaneFactory.Create(_world, this, _renderer, true);
             Register(_playerPlane);
 

@@ -10,13 +10,13 @@ namespace PlaneSimulator
         protected RenderableGameComponent(Game game, Renderer renderer, int updateOrder = 0, bool zBufferEnabled = true, bool blendingEnabled = false, bool displayWireframe = false) 
             : base(game, updateOrder)
         {
-            _renderer = renderer;
+            Renderer = renderer;
             DisplayWireframe = displayWireframe;
             BlendingEnabled = blendingEnabled;
             ZBufferEnabled = zBufferEnabled;
         }
 
-        protected Renderer _renderer;
+        protected readonly Renderer Renderer;
         public bool DisplayWireframe { get; private set; }
         public bool BlendingEnabled { get; private set; }
         public bool ZBufferEnabled { get; private set; }
