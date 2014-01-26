@@ -19,6 +19,14 @@ namespace PlaneSimulator
             Acceleration = new Vector3(0);
             AngularSpeed = new Vector3(0);
         }
+        public State(double x, double y, double altitude, double speedX, double speedY)
+        {
+            Position = new Vector3(x, y, -altitude);
+            Speed = new Vector3(speedX, speedY, 0);
+            AngularPosition = new Vector3(0, 0, 0);
+            Acceleration = new Vector3(0);
+            AngularSpeed = new Vector3(0);
+        }
 
         public State(Vector3 position, Vector3 speed, Vector3 angularPosition, Vector3 angularSpeed)
         {

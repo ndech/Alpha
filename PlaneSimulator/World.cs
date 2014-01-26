@@ -30,7 +30,7 @@ namespace PlaneSimulator
 
         public double Gravity
         {
-            get { return 0.0; }
+            get { return 0.81; }
         }
 
         public double Altitude(Vector3 position)

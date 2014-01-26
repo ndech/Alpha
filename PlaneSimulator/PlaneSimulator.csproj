@@ -148,6 +148,7 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Fuel.cs" />
     <Compile Include="Graphics\Font.cs" />
+    <Compile Include="Graphics\Frustrum.cs" />
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Model.cs" />
     <Compile Include="Graphics\ObjModel.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Graphics\Models\Terrain.cs" />
     <Compile Include="Graphics\Shaders\VertexDefinition.cs" />
     <Compile Include="Graphics\Shaders\WaterShader.cs" />
+    <Compile Include="Graphics\States\RasterizerState.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />

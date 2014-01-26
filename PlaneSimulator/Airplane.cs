@@ -16,7 +16,7 @@
         public bool IsPlayer { get; set; }
 
         public Airplane(World world, State state, Game game, Renderer renderer, bool isPlayer)
-            : base(game, renderer, 0)
+            : base(game, renderer, isPlayer ? -1000 : 0)
         {
             IsPlayer = isPlayer;
             World = world;
@@ -34,7 +34,7 @@
         {
             Model.Render(deviceContext);
             Renderer.LightShader.Render(deviceContext, Model.IndexCount,
-                Matrix.RotationY(MathUtil.Pi) * Matrix.Translation(0, Altitude, (float)CurrentState.Position.X), 
+                Matrix.RotationY(MathUtil.Pi) * Matrix.Translation((float)CurrentState.Position.Y, Altitude, (float)CurrentState.Position.X), 
                 viewMatrix, projectionMatrix, Model.Texture, Renderer.Light, Renderer.Camera);
         }
 
