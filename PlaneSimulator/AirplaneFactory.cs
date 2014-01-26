@@ -7,7 +7,7 @@ namespace PlaneSimulator
     {
         public static Airplane Create(World world, Game game, Renderer renderer, bool isPlayer = false)
         {
-            State state = new State(1000, 200);
+            State state = new State(1000, 0);
             Airplane plane = new Airplane(world, state, game, renderer, isPlayer);
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));

@@ -14,14 +14,14 @@ cbuffer MatrixBuffer
 struct VertexInputType
 {
     float4 position : POSITION;
-    float4 color : COLOR;
+    float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
 };
 
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
 	float fogFactor : FOG;
 };
@@ -42,8 +42,6 @@ PixelInputType TerrainVertexShader(VertexInputType input)
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     
-    output.color = input.color;
-
     // Calculate the normal vector against the world matrix only.
     output.normal = normalize(mul(input.normal, (float3x3)worldMatrix));
 
@@ -53,6 +51,8 @@ PixelInputType TerrainVertexShader(VertexInputType input)
 
     // Calculate linear fog.
     output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.0002);
+
+	output.tex = input.tex;
 
     return output;
 }

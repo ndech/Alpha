@@ -18,7 +18,7 @@ cbuffer LightBuffer
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
 	float fogFactor : FOG;
 };
@@ -30,7 +30,7 @@ float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 {
     float lightIntensity = saturate(dot(input.normal, -lightDirection));
 	
-    float4 pixelColor = (ambiantColor + (diffuseColor * lightIntensity)) * input.color;
+    float4 pixelColor = (ambiantColor + (diffuseColor * lightIntensity)) * shaderTexture.Sample(SampleType, input.tex);
 
 	return (pixelColor)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
 }

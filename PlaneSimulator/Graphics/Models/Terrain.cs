@@ -7,7 +7,7 @@ using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace PlaneSimulator.Graphics
+namespace PlaneSimulator.Graphics.Models
 {
     public class Terrain
     {
@@ -28,6 +28,10 @@ namespace PlaneSimulator.Graphics
 
         public TerrainShader TerrainShader { get; private set; }
 
+        private Texture _texture;
+
+        private const int TextureRepeat = 5;
+
         public Terrain(Device device, String texture, int pitch)
         {
             HeightMap = new System.Drawing.Bitmap(@"Data/Textures/"+texture);
@@ -36,6 +40,7 @@ namespace PlaneSimulator.Graphics
             _width = HeightMap.Width-1;
             _height = HeightMap.Height-1;
             _pitch = pitch;
+            _texture = new Texture(device, "Ground.png");
             BuildBuffers(device);
         }
 
@@ -77,13 +82,13 @@ namespace PlaneSimulator.Graphics
 
         private void BuildBuffers(Device device)
         {
-            VertexDefinition.PositionColorNormal[] terrainVertices = new VertexDefinition.PositionColorNormal[(_width+1)*(_height+1)];
+            VertexDefinition.PositionTextureNormal[] terrainVertices = new VertexDefinition.PositionTextureNormal[(_width+1)*(_height+1)];
             for (int i = 0; i < (_width + 1); i++)
                 for (int j = 0; j < (_height + 1); j++)
-                    terrainVertices[i * (_width + 1) + j] = new VertexDefinition.PositionColorNormal
+                    terrainVertices[i * (_width + 1) + j] = new VertexDefinition.PositionTextureNormal
                     {
-                        position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch), 
-                        color = new Vector4(0.7f, 0.6f, 0.3f, 1),
+                        position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch),
+                        texture = new Vector2(((float)i / TextureRepeat), ((float)j / TextureRepeat)),
                         normal = GetNormal(i,j)
                     };
             TerrainIndexCount = _width*_height*6;
@@ -127,16 +132,16 @@ namespace PlaneSimulator.Graphics
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
         {
-            //Render terrain
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionColorNormal>(), 0));
-            deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
-            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, viewMatrix, projectionMatrix, light);
             //Render water
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<ColorShader.Vertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix);
+            //Render terrain
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal>(), 0));
+            deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
+            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, viewMatrix, projectionMatrix, light, _texture);
         }
     }
 }

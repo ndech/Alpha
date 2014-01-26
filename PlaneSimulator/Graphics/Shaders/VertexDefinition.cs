@@ -22,6 +22,44 @@ namespace PlaneSimulator.Graphics.Shaders
             public Vector3 position;
             public Vector2 texture;
             public Vector3 normal;
+
+            public static InputLayout GetInputLayout(Device device, CompilationResult vertexShaderByteCode)
+            {
+                var inputElements = new InputElement[]
+                {
+                    new InputElement
+                    {
+                        SemanticName = "POSITION",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 0,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = AppendAlignedElement1,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "NORMAL",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = AppendAlignedElement2,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    }
+                };
+                return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -53,7 +91,7 @@ namespace PlaneSimulator.Graphics.Shaders
                         SemanticIndex = 0,
                         Format = Format.R32G32B32A32_Float,
                         Slot = 0,
-                        AlignedByteOffset = LightShader.Vertex.AppendAlignedElement1,
+                        AlignedByteOffset = AppendAlignedElement1,
                         Classification = InputClassification.PerVertexData,
                         InstanceDataStepRate = 0
                     },
@@ -63,7 +101,7 @@ namespace PlaneSimulator.Graphics.Shaders
                         SemanticIndex = 0,
                         Format = Format.R32G32B32_Float,
                         Slot = 0,
-                        AlignedByteOffset = LightShader.Vertex.AppendAlignedElement2,
+                        AlignedByteOffset = AppendAlignedElement2,
                         Classification = InputClassification.PerVertexData,
                         InstanceDataStepRate = 0
                     }

@@ -1,4 +1,5 @@
 ﻿using PlaneSimulator.Graphics;
+using PlaneSimulator.Graphics.Models;
 using SharpDX;
 using SharpDX.Direct3D11;
 using Vector3 = PlaneSimulator.Toolkit.Math.Vector3;
@@ -29,7 +30,7 @@ namespace PlaneSimulator
 
         public double Gravity
         {
-            get { return 0.81; }
+            get { return 0.0; }
         }
 
         public double Altitude(Vector3 position)

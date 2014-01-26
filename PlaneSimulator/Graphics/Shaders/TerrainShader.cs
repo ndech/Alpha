@@ -4,7 +4,6 @@ using PlaneSimulator.Toolkit;
 using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using Device = SharpDX.Direct3D11.Device;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
@@ -37,6 +36,7 @@ namespace PlaneSimulator.Graphics.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantLightBuffer { get; set; }
+        SamplerState SamplerState { get; set; }
 
         public TerrainShader(Device device)
         {
@@ -46,7 +46,7 @@ namespace PlaneSimulator.Graphics.Shaders
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
 
-            Layout = VertexDefinition.PositionColorNormal.GetInputLayout(device, vertexShaderByteCode);
+            Layout = VertexDefinition.PositionTextureNormal.GetInputLayout(device, vertexShaderByteCode);
 
             vertexShaderByteCode.Dispose();
             pixelShaderByteCode.Dispose();
@@ -74,9 +74,27 @@ namespace PlaneSimulator.Graphics.Shaders
                 StructureByteStride = 0
             };
             ConstantLightBuffer = new Buffer(device, lightBufferDesc);
+
+            // Create a texture sampler state description.
+            var samplerDesc = new SamplerStateDescription
+            {
+                Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap,
+                MipLodBias = 0,
+                MaximumAnisotropy = 1,
+                ComparisonFunction = Comparison.Always,
+                BorderColor = new Color4(0, 0, 0, 0),
+                MinimumLod = 0,
+                MaximumLod = float.MaxValue
+            };
+
+            // Create the texture sampler state.
+            SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, Texture texture)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -114,6 +132,7 @@ namespace PlaneSimulator.Graphics.Shaders
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
 
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantLightBuffer);
+            deviceContext.PixelShader.SetShaderResource(0, texture.TextureResource);
             
             // Set the vertex input layout.
             deviceContext.InputAssembler.InputLayout = Layout;
@@ -121,6 +140,7 @@ namespace PlaneSimulator.Graphics.Shaders
             // Set the vertex and pixel shaders that will be used to render this triangle.
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.PixelShader.Set(PixelShader);
+            deviceContext.PixelShader.SetSampler(0, SamplerState);
             
             // Render the triangles.
             deviceContext.DrawIndexed(indexCount, 0, 0);
