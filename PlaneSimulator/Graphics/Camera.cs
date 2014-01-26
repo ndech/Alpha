@@ -41,7 +41,7 @@ namespace PlaneSimulator.Graphics
             // Finally create the view matrix from the three updated vectors.
             _viewMatrix = Matrix.LookAtLH(_position, _position + lookAt, up);
 
-            _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -10), lookAt, up);
+            _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), lookAt, up);
         }
 
         public override void Dispose() { }

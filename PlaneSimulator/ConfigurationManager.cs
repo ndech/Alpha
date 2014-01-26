@@ -10,8 +10,8 @@
             AntiAliasing = true;
             Height = 768;
             Width = 1024;
-            FarLimit = 100000.0f;
-            NearLimit = 0.1f;
+            FarLimit = 50000.0f;
+            NearLimit = 10f;
         }
 
         private static readonly ConfigurationManager Instance = new ConfigurationManager();

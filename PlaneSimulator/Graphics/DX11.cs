@@ -333,7 +333,7 @@ namespace PlaneSimulator.Graphics
         {
             if (!_isWireframeEnabled) return;
             DeviceContext.Rasterizer.State = _rasterStateSolid;
-            _isBlendingEnabled = false;
+            _isWireframeEnabled = false;
         }
     }
 }

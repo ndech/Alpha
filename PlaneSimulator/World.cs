@@ -22,7 +22,7 @@ namespace PlaneSimulator
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _terrain.Render(Renderer.DirectX.DeviceContext, 
-                Renderer.DirectX.WorldMatrix, 
+                Matrix.Identity, 
                 Renderer.Camera.ViewMatrix, 
                 Renderer.DirectX.ProjectionMatrix, 
                 Renderer.Light);
