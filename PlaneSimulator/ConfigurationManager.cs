@@ -12,6 +12,7 @@
             Width = 1024;
             FarLimit = 50000.0f;
             NearLimit = 10f;
+            DisplayOverlay = false;
         }
 
         private static readonly ConfigurationManager Instance = new ConfigurationManager();
@@ -20,6 +21,7 @@
         public bool AntiAliasing { get; set; }
         public bool WindowedMode { get; set; }
         public bool VSync { get; set; }
+        public bool DisplayOverlay { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
         public float NearLimit { get; set; }

@@ -60,6 +60,8 @@ namespace PlaneSimulator.Graphics.Models
 
         public float GetHeight(int x, int y)
         {
+            if (x < 0 || y < 0 || x > _width || y > _height)
+                return 0.0f;
             return (HeightMap.GetPixel(x, y).G - 80)*5;
         }
 

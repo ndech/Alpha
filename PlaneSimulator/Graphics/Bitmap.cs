@@ -47,9 +47,9 @@ namespace PlaneSimulator.Graphics
         private bool _changed;
         public float Depth { get; set; }
 
-        public Bitmap(Device device, String textureName, int screenWidth, int screenHeight, int width, int height, float depth = 0.0f)
+        public Bitmap(Device device, Texture texture, int screenWidth, int screenHeight, int width, int height, float depth = 0.0f)
         {
-            Texture = new Texture(device, textureName);
+            Texture = texture;
             ScreenSize = new Vector2(screenWidth, screenHeight);
             Size = new Vector2(width, height);
             _changed = true;

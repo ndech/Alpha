@@ -20,7 +20,7 @@ namespace PlaneSimulator.Graphics
         public int IndexCount { get; private set; }
         public Texture Texture { get; private set; }
 
-        public ObjModel(Device device, String modelFileName, String textureFileName)
+        public ObjModel(Device device, String modelFileName, Texture texture)
         {
             StreamReader reader = new StreamReader("Data/Models/"+modelFileName);
             List<Vector3> vertices = new List<Vector3>();
@@ -60,7 +60,7 @@ namespace PlaneSimulator.Graphics
             for (int i = 0; i < points.Count; i++)
                 indicesDefinition[i] = i;
             IndexCount = points.Count;
-            Texture = new Texture(device, textureFileName);
+            Texture = texture;
             VertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, verticesDefinition);
             IndexBuffer = Buffer.Create(device, BindFlags.IndexBuffer, indicesDefinition);
         }

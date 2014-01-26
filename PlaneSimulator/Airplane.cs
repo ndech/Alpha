@@ -1,4 +1,6 @@
-﻿namespace PlaneSimulator
+﻿using System.Runtime.Remoting.Channels;
+
+namespace PlaneSimulator
 {
     using System;
     using System.Globalization;
@@ -14,6 +16,8 @@
         public AirplanePhysicalModel PhysicalModel { get; private set; }
         public float Altitude { get { return (float) -CurrentState.Position.Z; } }
         public bool IsPlayer { get; set; }
+        public String Name { get; set; }
+        public String ModelName { get; set; }
 
         public Airplane(World world, State state, Game game, Renderer renderer, bool isPlayer)
             : base(game, renderer, isPlayer ? -1000 : 0)
@@ -22,12 +26,18 @@
             World = world;
             CurrentState = state;
             PhysicalModel = new AirplanePhysicalModel(this);
-            Model = new ObjModel(renderer.DirectX.Device, "Airplane.obj", "Metal.png");
+            Model = new ObjModel(renderer.DirectX.Device, "Airplane.obj", Renderer.TextureManager.Create("Metal.png"));
+            if(!isPlayer && ConfigurationManager.Config.DisplayOverlay)
+                game.Register(new AirplaneOverlay(game, renderer, this));
         }
 
         public override void Update(double delta)
         {
             CurrentState = PhysicalModel.Update(delta, CurrentState);
+            if (!IsPlayer && IsCrashed())
+            {
+                
+            }
         }
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
@@ -41,6 +51,11 @@
         public bool IsCrashed()
         {
             return World.Altitude(CurrentState.Position) > Altitude;
+        }
+
+        public Vector3 PositionInDxCoordinates()
+        {
+            return new Vector3((float) CurrentState.Position.Y, Altitude, (float) CurrentState.Position.X);
         }
         public override void Dispose() { }
         public override String ToString()

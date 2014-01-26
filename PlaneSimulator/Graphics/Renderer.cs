@@ -14,14 +14,15 @@ namespace PlaneSimulator.Graphics
         public Dx11 DirectX { get; private set; }
         public Camera Camera { get; set; }
         public Light Light { get; set; }
-        public Bitmap Model2D { get; set; }
         public ColorShader ColorShader { get; set; }
         public TextureShader TextureShader { get; set; }
         public LightShader LightShader { get; set; }
+        public FontShader FontShader { get; set; }
         public TranslateShader TranslateShader { get; set; }
         public FontShader CircleShader { get; set; }
         public Vector2 ScreenSize { get; private set; }
         public TextManager TextManager { get; private set; }
+        public TextureManager TextureManager { get; private set; }
 
         private readonly List<RenderableGameComponent> _renderables;
 
@@ -43,12 +44,9 @@ namespace PlaneSimulator.Graphics
             LightShader = new LightShader(DirectX.Device);
             TranslateShader = new TranslateShader(DirectX.Device);
             CircleShader = new FontShader(DirectX.Device);
+            FontShader = new FontShader(DirectX.Device);
             TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
-            Model2D = new Bitmap(DirectX.Device, "Circle.png", ConfigurationManager.Config.Width, ConfigurationManager.Config.Height, 100, 100)
-            {
-                Position = new Vector2(ConfigurationManager.Config.Width-100, 0)
-            };
-
+            TextureManager = new TextureManager(DirectX.Device);
             _renderables = new List<RenderableGameComponent>();
         }
 
@@ -59,7 +57,6 @@ namespace PlaneSimulator.Graphics
                 ClientSize = new Size(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height),
                 FormBorderStyle = FormBorderStyle.FixedSingle
             };
-
             Form.Show();
         }
 

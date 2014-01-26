@@ -8,7 +8,7 @@ namespace PlaneSimulator.Graphics
     {
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
-        private Airplane _playerAirplane;
+        private readonly Airplane _playerAirplane;
         private Vector3 _position;
         public Camera(Game game, Airplane playerAirplane)
             :base(game, playerAirplane.UpdateOrder + 1)
@@ -23,7 +23,7 @@ namespace PlaneSimulator.Graphics
 
         public override void Update(double delta)
         {
-            Vector3 _position = new Vector3(
+            _position = new Vector3(
                 (float)_playerAirplane.CurrentState.Position.Y, 
                 _playerAirplane.Altitude + 10, 
                 (float)_playerAirplane.CurrentState.Position.X-60);

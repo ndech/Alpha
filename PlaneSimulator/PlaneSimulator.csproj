@@ -134,6 +134,7 @@
   <ItemGroup>
     <Compile Include="Airplane.cs" />
     <Compile Include="AirplaneFactory.cs" />
+    <Compile Include="AirplaneOverlay.cs" />
     <Compile Include="AirplanePhysicalModel.cs" />
     <Compile Include="Component.cs" />
     <None Include="Data\Shaders\Texture.vs">
@@ -169,6 +170,7 @@
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\Input.cs" />
+    <Compile Include="Graphics\TextureManager.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="MonitoringHeader.cs" />

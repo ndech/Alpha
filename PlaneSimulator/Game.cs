@@ -25,7 +25,7 @@ namespace PlaneSimulator
             Register(_world);
             _playerPlane = AirplaneFactory.Create(_world, this, _renderer, true);
             Register(_playerPlane);
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 2000; i++)
                 Register(AirplaneFactory.Create(_world, this, _renderer));
             Camera camera = new Camera(this, _playerPlane); 
             Register(camera);
