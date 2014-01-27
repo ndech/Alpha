@@ -19,7 +19,7 @@ namespace PlaneSimulator
         public String Name { get; set; }
         public String ModelName { get; set; }
 
-        public Airplane(World world, State state, Game game, Renderer renderer, bool isPlayer)
+        public Airplane(World world, State state, Game game, Renderer renderer, bool isPlayer, Airplane playerPlane)
             : base(game, renderer, isPlayer ? -1000 : 0)
         {
             IsPlayer = isPlayer;
@@ -28,7 +28,7 @@ namespace PlaneSimulator
             PhysicalModel = new AirplanePhysicalModel(this);
             Model = new ObjModel(renderer.DirectX.Device, "Airplane.obj", Renderer.TextureManager.Create("Metal.png"));
             if(!isPlayer && ConfigurationManager.Config.DisplayOverlay)
-                game.Register(new AirplaneOverlay(game, renderer, this));
+                game.Register(new AirplaneOverlay(game, renderer, this, playerPlane));
         }
 
         public override void Update(double delta)

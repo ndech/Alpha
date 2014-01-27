@@ -12,7 +12,7 @@
             Width = 1024;
             FarLimit = 50000.0f;
             NearLimit = 10f;
-            DisplayOverlay = false;
+            DisplayOverlay = true;
         }
 
         private static readonly ConfigurationManager Instance = new ConfigurationManager();

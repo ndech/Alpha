@@ -6,6 +6,7 @@ namespace PlaneSimulator
     {
         public bool Enabled { get; set; }
         public int UpdateOrder { get; protected set; }
+        protected Game Game { get; set; }
 
         protected GameComponent(Game game, int updateOrder = 0)
         {

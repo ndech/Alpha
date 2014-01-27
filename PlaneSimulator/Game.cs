@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using PlaneSimulator.Graphics;
 using PlaneSimulator.Toolkit.IO;
 using SharpDX.Windows;
@@ -25,8 +26,8 @@ namespace PlaneSimulator
             Register(_world);
             _playerPlane = AirplaneFactory.Create(_world, this, _renderer, true);
             Register(_playerPlane);
-            for (int i = 0; i < 2000; i++)
-                Register(AirplaneFactory.Create(_world, this, _renderer));
+            for (int i = 0; i < 20; i++)
+                Register(AirplaneFactory.Create(_world, this, _renderer, false, _playerPlane));
             Camera camera = new Camera(this, _playerPlane); 
             Register(camera);
             _renderer.Camera = camera;
@@ -66,10 +67,7 @@ namespace PlaneSimulator
 
         private void Exit()
         {
-            while (true)
-            {
-                
-            }
+            Thread.Sleep(10000);
             _renderer.Form.Close();
         }
 

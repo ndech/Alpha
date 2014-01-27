@@ -8,7 +8,7 @@ namespace PlaneSimulator
     {
         public static Random random;
         public static int i = 0;
-        public static Airplane Create(World world, Game game, Renderer renderer, bool isPlayer = false)
+        public static Airplane Create(World world, Game game, Renderer renderer, bool isPlayer = false, Airplane playerPlane = null)
         {
             if(random == null)
                 random = new Random();
@@ -18,7 +18,7 @@ namespace PlaneSimulator
                 state = new State(1400, 200);
             else
                 state = new State(200 + random.Next(0,2000), random.Next(-500,500), 500 + random.Next(0, 1000), 200+ random.Next(0,100), random.Next(-5,5));
-            Airplane plane = new Airplane(world, state, game, renderer, isPlayer);
+            Airplane plane = new Airplane(world, state, game, renderer, isPlayer, playerPlane);
             plane.ModelName = "F-14";
             plane.Name = "Plane " + i++;
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
