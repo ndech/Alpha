@@ -10,6 +10,7 @@ namespace PlaneSimulator
 
         protected GameComponent(Game game, int updateOrder = 0)
         {
+            Game = game;
             UpdateOrder = updateOrder;
             Enabled = true;
         }

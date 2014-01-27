@@ -17,10 +17,8 @@ namespace PlaneSimulator
             if (isPlayer)
                 state = new State(1400, 200);
             else
-                state = new State(200 + random.Next(0,2000), random.Next(-500,500), 500 + random.Next(0, 1000), 200+ random.Next(0,100), random.Next(-5,5));
-            Airplane plane = new Airplane(world, state, game, renderer, isPlayer, playerPlane);
-            plane.ModelName = "F-14";
-            plane.Name = "Plane " + i++;
+                state = new State(200 + random.Next(-1000,2000), random.Next(-1500,1500), 500 + random.Next(0, 1000), 200+ random.Next(0,100), random.Next(-15,15));
+            Airplane plane = new Airplane(world, state, game, renderer, isPlayer, playerPlane, "F-14", "Plane " + i++);
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Tanks.Add(new Tank(100, 500));
             plane.PhysicalModel.Thrusters.Add(new Thruster());

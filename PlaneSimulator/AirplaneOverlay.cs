@@ -10,8 +10,8 @@ namespace PlaneSimulator
     {
         private Airplane _airplane;
         private Airplane _playerAirplane;
-        private Text _name;
-        private Text _modelName;
+        private Text _nameText;
+        private Text _modelNameText;
         private Text _distanceText;
         private Vector3 _position;
         public Bitmap _overlay;
@@ -31,6 +31,12 @@ namespace PlaneSimulator
             _color = new Vector4(0.2f, 0, 0, 0.4f);
             _distanceText = Renderer.TextManager.Create("Courrier", 14, 8, _color);
             _distanceText.Position = new Vector2(0,0);
+            _nameText = Renderer.TextManager.Create("Courrier", 14, 20, _color);
+            _nameText.Position = new Vector2(0,0);
+            _nameText.Content = airplane.Name;
+            _modelNameText = Renderer.TextManager.Create("Courrier", 14, 20, _color);
+            _modelNameText.Position = new Vector2(0, 0);
+            _modelNameText.Content = airplane.ModelName;
         }
 
         public override void Update(double delta)
@@ -54,7 +60,9 @@ namespace PlaneSimulator
                 viewMatrix, projectionMatrix, _overlay.Texture, _color);
 
             _distanceText.Update(deviceContext);
-            _distanceText.Render(deviceContext, Matrix.Translation(new Vector3(_position.X - _distanceText.Width/2, -_position.Y-20, 0.0f)), viewMatrix, projectionMatrix);
+            _distanceText.Render(deviceContext, Matrix.Translation(new Vector3(_position.X - _distanceText.Width / 2, -_position.Y - 20, 0.0f)), viewMatrix, projectionMatrix);
+            _nameText.Render(deviceContext, Matrix.Translation(new Vector3(_position.X +22, -_position.Y + 15, 0.0f)), viewMatrix, projectionMatrix);
+            _modelNameText.Render(deviceContext, Matrix.Translation(new Vector3(_position.X + 22, -_position.Y, 0.0f)), viewMatrix, projectionMatrix);
         }
     }
 }
