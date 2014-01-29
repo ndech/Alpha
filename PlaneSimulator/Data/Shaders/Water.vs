@@ -19,6 +19,7 @@ struct PixelInputType
 	float4 position : SV_POSITION;
 	float4 color : COLOR;
 	float fogFactor : FOG;
+	float depth : DEPTH;
 };
 
 /////////////////////////////////////
@@ -30,6 +31,8 @@ PixelInputType WaterVertexShader(VertexInputType input)
 
 	// Change the position vector to be 4 units for proper matrix calculations.
 	input.position.w = 1.0f;
+	output.depth = input.position.g;
+	input.position.g = 0.0f;
 
 	// Calculate the position of the vertex against the world, view, and projection matrices.
 	output.position = mul(input.position, worldMatrix);

@@ -113,7 +113,7 @@ namespace PlaneSimulator.Graphics.Models
                 for (int j = 0; j < (_height + 1); j++)
                     waterVertices[i * (_width + 1) + j] = new ColorShader.Vertex
                     {
-                        position = new Vector3((-(_width / 2) + i) * _pitch, 0.0f, (-(_height / 2) + j) * _pitch),
+                        position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch),
                         color = new Vector4(0.2f, 0.4f, 0.9f, 1)
                     };
             WaterIndexCount = _width * _height * 6;

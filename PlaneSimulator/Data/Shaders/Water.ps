@@ -6,6 +6,7 @@ struct PixelInputType
 	float4 position : SV_POSITION;
 	float4 color : COLOR;
 	float fogFactor : FOG;
+	float depth : DEPTH;
 };
 
 //////////////////////
@@ -13,5 +14,7 @@ struct PixelInputType
 /////////////////////
 float4 WaterPixelShader(PixelInputType input) : SV_TARGET
 {
+	float depthFactor = saturate(-input.depth/300);
+	input.color = float4(0.05f, 0.15f, 0.35f, 1)*depthFactor + float4(0.2f, 0.4f, 0.9f, 1)*(1-depthFactor);
 	return (input.color)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
 }

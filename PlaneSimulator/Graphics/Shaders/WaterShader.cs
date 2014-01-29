@@ -37,8 +37,8 @@ namespace PlaneSimulator.Graphics.Shaders
 
         public WaterShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "WaterVertexShader", "vs_4_0", ShaderFlags.None, EffectFlags.None);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "WaterPixelShader", "ps_4_0", ShaderFlags.None, EffectFlags.None);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "WaterVertexShader", "vs_4_0", ShaderFlags.Debug, EffectFlags.None);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "WaterPixelShader", "ps_4_0", ShaderFlags.Debug, EffectFlags.None);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

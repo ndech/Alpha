@@ -7,7 +7,7 @@
         {
             WindowedMode = true;
             VSync = false;
-            AntiAliasing = true;
+            AntiAliasing = false;
             Height = 768;
             Width = 1024;
             FarLimit = 50000.0f;
