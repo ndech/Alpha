@@ -29,6 +29,12 @@ namespace PlaneSimulator.Graphics.Shaders
             public float padding;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct ClippingPlaneBuffer
+        {
+            public Vector4 plane;
+        }
+
         private const string VertexShaderFileName = @"Data/Shaders/Terrain.vs";
         private const string PixelShaderFileName = @"Data/Shaders/Terrain.ps";
         VertexShader VertexShader { get; set; }
@@ -36,6 +42,7 @@ namespace PlaneSimulator.Graphics.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantLightBuffer { get; set; }
+        Buffer ConstantClippingPlaneBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
         public TerrainShader(Device device)
@@ -75,6 +82,19 @@ namespace PlaneSimulator.Graphics.Shaders
             };
             ConstantLightBuffer = new Buffer(device, lightBufferDesc);
 
+
+            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+            var clipPLaneBufferDesc = new BufferDescription
+            {
+                Usage = ResourceUsage.Dynamic, // Updated each frame
+                SizeInBytes = Utilities.SizeOf<ClippingPlaneBuffer>(), // Contains three matrices
+                BindFlags = BindFlags.ConstantBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                StructureByteStride = 0
+            };
+            ConstantClippingPlaneBuffer = new Buffer(device, lightBufferDesc);
+
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
@@ -94,7 +114,7 @@ namespace PlaneSimulator.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, Texture texture)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, Texture texture, Vector4 clippingPlane)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -127,9 +147,19 @@ namespace PlaneSimulator.Graphics.Shaders
 
             deviceContext.UnmapSubresource(ConstantLightBuffer, 0);
 
+            deviceContext.MapSubresource(ConstantClippingPlaneBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
+
+            mappedResource.Write(
+                new ClippingPlaneBuffer
+                {
+                    plane = clippingPlane
+                });
+
+            deviceContext.UnmapSubresource(ConstantClippingPlaneBuffer, 0);
             
             // Finally set the constant buffers in the vertex shader with the updated values.
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
+            deviceContext.VertexShader.SetConstantBuffer(1, ConstantClippingPlaneBuffer);
 
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantLightBuffer);
             deviceContext.PixelShader.SetShaderResource(0, texture.TextureResource);

@@ -28,7 +28,11 @@ namespace PlaneSimulator.Graphics.Models
 
         public TerrainShader TerrainShader { get; private set; }
 
-        private Texture _texture;
+        private readonly Texture _texture;
+
+        private readonly Vector4 _reflectionClippingPlane;
+
+        private readonly Vector4 _refractionClippingPlane;
 
         private const int TextureRepeat = 5;
 
@@ -41,6 +45,8 @@ namespace PlaneSimulator.Graphics.Models
             _height = HeightMap.Height-1;
             _pitch = pitch;
             _texture = new Texture(device, "Ground.png");
+            _reflectionClippingPlane = new Vector4(0.0f, 1.0f, 0.0f, 0.0f);
+            _refractionClippingPlane = new Vector4(0.0f, -1.0f, 0.0f, 0.0f);
             BuildBuffers(device);
         }
 
@@ -135,15 +141,15 @@ namespace PlaneSimulator.Graphics.Models
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
         {
             //Render water
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<ColorShader.Vertex>(), 0));
-            deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
-            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix);
+            //deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<ColorShader.Vertex>(), 0));
+            //deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
+            //deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            //WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix);
             //Render terrain
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, viewMatrix, projectionMatrix, light, _texture);
+            TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, viewMatrix, projectionMatrix, light, _texture, _refractionClippingPlane);
         }
     }
 }

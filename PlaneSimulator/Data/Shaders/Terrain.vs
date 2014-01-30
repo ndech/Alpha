@@ -8,6 +8,11 @@ cbuffer MatrixBuffer
     matrix projectionMatrix;
 };
 
+cbuffer ClippingPlane
+{
+	float4 clipPlane;
+}
+
 //////////////
 // TYPEDEFS //
 //////////////
@@ -24,6 +29,7 @@ struct PixelInputType
     float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
 	float fogFactor : FOG;
+	float clip : SV_ClipDistance0;
 };
 
 
@@ -53,6 +59,8 @@ PixelInputType TerrainVertexShader(VertexInputType input)
     output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.0002);
 
 	output.tex = input.tex;
+	
+    output.clip = dot(mul(input.position, worldMatrix), clipPlane);
 
     return output;
 }

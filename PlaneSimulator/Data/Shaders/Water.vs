@@ -48,7 +48,7 @@ PixelInputType WaterVertexShader(VertexInputType input)
     cameraPosition = mul(cameraPosition, viewMatrix);
 
     // Calculate linear fog.
-    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.0002);
+    output.fogFactor = 1.0 / pow(2.71828,(cameraPosition.z * 0.0002));
 
 	return output;
 }
