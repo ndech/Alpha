@@ -13,19 +13,12 @@ namespace PlaneSimulator.Graphics.Shaders
     public class WaterShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
-        internal struct Vertex
-        {
-            public static int AppendAlignedElement = 12;
-            public Vector3 position;
-            public Vector4 color;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
         internal struct MatrixBuffer
         {
             public Matrix world;
             public Matrix view;
             public Matrix projection;
+            public Matrix reflection;
         }
 
         private const string VertexShaderFileName = @"Data/Shaders/Water.vs";
@@ -34,6 +27,7 @@ namespace PlaneSimulator.Graphics.Shaders
         PixelShader PixelShader { get; set; }
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
+        SamplerState SamplerState { get; set; }
 
         public WaterShader(Device device)
         {
@@ -43,30 +37,7 @@ namespace PlaneSimulator.Graphics.Shaders
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
 
-            var inputElements = new InputElement[]
-			{
-				new InputElement
-				{
-					SemanticName = "POSITION",
-					SemanticIndex = 0,
-					Format = Format.R32G32B32_Float,
-					Slot = 0,
-					AlignedByteOffset = 0,
-					Classification = InputClassification.PerVertexData,
-					InstanceDataStepRate = 0
-				},
-				new InputElement
-				{
-					SemanticName = "COLOR",
-					SemanticIndex = 0,
-					Format = Format.R32G32B32A32_Float,
-					Slot = 0,
-					AlignedByteOffset = ColorShader.Vertex.AppendAlignedElement,
-					Classification = InputClassification.PerVertexData,
-					InstanceDataStepRate = 0
-				}
-			};
-            Layout = new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
+            Layout = VertexDefinition.PositionTexture.GetInputLayout(device, vertexShaderByteCode);
 
             vertexShaderByteCode.Dispose();
             pixelShaderByteCode.Dispose();
@@ -82,13 +53,33 @@ namespace PlaneSimulator.Graphics.Shaders
                 StructureByteStride = 0
             };
             ConstantMatrixBuffer = new Buffer(device, matrixBufferDesc);
+
+            // Create a texture sampler state description.
+            var samplerDesc = new SamplerStateDescription
+            {
+                Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap,
+                MipLodBias = 0,
+                MaximumAnisotropy = 1,
+                ComparisonFunction = Comparison.Always,
+                BorderColor = new Color4(0, 0, 0, 0),
+                MinimumLod = 0,
+                MaximumLod = float.MaxValue
+            };
+
+            // Create the texture sampler state.
+            SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflexionMatrix,
+            ShaderResourceView reflectionMap, ShaderResourceView refractionMap)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
             projectionMatrix.Transpose();
+            reflexionMatrix.Transpose();
             // Lock the constant memory buffer so it can be written to.
             DataStream mappedResource;
             deviceContext.MapSubresource(ConstantMatrixBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
@@ -98,7 +89,8 @@ namespace PlaneSimulator.Graphics.Shaders
             {
                 world = worldMatrix,
                 view = viewMatrix,
-                projection = projectionMatrix
+                projection = projectionMatrix,
+                reflection = reflexionMatrix
             };
             mappedResource.Write(matrixBuffer);
 
@@ -117,6 +109,9 @@ namespace PlaneSimulator.Graphics.Shaders
             // Set the vertex and pixel shaders that will be used to render this triangle.
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.PixelShader.Set(PixelShader);
+            deviceContext.PixelShader.SetSampler(0, SamplerState);
+            deviceContext.PixelShader.SetShaderResource(0, reflectionMap);
+            deviceContext.PixelShader.SetShaderResource(1, refractionMap);
 
             // Render the triangle.
             deviceContext.DrawIndexed(indexCount, 0, 0);

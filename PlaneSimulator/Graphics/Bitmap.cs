@@ -12,7 +12,7 @@ namespace PlaneSimulator.Graphics
 {
     public class Bitmap : IDisposable
     {
-        public Texture Texture { get; private set; }
+        public ShaderResourceView Texture { get; private set; }
         public Buffer VertexBuffer { get; private set; }
         public Buffer IndexBuffer { get; private set; }
         public int VertexCount { get; private set; }
@@ -47,7 +47,7 @@ namespace PlaneSimulator.Graphics
         private bool _changed;
         public float Depth { get; set; }
 
-        public Bitmap(Device device, Texture texture, int screenWidth, int screenHeight, int width, int height, float depth = 0.0f)
+        public Bitmap(Device device, ShaderResourceView texture, int screenWidth, int screenHeight, int width, int height, float depth = 0.0f)
         {
             Texture = texture;
             ScreenSize = new Vector2(screenWidth, screenHeight);

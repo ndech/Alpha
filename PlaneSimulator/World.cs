@@ -10,9 +10,9 @@ namespace PlaneSimulator
     {
         private readonly Terrain _terrain;
         public World(Game game, Renderer renderer) 
-            : base(game, renderer, 0, true, true)
+            : base(game, renderer, 0)
         {
-            _terrain = new Terrain(renderer.DirectX.Device, "Heightmap.png", 100);
+            _terrain = new Terrain(renderer.DirectX.Device, "Heightmap.png", 100, Renderer);
         }
 
         public override void Update(double delta) { }

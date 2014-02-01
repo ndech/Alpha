@@ -93,7 +93,7 @@ namespace PlaneSimulator.Graphics.Shaders
                 OptionFlags = ResourceOptionFlags.None,
                 StructureByteStride = 0
             };
-            ConstantClippingPlaneBuffer = new Buffer(device, lightBufferDesc);
+            ConstantClippingPlaneBuffer = new Buffer(device, clipPLaneBufferDesc);
 
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription

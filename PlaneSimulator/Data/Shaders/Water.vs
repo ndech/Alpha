@@ -1,9 +1,13 @@
 ﻿///////////////////////
 ////   GLOBALS
 ///////////////////////
-float4x4 worldMatrix;
-float4x4 viewMatrix;
-float4x4 projectionMatrix;
+cbuffer MatrixBuffer
+{
+	matrix worldMatrix;
+	matrix viewMatrix;
+	matrix projectionMatrix;
+	matrix reflectionMatrix;
+};
 
 //////////////////////
 ////   TYPES
@@ -11,13 +15,15 @@ float4x4 projectionMatrix;
 struct VertexInputType
 {
 	float4 position : POSITION;
-	float4 color : COLOR;
+	float2 tex : TEXCOORD0;
 };
 
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
-	float4 color : COLOR;
+	float2 tex : TEXCOORD0;
+    float4 reflectionPosition : TEXCOORD1;
+    float4 refractionPosition : TEXCOORD2;
 	float fogFactor : FOG;
 	float depth : DEPTH;
 };
@@ -40,15 +46,28 @@ PixelInputType WaterVertexShader(VertexInputType input)
 	output.position = mul(output.position, projectionMatrix);
 
 	// Store the input color for the pixel shader to use.
-	output.color = input.color;
+	output.tex = input.tex;
 
-	
 	// Calculate the camera position.
     float4 cameraPosition = mul(input.position, worldMatrix);
     cameraPosition = mul(cameraPosition, viewMatrix);
 
     // Calculate linear fog.
     output.fogFactor = 1.0 / pow(2.71828,(cameraPosition.z * 0.0002));
+
+	  // Create the reflection projection world matrix.
+    matrix reflectProjectWorld = mul(reflectionMatrix, projectionMatrix);
+    reflectProjectWorld = mul(worldMatrix, reflectProjectWorld);
+
+    // Calculate the input position against the reflectProjectWorld matrix.
+    output.reflectionPosition = mul(input.position, reflectProjectWorld);
+
+    // Create the view projection world matrix for refraction.
+    matrix viewProjectWorld = mul(viewMatrix, projectionMatrix);
+    viewProjectWorld = mul(worldMatrix, viewProjectWorld);
+   
+    // Calculate the input position against the viewProjectWorld matrix.
+    output.refractionPosition = mul(input.position, viewProjectWorld);
 
 	return output;
 }

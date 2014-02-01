@@ -8,6 +8,7 @@ namespace PlaneSimulator.Graphics
     {
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
+        private Matrix _reflectionMatrix;
         private readonly Airplane _playerAirplane;
         private Vector3 _position;
         public Camera(Game game, Airplane playerAirplane)
@@ -19,6 +20,8 @@ namespace PlaneSimulator.Graphics
 
         public Matrix UiMatrix { get { return _uiMatrix; } }
 
+        public Matrix ReflectionMatrix { get { return _reflectionMatrix; } }
+
         public Vector3 Position { get { return _position; } }
 
         public override void Update(double delta)
@@ -27,7 +30,7 @@ namespace PlaneSimulator.Graphics
                 (float)_playerAirplane.CurrentState.Position.Y, 
                 _playerAirplane.Altitude + 10, 
                 (float)_playerAirplane.CurrentState.Position.X-60);
-            Vector3 orientation = new Vector3(0,10,0);
+            Vector3 orientation = new Vector3(0,0,0);
             // Create the rotation matrix from the yaw, pitch, and roll values (in radians).
             Matrix rotationMatrix = Matrix.RotationYawPitchRoll(
                                      Conversion.AngleToRadian(orientation.X),
@@ -42,6 +45,9 @@ namespace PlaneSimulator.Graphics
             _viewMatrix = Matrix.LookAtLH(_position, _position + lookAt, up);
 
             _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), lookAt, up);
+
+            _reflectionMatrix = Matrix.LookAtLH(new Vector3(_position.X, -_position.Y, _position.Z),
+                new Vector3(_position.X + lookAt.X, -_position.Y /*- lookAt.Y*/, _position.Z + lookAt.Z), up);
         }
 
         public override void Dispose() { }

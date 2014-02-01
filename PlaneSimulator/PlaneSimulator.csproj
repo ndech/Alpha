@@ -155,6 +155,7 @@
     <Compile Include="Graphics\ObjModel.cs" />
     <Compile Include="Graphics\Rectangle.cs" />
     <Compile Include="Graphics\Renderer.cs" />
+    <Compile Include="Graphics\RenderTexture.cs" />
     <Compile Include="Graphics\Shaders\ColorShader.cs" />
     <Compile Include="Graphics\Shaders\FontShader.cs" />
     <Compile Include="Graphics\Shaders\LightShader.cs" />

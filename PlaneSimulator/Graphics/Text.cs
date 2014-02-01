@@ -105,7 +105,7 @@ namespace PlaneSimulator.Graphics
 			deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
 			deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-			_shader.Render(deviceContext, _content.Length*6, worldMatrix, viewMatrix, orthoMatrix, Font.Texture, Color);
+			_shader.Render(deviceContext, _content.Length*6, worldMatrix, viewMatrix, orthoMatrix, Font.Texture.TextureResource, Color);
         }
 
         public void Update(DeviceContext deviceContext)

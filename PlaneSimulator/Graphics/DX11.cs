@@ -19,7 +19,6 @@ namespace PlaneSimulator.Graphics
         private Texture2D _depthStencilBuffer;
         private DepthStencilState _depthStencilState;
         private DepthStencilState _depthDisabledStencilState;
-        private DepthStencilView _depthStencilView;
         private RasterizerState _rasterStateSolid;
         private RasterizerState _rasterStateWireFrame;
         private BlendState _alphaEnabledBlendState;
@@ -29,6 +28,7 @@ namespace PlaneSimulator.Graphics
         private bool _isZBufferEnabled;
         private bool _isBlendingEnabled;
         private bool _isWireframeEnabled;
+        public DepthStencilView DepthStencilView { get; set; }
         public Device Device { get; private set; }
         public DeviceContext DeviceContext { get; private set; }
         public SwapChain SwapChain { get; private set; }
@@ -201,10 +201,10 @@ namespace PlaneSimulator.Graphics
                 };
 
             // Create the depth stencil view.
-            _depthStencilView = new DepthStencilView(Device, _depthStencilBuffer, depthStencilViewDesc);
+            DepthStencilView = new DepthStencilView(Device, _depthStencilBuffer, depthStencilViewDesc);
 
             // Bind the render target view and depth stencil buffer to the output render pipeline.
-            DeviceContext.OutputMerger.SetTargets(_depthStencilView, _renderTargetView);
+            DeviceContext.OutputMerger.SetTargets(DepthStencilView, _renderTargetView);
 
             // Setup the raster description which will determine how and what polygon will be drawn.
             var rasterDesc = new RasterizerStateDescription
@@ -276,7 +276,7 @@ namespace PlaneSimulator.Graphics
             {
                 if (SwapChain != null && SwapChain.IsFullScreen == true) // Before shutting down set swap chain to windowed mode 
                     SwapChain.SetFullscreenState(false, null);
-                DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, _depthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
+                DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, DepthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
                 _disposed = true;
             }
         }
@@ -284,7 +284,7 @@ namespace PlaneSimulator.Graphics
         public void BeginScene(float red, float green, float blue, float alpha)
         {
             // Clear the depth buffer.
-            DeviceContext.ClearDepthStencilView(_depthStencilView, DepthStencilClearFlags.Depth, 1, 0);
+            DeviceContext.ClearDepthStencilView(DepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
             // Clear the back buffer.
             DeviceContext.ClearRenderTargetView(_renderTargetView, new Color4(red, green, blue, alpha));
         }
@@ -334,6 +334,11 @@ namespace PlaneSimulator.Graphics
             if (!_isWireframeEnabled) return;
             DeviceContext.Rasterizer.State = _rasterStateSolid;
             _isWireframeEnabled = false;
+        }
+
+        public void SetBackBufferAsRenderTarget()
+        {
+            DeviceContext.OutputMerger.SetRenderTargets(DepthStencilView, _renderTargetView);
         }
     }
 }

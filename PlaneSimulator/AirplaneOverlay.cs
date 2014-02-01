@@ -24,7 +24,7 @@ namespace PlaneSimulator
             _airplane = airplane;
             _playerAirplane = playerAirplane;
             _shader = Renderer.FontShader;
-            _overlay = new Bitmap(Renderer.DirectX.Device, Renderer.TextureManager.Create("Circle.png"), (int) Renderer.ScreenSize.X,
+            _overlay = new Bitmap(Renderer.DirectX.Device, Renderer.TextureManager.Create("Circle.png").TextureResource, (int) Renderer.ScreenSize.X,
                 (int)Renderer.ScreenSize.Y, 100, 100);
             _overlay.Position = new Vector2(0);
             _overlay.Size = new Vector2(40, 40);

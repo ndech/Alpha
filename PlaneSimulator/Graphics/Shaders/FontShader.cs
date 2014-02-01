@@ -120,7 +120,7 @@ namespace PlaneSimulator.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Texture texture, Vector4 fontColor)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture, Vector4 fontColor)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -152,7 +152,7 @@ namespace PlaneSimulator.Graphics.Shaders
             deviceContext.VertexShader.SetConstantBuffer(bufferNumber, ConstantMatrixBuffer);
 
             // Set shader resources in the pixel shader.
-            deviceContext.PixelShader.SetShaderResource(0, texture.TextureResource);
+            deviceContext.PixelShader.SetShaderResource(0, texture);
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantFontColorBuffer);
 
             // Set the vertex input layout.

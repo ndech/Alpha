@@ -145,5 +145,40 @@ namespace PlaneSimulator.Graphics.Shaders
                 return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
             }
         }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PositionTexture
+        {
+            public static int AppendAlignedElement1 = 12;
+            public Vector3 position;
+            public Vector2 texture;
+
+            public static InputLayout GetInputLayout(Device device, CompilationResult vertexShaderByteCode)
+            {
+                var inputElements = new InputElement[]
+                {
+                    new InputElement
+                    {
+                        SemanticName = "POSITION",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 0,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = LightShader.Vertex.AppendAlignedElement1,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    }
+                };
+                return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
+            }
+        }
     }
 }
