@@ -49,7 +49,11 @@ namespace PlaneSimulator.Graphics.Models
 
         private readonly Bitmap _bitmap2;
 
-        private const int TextureRepeat = 5;
+        private const int TerrainTextureRepeat = 5;
+
+        private const int WaveTextureRepeat = 10;
+
+        private Vector2 WaveTranslation;
 
         public Terrain(Device device, String texture, int pitch, Renderer renderer)
         {
@@ -66,12 +70,13 @@ namespace PlaneSimulator.Graphics.Models
             _reflectionTexture = new RenderTexture(device, renderer.ScreenSize);
             _refractionTexture = new RenderTexture(device, renderer.ScreenSize);
             _renderer = renderer;
-            _bitmap = new Bitmap(device,_refractionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y,300, 300, 0);
-            _bitmap.Position = new Vector2((int)renderer.ScreenSize.X-300, 0);
-            _bitmap2 = new Bitmap(device, _reflectionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y, 300, 300, 0);
-            _bitmap2.Position = new Vector2((int)renderer.ScreenSize.X - 300, 350);
+            _bitmap = new Bitmap(device,_refractionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y,100, 100, 0);
+            _bitmap.Position = new Vector2((int)renderer.ScreenSize.X-100, 0);
+            _bitmap2 = new Bitmap(device, _reflectionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y, 100, 100, 0);
+            _bitmap2.Position = new Vector2((int)renderer.ScreenSize.X - 100, 120);
             _bumpMap = _renderer.TextureManager.Create("waterbump.dds");
             BuildBuffers(device);
+            WaveTranslation = new Vector2(0,0);
         }
 
         public Vector3 GetNormal(int x, int y)
@@ -120,7 +125,7 @@ namespace PlaneSimulator.Graphics.Models
                     terrainVertices[i * (_width + 1) + j] = new VertexDefinition.PositionTextureNormal
                     {
                         position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch),
-                        texture = new Vector2(((float)i / TextureRepeat), ((float)j / TextureRepeat)),
+                        texture = new Vector2(((float)i / TerrainTextureRepeat), ((float)j / TerrainTextureRepeat)),
                         normal = GetNormal(i,j)
                     };
             TerrainIndexCount = _width*_height*6;
@@ -144,7 +149,7 @@ namespace PlaneSimulator.Graphics.Models
                     waterVertices[i * (_width + 1) + j] = new VertexDefinition.PositionTexture
                     {
                         position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch),
-                        texture = new Vector2(0,0)
+                        texture = new Vector2(((float)i / WaveTextureRepeat), ((float)j / WaveTextureRepeat)),
                     };
             WaterIndexCount = _width * _height * 6;
             UInt32[] waterIndices = new UInt32[WaterIndexCount];
@@ -160,6 +165,11 @@ namespace PlaneSimulator.Graphics.Models
                 }
             WaterVertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, waterVertices);
             WaterIndexBuffer = Buffer.Create(device, BindFlags.IndexBuffer, waterIndices);
+        }
+
+        public void Update(float delta)
+        {
+            WaveTranslation += new Vector2(0.05f, 0.05f)*delta;
         }
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
@@ -184,7 +194,7 @@ namespace PlaneSimulator.Graphics.Models
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTexture>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix, _renderer.Camera.ReflectionMatrix, _reflectionTexture.ShaderResourceView, _refractionTexture.ShaderResourceView, _bumpMap.TextureResource);
+            WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix, _renderer.Camera.ReflectionMatrix, _reflectionTexture.ShaderResourceView, _refractionTexture.ShaderResourceView, _bumpMap.TextureResource, WaveTranslation);
             //Render terrain
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);

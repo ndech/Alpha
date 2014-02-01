@@ -20,6 +20,12 @@ namespace PlaneSimulator.Graphics.Shaders
             public Matrix projection;
             public Matrix reflection;
         }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct TranslationBuffer
+        {
+            public Vector2 translation;
+            public Vector2 padding;
+        }
 
         private const string VertexShaderFileName = @"Data/Shaders/Water.vs";
         private const string PixelShaderFileName = @"Data/Shaders/Water.ps";
@@ -27,6 +33,7 @@ namespace PlaneSimulator.Graphics.Shaders
         PixelShader PixelShader { get; set; }
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
+        Buffer ConstantTranslationBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
         public WaterShader(Device device)
@@ -54,6 +61,18 @@ namespace PlaneSimulator.Graphics.Shaders
             };
             ConstantMatrixBuffer = new Buffer(device, matrixBufferDesc);
 
+            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+            var translateBufferDesc = new BufferDescription
+            {
+                Usage = ResourceUsage.Dynamic, // Updated each frame
+                SizeInBytes = Utilities.SizeOf<TranslationBuffer>(), // Contains three matrices
+                BindFlags = BindFlags.ConstantBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                StructureByteStride = 0
+            };
+            ConstantTranslationBuffer = new Buffer(device, translateBufferDesc);
+
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
@@ -74,7 +93,7 @@ namespace PlaneSimulator.Graphics.Shaders
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflexionMatrix,
-            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap)
+            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap, Vector2 translation)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -97,6 +116,19 @@ namespace PlaneSimulator.Graphics.Shaders
             // Unlock the constant buffer.
             deviceContext.UnmapSubresource(ConstantMatrixBuffer, 0);
 
+
+            deviceContext.MapSubresource(ConstantTranslationBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
+
+            // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
+            var translationBuffer = new TranslationBuffer()
+            {
+                translation = translation
+            };
+            mappedResource.Write(translationBuffer);
+
+            // Unlock the constant buffer.
+            deviceContext.UnmapSubresource(ConstantTranslationBuffer, 0);
+
             // Set the position of the constant buffer in the vertex shader.
             var bufferNumber = 0;
 
@@ -108,6 +140,7 @@ namespace PlaneSimulator.Graphics.Shaders
 
             // Set the vertex and pixel shaders that will be used to render this triangle.
             deviceContext.VertexShader.Set(VertexShader);
+            deviceContext.PixelShader.SetConstantBuffer(0, ConstantTranslationBuffer);
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.PixelShader.SetShaderResource(0, reflectionMap);

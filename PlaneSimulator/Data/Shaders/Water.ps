@@ -1,5 +1,11 @@
 ﻿SamplerState SampleType;
 
+cbuffer TranslateBuffer
+{
+	float2 translateVector;
+	float2 padding;
+};
+
 Texture2D reflectionTexture : register( t0 );
 Texture2D refractionTexture : register( t1 );
 Texture2D wavesTexture      : register( t2 );
@@ -26,6 +32,8 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
     float2 refractTexCoord;
 	float4 reflectionColor;
 	float4 refractionColor;
+	float4 normalMap;
+	float3 normal;
 	
     // Calculate the projected reflection texture coordinates.
     reflectTexCoord.x = input.reflectionPosition.x / input.reflectionPosition.w / 2.0f + 0.5f;
@@ -35,11 +43,17 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
     refractTexCoord.x = input.refractionPosition.x / input.refractionPosition.w / 2.0f + 0.5f;
     refractTexCoord.y = -input.refractionPosition.y / input.refractionPosition.w / 2.0f + 0.5f;
 
-    reflectionColor = reflectionTexture.Sample(SampleType, reflectTexCoord);
-    refractionColor = refractionTexture.Sample(SampleType, refractTexCoord);
+	//Sample bump map :
+	normalMap = wavesTexture.Sample(SampleType, input.tex+translateVector);
+	normal = (normalMap.xyz * 2.0f) - 1.0f;
+
+    reflectionColor = reflectionTexture.Sample(SampleType, reflectTexCoord + normal.xy);
+    refractionColor = refractionTexture.Sample(SampleType, refractTexCoord + normal.xy);
 	
 	float depthFactor = saturate(-input.depth/300);
-	float4 color = float4(0.05f, 0.15f, 0.35f, 1)*depthFactor + float4(0.2f, 0.4f, 0.9f, 0.5f)*(1-depthFactor);
-	return color*0.5f + (reflectionColor+refractionColor)*0.5f;
-	//return (color)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
+	float4 color = float4(0.05f, 0.15f, 0.35f, 1)*depthFactor + float4(0.2f, 0.4f, 0.9f, 1)*(1-depthFactor);
+	color = color*0.2f + (reflectionColor+refractionColor)*0.4f;
+
+	//return color;
+	return (color)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
 }

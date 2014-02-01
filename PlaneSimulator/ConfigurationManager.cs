@@ -6,7 +6,7 @@
         private ConfigurationManager()
         {
             WindowedMode = true;
-            VSync = false;
+            VSync = true;
             AntiAliasing = true;
             Height = 768;
             Width = 1024;

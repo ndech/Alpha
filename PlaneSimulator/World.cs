@@ -15,7 +15,10 @@ namespace PlaneSimulator
             _terrain = new Terrain(renderer.DirectX.Device, "Heightmap.png", 100, Renderer);
         }
 
-        public override void Update(double delta) { }
+        public override void Update(double delta)
+        {
+            _terrain.Update((float)delta);
+        }
 
         public override void Dispose() { }
 
