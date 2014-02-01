@@ -74,7 +74,7 @@ namespace PlaneSimulator.Graphics.Shaders
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflexionMatrix,
-            ShaderResourceView reflectionMap, ShaderResourceView refractionMap)
+            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -112,6 +112,7 @@ namespace PlaneSimulator.Graphics.Shaders
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.PixelShader.SetShaderResource(0, reflectionMap);
             deviceContext.PixelShader.SetShaderResource(1, refractionMap);
+            deviceContext.PixelShader.SetShaderResource(2, bumpMap);
 
             // Render the triangle.
             deviceContext.DrawIndexed(indexCount, 0, 0);

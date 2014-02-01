@@ -29,6 +29,7 @@ namespace PlaneSimulator.Graphics
         private bool _isBlendingEnabled;
         private bool _isWireframeEnabled;
         public DepthStencilView DepthStencilView { get; set; }
+        public DepthStencilView RenderToTextureDepthStencilView { get; set; }
         public Device Device { get; private set; }
         public DeviceContext DeviceContext { get; private set; }
         public SwapChain SwapChain { get; private set; }
@@ -202,6 +203,26 @@ namespace PlaneSimulator.Graphics
 
             // Create the depth stencil view.
             DepthStencilView = new DepthStencilView(Device, _depthStencilBuffer, depthStencilViewDesc);
+            
+            RenderToTextureDepthStencilView = new DepthStencilView(Device, new Texture2D(Device, new Texture2DDescription
+			{
+				Width = ConfigurationManager.Config.Width,
+				Height = ConfigurationManager.Config.Height,
+				MipLevels = 1,
+				ArraySize = 1,
+				Format = Format.D24_UNorm_S8_UInt,
+				SampleDescription = new SampleDescription(1, 0),
+				Usage = ResourceUsage.Default,
+				BindFlags = BindFlags.DepthStencil,
+				CpuAccessFlags = CpuAccessFlags.None,
+				OptionFlags = ResourceOptionFlags.None
+			}), new DepthStencilViewDescription
+            {
+                Format = Format.D24_UNorm_S8_UInt,
+                Dimension = DepthStencilViewDimension.Texture2D,
+                Texture2D = new DepthStencilViewDescription.Texture2DResource() { MipSlice = 0 }
+            });
+
 
             // Bind the render target view and depth stencil buffer to the output render pipeline.
             DeviceContext.OutputMerger.SetTargets(DepthStencilView, _renderTargetView);

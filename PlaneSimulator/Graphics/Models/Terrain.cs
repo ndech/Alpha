@@ -43,6 +43,8 @@ namespace PlaneSimulator.Graphics.Models
 
         private readonly RenderTexture _reflectionTexture;
 
+        private readonly Texture _bumpMap;
+
         private readonly Bitmap _bitmap;
 
         private readonly Bitmap _bitmap2;
@@ -68,6 +70,7 @@ namespace PlaneSimulator.Graphics.Models
             _bitmap.Position = new Vector2((int)renderer.ScreenSize.X-300, 0);
             _bitmap2 = new Bitmap(device, _reflectionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y, 300, 300, 0);
             _bitmap2.Position = new Vector2((int)renderer.ScreenSize.X - 300, 350);
+            _bumpMap = _renderer.TextureManager.Create("waterbump.dds");
             BuildBuffers(device);
         }
 
@@ -161,26 +164,27 @@ namespace PlaneSimulator.Graphics.Models
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
         {
-            _renderer.DirectX.DisableZBuffer();
-            _refractionTexture.SetRenderTarget(deviceContext, _renderer.DirectX.DepthStencilView);
-            _refractionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.DepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
+            deviceContext.ClearDepthStencilView(_renderer.DirectX.RenderToTextureDepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
+            _refractionTexture.SetRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView);
+            _refractionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, viewMatrix, projectionMatrix, light, _texture, _refractionClippingPlane);
-            _reflectionTexture.SetRenderTarget(deviceContext, _renderer.DirectX.DepthStencilView);
-            _reflectionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.DepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
+
+            deviceContext.ClearDepthStencilView(_renderer.DirectX.RenderToTextureDepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
+            _reflectionTexture.SetRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView);
+            _reflectionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, _renderer.Camera.ReflectionMatrix, projectionMatrix, light, _texture, _reflectionClippingPlane);
             _renderer.DirectX.SetBackBufferAsRenderTarget();
-            _renderer.DirectX.EnableZBuffer();
             //Render water
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTexture>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix, _renderer.Camera.ReflectionMatrix, _reflectionTexture.ShaderResourceView, _refractionTexture.ShaderResourceView);
+            WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix, _renderer.Camera.ReflectionMatrix, _reflectionTexture.ShaderResourceView, _refractionTexture.ShaderResourceView, _bumpMap.TextureResource);
             //Render terrain
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
