@@ -1,7 +1,7 @@
 ﻿/////////////
 // GLOBALS //
 /////////////
-Texture2D shaderTexture;
+Texture2D Textures[4];
 SamplerState SampleType;
 
 cbuffer LightBuffer
@@ -19,6 +19,7 @@ struct PixelInputType
 {
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
+	float4 weights : TEXCOORD1;
     float3 normal : NORMAL;
 	float fogFactor : FOG;
 	float clip : SV_ClipDistance0;
@@ -31,7 +32,13 @@ float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 {
     float lightIntensity = saturate(dot(input.normal, -lightDirection));
 	
-    float4 pixelColor = (ambiantColor + (diffuseColor * lightIntensity)) * shaderTexture.Sample(SampleType, input.tex);
+	float4 textureColor = input.weights.x * Textures[0].Sample(SampleType, input.tex) 
+						+ input.weights.y * Textures[1].Sample(SampleType, input.tex) 
+						+ input.weights.z * Textures[2].Sample(SampleType, input.tex) 
+						+ input.weights.w * Textures[3].Sample(SampleType, input.tex);
 
-	return (pixelColor)*(input.fogFactor) + (1-input.fogFactor)*(float4(0.75,0.75,0.75,1));
+    float4 pixelColor = (ambiantColor + (diffuseColor * lightIntensity)) * textureColor;
+
+	//return pixelColor;
+	return lerp(pixelColor, float4(0.75,0.75,0.75,1), 1-input.fogFactor);
 }

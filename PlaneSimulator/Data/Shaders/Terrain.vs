@@ -20,6 +20,7 @@ struct VertexInputType
 {
     float4 position : POSITION;
     float2 tex : TEXCOORD0;
+	float4 weights : TEXCOORD1;
     float3 normal : NORMAL;
 };
 
@@ -27,6 +28,7 @@ struct PixelInputType
 {
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
+	float4 weights : TEXCOORD1;
     float3 normal : NORMAL;
 	float fogFactor : FOG;
 	float clip : SV_ClipDistance0;
@@ -56,9 +58,10 @@ PixelInputType TerrainVertexShader(VertexInputType input)
     cameraPosition = mul(cameraPosition, viewMatrix);
 
     // Calculate linear fog.
-    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.0002);
+    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.00008);
 
 	output.tex = input.tex;
+	output.weights = input.weights;
 	
     output.clip = dot(mul(input.position, worldMatrix), clipPlane);
 

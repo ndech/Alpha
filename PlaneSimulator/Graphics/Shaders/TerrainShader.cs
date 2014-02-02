@@ -53,7 +53,7 @@ namespace PlaneSimulator.Graphics.Shaders
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
 
-            Layout = VertexDefinition.PositionTextureNormal.GetInputLayout(device, vertexShaderByteCode);
+            Layout = VertexDefinition.PositionTextureNormal4Weights.GetInputLayout(device, vertexShaderByteCode);
 
             vertexShaderByteCode.Dispose();
             pixelShaderByteCode.Dispose();
@@ -114,7 +114,7 @@ namespace PlaneSimulator.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, Texture texture, Vector4 clippingPlane)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, ShaderResourceView[] textures, Vector4 clippingPlane)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -149,11 +149,7 @@ namespace PlaneSimulator.Graphics.Shaders
 
             deviceContext.MapSubresource(ConstantClippingPlaneBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
 
-            mappedResource.Write(
-                new ClippingPlaneBuffer
-                {
-                    plane = clippingPlane
-                });
+            mappedResource.Write( new ClippingPlaneBuffer {plane = clippingPlane});
 
             deviceContext.UnmapSubresource(ConstantClippingPlaneBuffer, 0);
             
@@ -162,7 +158,7 @@ namespace PlaneSimulator.Graphics.Shaders
             deviceContext.VertexShader.SetConstantBuffer(1, ConstantClippingPlaneBuffer);
 
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantLightBuffer);
-            deviceContext.PixelShader.SetShaderResource(0, texture.TextureResource);
+            deviceContext.PixelShader.SetShaderResources(0, textures);
             
             // Set the vertex input layout.
             deviceContext.InputAssembler.InputLayout = Layout;
