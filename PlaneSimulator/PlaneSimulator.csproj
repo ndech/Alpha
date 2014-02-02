@@ -247,6 +247,9 @@
     <Content Include="Data\Textures\stone01.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Textures\water01.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Textures\waterbump.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

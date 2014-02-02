@@ -26,6 +26,12 @@ namespace PlaneSimulator.Graphics.Shaders
             public Vector2 translation;
             public Vector2 padding;
         }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CameraPositionBuffer
+        {
+            public Vector3 position;
+            public float padding;
+        }
 
         private const string VertexShaderFileName = @"Data/Shaders/Water.vs";
         private const string PixelShaderFileName = @"Data/Shaders/Water.ps";
@@ -34,6 +40,7 @@ namespace PlaneSimulator.Graphics.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantTranslationBuffer { get; set; }
+        Buffer ConstantCameraPositionBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
         public WaterShader(Device device)
@@ -73,6 +80,18 @@ namespace PlaneSimulator.Graphics.Shaders
             };
             ConstantTranslationBuffer = new Buffer(device, translateBufferDesc);
 
+            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+            var cameraPositionBufferDesc = new BufferDescription
+            {
+                Usage = ResourceUsage.Dynamic, // Updated each frame
+                SizeInBytes = Utilities.SizeOf<TranslationBuffer>(), // Contains three matrices
+                BindFlags = BindFlags.ConstantBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                StructureByteStride = 0
+            };
+            ConstantCameraPositionBuffer = new Buffer(device, cameraPositionBufferDesc);
+
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
@@ -81,7 +100,7 @@ namespace PlaneSimulator.Graphics.Shaders
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,
                 MipLodBias = 0,
-                MaximumAnisotropy = 1,
+                MaximumAnisotropy = 4,
                 ComparisonFunction = Comparison.Always,
                 BorderColor = new Color4(0, 0, 0, 0),
                 MinimumLod = 0,
@@ -93,7 +112,7 @@ namespace PlaneSimulator.Graphics.Shaders
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflexionMatrix,
-            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap, Vector2 translation)
+            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap, Vector2 translation, Vector3 cameraPosition)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -129,6 +148,19 @@ namespace PlaneSimulator.Graphics.Shaders
             // Unlock the constant buffer.
             deviceContext.UnmapSubresource(ConstantTranslationBuffer, 0);
 
+
+            deviceContext.MapSubresource(ConstantCameraPositionBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
+
+            // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
+            var cameraPositionBuffer = new CameraPositionBuffer()
+            {
+                position = cameraPosition
+            };
+            mappedResource.Write(cameraPositionBuffer);
+
+            // Unlock the constant buffer.
+            deviceContext.UnmapSubresource(ConstantCameraPositionBuffer, 0);
+
             // Set the position of the constant buffer in the vertex shader.
             var bufferNumber = 0;
 
@@ -140,8 +172,9 @@ namespace PlaneSimulator.Graphics.Shaders
 
             // Set the vertex and pixel shaders that will be used to render this triangle.
             deviceContext.VertexShader.Set(VertexShader);
-            deviceContext.PixelShader.SetConstantBuffer(0, ConstantTranslationBuffer);
             deviceContext.PixelShader.Set(PixelShader);
+            deviceContext.PixelShader.SetConstantBuffer(0, ConstantTranslationBuffer);
+            deviceContext.PixelShader.SetConstantBuffer(1, ConstantCameraPositionBuffer);
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.PixelShader.SetShaderResource(0, reflectionMap);
             deviceContext.PixelShader.SetShaderResource(1, refractionMap);
