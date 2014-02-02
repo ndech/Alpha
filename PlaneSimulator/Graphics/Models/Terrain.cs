@@ -49,6 +49,8 @@ namespace PlaneSimulator.Graphics.Models
 
         private readonly ShaderResourceView[] _terrainTextures;
 
+        private readonly ObjModel _skydome;
+
         private const int TerrainTextureRepeat = 5;
 
         private const int WaveTextureRepeat = 1;
@@ -79,6 +81,7 @@ namespace PlaneSimulator.Graphics.Models
             _bitmap2 = new Bitmap(device, _reflectionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y, 100, 100, 0);
             _bitmap2.Position = new Vector2((int)renderer.ScreenSize.X - 100, 120);
             _bumpMap = _renderer.TextureManager.Create("OceanWater.png");
+            _skydome = new ObjModel(device, "skydome.obj", renderer.TextureManager.Create("Sky.png"));
             BuildBuffers(device);
             WaveTranslation = new Vector2(0,0);
         }
@@ -190,6 +193,10 @@ namespace PlaneSimulator.Graphics.Models
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
         {
+            Light newLight = new Light(light.Direction, light.Color, new Vector4(1), light.SpecularPower, light.SpecularColor);
+            _skydome.Render(deviceContext);
+            _renderer.LightShader.Render(deviceContext, _skydome.IndexCount, Matrix.Scaling(10000) * Matrix.RotationY(MathUtil.PiOverTwo-WaveTranslation.X/8), viewMatrix, projectionMatrix, _skydome.Texture, newLight, _renderer.Camera);
+
             deviceContext.ClearDepthStencilView(_renderer.DirectX.RenderToTextureDepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
             _refractionTexture.SetRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView);
             _refractionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
@@ -200,7 +207,9 @@ namespace PlaneSimulator.Graphics.Models
 
             deviceContext.ClearDepthStencilView(_renderer.DirectX.RenderToTextureDepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
             _reflectionTexture.SetRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView);
-            _reflectionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView, 0.11f, 0.61f, 0.80f, 1.0f);
+            _reflectionTexture.ClearRenderTarget(deviceContext, _renderer.DirectX.RenderToTextureDepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
+            _skydome.Render(deviceContext);
+            _renderer.LightShader.Render(deviceContext, _skydome.IndexCount, Matrix.Scaling(10000) * Matrix.RotationY(MathUtil.PiOverTwo - WaveTranslation.X/8), viewMatrix, projectionMatrix, _skydome.Texture, newLight, _renderer.Camera);
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal4Weights>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;

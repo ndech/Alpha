@@ -55,7 +55,7 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
 	normal = (normalMap.xyz ) - 1.0f;
 
 	float3 eyeVector = cameraPosition-input.position.xyz;
-	float fresnelTerm = -normalize(eyeVector).y;
+	float fresnelTerm = -dot(normalize(eyeVector),float3(0,1,0));
 
     reflectionColor = reflectionTexture.Sample(SampleType, saturate(reflectTexCoord + -abs(normal.xy/8)));
     refractionColor = refractionTexture.Sample(SampleType, saturate(refractTexCoord + normal.xy/8));
