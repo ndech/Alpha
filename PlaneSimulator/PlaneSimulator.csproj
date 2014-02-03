@@ -173,8 +173,8 @@
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />
-    <Compile Include="Graphics\Input.cs" />
     <Compile Include="Graphics\TextureManager.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="MonitoringHeader.cs" />
@@ -209,6 +209,9 @@
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.DXGI.dll</HintPath>

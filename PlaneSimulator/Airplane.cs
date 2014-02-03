@@ -27,7 +27,7 @@ namespace PlaneSimulator
             CurrentState = state;
             Name = name;
             ModelName = modelName;
-            PhysicalModel = new AirplanePhysicalModel(this);
+            PhysicalModel = new AirplanePhysicalModel(this, isPlayer ? game.Input : null);
             Model = new ObjModel(renderer.DirectX.Device, "Airplane.obj", Renderer.TextureManager.Create("Metal.png"));
             if(!isPlayer && ConfigurationManager.Config.DisplayOverlay)
                 game.Register(new AirplaneOverlay(game, renderer, this, playerPlane));
@@ -46,7 +46,9 @@ namespace PlaneSimulator
         {
             Model.Render(deviceContext);
             Renderer.LightShader.Render(deviceContext, Model.IndexCount,
-                Matrix.RotationY(MathUtil.Pi) * Matrix.Translation((float)CurrentState.Position.Y, Altitude, (float)CurrentState.Position.X), 
+                Matrix.RotationY(MathUtil.Pi) 
+                * Matrix.RotationYawPitchRoll((float)CurrentState.AngularPosition.X, (float)CurrentState.AngularPosition.Y, (float)CurrentState.AngularPosition.Z) 
+                * Matrix.Translation((float)CurrentState.Position.Y, Altitude, (float)CurrentState.Position.X), 
                 viewMatrix, projectionMatrix, Model.Texture, Renderer.Light, Renderer.Camera);
         }
 

@@ -1,18 +1,40 @@
-﻿namespace PlaneSimulator
+﻿using SharpDX;
+
+namespace PlaneSimulator
 {
     using System;
     class ConfigurationManager
     {
+        private enum Modes
+        {
+            Fullscreen,
+            Windowed
+        };
         private ConfigurationManager()
         {
-            WindowedMode = true;
-            VSync = true;
+            SetValues(Modes.Windowed);
             AntiAliasing = true;
-            Height = 768;
-            Width = 1024;
             FarLimit = 50000.0f;
             NearLimit = 10f;
             DisplayOverlay = true;
+            VSync = false;
+        }
+
+        private void SetValues(Modes mode)
+        {
+            if (mode == Modes.Fullscreen)
+            {
+                WindowedMode = false;
+                Height = 900;
+                Width = 1600;
+                
+            }
+            else if (mode == Modes.Windowed)
+            {
+                WindowedMode = true;
+                Height = 768;
+                Width = 1024;
+            }
         }
 
         private static readonly ConfigurationManager Instance = new ConfigurationManager();

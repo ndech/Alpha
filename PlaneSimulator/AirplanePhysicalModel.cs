@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using PlaneSimulator.Toolkit.Math;
+using SharpDX.DirectInput;
 
 namespace PlaneSimulator
 {
@@ -13,6 +15,7 @@ namespace PlaneSimulator
         public List<Thruster> Thrusters { get; private set; }
         public List<Tank> Tanks { get; private set; }
         private Airplane _airplane;
+        private Input _input;
         public double Mass { get { return Tanks.Sum(tank => tank.Mass) + Thrusters.Sum(thruster => thruster.Mass); } }
 
         public State Update(double step, State currentState)
@@ -22,8 +25,9 @@ namespace PlaneSimulator
             return tempState;
         }
 
-        public AirplanePhysicalModel(Airplane airplane)
+        public AirplanePhysicalModel(Airplane airplane, Input input)
         {
+            _input = input;
             _airplane = airplane;
             Tanks = new List<Tank>();
             Thrusters = new List<Thruster>();
@@ -45,7 +49,18 @@ namespace PlaneSimulator
 
         private Vector3 CalculateMoments(State state)
         {
-            return new Vector3(0, 0, 0);
+            Vector3 vector = new Vector3(0);
+            if (_input == null)
+                return vector;
+            if (_input.IsKeyPressed(Key.Left))
+                vector.Z += 0.1f;
+            if (_input.IsKeyPressed(Key.Right))
+                vector.Z -= 0.1f;
+            if (_input.IsKeyPressed(Key.Up))
+                vector.Y += 0.3f;
+            if (_input.IsKeyPressed(Key.Down))
+                vector.Y -= 0.3f;
+            return vector;
         }
 
         private double ImmediateHourlyFuelConsumption()

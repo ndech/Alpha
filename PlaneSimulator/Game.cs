@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using PlaneSimulator.Graphics;
 using PlaneSimulator.Toolkit.IO;
+using SharpDX.DirectInput;
 using SharpDX.Windows;
 
 namespace PlaneSimulator
@@ -12,6 +13,7 @@ namespace PlaneSimulator
         private readonly Timer _timer;
         private readonly Airplane _playerPlane;
         private readonly Renderer _renderer;
+        public Input Input { get; private set; }
         private readonly List<GameComponent> _gameComponents;
         private readonly World _world;
         private bool _newRegisteredElement = false;
@@ -21,7 +23,8 @@ namespace PlaneSimulator
             _gameComponents = new List<GameComponent>();
             _timer = new Timer();
             _renderer = new Renderer();
-
+            Input = new Input(this, _renderer.Form.Handle);
+            Register(Input);
             _world = new World(this, _renderer);
             Register(_world);
             _playerPlane = AirplaneFactory.Create(_world, this, _renderer, true);
@@ -58,7 +61,7 @@ namespace PlaneSimulator
                     if(item.Enabled)
                         item.Update(delta);
 
-                if (_playerPlane.IsCrashed())
+                if (_playerPlane.IsCrashed() || Input.IsKeyPressed(Key.Escape))
                     Exit();
 
                 _renderer.Render();
@@ -67,7 +70,7 @@ namespace PlaneSimulator
 
         private void Exit()
         {
-            Thread.Sleep(10000);
+            //Thread.Sleep(10000);
             _renderer.Form.Close();
         }
 

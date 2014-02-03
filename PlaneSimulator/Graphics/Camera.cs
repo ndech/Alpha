@@ -1,5 +1,4 @@
-﻿using PlaneSimulator.Toolkit.Math;
-using SharpDX;
+﻿using SharpDX;
 using Vector3 = SharpDX.Vector3;
 
 namespace PlaneSimulator.Graphics
@@ -28,23 +27,25 @@ namespace PlaneSimulator.Graphics
         {
             _position = new Vector3(
                 (float)_playerAirplane.CurrentState.Position.Y, 
-                _playerAirplane.Altitude + 10, 
-                (float)_playerAirplane.CurrentState.Position.X-60);
-            Vector3 orientation = new Vector3(0,0,0);
+                _playerAirplane.Altitude, 
+                (float)_playerAirplane.CurrentState.Position.X);
+            
+            Vector3 orientation = new Vector3((float)_playerAirplane.CurrentState.AngularPosition.X, 
+                                              (float)_playerAirplane.CurrentState.AngularPosition.Y, 
+                                              (float)_playerAirplane.CurrentState.AngularPosition.Z);
             // Create the rotation matrix from the yaw, pitch, and roll values (in radians).
-            Matrix rotationMatrix = Matrix.RotationYawPitchRoll(
-                                     Conversion.AngleToRadian(orientation.X),
-                                     Conversion.AngleToRadian(orientation.Y),
-                                     Conversion.AngleToRadian(orientation.Z));
+            Matrix rotationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
 
             // Get the direction that the camera is pointing to and the up direction
             Vector3 lookAt = Vector3.TransformCoordinate(Vector3.UnitZ, rotationMatrix);
             Vector3 up = Vector3.TransformCoordinate(Vector3.UnitY, rotationMatrix);
 
-            // Finally create the view matrix from the three updated vectors.
-            _viewMatrix = Matrix.LookAtLH(_position, _position + lookAt, up);
+            Vector3 _positionDisplacement = Vector3.TransformCoordinate(new Vector3(0, 10, -60), rotationMatrix);
 
-            _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), lookAt, up);
+            // Finally create the view matrix from the three updated vectors.
+            _viewMatrix = Matrix.LookAtLH(_position + _positionDisplacement, _position + _positionDisplacement + lookAt, up);
+
+            _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), Vector3.UnitZ, Vector3.UnitY);
 
             _reflectionMatrix = Matrix.LookAtLH(new Vector3(_position.X, -_position.Y, _position.Z),
                 new Vector3(_position.X + lookAt.X, -_position.Y /*- lookAt.Y*/, _position.Z + lookAt.Z), up);
