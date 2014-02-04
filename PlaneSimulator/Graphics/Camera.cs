@@ -40,10 +40,10 @@ namespace PlaneSimulator.Graphics
             Vector3 lookAt = Vector3.TransformCoordinate(Vector3.UnitZ, rotationMatrix);
             Vector3 up = Vector3.TransformCoordinate(Vector3.UnitY, rotationMatrix);
 
-            Vector3 _positionDisplacement = Vector3.TransformCoordinate(new Vector3(0, 10, -60), rotationMatrix);
+            Vector3 positionDisplacement = Vector3.TransformCoordinate(new Vector3(0, 10, -60), rotationMatrix);
 
             // Finally create the view matrix from the three updated vectors.
-            _viewMatrix = Matrix.LookAtLH(_position + _positionDisplacement, _position + _positionDisplacement + lookAt, up);
+            _viewMatrix = Matrix.LookAtLH(_position + positionDisplacement, _position + positionDisplacement + lookAt, up);
 
             _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), Vector3.UnitZ, Vector3.UnitY);
 

@@ -5,7 +5,9 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using PlaneSimulator.Toolkit.Math;
+using SharpDX;
 using SharpDX.DirectInput;
+using Vector3 = PlaneSimulator.Toolkit.Math.Vector3;
 
 namespace PlaneSimulator
 {
@@ -44,7 +46,8 @@ namespace PlaneSimulator
             Vector3 weight = new Vector3(0.0, 0.0, _airplane.World.Gravity * Mass);
             Vector3 thrust = new Vector3();
             thrust = Thrusters.Aggregate(thrust, (current, thruster) => current + thruster.Trust);
-            return weight + thrust;
+            thrust = new Vector3(thrust.X * Math.Cos(state.AngularPosition.Y), thrust.Y * Math.Sin(state.AngularPosition.Y), 0);
+            return weight+thrust;
         }
 
         private Vector3 CalculateMoments(State state)
