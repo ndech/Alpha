@@ -1,5 +1,6 @@
 ﻿using System;
 using PlaneSimulator.Graphics.Shaders;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -79,8 +80,8 @@ namespace PlaneSimulator.Graphics
             }
         }
 
-        private Vector2 _position;
-        public Vector2 Position
+        private Vector2I _position;
+        public Vector2I Position
         {
             set
             {

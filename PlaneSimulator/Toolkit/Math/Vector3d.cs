@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using SharpDX;
 
 namespace PlaneSimulator.Toolkit.Math
 {
-    public struct Vector3 : IEquatable<Vector3>, IFormattable
+    public struct Vector3D : IEquatable<Vector3D>, IFormattable
     {
-        public static readonly Vector3 Origin = new Vector3(0, 0, 0);
+        public static readonly Vector3D Origin = new Vector3D(0, 0, 0);
         public double X;
         public double Y;
         public double Z;
@@ -44,25 +45,25 @@ namespace PlaneSimulator.Toolkit.Math
             get { return X*X + Y*Y + Z*Z; }
         }
 
-        public Vector3(double value)
+        public Vector3D(double value)
         {
             X = value;
             Y = value;
             Z = value;
         }
 
-        public Vector3(double x, double y, double z)
+        public Vector3D(double x, double y, double z)
         {
             X = x;
             Y = y;
             Z = z;
         }
 
-        public static Vector3 operator +(Vector3 v1, Vector3 v2)
+        public static Vector3D operator +(Vector3D v1, Vector3D v2)
         {
             return
                 (
-                    new Vector3
+                    new Vector3D
                         (
                         v1.X + v2.X,
                         v1.Y + v2.Y,
@@ -71,11 +72,11 @@ namespace PlaneSimulator.Toolkit.Math
                     );
         }
 
-        public static Vector3 operator -(Vector3 v1, Vector3 v2)
+        public static Vector3D operator -(Vector3D v1, Vector3D v2)
         {
             return
                 (
-                    new Vector3
+                    new Vector3D
                         (
                         v1.X - v2.X,
                         v1.Y - v2.Y,
@@ -84,11 +85,11 @@ namespace PlaneSimulator.Toolkit.Math
                     );
         }
 
-        public static Vector3 operator -(Vector3 v1)
+        public static Vector3D operator -(Vector3D v1)
         {
             return
                 (
-                    new Vector3
+                    new Vector3D
                         (
                         -v1.X,
                         -v1.Y,
@@ -97,52 +98,52 @@ namespace PlaneSimulator.Toolkit.Math
                     );
         }
 
-        public static bool operator <(Vector3 v1, Vector3 v2)
+        public static bool operator <(Vector3D v1, Vector3D v2)
         {
             return v1.Magnitude < v2.Magnitude;
         }
 
-        public static bool operator <=(Vector3 v1, Vector3 v2)
+        public static bool operator <=(Vector3D v1, Vector3D v2)
         {
             return v1.Magnitude <= v2.Magnitude;
         }
 
-        public static bool operator >(Vector3 v1, Vector3 v2)
+        public static bool operator >(Vector3D v1, Vector3D v2)
         {
             return v1.Magnitude > v2.Magnitude;
         }
 
-        public static bool operator >=(Vector3 v1, Vector3 v2)
+        public static bool operator >=(Vector3D v1, Vector3D v2)
         {
             return v1.Magnitude >= v2.Magnitude;
         }
 
-        public static bool operator ==(Vector3 v1, Vector3 v2)
+        public static bool operator ==(Vector3D v1, Vector3D v2)
         {
             return (v1.X == v2.X) && (v1.Y == v2.Y) && (v1.Z == v2.Z);
         }
 
-        public static bool operator !=(Vector3 v1, Vector3 v2)
+        public static bool operator !=(Vector3D v1, Vector3D v2)
         {
             return !(v1 == v2);
         }
 
-        public static Vector3 operator /(Vector3 v1, double s2)
+        public static Vector3D operator /(Vector3D v1, double s2)
         {
-            return new Vector3(v1.X/s2, v1.Y/s2, v1.Z/s2);
+            return new Vector3D(v1.X/s2, v1.Y/s2, v1.Z/s2);
         }
 
-        public static Vector3 operator *(Vector3 v1, double s2)
+        public static Vector3D operator *(Vector3D v1, double s2)
         {
-            return new Vector3(v1.X*s2, v1.Y*s2, v1.Z*s2);
+            return new Vector3D(v1.X*s2, v1.Y*s2, v1.Z*s2);
         }
 
-        public static Vector3 operator *(double s2, Vector3 v1)
+        public static Vector3D operator *(double s2, Vector3D v1)
         {
             return v1*s2;
         }
 
-        public static bool IsUnit(Vector3 v1)
+        public static bool IsUnit(Vector3D v1)
         {
             return v1.Magnitude == 1;
         }
@@ -152,15 +153,15 @@ namespace PlaneSimulator.Toolkit.Math
             return IsUnit(this);
         }
 
-        public static Vector3 Cross(Vector3 left, Vector3 right)
+        public static Vector3D Cross(Vector3D left, Vector3D right)
         {
-            return new Vector3(
+            return new Vector3D(
                 (left.Y*right.Z) - (left.Z*right.Y),
                 (left.Z*right.X) - (left.X*right.Z),
                 (left.X*right.Y) - (left.Y*right.X));
         }
 
-        public static double Dot(Vector3 left, Vector3 right)
+        public static double Dot(Vector3D left, Vector3D right)
         {
             return (left.X*right.X) + (left.Y*right.Y) + (left.Z*right.Z);
         }
@@ -204,16 +205,15 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public static bool Equals(Vector3 a, Vector3 b)
+        public static bool Equals(Vector3D a, Vector3D b)
         {
             return
                 MathUtil.NearEqual(a.X, b.X) &&
                 MathUtil.NearEqual(a.Y, b.Y) &&
-                MathUtil.NearEqual(a.Z, b.Z)
-                ;
+                MathUtil.NearEqual(a.Z, b.Z);
         }
 
-        public bool Equals(Vector3 other)
+        public bool Equals(Vector3D other)
         {
             return Equals(this, other);
         }
@@ -222,7 +222,12 @@ namespace PlaneSimulator.Toolkit.Math
         {
             if (value == null)
                 return false;
-            return ReferenceEquals(value.GetType(), typeof (Vector3)) && Equals((Vector3) value);
+            return ReferenceEquals(value.GetType(), typeof (Vector3D)) && Equals((Vector3D) value);
+        }
+
+        public static explicit operator SharpDX.Vector3(Vector3D vector)
+        {
+            return new Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
         }
     }
 }

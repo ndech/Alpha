@@ -14,9 +14,9 @@ namespace PlaneSimulator
             get { return 100.0; }
         }
 
-        public Vector3 Trust
+        public Vector3D Trust
         {
-            get { return new Vector3(100000,0,0); }
+            get { return new Vector3D(100000,0,0); }
         }
     }
 }

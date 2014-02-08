@@ -197,7 +197,8 @@
     <Compile Include="Toolkit\Math\Matrix3x3.cs" />
     <Compile Include="Toolkit\Math\MathUtil.cs" />
     <Compile Include="Toolkit\Math\RK4Integrator.cs" />
-    <Compile Include="Toolkit\Math\Vector3.cs" />
+    <Compile Include="Toolkit\Math\Vector2I.cs" />
+    <Compile Include="Toolkit\Math\Vector3d.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

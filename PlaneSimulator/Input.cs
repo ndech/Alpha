@@ -17,11 +17,11 @@ namespace PlaneSimulator
             _directInput = new DirectInput();
             _keyboard = new Keyboard(_directInput);
             _keyboard.Properties.BufferSize = 256;
-            _keyboard.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
+            _keyboard.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
             //_keyboard.Acquire();
             _mouse = new Mouse(_directInput);
             _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
-            _mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
+            _mouse.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
             //_mouse.Acquire();
         }
 
@@ -57,7 +57,7 @@ namespace PlaneSimulator
                         _mouse.Acquire();
                         _mouseState = _mouse.GetCurrentState();
                     }
-                    catch(SharpDXException e1)
+                    catch (SharpDXException)
                     { }
                 }
                 else
@@ -80,7 +80,7 @@ namespace PlaneSimulator
                         _keyboard.Acquire();
                         _keyboardState = _keyboard.GetCurrentState();
                     }
-                    catch(SharpDXException e1)
+                    catch(SharpDXException)
                     { }
                 }
                 else

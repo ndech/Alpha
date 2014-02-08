@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Windows;
 using PlaneSimulator.Graphics.Shaders;
@@ -20,7 +21,7 @@ namespace PlaneSimulator.Graphics
         public FontShader FontShader { get; set; }
         public TranslateShader TranslateShader { get; set; }
         public FontShader CircleShader { get; set; }
-        public Vector2 ScreenSize { get; private set; }
+        public Vector2I ScreenSize { get; private set; }
         public TextManager TextManager { get; private set; }
         public TextureManager TextureManager { get; private set; }
 
@@ -30,7 +31,7 @@ namespace PlaneSimulator.Graphics
         {
             CreateWindow();
             DirectX = new Dx11(Form);
-            ScreenSize = new Vector2(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
+            ScreenSize = new Vector2I(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
             Light = new Light
             {
                 Direction = new Vector3(1.0f, -1.0f, 0.0f),

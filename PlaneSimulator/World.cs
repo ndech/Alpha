@@ -1,8 +1,8 @@
 ﻿using PlaneSimulator.Graphics;
 using PlaneSimulator.Graphics.Models;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
-using Vector3 = PlaneSimulator.Toolkit.Math.Vector3;
 
 namespace PlaneSimulator
 {
@@ -36,7 +36,7 @@ namespace PlaneSimulator
             get { return 0.81; }
         }
 
-        public double Altitude(Vector3 position)
+        public double Altitude(Vector3D position)
         {
             return _terrain.GetHeight(position.X, position.Y);
         }

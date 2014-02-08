@@ -60,9 +60,9 @@ namespace PlaneSimulator.Toolkit.Math
             M33 = values[8];
         }
 
-        public Vector3 Row1
+        public Vector3D Row1
         {
-            get { return new Vector3(M11, M12, M13); }
+            get { return new Vector3D(M11, M12, M13); }
             set
             {
                 M11 = value.X;
@@ -71,9 +71,9 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public Vector3 Row2
+        public Vector3D Row2
         {
-            get { return new Vector3(M21, M22, M23); }
+            get { return new Vector3D(M21, M22, M23); }
             set
             {
                 M21 = value.X;
@@ -82,9 +82,9 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public Vector3 Row3
+        public Vector3D Row3
         {
-            get { return new Vector3(M31, M32, M33); }
+            get { return new Vector3D(M31, M32, M33); }
             set
             {
                 M31 = value.X;
@@ -93,9 +93,9 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public Vector3 Column1
+        public Vector3D Column1
         {
-            get { return new Vector3(M11, M21, M31); }
+            get { return new Vector3D(M11, M21, M31); }
             set
             {
                 M11 = value.X;
@@ -104,9 +104,9 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public Vector3 Column2
+        public Vector3D Column2
         {
-            get { return new Vector3(M12, M22, M32); }
+            get { return new Vector3D(M12, M22, M32); }
             set
             {
                 M12 = value.X;
@@ -115,9 +115,9 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public Vector3 Column3
+        public Vector3D Column3
         {
-            get { return new Vector3(M13, M23, M33); }
+            get { return new Vector3D(M13, M23, M33); }
             set
             {
                 M13 = value.X;
@@ -126,9 +126,9 @@ namespace PlaneSimulator.Toolkit.Math
             }
         }
 
-        public Vector3 ScaleVector
+        public Vector3D ScaleVector
         {
-            get { return new Vector3(M11, M22, M33); }
+            get { return new Vector3D(M11, M22, M33); }
             set
             {
                 M11 = value.X;
@@ -305,9 +305,9 @@ namespace PlaneSimulator.Toolkit.Math
                 );
         }
 
-        public static Vector3 Multiply(Matrix3x3 left, Vector3 right)
+        public static Vector3D Multiply(Matrix3x3 left, Vector3D right)
         {
-            return new Vector3(
+            return new Vector3D(
                 (left.M11*right.X) + (left.M12*right.Y) + (left.M13*right.Z),
                 (left.M11*right.X) + (left.M12*right.Y) + (left.M13*right.Z),
                 (left.M11*right.X) + (left.M12*right.Y) + (left.M13*right.Z)
@@ -428,7 +428,7 @@ namespace PlaneSimulator.Toolkit.Math
             return Multiply(left, right);
         }
 
-        public static Vector3 operator *(Matrix3x3 left, Vector3 right)
+        public static Vector3D operator *(Matrix3x3 left, Vector3D right)
         {
             return Multiply(left, right);
         }

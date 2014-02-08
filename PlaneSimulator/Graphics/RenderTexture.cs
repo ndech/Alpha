@@ -1,4 +1,5 @@
 ﻿using System;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -12,12 +13,12 @@ namespace PlaneSimulator.Graphics
         private readonly Texture2D _renderTargetTexture;
         private readonly RenderTargetView _renderTargetView;
         public ShaderResourceView ShaderResourceView { get; private set; }
-        public RenderTexture(Device device, Vector2 screenSize)
+        public RenderTexture(Device device, Vector2I screenSize)
         {
             var textureDesc = new Texture2DDescription()
             {
-                Width = (int)screenSize.X,
-                Height = (int)screenSize.Y,
+                Width = screenSize.X,
+                Height = screenSize.Y,
                 MipLevels = 1,
                 ArraySize = 1,
                 Format = Format.R32G32B32A32_Float,

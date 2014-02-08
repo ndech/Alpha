@@ -1,6 +1,7 @@
 ﻿using System;
 using PlaneSimulator.Graphics;
 using PlaneSimulator.Graphics.Shaders;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -24,18 +25,19 @@ namespace PlaneSimulator
             _airplane = airplane;
             _playerAirplane = playerAirplane;
             _shader = Renderer.FontShader;
-            _overlay = new Bitmap(Renderer.DirectX.Device, Renderer.TextureManager.Create("Circle.png").TextureResource, (int) Renderer.ScreenSize.X,
-                (int)Renderer.ScreenSize.Y, 100, 100);
-            _overlay.Position = new Vector2(0);
-            _overlay.Size = new Vector2(40, 40);
+            _overlay = new Bitmap(Renderer.DirectX.Device, Renderer.TextureManager.Create("Circle.png").TextureResource, Renderer.ScreenSize, new Vector2I(100, 100))
+            {
+                Position = new Vector2I(0,0),
+                Size = new Vector2I(40, 40)
+            };
             _color = new Vector4(0.2f, 0, 0, 0.4f);
             _distanceText = Renderer.TextManager.Create("Courrier", 14, 8, _color);
-            _distanceText.Position = new Vector2(0,0);
+            _distanceText.Position = new Vector2I(0,0);
             _nameText = Renderer.TextManager.Create("Courrier", 14, 20, _color);
-            _nameText.Position = new Vector2(0,0);
+            _nameText.Position = new Vector2I(0,0);
             _nameText.Content = airplane.Name;
             _modelNameText = Renderer.TextManager.Create("Courrier", 14, 20, _color);
-            _modelNameText.Position = new Vector2(0, 0);
+            _modelNameText.Position = new Vector2I(0, 0);
             _modelNameText.Content = airplane.ModelName;
         }
 

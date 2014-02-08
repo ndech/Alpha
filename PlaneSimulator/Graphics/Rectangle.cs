@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PlaneSimulator.Graphics.Shaders;
 using PlaneSimulator.Toolkit;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -16,11 +17,10 @@ namespace PlaneSimulator.Graphics
     class Rectangle
     {
         private bool _changed;
-        private Buffer VertexBuffer;
-        private Buffer IndexBuffer;
-        private int VertexCount;
-        private int IndexCount;
-        public Vector2 Size
+        private readonly Buffer _vertexBuffer;
+        private readonly Buffer _indexBuffer;
+        private readonly int _indexCount;
+        public Vector2I Size
         {
             get { return _size; }
             set
@@ -31,8 +31,8 @@ namespace PlaneSimulator.Graphics
             }
         }
 
-        private Vector2 _size;
-        public Vector2 Position
+        private Vector2I _size;
+        public Vector2I Position
         {
             get { return _position; }
             set
@@ -42,16 +42,16 @@ namespace PlaneSimulator.Graphics
                 _position = value;
             }
         }
-        private Vector2 _position;
+        private Vector2I _position;
 
-        public Vector2 ScreenSize { get; set; }
+        public Vector2I ScreenSize { get; set; }
 
         private Vector4 _color;
         private ColorShader _shader;
         private VertexDefinition.PositionColor[] _vertices;
         public float Depth { get; set; }
 
-        public Rectangle(Renderer renderer, Vector2 screenSize, Vector2 position, Vector2 size, Vector4 color, float depth = 0.0f)
+        public Rectangle(Renderer renderer, Vector2I screenSize, Vector2I position, Vector2I size, Vector4 color, float depth = 0.0f)
         {
             _shader = renderer.ColorShader;
             Position = position;
@@ -61,24 +61,24 @@ namespace PlaneSimulator.Graphics
             _changed = true;
             Depth = depth;
 
-            VertexCount = 4;
-            IndexCount = 6;
+            int vertexCount = 4;
+            _indexCount = 6;
 
-            _vertices = new VertexDefinition.PositionColor[VertexCount];
+            _vertices = new VertexDefinition.PositionColor[vertexCount];
             UInt32[] indices = { 0, 1, 2, 0, 3, 1 };
 
-            VertexBuffer = Buffer.Create(renderer.DirectX.Device, _vertices,
+            _vertexBuffer = Buffer.Create(renderer.DirectX.Device, _vertices,
                 new BufferDescription
                 {
                     Usage = ResourceUsage.Dynamic,
-                    SizeInBytes = Utilities.SizeOf<VertexDefinition.PositionColor>() * VertexCount,
+                    SizeInBytes = Utilities.SizeOf<VertexDefinition.PositionColor>() * vertexCount,
                     BindFlags = BindFlags.VertexBuffer,
                     CpuAccessFlags = CpuAccessFlags.Write,
                     OptionFlags = ResourceOptionFlags.None,
                     StructureByteStride = 0
                 });
 
-            IndexBuffer = Buffer.Create(renderer.DirectX.Device, BindFlags.IndexBuffer, indices);
+            _indexBuffer = Buffer.Create(renderer.DirectX.Device, BindFlags.IndexBuffer, indices);
         }
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
@@ -95,25 +95,24 @@ namespace PlaneSimulator.Graphics
                 _vertices[3] = new VertexDefinition.PositionColor { position = new Vector3(right, top, Depth), color = _color };
 
                 DataStream mappedResource;
-                deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
+                deviceContext.MapSubresource(_vertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
                 mappedResource.WriteRange(_vertices);
-                deviceContext.UnmapSubresource(VertexBuffer, 0);
+                deviceContext.UnmapSubresource(_vertexBuffer, 0);
                 _changed = false;
             }
 
             // Set vertex buffer stride and offset.
             int stride = Utilities.SizeOf<VertexDefinition.PositionColor>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
-            int offset = 0; //Gets or sets the offset from the start of the buffer of the first vertex to use (in bytes). 
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, offset));
-            deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, stride, 0));
+            deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            _shader.Render(deviceContext, IndexCount, worldMatrix, viewMatrix, projectionMatrix);
+            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix);
         }
 
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer);
+            DisposeHelper.DisposeAndSetToNull(_vertexBuffer, _indexBuffer);
         }
     }
 }

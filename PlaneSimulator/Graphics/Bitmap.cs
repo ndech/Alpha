@@ -1,6 +1,7 @@
 ﻿using System;
 using PlaneSimulator.Graphics.Shaders;
 using PlaneSimulator.Toolkit;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -18,9 +19,10 @@ namespace PlaneSimulator.Graphics
         public int VertexCount { get; private set; }
         public int IndexCount { get; private set; }
 
-        public Vector2 ScreenSize { get; set; }
+        public Vector2I ScreenSize { get; set; }
 
-        public Vector2 Size
+        private Vector2I _size;
+        public Vector2I Size
         {
             get { return _size; }
             set
@@ -31,8 +33,8 @@ namespace PlaneSimulator.Graphics
             }
         }
 
-        private Vector2 _size;
-        public Vector2 Position
+        private Vector2I _position;
+        public Vector2I Position
         {
             get { return _position; }
             set
@@ -42,16 +44,16 @@ namespace PlaneSimulator.Graphics
                 _position = value;
             }
         }
-        private Vector2 _position;
+
         private TranslateShader.Vertex[] _vertices;
         private bool _changed;
         public float Depth { get; set; }
 
-        public Bitmap(Device device, ShaderResourceView texture, int screenWidth, int screenHeight, int width, int height, float depth = 0.0f)
+        public Bitmap(Device device, ShaderResourceView texture, Vector2I screenSize, Vector2I size, float depth = 0.0f)
         {
             Texture = texture;
-            ScreenSize = new Vector2(screenWidth, screenHeight);
-            Size = new Vector2(width, height);
+            ScreenSize = screenSize;
+            Size = size;
             _changed = true;
             Depth = depth;
 

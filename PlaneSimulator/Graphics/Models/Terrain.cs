@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading;
 using PlaneSimulator.Graphics.Shaders;
+using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
+using MathUtil = SharpDX.MathUtil;
 
 namespace PlaneSimulator.Graphics.Models
 {
@@ -76,10 +78,10 @@ namespace PlaneSimulator.Graphics.Models
             _reflectionTexture = new RenderTexture(device, renderer.ScreenSize);
             _refractionTexture = new RenderTexture(device, renderer.ScreenSize);
             _renderer = renderer;
-            _bitmap = new Bitmap(device,_refractionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y,100, 100, 0);
-            _bitmap.Position = new Vector2((int)renderer.ScreenSize.X-100, 0);
-            _bitmap2 = new Bitmap(device, _reflectionTexture.ShaderResourceView, (int)renderer.ScreenSize.X, (int)renderer.ScreenSize.Y, 100, 100, 0);
-            _bitmap2.Position = new Vector2((int)renderer.ScreenSize.X - 100, 120);
+            _bitmap = new Bitmap(device,_refractionTexture.ShaderResourceView,renderer.ScreenSize, new Vector2I(100, 100), 0);
+            _bitmap.Position = new Vector2I(renderer.ScreenSize.X - 100, 0);
+            _bitmap2 = new Bitmap(device, _reflectionTexture.ShaderResourceView, renderer.ScreenSize, new Vector2I(100, 100), 0);
+            _bitmap2.Position = new Vector2I(renderer.ScreenSize.X - 100, 120);
             _bumpMap = _renderer.TextureManager.Create("OceanWater.png");
             _skydome = new ObjModel(device, "skydome.obj", renderer.TextureManager.Create("Sky.png"));
             BuildBuffers(device);

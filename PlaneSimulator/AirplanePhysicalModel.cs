@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using PlaneSimulator.Toolkit.Math;
 using SharpDX;
 using SharpDX.DirectInput;
-using Vector3 = PlaneSimulator.Toolkit.Math.Vector3;
 
 namespace PlaneSimulator
 {
@@ -41,18 +40,18 @@ namespace PlaneSimulator
             return new State(state.Speed, CalculateForces(state) / Mass, state.AngularSpeed, CalculateMoments(state));
         }
 
-        private Vector3 CalculateForces(State state)
+        private Vector3D CalculateForces(State state)
         {
-            Vector3 weight = new Vector3(0.0, 0.0, _airplane.World.Gravity * Mass);
-            Vector3 thrust = new Vector3();
+            Vector3D weight = new Vector3D(0.0, 0.0, _airplane.World.Gravity * Mass);
+            Vector3D thrust = new Vector3D();
             thrust = Thrusters.Aggregate(thrust, (current, thruster) => current + thruster.Trust);
-            thrust = new Vector3(thrust.X * Math.Cos(state.AngularPosition.Y), thrust.Y * Math.Sin(state.AngularPosition.Y), 0);
+            thrust = new Vector3D(thrust.X * Math.Cos(state.AngularPosition.Y), thrust.X * Math.Sin(state.AngularPosition.Y), 0);
             return weight+thrust;
         }
 
-        private Vector3 CalculateMoments(State state)
+        private Vector3D CalculateMoments(State state)
         {
-            Vector3 vector = new Vector3(0);
+            Vector3D vector = new Vector3D(0);
             if (_input == null)
                 return vector;
             if (_input.IsKeyPressed(Key.Left))
@@ -60,9 +59,9 @@ namespace PlaneSimulator
             if (_input.IsKeyPressed(Key.Right))
                 vector.Z -= 0.1f;
             if (_input.IsKeyPressed(Key.Up))
-                vector.Y += 0.3f;
+                vector.Y += 0.03f;
             if (_input.IsKeyPressed(Key.Down))
-                vector.Y -= 0.3f;
+                vector.Y -= 0.03f;
             return vector;
         }
 
