@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using PlaneSimulator.Toolkit.Math;
-using SharpDX;
-using SharpDX.DirectInput;
 
 namespace PlaneSimulator
 {
@@ -16,7 +11,7 @@ namespace PlaneSimulator
         public List<Thruster> Thrusters { get; private set; }
         public List<Tank> Tanks { get; private set; }
         private Airplane _airplane;
-        private Input _input;
+        private IAirplaneCommands _commands;
         public double Mass { get { return Tanks.Sum(tank => tank.Mass) + Thrusters.Sum(thruster => thruster.Mass); } }
 
         public State Update(double step, State currentState)
@@ -26,9 +21,9 @@ namespace PlaneSimulator
             return tempState;
         }
 
-        public AirplanePhysicalModel(Airplane airplane, Input input)
+        public AirplanePhysicalModel(Airplane airplane, IAirplaneCommands commands)
         {
-            _input = input;
+            _commands = commands;
             _airplane = airplane;
             Tanks = new List<Tank>();
             Thrusters = new List<Thruster>();
@@ -52,16 +47,8 @@ namespace PlaneSimulator
         private Vector3D CalculateMoments(State state)
         {
             Vector3D vector = new Vector3D(0);
-            if (_input == null)
-                return vector;
-            if (_input.IsKeyPressed(Key.Left))
-                vector.Z += 0.1f;
-            if (_input.IsKeyPressed(Key.Right))
-                vector.Z -= 0.1f;
-            if (_input.IsKeyPressed(Key.Up))
-                vector.Y += 0.03f;
-            if (_input.IsKeyPressed(Key.Down))
-                vector.Y -= 0.03f;
+            vector.Z += 0.2f * (_commands.LeftAileron - _commands.RightAileron);
+            vector.Y += 0.1f * (_commands.Elevator);
             return vector;
         }
 

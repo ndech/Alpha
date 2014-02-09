@@ -13,6 +13,7 @@ namespace PlaneSimulator
         public World World { get; private set; }
         public State CurrentState { get; private set; }
         public ObjModel Model { get; private set; }
+        public IAirplaneCommands Commands { get; private set; }
         public AirplanePhysicalModel PhysicalModel { get; private set; }
         public float Altitude { get { return (float) -CurrentState.Position.Z; } }
         public bool IsPlayer { get; set; }
@@ -27,7 +28,11 @@ namespace PlaneSimulator
             CurrentState = state;
             Name = name;
             ModelName = modelName;
-            PhysicalModel = new AirplanePhysicalModel(this, isPlayer ? game.Input : null);
+            if (isPlayer)
+                Commands = new PlayerAirplaneCommands(game.Input);
+            else
+                Commands = new ComputerAirplaneCommands();
+            PhysicalModel = new AirplanePhysicalModel(this, Commands);
             Model = new ObjModel(renderer.DirectX.Device, "Airplane.obj", Renderer.TextureManager.Create("Metal.png"));
             if(!isPlayer && ConfigurationManager.Config.DisplayOverlay)
                 game.Register(new AirplaneOverlay(game, renderer, this, playerPlane));
@@ -35,6 +40,7 @@ namespace PlaneSimulator
 
         public override void Update(double delta)
         {
+            Commands.Update(delta);
             CurrentState = PhysicalModel.Update(delta, CurrentState);
             if (!IsPlayer && IsCrashed())
             {

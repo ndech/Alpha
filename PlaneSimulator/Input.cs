@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SharpDX;
 using SharpDX.DirectInput;
 
@@ -9,8 +10,10 @@ namespace PlaneSimulator
         private DirectInput _directInput;
         private Keyboard _keyboard;
         private Mouse _mouse;
+        private Joystick _joystick;
         private KeyboardState _keyboardState;
         private MouseState _mouseState;
+        public JoystickState JoystickState { get; set; }
 
         public Input(Game game, IntPtr handle) : base(game, -10000)
         {
@@ -18,17 +21,26 @@ namespace PlaneSimulator
             _keyboard = new Keyboard(_directInput);
             _keyboard.Properties.BufferSize = 256;
             _keyboard.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
-            //_keyboard.Acquire();
             _mouse = new Mouse(_directInput);
             _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
             _mouse.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
-            //_mouse.Acquire();
+
+            var devices  = _directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices);
+            if (devices.Count > 0)
+            {
+                _joystick = new Joystick(_directInput, devices[0].InstanceGuid);
+                _joystick.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
+            }
         }
+
+        public bool JoystickEnabled{ get { return _joystick != null; } }
 
         public override void Update(double delta)
         {
             ReadMouse();
             ReadKeyboard();
+            if(JoystickEnabled)
+                ReadJoystick();
         }
 
         public override void Dispose()
@@ -87,6 +99,30 @@ namespace PlaneSimulator
                     throw;
             }
         }
+
+        private void ReadJoystick()
+        {
+            try
+            {
+                JoystickState = _joystick.GetCurrentState();
+            }
+            catch (SharpDXException e)
+            {
+                if (e.Descriptor == ResultCode.InputLost || e.Descriptor == ResultCode.NotAcquired)
+                {
+                    try
+                    {
+                        _joystick.Acquire();
+                        JoystickState = _joystick.GetCurrentState();
+                    }
+                    catch (SharpDXException)
+                    { }
+                }
+                else
+                    throw;
+            }
+        }
+
 
         public bool IsKeyPressed(Key key)
         {
