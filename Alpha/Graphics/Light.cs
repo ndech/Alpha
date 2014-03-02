@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class Light
     {

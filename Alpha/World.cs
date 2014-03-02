@@ -1,10 +1,10 @@
-﻿using PlaneSimulator.Graphics;
-using PlaneSimulator.Graphics.Models;
-using PlaneSimulator.Toolkit.Math;
+﻿using Alpha.Graphics;
+using Alpha.Graphics.Models;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     public class World : RenderableGameComponent
     {

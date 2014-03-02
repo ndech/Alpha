@@ -1,4 +1,4 @@
-﻿namespace PlaneSimulator.Toolkit.Math
+﻿namespace Alpha.Toolkit.Math
 {
     public abstract class Integrator<T> where T : IIntegrable<T>
     {

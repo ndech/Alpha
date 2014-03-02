@@ -1,4 +1,4 @@
-﻿namespace PlaneSimulator.Toolkit.Math
+﻿namespace Alpha.Toolkit.Math
 {
     internal class Rk4Integrator<T> : Integrator<T> where T : IIntegrable<T>
     {

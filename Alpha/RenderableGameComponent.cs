@@ -1,9 +1,9 @@
 ﻿using System;
-using PlaneSimulator.Graphics;
+using Alpha.Graphics;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     public abstract class RenderableGameComponent : GameComponent, IRenderable, IComparable<RenderableGameComponent>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using PlaneSimulator.Toolkit;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
@@ -8,7 +8,7 @@ using Device = SharpDX.Direct3D11.Device;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 
-namespace PlaneSimulator.Graphics.Shaders
+namespace Alpha.Graphics.Shaders
 {
     public class TerrainShader : IDisposable
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpDX.DirectInput;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     class PlayerAirplaneCommands : IAirplaneCommands
     {

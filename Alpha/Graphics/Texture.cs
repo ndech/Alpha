@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net.Mime;
-using PlaneSimulator.Toolkit;
+using Alpha.Toolkit;
 using SharpDX.Direct3D11;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class Texture : IDisposable
     {

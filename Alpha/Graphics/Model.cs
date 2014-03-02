@@ -1,14 +1,14 @@
 ﻿using System;
-using PlaneSimulator.Toolkit;
+using Alpha.Graphics.Shaders;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using PlaneSimulator.Graphics.Shaders;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     class Model : IDisposable
     {

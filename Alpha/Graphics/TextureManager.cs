@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class TextureManager : IDisposable
     {

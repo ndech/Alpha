@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using PlaneSimulator.Graphics;
-using PlaneSimulator.Toolkit.IO;
+using Alpha.Graphics;
+using Alpha.Toolkit.IO;
 using SharpDX.DirectInput;
 using SharpDX.Windows;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     public class Game
     {

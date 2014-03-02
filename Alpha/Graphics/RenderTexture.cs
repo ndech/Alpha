@@ -1,12 +1,12 @@
 ﻿using System;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     class RenderTexture : IDisposable
     {

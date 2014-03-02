@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using PlaneSimulator.Graphics.Shaders;
-using PlaneSimulator.Toolkit;
+using Alpha.Graphics.Shaders;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class TextManager : IDisposable
     {

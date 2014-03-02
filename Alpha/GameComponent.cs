@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     public abstract class GameComponent : IUpdatable, IDisposable, IComparable<GameComponent>
     {

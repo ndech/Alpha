@@ -1,11 +1,11 @@
 ﻿using System;
-using PlaneSimulator.Graphics;
-using PlaneSimulator.Graphics.Shaders;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Graphics;
+using Alpha.Graphics.Shaders;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     class AirplaneOverlay : RenderableGameComponent
     {

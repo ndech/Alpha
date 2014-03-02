@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlaneSimulator.Graphics.States
+namespace Alpha.Graphics.States
 {
     class RasterizerState
     {

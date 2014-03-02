@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PlaneSimulator.Toolkit.Math
+namespace Alpha.Toolkit.Math
 {
     internal class Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     {

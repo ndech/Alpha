@@ -1,6 +1,6 @@
 ﻿using SharpDX;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     using System;
     class ConfigurationManager

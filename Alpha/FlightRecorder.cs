@@ -1,4 +1,4 @@
-﻿namespace PlaneSimulator
+﻿namespace Alpha
 {
     using System;
     using Toolkit.IO;

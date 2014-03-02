@@ -1,13 +1,12 @@
-﻿using System.Runtime.Remoting.Channels;
-
-namespace PlaneSimulator
+﻿
+namespace Alpha
 {
-    using System;
-    using System.Globalization;
     using Graphics;
-    using Toolkit.IO;
     using SharpDX;
     using SharpDX.Direct3D11;
+    using System;
+    using System.Globalization;
+    using Toolkit.IO;
     public class Airplane : RenderableGameComponent, ICsvLoggable
     {
         public World World { get; private set; }

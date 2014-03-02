@@ -1,6 +1,6 @@
-﻿using PlaneSimulator.Toolkit.Math;
+﻿using Alpha.Toolkit.Math;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     using Toolkit;
     using System;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Toolkit.Math;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     public class AirplanePhysicalModel
     {

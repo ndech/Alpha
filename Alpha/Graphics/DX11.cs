@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using PlaneSimulator.Toolkit;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -9,7 +9,7 @@ using SharpDX.Windows;
 using Device = SharpDX.Direct3D11.Device;
 using Resource = SharpDX.Direct3D11.Resource;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class Dx11 : IDisposable
     {

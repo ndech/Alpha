@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlaneSimulator.Toolkit
+namespace Alpha.Toolkit
 {
     static class DisposeHelper
     {

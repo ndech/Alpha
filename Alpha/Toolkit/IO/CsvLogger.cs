@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace PlaneSimulator.Toolkit.IO
+namespace Alpha.Toolkit.IO
 {
     class CsvLogger : IDisposable
     {

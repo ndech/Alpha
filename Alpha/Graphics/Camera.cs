@@ -1,7 +1,7 @@
 ﻿using SharpDX;
 using Vector3 = SharpDX.Vector3;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class Camera : GameComponent
     {

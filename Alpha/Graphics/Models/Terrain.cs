@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
-using PlaneSimulator.Graphics.Shaders;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Graphics.Shaders;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -10,7 +10,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 using MathUtil = SharpDX.MathUtil;
 
-namespace PlaneSimulator.Graphics.Models
+namespace Alpha.Graphics.Models
 {
     public class Terrain
     {

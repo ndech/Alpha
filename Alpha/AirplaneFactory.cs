@@ -1,8 +1,8 @@
 ﻿using System;
-using PlaneSimulator.Graphics;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Graphics;
+using Alpha.Toolkit.Math;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     static class AirplaneFactory
     {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Graphics.Shaders;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Windows;
-using PlaneSimulator.Graphics.Shaders;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class Renderer : IDisposable
     {

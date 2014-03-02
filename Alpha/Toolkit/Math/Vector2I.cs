@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlaneSimulator.Toolkit.Math
+namespace Alpha.Toolkit.Math
 {
     public struct Vector2I : IEquatable<Vector2I>
     {

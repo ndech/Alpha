@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using PlaneSimulator.Graphics.Shaders;
+using Alpha.Graphics.Shaders;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     public class Font : IDisposable
     {

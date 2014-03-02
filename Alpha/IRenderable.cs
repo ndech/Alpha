@@ -1,7 +1,7 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     interface IRenderable
     {

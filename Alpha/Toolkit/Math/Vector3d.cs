@@ -2,7 +2,7 @@
 using System.Globalization;
 using SharpDX;
 
-namespace PlaneSimulator.Toolkit.Math
+namespace Alpha.Toolkit.Math
 {
     public struct Vector3D : IEquatable<Vector3D>, IFormattable
     {

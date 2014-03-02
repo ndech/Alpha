@@ -1,4 +1,4 @@
-﻿namespace PlaneSimulator
+﻿namespace Alpha
 {
     public interface IUpdatable
     {

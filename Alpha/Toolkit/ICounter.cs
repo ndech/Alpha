@@ -1,4 +1,4 @@
-﻿namespace PlaneSimulator.Toolkit
+﻿namespace Alpha.Toolkit
 {
     using System;
     interface ICounter : IUpdatable

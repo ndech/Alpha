@@ -1,6 +1,6 @@
-﻿using PlaneSimulator.Toolkit.IO;
+﻿using Alpha.Toolkit.IO;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     using System;
     using System.Diagnostics;

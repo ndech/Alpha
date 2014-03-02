@@ -1,4 +1,4 @@
-﻿namespace PlaneSimulator
+﻿namespace Alpha
 {
     internal class Fuel
     {

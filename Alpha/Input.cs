@@ -3,7 +3,7 @@ using System.Linq;
 using SharpDX;
 using SharpDX.DirectInput;
 
-namespace PlaneSimulator
+namespace Alpha
 {
     public class Input : GameComponent
     {

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlaneSimulator.Graphics.Shaders;
-using PlaneSimulator.Toolkit;
-using PlaneSimulator.Toolkit.Math;
+using Alpha.Graphics.Shaders;
+using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace PlaneSimulator.Graphics
+namespace Alpha.Graphics
 {
     class Rectangle
     {
