@@ -8,12 +8,10 @@ namespace Alpha.Graphics
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
         private Matrix _reflectionMatrix;
-        private readonly Airplane _playerAirplane;
         private Vector3 _position;
-        public Camera(Game game, Airplane playerAirplane)
-            :base(game, playerAirplane.UpdateOrder + 1)
+        public Camera(Game game)
+            :base(game)
         {
-            _playerAirplane = playerAirplane;
         }
         public Matrix ViewMatrix { get { return _viewMatrix; } }
 
@@ -25,14 +23,9 @@ namespace Alpha.Graphics
 
         public override void Update(double delta)
         {
-            _position = new Vector3(
-                (float)_playerAirplane.CurrentState.Position.Y, 
-                _playerAirplane.Altitude, 
-                (float)_playerAirplane.CurrentState.Position.X);
+            _position = new Vector3(1,0,0);
             
-            Vector3 orientation = new Vector3((float)_playerAirplane.CurrentState.AngularPosition.X, 
-                                              (float)_playerAirplane.CurrentState.AngularPosition.Y, 
-                                              (float)_playerAirplane.CurrentState.AngularPosition.Z);
+            Vector3 orientation = new Vector3(0,0,0);
             // Create the rotation matrix from the yaw, pitch, and roll values (in radians).
             Matrix rotationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
 

@@ -82,18 +82,6 @@
     <None Include="Data\Fonts\Courrier-14px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Models\Airplane.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Models\cube.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Models\model.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Models\skydome.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Data\Shaders\Color.ps">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -135,23 +123,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Airplane.cs" />
-    <Compile Include="AirplaneFactory.cs" />
-    <Compile Include="AirplaneOverlay.cs" />
-    <Compile Include="AirplanePhysicalModel.cs" />
-    <Compile Include="Component.cs" />
     <None Include="Data\Shaders\Texture.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="ComputerAirplaneCommands.cs" />
-    <Compile Include="FlightRecorder.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameComponent.cs" />
     <Compile Include="Graphics\Bitmap.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\DX11.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Fuel.cs" />
     <Compile Include="Graphics\Font.cs" />
     <Compile Include="Graphics\Frustrum.cs" />
     <Compile Include="Graphics\Light.cs" />
@@ -167,7 +147,6 @@
     <Compile Include="Graphics\Shaders\TerrainShader.cs" />
     <Compile Include="Graphics\Shaders\TextureShader.cs" />
     <Compile Include="Graphics\Shaders\TranslateShader.cs" />
-    <Compile Include="Graphics\Models\Terrain.cs" />
     <Compile Include="Graphics\Shaders\VertexDefinition.cs" />
     <Compile Include="Graphics\Shaders\WaterShader.cs" />
     <Compile Include="Graphics\States\RasterizerState.cs" />
@@ -175,16 +154,11 @@
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\TextureManager.cs" />
-    <Compile Include="IAirplaneCommands.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="MonitoringHeader.cs" />
-    <Compile Include="PlayerAirplaneCommands.cs" />
     <Compile Include="RenderableGameComponent.cs" />
-    <Compile Include="State.cs" />
-    <Compile Include="Tank.cs" />
-    <Compile Include="Thruster.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="ConfigurationManager.cs" />
     <Compile Include="Toolkit\CpuUsageCounter.cs" />
@@ -202,7 +176,6 @@
     <Compile Include="Toolkit\Math\RK4Integrator.cs" />
     <Compile Include="Toolkit\Math\Vector2I.cs" />
     <Compile Include="Toolkit\Math\Vector3d.cs" />
-    <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SharpDX">
@@ -226,6 +199,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Models\" />
+    <Folder Include="Graphics\Models\" />
     <Folder Include="Toolkit\Configuration\" />
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>

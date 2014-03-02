@@ -11,11 +11,9 @@ namespace Alpha
     public class Game
     {
         private readonly Timer _timer;
-        private readonly Airplane _playerPlane;
         private readonly Renderer _renderer;
         public Input Input { get; private set; }
         private readonly List<GameComponent> _gameComponents;
-        private readonly World _world;
         private bool _newRegisteredElement = false;
 
         public Game()
@@ -25,17 +23,10 @@ namespace Alpha
             _renderer = new Renderer();
             Input = new Input(this, _renderer.Form.Handle);
             Register(Input);
-            _world = new World(this, _renderer);
-            Register(_world);
-            _playerPlane = AirplaneFactory.Create(_world, this, _renderer, true);
-            Register(_playerPlane);
-            for (int i = 0; i < 5; i++)
-                Register(AirplaneFactory.Create(_world, this, _renderer, false, _playerPlane));
-            Camera camera = new Camera(this, _playerPlane); 
+            Camera camera = new Camera(this); 
             Register(camera);
             _renderer.Camera = camera;
             Register(new MonitoringHeader(this, _renderer));
-            Register(new FlightRecorder(this, _timer, _playerPlane));
         }
 
         public void Register(GameComponent item)
@@ -61,7 +52,7 @@ namespace Alpha
                     if(item.Enabled)
                         item.Update(delta);
 
-                if (_playerPlane.IsCrashed() || Input.IsKeyPressed(Key.Escape))
+                if (Input.IsKeyPressed(Key.Escape))
                     Exit();
 
                 _renderer.Render();
@@ -70,7 +61,6 @@ namespace Alpha
 
         private void Exit()
         {
-            //Thread.Sleep(10000);
             _renderer.Form.Close();
         }
 
