@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
+using System.Xml;
 using Alpha.Graphics;
 using Alpha.Toolkit.IO;
 using SharpDX.DirectInput;
@@ -16,9 +18,14 @@ namespace Alpha
         private readonly List<GameComponent> _gameComponents;
         private bool _newRegisteredElement = false;
 
+        private readonly List<Character> _characters;
+
         public Game()
         {
             _gameComponents = new List<GameComponent>();
+            _characters = new List<Character>();
+            for(int i = 0; i< 10; i++)
+                _characters.Add(new Character());
             _timer = new Timer();
             _renderer = new Renderer();
             Input = new Input(this, _renderer.Form.Handle);
@@ -55,6 +62,12 @@ namespace Alpha
                 if (Input.IsKeyPressed(Key.Escape))
                     Exit();
 
+                if (Input.IsKeyPressed(Key.S))
+                    Save();
+
+                if (Input.IsKeyPressed(Key.L))
+                    Load();
+
                 _renderer.Render();
             });
         }
@@ -63,6 +76,27 @@ namespace Alpha
         {
             _renderer.Form.Close();
         }
+
+        private void Save()
+        {
+            Console.WriteLine("Game saved.");
+            Directory.CreateDirectory("Saves");
+            using (XmlWriter writer = XmlWriter.Create(@"Saves\Alpha_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xml"))
+	        {
+	            writer.WriteStartDocument();
+	            writer.WriteStartElement("Characters");
+	            foreach (Character character in _characters)
+	                character.Save(writer);
+	            writer.WriteEndElement();
+	            writer.WriteEndDocument();
+	        }
+            System.Threading.Thread.Sleep(3000);
+        }
+
+        private void Load()
+        {
+        }
+
 
         public void Dispose()
         {
