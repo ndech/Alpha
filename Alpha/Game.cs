@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Xml;
+using System.Xml.Linq;
 using Alpha.Graphics;
-using Alpha.Toolkit.IO;
 using SharpDX.DirectInput;
 using SharpDX.Windows;
 
@@ -69,6 +68,10 @@ namespace Alpha
                     Load();
 
                 _renderer.Render();
+
+                Console.Clear();
+                foreach (Character character in _characters)
+                    Console.WriteLine(character.ToString());
             });
         }
 
@@ -95,6 +98,17 @@ namespace Alpha
 
         private void Load()
         {
+            _characters.Clear();
+            var myFile = (new DirectoryInfo("Saves")).GetFiles();
+            using (XmlReader reader = XmlReader.Create(myFile[0].FullName))
+            {
+                reader.ReadStartElement("Characters");
+
+                while (reader.Name == "Character")
+                    _characters.Add(Character.FromXml((XElement)XNode.ReadFrom(reader)));
+
+                reader.ReadEndElement();
+            }
         }
 
 
