@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Alpha.Graphics;
@@ -103,12 +104,20 @@ namespace Alpha
             using (XmlReader reader = XmlReader.Create(myFile[0].FullName))
             {
                 reader.ReadStartElement("Characters");
-
-                while (reader.Name == "Character")
-                    _characters.Add(Character.FromXml((XElement)XNode.ReadFrom(reader)));
-
+                while (true)
+                {
+                    if (reader.Name == "") // remove whitespaces and carriage returns
+                        reader.Read();
+                    else if (reader.Name == "Character")
+                        _characters.Add(Character.FromXml((XElement)XNode.ReadFrom(reader)));
+                    else
+                        break;
+                }
                 reader.ReadEndElement();
             }
+            // Checks for duplicate character id
+            if (_characters.GroupBy(x => x.Id).Count(g => g.Count() > 1) > 0)
+                throw new InvalidOperationException("Duplicates character id in save");
         }
 
 
