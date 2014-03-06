@@ -19,13 +19,17 @@ namespace Alpha
         private bool _newRegisteredElement = false;
 
         private readonly List<Character> _characters;
+        private readonly List<Province> _provinces;
 
         public Game()
         {
             _gameComponents = new List<GameComponent>();
             _characters = new List<Character>();
+            _provinces = new List<Province>();
             for(int i = 0; i< 10; i++)
                 _characters.Add(new Character());
+            for(int i = 0; i< 10; i++)
+                _provinces.Add(new Province());
             _timer = new Timer();
             _renderer = new Renderer();
             Input = new Input(this, _renderer.Form.Handle);
@@ -73,6 +77,8 @@ namespace Alpha
                 Console.Clear();
                 foreach (Character character in _characters)
                     Console.WriteLine(character.ToString());
+                foreach (Province province in _provinces)
+                    Console.WriteLine(province.ToString());
             });
         }
 
@@ -88,10 +94,16 @@ namespace Alpha
             using (XmlWriter writer = XmlWriter.Create(@"Saves\Alpha_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xml"))
 	        {
 	            writer.WriteStartDocument();
+                writer.WriteStartElement("Save");
 	            writer.WriteStartElement("Characters");
 	            foreach (Character character in _characters)
 	                character.Save(writer);
-	            writer.WriteEndElement();
+                writer.WriteEndElement();
+                writer.WriteStartElement("Provinces");
+                foreach (Province province in _provinces)
+                    province.Save(writer);
+                writer.WriteEndElement();
+                writer.WriteEndElement();
 	            writer.WriteEndDocument();
 	        }
             System.Threading.Thread.Sleep(3000);
@@ -100,9 +112,11 @@ namespace Alpha
         private void Load()
         {
             _characters.Clear();
+            _provinces.Clear();
             var myFile = (new DirectoryInfo("Saves")).GetFiles();
             using (XmlReader reader = XmlReader.Create(myFile[0].FullName))
             {
+                reader.ReadStartElement("Save");
                 reader.ReadStartElement("Characters");
                 while (true)
                 {
@@ -114,10 +128,23 @@ namespace Alpha
                         break;
                 }
                 reader.ReadEndElement();
+                // Checks for duplicate character id
+                if (_characters.GroupBy(x => x.Id).Count(g => g.Count() > 1) > 0)
+                    throw new InvalidOperationException("Duplicates character id in save");
+
+                reader.ReadStartElement("Provinces");
+                while (true)
+                {
+                    if (reader.Name == "") // remove whitespaces and carriage returns
+                        reader.Read();
+                    else if (reader.Name == "Province")
+                        _provinces.Add(Province.FromXml((XElement)XNode.ReadFrom(reader), _characters));
+                    else
+                        break;
+                }
+                reader.ReadEndElement();
+                reader.ReadEndElement();
             }
-            // Checks for duplicate character id
-            if (_characters.GroupBy(x => x.Id).Count(g => g.Count() > 1) > 0)
-                throw new InvalidOperationException("Duplicates character id in save");
         }
 
 

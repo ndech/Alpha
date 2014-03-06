@@ -19,6 +19,7 @@ namespace Alpha
         public String FirstName { get; set; }
         public String LastName { get; set; }
         public String NickName { get; set; }
+        public Int32 Age { get { return 0; } }
 
         public String FullName
         {
