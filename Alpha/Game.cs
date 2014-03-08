@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Alpha.Graphics;
+using PlaneSimulator;
 using SharpDX.DirectInput;
 using SharpDX.Windows;
 
@@ -14,6 +15,7 @@ namespace Alpha
     {
         private readonly Timer _timer;
         private readonly Renderer _renderer;
+        private readonly Calendar _calendar;
         public Input Input { get; private set; }
         private readonly List<GameComponent> _gameComponents;
         private bool _newRegisteredElement = false;
@@ -26,6 +28,8 @@ namespace Alpha
             _gameComponents = new List<GameComponent>();
             _characters = new List<Character>();
             _provinces = new List<Province>();
+            _calendar = new Calendar(this);
+            _calendar.DayChanged += OnDayChanged;
             for(int i = 0; i< 10; i++)
                 _characters.Add(new Character());
             for(int i = 0; i< 10; i++)
@@ -62,6 +66,8 @@ namespace Alpha
                 foreach (GameComponent item in _gameComponents)
                     if(item.Enabled)
                         item.Update(delta);
+                
+                _calendar.Update(delta);
 
                 if (Input.IsKeyPressed(Key.Escape))
                     Exit();
@@ -72,14 +78,24 @@ namespace Alpha
                 if (Input.IsKeyPressed(Key.L))
                     Load();
 
+                if (Input.IsKeyPressed(Key.P))
+                    _calendar.Paused = !_calendar.Paused;
+
                 _renderer.Render();
 
                 Console.Clear();
+                Console.WriteLine(_calendar.ToString());
                 foreach (Character character in _characters)
                     Console.WriteLine(character.ToString());
                 foreach (Province province in _provinces)
                     Console.WriteLine(province.ToString());
             });
+        }
+
+        private void OnDayChanged()
+        {
+            foreach (Province province in _provinces)
+                province.Update(1.0);
         }
 
         private void Exit()
