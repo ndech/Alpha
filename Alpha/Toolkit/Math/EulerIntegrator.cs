@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Alpha.Toolkit.Math
+﻿namespace Alpha.Toolkit.Math
 {
     internal class EulerIntegrator<T> : Integrator<T> where T : IIntegrable<T>
     {

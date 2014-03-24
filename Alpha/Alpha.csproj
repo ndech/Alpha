@@ -143,6 +143,7 @@
     </None>
     <Compile Include="Calendar.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="CharacterList.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameComponent.cs" />
     <Compile Include="Graphics\Bitmap.cs" />
@@ -173,10 +174,14 @@
     <Compile Include="Graphics\TextureManager.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="IRenderable.cs" />
+    <Compile Include="ISavable.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="MonitoringHeader.cs" />
     <Compile Include="Province.cs" />
+    <Compile Include="ProvinceList.cs" />
     <Compile Include="RenderableGameComponent.cs" />
+    <Compile Include="SaveGame.cs" />
+    <Compile Include="ServiceContainer.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="ConfigurationManager.cs" />
     <Compile Include="Toolkit\CpuUsageCounter.cs" />

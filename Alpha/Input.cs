@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using SharpDX;
 using SharpDX.DirectInput;
 

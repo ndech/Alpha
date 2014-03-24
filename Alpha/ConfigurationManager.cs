@@ -1,6 +1,4 @@
-﻿using SharpDX;
-
-namespace Alpha
+﻿namespace Alpha
 {
     using System;
     class ConfigurationManager

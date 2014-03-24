@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
 using Alpha.Graphics;
 using PlaneSimulator;
 using SharpDX.DirectInput;
@@ -18,22 +14,18 @@ namespace Alpha
         private readonly Calendar _calendar;
         public Input Input { get; private set; }
         private readonly List<GameComponent> _gameComponents;
+        public ServiceContainer Services { get; private set; }
         private bool _newRegisteredElement = false;
-
-        private readonly List<Character> _characters;
-        private readonly List<Province> _provinces;
 
         public Game()
         {
             _gameComponents = new List<GameComponent>();
-            _characters = new List<Character>();
-            _provinces = new List<Province>();
+            Services = new ServiceContainer();
             _calendar = new Calendar(this);
             _calendar.DayChanged += OnDayChanged;
-            for(int i = 0; i< 10; i++)
-                _characters.Add(new Character());
-            for(int i = 0; i< 10; i++)
-                _provinces.Add(new Province());
+            _calendar.MonthChanged += OnMonthChanged;
+            _calendar.YearChanged += OnYearChanged;
+
             _timer = new Timer();
             _renderer = new Renderer();
             Input = new Input(this, _renderer.Form.Handle);
@@ -42,6 +34,8 @@ namespace Alpha
             Register(camera);
             _renderer.Camera = camera;
             Register(new MonitoringHeader(this, _renderer));
+            Register(new ProvinceList(this));
+            Register(new CharacterList(this));
         }
 
         public void Register(GameComponent item)
@@ -82,20 +76,21 @@ namespace Alpha
                     _calendar.Paused = !_calendar.Paused;
 
                 _renderer.Render();
-
-                Console.Clear();
-                Console.WriteLine(_calendar.ToString());
-                foreach (Character character in _characters)
-                    Console.WriteLine(character.ToString());
-                foreach (Province province in _provinces)
-                    Console.WriteLine(province.ToString());
             });
         }
 
         private void OnDayChanged()
         {
-            foreach (Province province in _provinces)
-                province.Update(1.0);
+        }
+
+        private void OnMonthChanged()
+        {
+            
+        }
+
+        private void OnYearChanged()
+        {
+            Save();
         }
 
         private void Exit()
@@ -105,62 +100,14 @@ namespace Alpha
 
         private void Save()
         {
-            Console.WriteLine("Game saved.");
-            Directory.CreateDirectory("Saves");
-            using (XmlWriter writer = XmlWriter.Create(@"Saves\Alpha_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xml"))
-	        {
-	            writer.WriteStartDocument();
-                writer.WriteStartElement("Save");
-	            writer.WriteStartElement("Characters");
-	            foreach (Character character in _characters)
-	                character.Save(writer);
-                writer.WriteEndElement();
-                writer.WriteStartElement("Provinces");
-                foreach (Province province in _provinces)
-                    province.Save(writer);
-                writer.WriteEndElement();
-                writer.WriteEndElement();
-	            writer.WriteEndDocument();
-	        }
-            System.Threading.Thread.Sleep(3000);
+            SaveGame.Create(
+                "Alpha_" + _calendar.Year + "-" + _calendar.Month + "-" + _calendar.Day + ".xml", 
+                _gameComponents.OfType<ISavable>());
         }
 
         private void Load()
         {
-            _characters.Clear();
-            _provinces.Clear();
-            var myFile = (new DirectoryInfo("Saves")).GetFiles();
-            using (XmlReader reader = XmlReader.Create(myFile[0].FullName))
-            {
-                reader.ReadStartElement("Save");
-                reader.ReadStartElement("Characters");
-                while (true)
-                {
-                    if (reader.Name == "") // remove whitespaces and carriage returns
-                        reader.Read();
-                    else if (reader.Name == "Character")
-                        _characters.Add(Character.FromXml((XElement)XNode.ReadFrom(reader)));
-                    else
-                        break;
-                }
-                reader.ReadEndElement();
-                // Checks for duplicate character id
-                if (_characters.GroupBy(x => x.Id).Count(g => g.Count() > 1) > 0)
-                    throw new InvalidOperationException("Duplicates character id in save");
-
-                reader.ReadStartElement("Provinces");
-                while (true)
-                {
-                    if (reader.Name == "") // remove whitespaces and carriage returns
-                        reader.Read();
-                    else if (reader.Name == "Province")
-                        _provinces.Add(Province.FromXml((XElement)XNode.ReadFrom(reader), _characters));
-                    else
-                        break;
-                }
-                reader.ReadEndElement();
-                reader.ReadEndElement();
-            }
+            SaveGame.Load(SaveGame.ExistingSaves()[0], _gameComponents.OfType<ISavable>());
         }
 
 
