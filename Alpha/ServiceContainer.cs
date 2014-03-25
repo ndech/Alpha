@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class ServiceContainer : IServiceProvider
+    public class ServiceContainer
     {
         private readonly Dictionary<Type, object> _services;
 
@@ -12,21 +12,16 @@
             _services = new Dictionary<Type, object>();
         }
 
-        public void AddService(Type serviceType, object item)
+        public void AddService<T>(T item) where T : IService
         {
-            _services[serviceType] = item;
+            _services[typeof(T)] = item;
         }
 
-        public void RemoveService(Type serviceType)
+        public void RemoveService<T>() where T : IService
         {
-            _services.Remove(serviceType);
+            _services.Remove(typeof(T));
         }
-
-        public object GetService(Type serviceType)
-        {
-            return _services[serviceType];
-        }
-
+        
         public T GetService<T>() where T : IService
         {
             return (T)_services[typeof(T)];

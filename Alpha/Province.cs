@@ -49,10 +49,10 @@ namespace Alpha
             Population++;
         }
 
-        public static Province FromXml(XElement element, IEnumerable<Character> characters )
+        public static Province FromXml(XElement element, ServiceContainer services)
         {
             String rulerId = (string) element.Element("Ruler");
-            Character ruler = rulerId != null ? characters.First(s => s.Id == rulerId) : null;
+            Character ruler = rulerId != null ? services.GetService<ICharacterList>().Characters.First(s => s.Id == rulerId) : null;
             return new Province(
                 (string)element.Attribute("id"),
                 (string)element.Element("Name"),

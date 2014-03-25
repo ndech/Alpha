@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Xml;
-
-namespace Alpha
+﻿namespace Alpha
 {
+    using System.Collections.Generic;
+    using System.Xml;
     interface IProvinceList : IService
     {
-        ICollection<Province> Provinces { get; }  
+        IEnumerable<Province> Provinces { get; }  
     }
     class ProvinceList : GameComponent, ISavable, IProvinceList
     {
-        public ICollection<Province> Provinces { get; private set; }
+        IEnumerable<Province> IProvinceList.Provinces { get { return Provinces; } } 
+        private ICollection<Province> Provinces { get; set; }
 
         public ProvinceList(Game game) 
             : base(game, 0)
         {
             Provinces = new List<Province>();
-            game.Services.AddService(typeof(IProvinceList), this);
+            game.Services.AddService<IProvinceList>(this);
 
             for (int i = 0; i < 10; i++)
                 Provinces.Add(new Province());
@@ -38,12 +38,11 @@ namespace Alpha
                 province.Save(writer);
         }
 
-        public void Load(XmlReader reader)
+        public void Load(SaveGame save)
         {
-            //SaveGame.LoadCollection(reader, Provinces, Province.FromXml);
+            save.LoadCollection(Provinces, Province.FromXml, "Province");
         }
         #endregion
-
 
         public override void Update(double delta)
         {

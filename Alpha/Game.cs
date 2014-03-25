@@ -9,13 +9,16 @@ namespace Alpha
 {
     public class Game
     {
+        public ServiceContainer Services { get; private set; }
+        private readonly List<GameComponent> _gameComponents;
+        private bool _newRegisteredElement = false;
+
+
+
         private readonly Timer _timer;
         private readonly Renderer _renderer;
         private readonly Calendar _calendar;
         public Input Input { get; private set; }
-        private readonly List<GameComponent> _gameComponents;
-        public ServiceContainer Services { get; private set; }
-        private bool _newRegisteredElement = false;
 
         public Game()
         {
@@ -107,9 +110,8 @@ namespace Alpha
 
         private void Load()
         {
-            SaveGame.Load(SaveGame.ExistingSaves()[0], _gameComponents.OfType<ISavable>());
+            SaveGame.Load(SaveGame.ExistingSaves()[0], Services, _gameComponents.OfType<ISavable>());
         }
-
 
         public void Dispose()
         {

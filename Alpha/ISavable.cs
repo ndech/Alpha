@@ -9,6 +9,6 @@ namespace Alpha
         String SaveName { get; }
 
         void Save(XmlWriter writer);
-        void Load(XmlReader reader);
+        void Load(SaveGame save);
     }
 }

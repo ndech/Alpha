@@ -175,6 +175,7 @@
     <Compile Include="Input.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="ISavable.cs" />
+    <Compile Include="IService.cs" />
     <Compile Include="IUpdatable.cs" />
     <Compile Include="MonitoringHeader.cs" />
     <Compile Include="Province.cs" />

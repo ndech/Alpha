@@ -61,7 +61,7 @@ namespace Alpha
             return Id+": "+ FullName + " (" + Sex + ")";
         }
 
-        public static Character FromXml(XElement element)
+        public static Character FromXml(XElement element, ServiceContainer services)
         {
             return new Character(
                 (string)element.Attribute("id"),
