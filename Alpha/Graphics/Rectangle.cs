@@ -47,7 +47,7 @@ namespace Alpha.Graphics
         private VertexDefinition.PositionColor[] _vertices;
         public float Depth { get; set; }
 
-        public Rectangle(Renderer renderer, Vector2I screenSize, Vector2I position, Vector2I size, Vector4 color, float depth = 0.0f)
+        public Rectangle(IRenderer renderer, Vector2I screenSize, Vector2I position, Vector2I size, Vector4 color, float depth = 0.0f)
         {
             _shader = renderer.ColorShader;
             Position = position;
@@ -57,13 +57,13 @@ namespace Alpha.Graphics
             _changed = true;
             Depth = depth;
 
-            int vertexCount = 4;
+            const int vertexCount = 4;
             _indexCount = 6;
 
             _vertices = new VertexDefinition.PositionColor[vertexCount];
             UInt32[] indices = { 0, 1, 2, 0, 3, 1 };
 
-            _vertexBuffer = Buffer.Create(renderer.DirectX.Device, _vertices,
+            _vertexBuffer = Buffer.Create(renderer.Device, _vertices,
                 new BufferDescription
                 {
                     Usage = ResourceUsage.Dynamic,
@@ -74,7 +74,7 @@ namespace Alpha.Graphics
                     StructureByteStride = 0
                 });
 
-            _indexBuffer = Buffer.Create(renderer.DirectX.Device, BindFlags.IndexBuffer, indices);
+            _indexBuffer = Buffer.Create(renderer.Device, BindFlags.IndexBuffer, indices);
         }
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {

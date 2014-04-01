@@ -6,14 +6,17 @@ namespace Alpha
     {
         public bool Enabled { get; set; }
         public int UpdateOrder { get; protected set; }
-        protected Game Game { get; set; }
 
-        protected GameComponent(Game game, int updateOrder = 0)
+        protected IGame Game;
+
+        protected GameComponent(IGame game, int updateOrder = 0)
         {
             Game = game;
             UpdateOrder = updateOrder;
             Enabled = true;
         }
+
+        public abstract void Initialize();
         public abstract void Update(double delta);
         public abstract void Dispose();
         public int CompareTo(GameComponent other)

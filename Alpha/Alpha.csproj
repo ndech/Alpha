@@ -138,6 +138,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\ICamera.cs" />
+    <Compile Include="Graphics\IRenderer.cs" />
+    <Compile Include="IGame.cs" />
+    <Compile Include="UI\Component.cs" />
+    <Compile Include="UI\Controls\Button.cs" />
+    <Compile Include="UI\Controls\Control.cs" />
+    <Compile Include="UI\MenuScreen.cs" />
+    <Compile Include="UI\Screen.cs" />
+    <Compile Include="UI\UiManager.cs" />
     <None Include="Data\Shaders\Texture.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -11,26 +11,15 @@
         IEnumerable<Province> IProvinceList.Provinces { get { return Provinces; } } 
         private ICollection<Province> Provinces { get; set; }
 
-        public ProvinceList(Game game) 
+        public ProvinceList(IGame game) 
             : base(game, 0)
         {
             Provinces = new List<Province>();
-            game.Services.AddService<IProvinceList>(this);
-
-            for (int i = 0; i < 10; i++)
-                Provinces.Add(new Province());
         }
 
         #region Savable
-        public int SaveOrder
-        {
-            get { return 0; }
-        }
-
-        public string SaveName
-        {
-            get { return "Provinces"; }
-        }
+        public int SaveOrder { get { return 1; } }
+        public string SaveName { get { return "Provinces"; } }
 
         public void Save(XmlWriter writer)
         {
@@ -42,7 +31,20 @@
         {
             save.LoadCollection(Provinces, Province.FromXml, "Province");
         }
+
+        public void PreLoading()
+        {
+            Provinces.Clear();
+        }
+
+        public void PostLoading() { }
         #endregion
+
+        public override void Initialize()
+        {
+            for (int i = 0; i < 10; i++)
+                Provinces.Add(new Province());
+        }
 
         public override void Update(double delta)
         {
@@ -51,5 +53,10 @@
 
         public override void Dispose()
         { }
+
+        public void RegisterAsService()
+        {
+            Game.Services.AddService<IProvinceList>(this);
+        }
     }
 }

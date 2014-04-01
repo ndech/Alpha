@@ -7,16 +7,14 @@ namespace Alpha
 {
     public abstract class RenderableGameComponent : GameComponent, IRenderable, IComparable<RenderableGameComponent>
     {
-        protected RenderableGameComponent(Game game, Renderer renderer, int updateOrder = 0, bool zBufferEnabled = true, bool blendingEnabled = false, bool displayWireframe = false) 
-            : base(game, updateOrder)
+        protected RenderableGameComponent(IGame game, int updateOrder = 0, bool zBufferEnabled = true, bool blendingEnabled = false, bool displayWireframe = false) 
+            : base(game, updateOrder: updateOrder)
         {
-            Renderer = renderer;
             DisplayWireframe = displayWireframe;
             BlendingEnabled = blendingEnabled;
             ZBufferEnabled = zBufferEnabled;
         }
 
-        protected readonly Renderer Renderer;
         public bool DisplayWireframe { get; private set; }
         public bool BlendingEnabled { get; private set; }
         public bool ZBufferEnabled { get; private set; }

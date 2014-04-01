@@ -6,14 +6,17 @@ using Alpha.Graphics.Shaders;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Windows;
+using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics
 {
-    public class Renderer : IDisposable
+    class Renderer : GameComponent, IRenderer
     {
         public RenderForm Form { get; private set; }
+        public string VideoCardName { get { return DirectX.VideoCardName; } }
+        public int VideoCardMemorySize { get { return DirectX.VideoCardMemorySize; } }
         public Dx11 DirectX { get; private set; }
-        public Camera Camera { get; set; }
+        protected ICamera Camera { get; set; }
         public Light Light { get; set; }
         public ColorShader ColorShader { get; set; }
         public TextureShader TextureShader { get; set; }
@@ -21,13 +24,15 @@ namespace Alpha.Graphics
         public FontShader FontShader { get; set; }
         public TranslateShader TranslateShader { get; set; }
         public FontShader CircleShader { get; set; }
+        public Device Device { get { return DirectX.Device; } }
         public Vector2I ScreenSize { get; private set; }
         public TextManager TextManager { get; private set; }
         public TextureManager TextureManager { get; private set; }
 
         private readonly List<RenderableGameComponent> _renderables;
 
-        public Renderer()
+        public Renderer(IGame game)
+            : base(game, 10000)
         {
             CreateWindow();
             DirectX = new Dx11(Form);
@@ -88,7 +93,17 @@ namespace Alpha.Graphics
             DirectX.DrawScene();
         }
 
-        public void Dispose()
+        public override void Initialize()
+        {
+            Camera = Game.Services.GetService<ICamera>();
+        }
+
+        public override void Update(double delta)
+        {
+
+        }
+
+        public override void Dispose()
         {
             DirectX.Dispose();
         }
@@ -96,6 +111,11 @@ namespace Alpha.Graphics
         public void Register(RenderableGameComponent item)
         {
             _renderables.Add(item);
+        }
+
+        public void RegisterAsService()
+        {
+            Game.Services.AddService<IRenderer>(this);
         }
     }
 }

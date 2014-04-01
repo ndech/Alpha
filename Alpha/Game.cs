@@ -1,52 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Alpha.Graphics;
-using PlaneSimulator;
+using Alpha.UI;
 using SharpDX.DirectInput;
 using SharpDX.Windows;
 
 namespace Alpha
 {
-    public class Game
+    public class Game : IGame
     {
         public ServiceContainer Services { get; private set; }
         private readonly List<GameComponent> _gameComponents;
-        private bool _newRegisteredElement = false;
-
-
 
         private readonly Timer _timer;
         private readonly Renderer _renderer;
-        private readonly Calendar _calendar;
-        public Input Input { get; private set; }
 
         public Game()
         {
             _gameComponents = new List<GameComponent>();
             Services = new ServiceContainer();
-            _calendar = new Calendar(this);
-            _calendar.DayChanged += OnDayChanged;
-            _calendar.MonthChanged += OnMonthChanged;
-            _calendar.YearChanged += OnYearChanged;
 
             _timer = new Timer();
-            _renderer = new Renderer();
-            Input = new Input(this, _renderer.Form.Handle);
-            Register(Input);
-            Camera camera = new Camera(this); 
-            Register(camera);
-            _renderer.Camera = camera;
-            Register(new MonitoringHeader(this, _renderer));
-            Register(new ProvinceList(this));
-            Register(new CharacterList(this));
+
+            _renderer = new Renderer(this);
+
+            Register(_renderer,
+                     new Input(this),
+                     new Camera(this),
+                     new Calendar(this),
+                     new UiManager(this),
+                     new MonitoringHeader(this),
+                     new ProvinceList(this),
+                     new CharacterList(this));
+            
+            foreach (IService service in _gameComponents.OfType<IService>())
+                service.RegisterAsService();
+
+            foreach (GameComponent component in _gameComponents)
+                component.Initialize();
         }
 
-        public void Register(GameComponent item)
+        private void Register(params GameComponent[] items)
         {
-            _newRegisteredElement = true;
-            _gameComponents.Add(item);
-            if (item is RenderableGameComponent)
-                _renderer.Register(item as RenderableGameComponent);
+            foreach (GameComponent item in items)
+            {
+                _gameComponents.Add(item);
+                if (item is RenderableGameComponent)
+                    _renderer.Register(item as RenderableGameComponent);
+            }
+            _gameComponents.Sort();
         }
 
         public void Run()
@@ -54,29 +56,22 @@ namespace Alpha
             RenderLoop.Run(_renderer.Form, () =>
             {
                 double delta = _timer.Tick();
-                if (_newRegisteredElement)
-                {
-                    _gameComponents.Sort();
-                    _newRegisteredElement = false;
-                }
-
+                
                 foreach (GameComponent item in _gameComponents)
                     if(item.Enabled)
                         item.Update(delta);
-                
-                _calendar.Update(delta);
 
-                if (Input.IsKeyPressed(Key.Escape))
-                    Exit();
+                //if (Input.IsKeyPressed(Key.Escape))
+                //    Exit();
 
-                if (Input.IsKeyPressed(Key.S))
-                    Save();
+                //if (Input.IsKeyPressed(Key.S))
+                //    Save();
 
-                if (Input.IsKeyPressed(Key.L))
-                    Load();
+                //if (Input.IsKeyPressed(Key.L))
+                //    Load();
 
-                if (Input.IsKeyPressed(Key.P))
-                    _calendar.Paused = !_calendar.Paused;
+                //if (Input.IsKeyPressed(Key.P))
+                //    _calendar.Paused = !_calendar.Paused;
 
                 _renderer.Render();
             });
@@ -103,9 +98,9 @@ namespace Alpha
 
         private void Save()
         {
-            SaveGame.Create(
-                "Alpha_" + _calendar.Year + "-" + _calendar.Month + "-" + _calendar.Day + ".xml", 
-                _gameComponents.OfType<ISavable>());
+            //SaveGame.Create(
+            //    "Alpha_" + _calendar.Year + "-" + _calendar.Month + "-" + _calendar.Day + ".xml", 
+            //    _gameComponents.OfType<ISavable>());
         }
 
         private void Load()

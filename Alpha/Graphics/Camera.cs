@@ -3,13 +3,13 @@ using Vector3 = SharpDX.Vector3;
 
 namespace Alpha.Graphics
 {
-    public class Camera : GameComponent
+    public class Camera : GameComponent, ICamera
     {
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
         private Matrix _reflectionMatrix;
         private Vector3 _position;
-        public Camera(Game game)
+        public Camera(IGame game)
             :base(game)
         {
         }
@@ -20,6 +20,10 @@ namespace Alpha.Graphics
         public Matrix ReflectionMatrix { get { return _reflectionMatrix; } }
 
         public Vector3 Position { get { return _position; } }
+
+        public override void Initialize()
+        {
+        }
 
         public override void Update(double delta)
         {
@@ -45,5 +49,9 @@ namespace Alpha.Graphics
         }
 
         public override void Dispose() { }
+        public void RegisterAsService()
+        {
+            Game.Services.AddService<ICamera>(this);
+        }
     }
 }

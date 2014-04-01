@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
-
-namespace Alpha
+﻿namespace Alpha
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+    using System.Xml.Linq;
     class SaveGame
     {
-        private String _fileName;
+        private readonly String _fileName;
         public XmlReader Reader { get; private set; }
-        private ServiceContainer _services;
+        private readonly ServiceContainer _services;
 
         private SaveGame(string fileName, ServiceContainer services)
         {
@@ -31,7 +30,7 @@ namespace Alpha
 
         public static void Create(String fileName, IEnumerable<ISavable> items)
         {
-            using (XmlWriter writer = XmlWriter.Create(fileName))
+            using (XmlWriter writer = XmlWriter.Create(DirectoryPath + fileName))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Save");
@@ -59,6 +58,8 @@ namespace Alpha
 
         private void Load(IEnumerable<ISavable> items)
         {
+            foreach (ISavable item in items)
+                item.PreLoading();
             using (Reader = XmlReader.Create(_fileName))
             {
                 Reader.ReadStartElement("Save");
@@ -77,11 +78,14 @@ namespace Alpha
                     }
                 }
             }
+            foreach (ISavable item in items)
+                item.PostLoading();
         }
 
         public void LoadCollection<T>(ICollection<T> collection, Func<XElement, ServiceContainer, T> factory, String tag)
         {
-            collection.Clear();
+            if(collection.Count > 0)
+                throw new InvalidOperationException("Collection should be empty");
             while (true)
             {
                 if (Reader.Name == "") // remove whitespaces and carriage returns

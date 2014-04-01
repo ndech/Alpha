@@ -12,18 +12,23 @@ namespace Alpha
     {
         private readonly CpuUsageCounter _cpuUsageCounter;
         private readonly FpsCounter _fpsCounter;
-        private readonly Text _text;
-        private readonly String _videoCardInfo;
-        private readonly Rectangle _overlay;
+        private Text _text;
+        private String _videoCardInfo;
+        private Rectangle _overlay;
         
-        public MonitoringHeader(Game game, Renderer renderer) : base(game, renderer, 0, false, true)
+        public MonitoringHeader(IGame game) : base(game, 0, false, true)
         {
             _cpuUsageCounter = new CpuUsageCounter();
             _fpsCounter = new FpsCounter();
-            _text = renderer.TextManager.Create("Courrier", 14, 80, new Vector4(1,1,1,0.5f));
-            _text.Position = new Vector2I(3,0);
-            _videoCardInfo = renderer.DirectX.VideoCardName + " ("+renderer.DirectX.VideoCardMemorySize+" MB)";
-            _overlay = new Rectangle(renderer, renderer.ScreenSize, new Vector2I(0,0), new Vector2I(485,16), new Vector4(1,0,0,0.2f));
+        }
+
+        public override void Initialize()
+        {
+            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            _text = renderer.TextManager.Create("Courrier", 14, 80, new Vector4(1, 1, 1, 0.5f));
+            _text.Position = new Vector2I(3, 0);
+            _videoCardInfo = renderer.VideoCardName + " (" + renderer.VideoCardMemorySize + " MB)";
+            _overlay = new Rectangle(renderer, renderer.ScreenSize, new Vector2I(0, 0), new Vector2I(485, 16), new Vector4(1, 0, 0, 0.2f));
         }
 
         public override void Update(double delta)
