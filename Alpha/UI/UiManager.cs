@@ -16,7 +16,7 @@ namespace Alpha.UI
 
         public override void Initialize()
         {
-            _activeScreen = new MenuScreen();
+            _activeScreen = new MenuScreen(Game);
             _screens.Add(_activeScreen);
         }
 

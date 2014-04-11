@@ -51,7 +51,7 @@ namespace Alpha.Graphics
             TranslateShader = new TranslateShader(DirectX.Device);
             CircleShader = new FontShader(DirectX.Device);
             FontShader = new FontShader(DirectX.Device);
-            TextManager = new TextManager(DirectX.Device, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
+            TextManager = new TextManager(DirectX.Device, ScreenSize);
             TextureManager = new TextureManager(DirectX.Device);
             _renderables = new List<RenderableGameComponent>();
         }

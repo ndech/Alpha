@@ -11,6 +11,8 @@ namespace Alpha.Graphics
         RenderForm Form { get; }
         TextManager TextManager { get; }
         ColorShader ColorShader { get; }
+        TextureShader TextureShader { get; }
+        TextureManager TextureManager { get; }
         Device Device { get; }
         Vector2I ScreenSize { get; }
         String VideoCardName { get; }

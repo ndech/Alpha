@@ -1,12 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SharpDX;
+using SharpDX.Direct3D11;
 
 namespace Alpha.UI
 {
-    class Component
+    enum VerticalAlignment
     {
+        Top,
+        Bottom,
+        Middle
+    }
+
+    enum HorizontalAlignment
+    {
+        Left,
+        Right,
+        Center
+    }
+    abstract class Component
+    {
+        public abstract void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix);
+        
+        protected Component(IGame game)
+        {
+
+        }
     }
 }

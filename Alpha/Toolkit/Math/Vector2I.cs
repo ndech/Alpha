@@ -13,6 +13,8 @@ namespace Alpha.Toolkit.Math
             Y = y;
         }
 
+        public static Vector2I Zero = new Vector2I(0,0);
+
         public bool Equals(Vector2I other)
         {
             return X == other.X && Y == other.Y;
@@ -27,7 +29,21 @@ namespace Alpha.Toolkit.Math
         {
             return !v1.Equals(v2);
         }
-
+        public static Vector2I operator /(Vector2I v1, int i2)
+        {
+            return new Vector2I(v1.X / i2, v1.Y / i2);
+        }
+        public static Vector2I operator +(Vector2I v1, Vector2I v2)
+        {
+            return
+                (
+                    new Vector2I
+                        (
+                        v1.X + v2.X,
+                        v1.Y + v2.Y
+                        )
+                    );
+        }
         public override bool Equals(object other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -40,6 +56,11 @@ namespace Alpha.Toolkit.Math
             {
                 return (X * 397) ^ Y;
             }
+        }
+
+        public override string ToString()
+        {
+            return "X : " + X + ", Y:" + Y;
         }
     }
 }

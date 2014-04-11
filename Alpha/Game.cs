@@ -31,7 +31,8 @@ namespace Alpha
                      new UiManager(this),
                      new MonitoringHeader(this),
                      new ProvinceList(this),
-                     new CharacterList(this));
+                     new CharacterList(this),
+                     new MousePointer(this));
             
             foreach (IService service in _gameComponents.OfType<IService>())
                 service.RegisterAsService();

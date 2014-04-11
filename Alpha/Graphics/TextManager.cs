@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -13,16 +14,13 @@ namespace Alpha.Graphics
         private readonly Dictionary<String, Font> _fontDictionary;
 
         private readonly Device _device;
+        private Vector2I _screenSize;
 
-        private int _screenWidth;
-        private int _screenHeight;
-
-        public TextManager(Device device, int screenWidth, int screenHeight)
+        public TextManager(Device device, Vector2I screenSize)
         {
             _fontShader = new FontShader(device);
             _fontDictionary = new Dictionary<string, Font>();
-            _screenWidth = screenWidth;
-            _screenHeight = screenHeight;
+            _screenSize = screenSize;
             _device = device;
         }
 
@@ -38,7 +36,7 @@ namespace Alpha.Graphics
             String fontKey = font + "-" + size;
             if(!_fontDictionary.ContainsKey(fontKey))
                 _fontDictionary.Add(fontKey, new Font(_device, font, size));
-            return new Text(_device, _fontShader, _screenWidth, _screenHeight, _fontDictionary[fontKey], maxLength, color);
+            return new Text(_device, _fontShader, _screenSize, _fontDictionary[fontKey], maxLength, color);
         }
     }
 }

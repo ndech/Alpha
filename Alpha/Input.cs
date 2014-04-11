@@ -1,4 +1,6 @@
-﻿using Alpha.Graphics;
+﻿using System;
+using Alpha.Graphics;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.DirectInput;
 
@@ -6,7 +8,9 @@ namespace Alpha
 {
     public interface IInput : IService
     {
-        
+        Vector2I AbsoluteMousePosition();
+
+         event Input.MouseMovedEventHandler MouseMoved;
     }
     public class Input : GameComponent, IInput
     {
@@ -15,6 +19,10 @@ namespace Alpha
         private readonly Mouse _mouse;
         private KeyboardState _keyboardState;
         private MouseState _mouseState;
+        private Vector2I _mousePosition;
+
+        public delegate void MouseMovedEventHandler(Vector2I coordinates);
+        public event MouseMovedEventHandler MouseMoved = delegate {};
         public Input(IGame game) : base(game, updateOrder: -10000)
         {
             _directInput = new DirectInput();
@@ -24,17 +32,24 @@ namespace Alpha
         
         public override void Initialize()
         {
-            System.IntPtr handle = Game.Services.GetService<IRenderer>().Form.Handle;
+            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            _mousePosition = renderer.ScreenSize/2;
+            System.IntPtr handle = renderer.Form.Handle;
             _keyboard.Properties.BufferSize = 256;
             _keyboard.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
             _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
-            _mouse.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
+            _mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
         }
 
         public override void Update(double delta)
         {
             ReadMouse();
             ReadKeyboard();
+
+            Vector2I relativeMousePoistion = RelativeMousePosition();
+            _mousePosition += RelativeMousePosition();
+            if(relativeMousePoistion != Vector2I.Zero)
+                MouseMoved.Invoke(_mousePosition);
         }
 
         public override void Dispose()
@@ -92,6 +107,17 @@ namespace Alpha
                 else
                     throw;
             }
+        }
+
+        public Vector2I RelativeMousePosition()
+        {
+            if(_mouseState == null)
+                return new Vector2I(0,0);
+            return new Vector2I(_mouseState.X, _mouseState.Y);
+        }
+        public Vector2I AbsoluteMousePosition()
+        {
+            return _mousePosition;
         }
         
         public bool IsKeyPressed(Key key)

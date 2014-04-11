@@ -7,12 +7,19 @@ namespace Alpha.UI
     abstract class Screen
     {
         protected List<Component> _components;
+        protected IGame _game;
 
-        protected Screen()
+        protected Screen(IGame game)
         {
             _components = new List<Component>();
+            _game = game;
         }
         public abstract void Update(double delta);
-        public abstract void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix);
+
+        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            foreach (Component component in _components)
+                component.Render(deviceContext, viewMatrix, projectionMatrix);
+        }
     }
 }

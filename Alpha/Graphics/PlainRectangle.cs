@@ -10,59 +10,57 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.Graphics
 {
-    class Rectangle
+    class PlainRectangle
     {
-        private bool _changed;
         private readonly Buffer _vertexBuffer;
         private readonly Buffer _indexBuffer;
         private readonly int _indexCount;
+
+        public Vector2I Position { get; set; }
+
+        private Vector2I _size;
         public Vector2I Size
         {
             get { return _size; }
             set
             {
                 if (value != _size)
-                    _changed = true;
-                _size = value;
+                {
+                    _size = value;
+                    Update();
+                }
             }
         }
-
-        private Vector2I _size;
-        public Vector2I Position
+        private Vector2I _screenSize;
+        private Vector4 _color;
+        public Vector4 Color
         {
-            get { return _position; }
+            get { return _color; }
             set
             {
-                if (value != _position)
-                    _changed = true;
-                _position = value;
+                if (value != _color)
+                {
+                    _color = value;
+                    Update();
+                }
             }
         }
-        private Vector2I _position;
-
-        public Vector2I ScreenSize { get; set; }
-
-        private Vector4 _color;
         private ColorShader _shader;
         private VertexDefinition.PositionColor[] _vertices;
+        private DeviceContext _deviceContext;
         public float Depth { get; set; }
 
-        public Rectangle(IRenderer renderer, Vector2I screenSize, Vector2I position, Vector2I size, Vector4 color, float depth = 0.0f)
+        public PlainRectangle(IRenderer renderer, Vector2I position, Vector2I size, Vector4 color, float depth = 0.0f)
         {
             _shader = renderer.ColorShader;
+            _deviceContext = renderer.Device.ImmediateContext;
             Position = position;
-            ScreenSize = screenSize;
-            Size = size;
+            _screenSize = renderer.ScreenSize;
             _color = color;
-            _changed = true;
             Depth = depth;
 
             const int vertexCount = 4;
-            _indexCount = 6;
-
             _vertices = new VertexDefinition.PositionColor[vertexCount];
-            UInt32[] indices = { 0, 1, 2, 0, 3, 1 };
-
             _vertexBuffer = Buffer.Create(renderer.Device, _vertices,
                 new BufferDescription
                 {
@@ -74,36 +72,42 @@ namespace Alpha.Graphics
                     StructureByteStride = 0
                 });
 
+            _indexCount = 6;
+            UInt32[] indices = { 0, 1, 2, 0, 3, 1 };
             _indexBuffer = Buffer.Create(renderer.Device, BindFlags.IndexBuffer, indices);
+            Size = size;
         }
+
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            if (_changed)
-            {
-                float left = (float)((ScreenSize.X / 2) * -1) + (float)Position.X;
-                float right = left + (float)Size.X;
-                float top = (float)(ScreenSize.Y / 2) - (float)Position.Y;
-                float bottom = top - (float)Size.Y;
-
-                _vertices[0] = new VertexDefinition.PositionColor { position = new Vector3(left, top, Depth), color = _color};
-                _vertices[1] = new VertexDefinition.PositionColor { position = new Vector3(right, bottom, Depth), color = _color };
-                _vertices[2] = new VertexDefinition.PositionColor { position = new Vector3(left, bottom, Depth), color = _color };
-                _vertices[3] = new VertexDefinition.PositionColor { position = new Vector3(right, top, Depth), color = _color };
-
-                DataStream mappedResource;
-                deviceContext.MapSubresource(_vertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-                mappedResource.WriteRange(_vertices);
-                deviceContext.UnmapSubresource(_vertexBuffer, 0);
-                _changed = false;
-            }
-
-            // Set vertex buffer stride and offset.
             int stride = Utilities.SizeOf<VertexDefinition.PositionColor>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, stride, 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix);
+            int drawX = -(_screenSize.X >> 1) + Position.X;
+            int drawY = (_screenSize.Y >> 1) - Position.Y;
+            Matrix position = Matrix.Translation(drawX, drawY, 0);
+            _shader.Render(deviceContext, _indexCount, worldMatrix*position, viewMatrix, projectionMatrix);
+        }
+
+        private void Update()
+        {
+            const float left = 0;
+            float right = left + Size.X;
+            const float top = 0;
+            float bottom = top - Size.Y;
+
+            _vertices[0] = new VertexDefinition.PositionColor {position = new Vector3(left, top, Depth), color = _color};
+            _vertices[1] = new VertexDefinition.PositionColor {position = new Vector3(right, bottom, Depth), color = _color};
+            _vertices[2] = new VertexDefinition.PositionColor {position = new Vector3(left, bottom, Depth), color = _color};
+            _vertices[3] = new VertexDefinition.PositionColor {position = new Vector3(right, top, Depth), color = _color};
+
+            DataStream mappedResource;
+            _deviceContext.MapSubresource(_vertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,
+                out mappedResource);
+            mappedResource.WriteRange(_vertices);
+            _deviceContext.UnmapSubresource(_vertexBuffer, 0);
         }
 
         public void Dispose()

@@ -1,19 +1,11 @@
 ﻿namespace Alpha.UI.Controls
 {
-    enum VerticalAlignment
+    abstract class Control : Component
     {
-        Top,
-        Bottom,
-        Middle
-    }
+        protected Control(IGame game)
+            :base(game)
+        {
 
-    enum HorizontalAlignment
-    {
-        Left,
-        Right,
-        Center
-    }
-    class Control : Component
-    {
+        }
     }
 }

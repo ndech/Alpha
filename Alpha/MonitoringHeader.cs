@@ -7,14 +7,14 @@ namespace Alpha
     using SharpDX;
     using SharpDX.Direct3D11;
     using Graphics;
-    using Rectangle = Graphics.Rectangle;
+
     class MonitoringHeader : RenderableGameComponent
     {
         private readonly CpuUsageCounter _cpuUsageCounter;
         private readonly FpsCounter _fpsCounter;
         private Text _text;
         private String _videoCardInfo;
-        private Rectangle _overlay;
+        private PlainRectangle _overlay;
         
         public MonitoringHeader(IGame game) : base(game, 0, false, true)
         {
@@ -28,20 +28,20 @@ namespace Alpha
             _text = renderer.TextManager.Create("Courrier", 14, 80, new Vector4(1, 1, 1, 0.5f));
             _text.Position = new Vector2I(3, 0);
             _videoCardInfo = renderer.VideoCardName + " (" + renderer.VideoCardMemorySize + " MB)";
-            _overlay = new Rectangle(renderer, renderer.ScreenSize, new Vector2I(0, 0), new Vector2I(485, 16), new Vector4(1, 0, 0, 0.2f));
+            _overlay = new PlainRectangle(renderer, new Vector2I(0, 0), new Vector2I(485, 16), new Vector4(1, 0, 0, 0.2f));
         }
 
         public override void Update(double delta)
         {
             _cpuUsageCounter.Update(delta);
             _fpsCounter.Update(delta);
+            _text.Content = ((int)_fpsCounter.Value) + " FPS | " + String.Format("{0:0.00}", _cpuUsageCounter.Value) + " % CPU | " + _videoCardInfo;
+            _text.Update();
+            _overlay.Size = new Vector2I(_text.Size.X + 2, 16);
         }
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _text.Content = ((int)_fpsCounter.Value) + " FPS | " + String.Format("{0:0.00}", _cpuUsageCounter.Value) + " % CPU | " + _videoCardInfo;
-            _text.Update(deviceContext);
-            _overlay.Size = new Vector2I( _text.Width+2, 16);
             _overlay.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
