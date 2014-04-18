@@ -9,31 +9,19 @@ namespace Alpha.UI.Controls
     using System;
     class Button : Control
     {
-        public Vector2I Size { get; set; }
-        public Vector2I Position { get; set; }
+        public VerticalAlignment VerticalAlignment { get; set; }
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+        public Color BackgroundColor { get; set; }
+        public Color TextColor { get; set; }
 
-        public Int32 Height
-        {
-            get { return Size.Y; }
-            set { Size = new Vector2I(value, Size.Y); }
-        }
-        public Int32 Width
-        {
-            get { return Size.X; }
-            set { Size = new Vector2I(Size.X, value); }
-        }
         public String Text
         {
             get { return _text.Content; }
             set { _text.Content = value; }
         }
-        public VerticalAlignment VerticalAlignment { get; set; }
-        public HorizontalAlignment HorizontalAlignment { get; set; }
-        public Color BackgroundColor { get; set; }
-        public Color TextColor { get; set; }
+        
         private readonly Text _text;
         private readonly PlainRectangle _plainRectangle;
-        private bool _focused;
 
         public Button(IGame game, string text, int width, int height)
             : base(game)
@@ -45,7 +33,8 @@ namespace Alpha.UI.Controls
             _text.Content = text;
             HorizontalAlignment = HorizontalAlignment.Center;
             VerticalAlignment = VerticalAlignment.Middle;
-            _focused = false;
+            FocusGained += (p) => { _plainRectangle.Color = new Vector4(1, 0, 0, 1); };
+            FocusLost += (p) => { _plainRectangle.Color = new Vector4(1, 1, 1, 1); };
         }
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
@@ -65,35 +54,6 @@ namespace Alpha.UI.Controls
 
             _plainRectangle.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
-        }
-
-        public void OnFocus()
-        {
-            if (!_focused)
-            {
-                _plainRectangle.Color = new Vector4(1, 0, 0, 1);
-                _focused = true;
-            }
-        }
-
-        public void OnFocusLost()
-        {
-            if (_focused)
-            {
-                _plainRectangle.Color = new Vector4(1, 1, 1, 1);
-                _focused = false;
-            }
-        }
-
-        public void OnMouseMoved(Vector2I position)
-        {
-            if (position.X >= Position.X
-                && position.X < Position.X + Size.X
-                && position.Y >= Position.Y
-                && position.Y < Position.Y + Size.Y)
-                OnFocus();
-            else
-                OnFocusLost();
         }
     }
 }

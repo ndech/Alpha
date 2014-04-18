@@ -62,10 +62,22 @@ namespace Alpha.Graphics
         public Vector2I UpdateVertexArray(String text, ref FontShader.Vertex[] vertices, ref Buffer vertexBuffer, int positionX = 0, int positionY = 0)
         {
             int width = 0;
+            int maxWidth = 0;
             int height = Characters.First().Value.height;
+            int maxHeight = height;
             for (int i = 0; i < text.Length; i++)
             {
-                Character c = Characters[text[i]];
+                char letter = text[i];
+                if (letter == '\n')
+                {
+                    maxWidth = Math.Max(maxWidth, width);
+                    width = 0;
+                    positionX = 0;
+                    positionY -= height;
+                    maxHeight += height;
+                    continue;
+                }
+                Character c = Characters[letter];
                 vertices[i * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop) }; //Top left
                 vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - c.height, 0.0f), texture = new Vector2(c.uRight, c.vBottom) }; //Right bottom
                 vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - c.height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom) }; //Left bottom
@@ -79,7 +91,7 @@ namespace Alpha.Graphics
                 out mappedResource);
             mappedResource.WriteRange(vertices);
             _device.ImmediateContext.UnmapSubresource(vertexBuffer, 0);
-            return  new Vector2I(width, height);
+            return  new Vector2I(Math.Max(maxWidth, width), maxHeight);
         }
 
         public void Dispose()

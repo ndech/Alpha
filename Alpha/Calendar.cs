@@ -23,10 +23,9 @@ namespace Alpha
         public const double TimePerDay = 1.0;
         private double _elapsed = 0;
 
-        public delegate void CalendarChangedEventHandler();
-        public event CalendarChangedEventHandler DayChanged;
-        public event CalendarChangedEventHandler MonthChanged;
-        public event CalendarChangedEventHandler YearChanged;
+        public event CustomEventHandler DayChanged;
+        public event CustomEventHandler MonthChanged;
+        public event CustomEventHandler YearChanged;
         public Int32 Day { get; set; }
         public Int32 Month { get; set; }
         public Int32 Year { get; set; }
@@ -37,9 +36,6 @@ namespace Alpha
             Day = 1;
             Month = 1;
             Year = 1900;
-            DayChanged = () => { };
-            MonthChanged = () => { };
-            YearChanged = () => { };
         }
 
         public override void Initialize()
@@ -52,19 +48,19 @@ namespace Alpha
             _elapsed += delta;
             if (_elapsed > TimePerDay)
             {
-                DayChanged.Invoke();
+                DayChanged.Raise();
                 _elapsed = 0;
                 Day ++;
                 if (Day > 30)
                 {
                     Day = 1;
                     Month ++;
-                    MonthChanged.Invoke();
+                    MonthChanged.Raise();
                     if (Month > 12)
                     {
                         Month = 1;
                         Year ++;
-                        YearChanged.Invoke();
+                        YearChanged.Raise();
                     }
                 }
             }

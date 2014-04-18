@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Alpha.Graphics;
 using Alpha.UI;
 using SharpDX.DirectInput;
@@ -92,7 +93,7 @@ namespace Alpha
             Save();
         }
 
-        private void Exit()
+        public void Exit()
         {
             _renderer.Form.Close();
         }

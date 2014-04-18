@@ -21,12 +21,12 @@ namespace Alpha.Graphics
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _texture = renderer.TextureManager.Create("default.png", @"Data/MousePointers/");
             _input = Game.Services.GetService<IInput>();
-            _rectangle = new TexturedRectangle(renderer, _input.AbsoluteMousePosition(), new Vector2I(_texture.Width, _texture.Height));
+            _rectangle = new TexturedRectangle(renderer, _input.AbsoluteMousePosition, new Vector2I(_texture.Width, _texture.Height));
         }
 
         public override void Update(double delta)
         {
-            _rectangle.Position = _input.AbsoluteMousePosition();
+            _rectangle.Position = _input.AbsoluteMousePosition;
         }
 
         public override void Dispose()

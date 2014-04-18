@@ -138,14 +138,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomEventHandler.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
+    <Compile Include="Graphics\TexturedExtensibleRectangle.cs" />
     <Compile Include="Graphics\TexturedRectangle.cs" />
     <Compile Include="IGame.cs" />
-    <Compile Include="UI\Component.cs" />
+    <Compile Include="UI\UIComponent.cs" />
     <Compile Include="UI\Controls\Button.cs" />
     <Compile Include="UI\Controls\Control.cs" />
+    <Compile Include="UI\Controls\Tooltip.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\MenuScreen.cs" />
     <Compile Include="UI\Screen.cs" />
@@ -239,6 +242,7 @@
     <Folder Include="Data\Models\" />
     <Folder Include="Graphics\Models\" />
     <Folder Include="Toolkit\Configuration\" />
+    <Folder Include="Toolkit\Extensions\" />
     <Folder Include="Toolkit\Physics\" />
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +295,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Textures\waterbump.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

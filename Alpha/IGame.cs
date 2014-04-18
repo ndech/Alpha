@@ -9,5 +9,6 @@ namespace Alpha
     public interface IGame
     {
         ServiceContainer Services { get; }
+        void Exit();
     }
 }

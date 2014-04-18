@@ -8,7 +8,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.UI
 {
-    class Label : Component
+    class Label : UiComponent
     {
         public Label(IGame game) 
             : base(game)
