@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Alpha
 {
-    public interface IGame
+    interface IGame
     {
         ServiceContainer Services { get; }
         void Exit();

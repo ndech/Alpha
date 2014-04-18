@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class ServiceContainer
+    class ServiceContainer
     {
         private readonly Dictionary<Type, object> _services;
 

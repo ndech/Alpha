@@ -3,7 +3,7 @@ using Vector3 = SharpDX.Vector3;
 
 namespace Alpha.Graphics
 {
-    public class Camera : GameComponent, ICamera
+    class Camera : GameComponent, ICamera
     {
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;

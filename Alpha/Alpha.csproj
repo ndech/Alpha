@@ -297,6 +297,9 @@
     <Content Include="Data\Textures\waterbump.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\Icons\gold.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

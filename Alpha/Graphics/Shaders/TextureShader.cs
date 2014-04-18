@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class TextureShader : IDisposable
+    class TextureShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct Vertex
@@ -86,7 +86,7 @@ namespace Alpha.Graphics.Shaders
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
-                Filter = Filter.MinMagMipLinear,
+                Filter = Filter.Anisotropic,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,

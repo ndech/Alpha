@@ -4,7 +4,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.Graphics
 {
-    public class TextureManager : IDisposable
+    class TextureManager : IDisposable
     {
         private readonly Dictionary<String, Texture> _textureDictionary;
         private readonly Device _device;

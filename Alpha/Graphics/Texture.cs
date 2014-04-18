@@ -5,7 +5,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics
 {
-    public class Texture : IDisposable
+    class Texture : IDisposable
     {
         public ShaderResourceView TextureResource { get; private set; }
         public Texture(Device device, String fileName, String path = "Data/Textures/")

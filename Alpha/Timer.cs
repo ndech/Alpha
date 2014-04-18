@@ -5,7 +5,7 @@ namespace Alpha
     using System;
     using System.Diagnostics;
     using System.Globalization;
-    public class Timer : ICsvLoggable
+    class Timer : ICsvLoggable
     {
         private readonly Stopwatch _stopWatch;
         private Int64 _elapsedMilliseconds;

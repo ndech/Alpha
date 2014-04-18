@@ -4,12 +4,6 @@
 Texture2D shaderTexture;
 SamplerState SampleType;
 
-cbuffer FontColorBuffer
-{
-    float4 pixelColor;
-};
-
-
 //////////////
 // TYPEDEFS //
 //////////////
@@ -17,29 +11,19 @@ struct PixelInputType
 {
     float4 position : SV_POSITION;
     float2 tex : TEXCOORD0;
+	float4 color : COLOR;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pixel Shader
 ////////////////////////////////////////////////////////////////////////////////
 float4 FontPixelShader(PixelInputType input) : SV_TARGET
-{
-    float4 color;
-	
-	
+{	
     // Sample the texture pixel at this location.
-    color = shaderTexture.Sample(SampleType, input.tex);
+    float4 texColor = shaderTexture.Sample(SampleType, input.tex);
 	
-    // If the color is black on the texture then treat this pixel as transparent.
-    if(color.r == 0.0f)
-    {
-        color.a = 0.0f;
-    }
-	else
-    {
-        color.a = color.r*pixelColor.a;
-        color.rgb = pixelColor.rgb;
-    }
+    texColor.a = texColor.r*input.color.a;
+    texColor.rgb = input.color.rgb;
 
-    return color;
+    return texColor;
 }

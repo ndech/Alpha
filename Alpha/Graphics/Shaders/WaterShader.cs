@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class WaterShader : IDisposable
+    class WaterShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         internal struct MatrixBuffer

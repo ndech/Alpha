@@ -8,7 +8,7 @@ using SharpDX.Windows;
 
 namespace Alpha
 {
-    public class Game : IGame
+    class Game : IGame
     {
         public ServiceContainer Services { get; private set; }
         private readonly List<GameComponent> _gameComponents;

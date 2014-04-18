@@ -18,7 +18,7 @@ namespace Alpha.UI
             _components.Add(_exitButton = new Button(game, "Exit", 300, 50) { Position = new Vector2I(100, 400) });
 
             _components.Add(new Tooltip(game, _exitButton, 1d, "Return to desktop"));
-            _components.Add(new Tooltip(game, _debugButton, 1d, "This button is not doing anything.\nAt all."));
+            _components.Add(new Tooltip(game, _debugButton, 1d, "This button ain't [red]doing anything.[-]\nAt all.\nClicking on it will cost you [yellow]20[-] [gold] anyway."));
 
             _exitButton.Clicked += game.Exit;
         }

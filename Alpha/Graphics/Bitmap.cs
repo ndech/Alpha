@@ -11,7 +11,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics
 {
-    public class Bitmap : IDisposable
+    class Bitmap : IDisposable
     {
         public ShaderResourceView Texture { get; private set; }
         public Buffer VertexBuffer { get; private set; }

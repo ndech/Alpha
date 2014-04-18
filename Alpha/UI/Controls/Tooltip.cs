@@ -20,7 +20,7 @@ namespace Alpha.UI.Controls
         {
             IRenderer renderer = game.Services.GetService<IRenderer>();
 
-            _text = renderer.TextManager.Create("Courrier", 14, 80, new Vector4(0.8f, 1, 1, 0.5f));
+            _text = renderer.TextManager.Create("Courrier", 14, 1080, Color.Wheat);
             _text.Content = text;
 
             Texture texture = renderer.TextureManager.Create("tooltip.png", @"Data/UI/");

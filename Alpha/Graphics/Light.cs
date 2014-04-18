@@ -2,7 +2,7 @@
 
 namespace Alpha.Graphics
 {
-    public class Light
+    class Light
     {
         public Vector3 Direction { get; set; }
         public Vector4 Color { get; set; }

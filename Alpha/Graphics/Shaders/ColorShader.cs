@@ -10,7 +10,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class ColorShader : IDisposable
+    class ColorShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         internal struct Vertex

@@ -9,7 +9,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class TranslateShader : IDisposable
+    class TranslateShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct Vertex

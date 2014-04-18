@@ -10,7 +10,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class TerrainShader : IDisposable
+    class TerrainShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         internal struct MatrixBuffer

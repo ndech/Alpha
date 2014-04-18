@@ -35,11 +35,13 @@ namespace Alpha.Graphics
         private TextureShader _shader;
         private VertexDefinition.PositionTexture[] _vertices;
         private DeviceContext _deviceContext;
+        private Texture _texture ;
         public float Depth { get; set; }
 
-        public TexturedRectangle(IRenderer renderer, Vector2I position, Vector2I size, float depth = 0.0f)
+        public TexturedRectangle(IRenderer renderer, Vector2I position, Vector2I size, Texture texture, float depth = 0.0f)
         {
             _shader = renderer.TextureShader;
+            _texture = texture;
             _deviceContext = renderer.Device.ImmediateContext;
             Position = position;
             _screenSize = renderer.ScreenSize;
@@ -64,7 +66,7 @@ namespace Alpha.Graphics
             Size = size;
         }
 
-        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture)
+        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             int stride = Utilities.SizeOf<VertexDefinition.PositionTexture>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, stride, 0));
@@ -74,7 +76,7 @@ namespace Alpha.Graphics
             int drawX = -(_screenSize.X >> 1) + Position.X;
             int drawY = (_screenSize.Y >> 1) - Position.Y;
             Matrix position = Matrix.Translation(drawX, drawY, 0);
-            _shader.Render(deviceContext, _indexCount, worldMatrix * position, viewMatrix, projectionMatrix, texture);
+            _shader.Render(deviceContext, _indexCount, worldMatrix * position, viewMatrix, projectionMatrix, _texture.TextureResource);
         }
 
         private void Update()

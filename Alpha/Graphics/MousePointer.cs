@@ -21,7 +21,7 @@ namespace Alpha.Graphics
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _texture = renderer.TextureManager.Create("default.png", @"Data/MousePointers/");
             _input = Game.Services.GetService<IInput>();
-            _rectangle = new TexturedRectangle(renderer, _input.AbsoluteMousePosition, new Vector2I(_texture.Width, _texture.Height));
+            _rectangle = new TexturedRectangle(renderer, _input.AbsoluteMousePosition, new Vector2I(_texture.Width, _texture.Height), _texture);
         }
 
         public override void Update(double delta)
@@ -36,7 +36,7 @@ namespace Alpha.Graphics
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _rectangle.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix, _texture.TextureResource);
+            _rectangle.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
     }
 }

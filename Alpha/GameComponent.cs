@@ -2,7 +2,7 @@
 
 namespace Alpha
 {
-    public abstract class GameComponent : IUpdatable, IDisposable, IComparable<GameComponent>
+    abstract class GameComponent : IUpdatable, IDisposable, IComparable<GameComponent>
     {
         public bool Enabled { get; set; }
         public int UpdateOrder { get; protected set; }

@@ -11,7 +11,7 @@ using Resource = SharpDX.Direct3D11.Resource;
 
 namespace Alpha.Graphics
 {
-    public class Dx11 : IDisposable
+    class Dx11 : IDisposable
     {
         private bool _disposed = false;
         private Rational _refreshRate;

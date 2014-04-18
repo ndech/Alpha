@@ -5,7 +5,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha
 {
-    public abstract class RenderableGameComponent : GameComponent, IRenderable, IComparable<RenderableGameComponent>
+    abstract class RenderableGameComponent : GameComponent, IRenderable, IComparable<RenderableGameComponent>
     {
         protected RenderableGameComponent(IGame game, int updateOrder = 0, bool zBufferEnabled = true, bool blendingEnabled = false, bool displayWireframe = false) 
             : base(game, updateOrder: updateOrder)

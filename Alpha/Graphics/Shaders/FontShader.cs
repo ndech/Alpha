@@ -9,14 +9,16 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class FontShader : IDisposable
+    class FontShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct Vertex
         {
             public static int AppendAlignedElement = 12;
+            public static int AppendAlignedElement2 = 20;
             public Vector3 position;
             public Vector2 texture;
+            public Vector4 color;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -26,31 +28,24 @@ namespace Alpha.Graphics.Shaders
             public Matrix view;
             public Matrix projection;
         }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct FontColorBuffer
-        {
-            public Vector4 pixelColor;
-        }
-
+        
         private const string VertexShaderFileName = @"Data/Shaders/Font.vs";
         private const string PixelShaderFileName = @"Data/Shaders/Font.ps";
         VertexShader VertexShader { get; set; }
         PixelShader PixelShader { get; set; }
         InputLayout Layout { get; set; }
         SharpDX.Direct3D11.Buffer ConstantMatrixBuffer { get; set; }
-        SharpDX.Direct3D11.Buffer ConstantFontColorBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
         public FontShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "FontVertexShader", "vs_4_0", ShaderFlags.Debug, EffectFlags.None);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "FontPixelShader", "ps_4_0", ShaderFlags.Debug, EffectFlags.None);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "FontVertexShader", "vs_4_0", ShaderFlags.Debug);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "FontPixelShader", "ps_4_0", ShaderFlags.Debug);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
 
-            var inputElements = new InputElement[]
+            var inputElements = new[]
 			{
 				new InputElement
 				{
@@ -68,7 +63,17 @@ namespace Alpha.Graphics.Shaders
 					SemanticIndex = 0,
 					Format = Format.R32G32_Float,
 					Slot = 0,
-					AlignedByteOffset = TextureShader.Vertex.AppendAlignedElement,
+					AlignedByteOffset = Vertex.AppendAlignedElement,
+					Classification = InputClassification.PerVertexData,
+					InstanceDataStepRate = 0
+				},
+				new InputElement
+				{
+					SemanticName = "COLOR",
+					SemanticIndex = 0,
+					Format = Format.R32G32B32A32_Float,
+					Slot = 0,
+					AlignedByteOffset = Vertex.AppendAlignedElement2,
 					Classification = InputClassification.PerVertexData,
 					InstanceDataStepRate = 0
 				}
@@ -90,17 +95,6 @@ namespace Alpha.Graphics.Shaders
             };
             ConstantMatrixBuffer = new SharpDX.Direct3D11.Buffer(device, matrixBufferDesc);
 
-            var fontColorBufferDesc = new BufferDescription
-            {
-                Usage = ResourceUsage.Dynamic, // Updated each frame
-                SizeInBytes = Utilities.SizeOf<FontColorBuffer>(), // Contains three matrices
-                BindFlags = BindFlags.ConstantBuffer,
-                CpuAccessFlags = CpuAccessFlags.Write,
-                OptionFlags = ResourceOptionFlags.None,
-                StructureByteStride = 0
-            };
-            ConstantFontColorBuffer = new SharpDX.Direct3D11.Buffer(device, fontColorBufferDesc);
-
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
@@ -120,7 +114,7 @@ namespace Alpha.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture, Vector4 fontColor)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -137,14 +131,7 @@ namespace Alpha.Graphics.Shaders
                     projection = projectionMatrix
                 });
             deviceContext.UnmapSubresource(ConstantMatrixBuffer, 0);
-
-
-            deviceContext.MapSubresource(ConstantFontColorBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-
-            mappedResource.Write(new FontColorBuffer { pixelColor = fontColor });
-
-            deviceContext.UnmapSubresource(ConstantFontColorBuffer, 0);
-
+            
             // Set the position of the constant buffer in the vertex shader.
             const int bufferNumber = 0;
 
@@ -153,7 +140,6 @@ namespace Alpha.Graphics.Shaders
 
             // Set shader resources in the pixel shader.
             deviceContext.PixelShader.SetShaderResource(0, texture);
-            deviceContext.PixelShader.SetConstantBuffer(0, ConstantFontColorBuffer);
 
             // Set the vertex input layout.
             deviceContext.InputAssembler.InputLayout = Layout;
@@ -170,7 +156,7 @@ namespace Alpha.Graphics.Shaders
         }
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, ConstantFontColorBuffer, Layout, PixelShader, VertexShader);
+            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, Layout, PixelShader, VertexShader);
         }
     }
 }

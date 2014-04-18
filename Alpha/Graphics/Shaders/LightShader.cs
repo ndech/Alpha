@@ -11,7 +11,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace Alpha.Graphics.Shaders
 {
-    public class LightShader : IDisposable
+    class LightShader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         internal struct Vertex

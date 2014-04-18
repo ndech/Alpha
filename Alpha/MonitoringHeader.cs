@@ -25,7 +25,7 @@ namespace Alpha
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
-            _text = renderer.TextManager.Create("Courrier", 14, 80, new Vector4(1, 1, 1, 0.5f));
+            _text = renderer.TextManager.Create("Courrier", 14, 80, Color.Gray);
             _text.Position = new Vector2I(3, 0);
             _videoCardInfo = renderer.VideoCardName + " (" + renderer.VideoCardMemorySize + " MB)";
             _overlay = new PlainRectangle(renderer, new Vector2I(0, 0), new Vector2I(485, 16), new Vector4(1, 0, 0, 0.2f));

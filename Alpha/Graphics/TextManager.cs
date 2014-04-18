@@ -8,20 +8,18 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.Graphics
 {
-    public class TextManager : IDisposable
+    class TextManager : IDisposable
     {
         private readonly FontShader _fontShader;
         private readonly Dictionary<String, Font> _fontDictionary;
 
-        private readonly Device _device;
-        private Vector2I _screenSize;
+        private readonly IRenderer _renderer;
 
-        public TextManager(Device device, Vector2I screenSize)
+        public TextManager(IRenderer renderer)
         {
-            _fontShader = new FontShader(device);
+            _fontShader = new FontShader(renderer.Device);
             _fontDictionary = new Dictionary<string, Font>();
-            _screenSize = screenSize;
-            _device = device;
+            _renderer = renderer;
         }
 
         public void Dispose()
@@ -31,12 +29,12 @@ namespace Alpha.Graphics
                 keyValuePair.Value.Dispose();
         }
 
-        public Text Create(String font, int size, int maxLength, Vector4 color)
+        public Text Create(String font, int size, int maxLength, Color color)
         {
             String fontKey = font + "-" + size;
             if(!_fontDictionary.ContainsKey(fontKey))
-                _fontDictionary.Add(fontKey, new Font(_device, font, size));
-            return new Text(_device, _fontShader, _screenSize, _fontDictionary[fontKey], maxLength, color);
+                _fontDictionary.Add(fontKey, new Font(_renderer, font, size));
+            return new Text(_renderer, _fontShader, _fontDictionary[fontKey], maxLength, color);
         }
     }
 }

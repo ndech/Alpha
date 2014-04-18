@@ -29,7 +29,7 @@ namespace Alpha.UI.Controls
             IRenderer renderer = game.Services.GetService<IRenderer>();
             Size = new Vector2I(width, height);
             _plainRectangle = new PlainRectangle(renderer, new Vector2I(100, 100), Size, new Vector4(1, 1, 1, 1), 0);
-            _text = renderer.TextManager.Create("Arial", 20, 80, new Vector4(0, 0, 1, 0.5f));
+            _text = renderer.TextManager.Create("Arial", 20, 80, Color.SteelBlue);
             _text.Content = text;
             HorizontalAlignment = HorizontalAlignment.Center;
             VerticalAlignment = VerticalAlignment.Middle;

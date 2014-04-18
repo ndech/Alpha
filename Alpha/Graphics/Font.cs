@@ -10,7 +10,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.Graphics
 {
-    public class Font : IDisposable
+    class Font : IDisposable
     {
         public struct Character
         {
@@ -23,14 +23,16 @@ namespace Alpha.Graphics
         }
 
         private Device _device;
+        private IRenderer _renderer;
         public Texture Texture { get; set; }
 
         public SortedList<int, Character> Characters { get; set; }
 
-        public Font(Device device, String font, int height)
+        public Font(IRenderer renderer, String font, int height)
         {
-            _device = device;
-            Texture = new Texture(device, font + "-" + height + "px.png", @"Data/Fonts/");
+            _device = renderer.Device;
+            _renderer = renderer;
+            Texture = new Texture(_device, font + "-" + height + "px.png", @"Data/Fonts/");
             ParseFileData(@"Data/Fonts/"+font+"-"+height+"px.fnt",Texture.Width, Texture.Height);
         }
 
@@ -59,8 +61,10 @@ namespace Alpha.Graphics
             }
         }
 
-        public Vector2I UpdateVertexArray(String text, ref FontShader.Vertex[] vertices, ref Buffer vertexBuffer, int positionX = 0, int positionY = 0)
+        public Vector2I UpdateVertexArray(string text, ref FontShader.Vertex[] vertices, ref Buffer vertexBuffer, Color defaultColor, List<TexturedRectangle> icons, int positionX = 0, int positionY = 0)
         {
+            icons.Clear();
+            Vector4 color = defaultColor.ToVector4();
             int width = 0;
             int maxWidth = 0;
             int height = Characters.First().Value.height;
@@ -77,11 +81,33 @@ namespace Alpha.Graphics
                     maxHeight += height;
                     continue;
                 }
+                if (letter == '[')
+                {
+                    if(text[i+1] == '[')
+                        continue;
+                    String token = text.Substring(i + 1, text.IndexOf(']', i + 1) - (i + 1));
+                    if (token == "red")
+                        color = Color.Red.ToVector4();
+                    else if (token == "yellow")
+                        color = Color.Yellow.ToVector4();
+                    else if (token == "-")
+                        color = defaultColor.ToVector4();
+                    else if (token == "gold")
+                    {
+                        icons.Add(new TexturedRectangle(_renderer, new Vector2I(positionX + 512, -positionY + 384), new Vector2I(height, height), _renderer.TextureManager.Create("gold.png", "Data/UI/Icons/")));
+                        positionX += height + 1;
+                        width += height + 1;
+                    }
+                    else
+                        throw new InvalidOperationException("Unexpected token : " + token);
+                    i = text.IndexOf(']', i + 1);
+                    continue;
+                }
                 Character c = Characters[letter];
-                vertices[i * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop) }; //Top left
-                vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - c.height, 0.0f), texture = new Vector2(c.uRight, c.vBottom) }; //Right bottom
-                vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - c.height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom) }; //Left bottom
-                vertices[i * 4 + 3] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY, 0.0f), texture = new Vector2(c.uRight, c.vTop) }; //Top right
+                vertices[i * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop), color = color }; //Top left
+                vertices[i * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY - c.height, 0.0f), texture = new Vector2(c.uRight, c.vBottom), color = color }; //Right bottom
+                vertices[i * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY - c.height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom), color = color }; //Left bottom
+                vertices[i * 4 + 3] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY, 0.0f), texture = new Vector2(c.uRight, c.vTop), color = color }; //Top right
                 
                 positionX += c.width + 1;
                 width += c.width + 1;

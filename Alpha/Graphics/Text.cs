@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit.Math;
 using SharpDX;
@@ -10,15 +11,16 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.Graphics
 {
-    public class Text
+    class Text
     {
-        public Text(Device device, FontShader shader, Vector2I screenSize, Font font, Int32 maxLength, Vector4 color)
+        public Text(IRenderer renderer, FontShader shader, Font font, Int32 maxLength, Color color)
         {
             Font = font;
             MaxLength = maxLength;
             Color = color;
             _shader = shader;
-            _screenSize = screenSize;
+            _screenSize = renderer.ScreenSize;
+            _icons = new List<TexturedRectangle>();
             // The index buffer is static and do not change when the text changes
             UInt32[] indices = new UInt32[maxLength * 6]; // 6 indices per character
 
@@ -32,7 +34,7 @@ namespace Alpha.Graphics
                 indices[i * 6 + 5] = i * 4 + 1;
             }
 
-            _indexBuffer = Buffer.Create(device, BindFlags.IndexBuffer, indices);
+            _indexBuffer = Buffer.Create(renderer.Device, BindFlags.IndexBuffer, indices);
 
             // The vertex buffer is initialized empty
             _vertices = new FontShader.Vertex[maxLength * 4]; // 4 vertices per character
@@ -48,7 +50,7 @@ namespace Alpha.Graphics
             };
 
             // Create the vertex buffer.
-            _vertexBuffer = Buffer.Create(device, _vertices, vertexBufferDesc);
+            _vertexBuffer = Buffer.Create(renderer.Device, _vertices, vertexBufferDesc);
         }
 
         private readonly Buffer _indexBuffer;
@@ -60,7 +62,7 @@ namespace Alpha.Graphics
         private FontShader.Vertex[] _vertices;
         private String _content;
         private readonly FontShader _shader;
-        private Vector2I _screenSize;
+        private readonly List<TexturedRectangle> _icons;
 
         public String Content
         {
@@ -79,25 +81,29 @@ namespace Alpha.Graphics
 
 
         public Vector2I Position { get; set; }
-        public Vector4 Color { get; set; }
+        public Color Color { get; set; }
         public Font Font { get; private set; }
+
+        private Vector2I _screenSize;
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix orthoMatrix)
         {
-			deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<TextureShader.Vertex>(), 0));
+			deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<FontShader.Vertex>(), 0));
 			deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
 			deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
             int drawX = -(_screenSize.X >> 1) + Position.X;
             int drawY = (_screenSize.Y >> 1) - Position.Y;
             Matrix position = Matrix.Translation(drawX, drawY, 0);
-			_shader.Render(deviceContext, _content.Length*6, worldMatrix*position, viewMatrix, orthoMatrix, Font.Texture.TextureResource, Color);
+			_shader.Render(deviceContext, _content.Length*6, worldMatrix*position, viewMatrix, orthoMatrix, Font.Texture.TextureResource);
+            foreach (TexturedRectangle icon in _icons)
+                icon.Render(deviceContext, worldMatrix * position, viewMatrix, orthoMatrix);
         }
 
         public void Update()
         {
             // Use the font class to build the vertex array from the sentence text and sentence draw location.
-            Size = Font.UpdateVertexArray(_content, ref _vertices, ref _vertexBuffer);
+            Size = Font.UpdateVertexArray(_content, ref _vertices, ref _vertexBuffer, Color, _icons);
         }
     }
 }

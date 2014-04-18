@@ -15,7 +15,7 @@ namespace Alpha
         event CustomEventHandler<Int32> MouseButtonClicked;
         event CustomEventHandler<Int32> MouseButtonReleased;
     }
-    public class Input : GameComponent, IInput
+    class Input : GameComponent, IInput
     {
         private readonly DirectInput _directInput;
         private readonly Keyboard _keyboard;
