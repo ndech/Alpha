@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Alpha.Graphics;
 using Alpha.UI;
-using SharpDX.DirectInput;
 using SharpDX.Windows;
 
 namespace Alpha
@@ -62,18 +60,6 @@ namespace Alpha
                 foreach (GameComponent item in _gameComponents)
                     if(item.Enabled)
                         item.Update(delta);
-
-                //if (Input.IsKeyPressed(Key.Escape))
-                //    Exit();
-
-                //if (Input.IsKeyPressed(Key.S))
-                //    Save();
-
-                //if (Input.IsKeyPressed(Key.L))
-                //    Load();
-
-                //if (Input.IsKeyPressed(Key.P))
-                //    _calendar.Paused = !_calendar.Paused;
 
                 _renderer.Render();
             });

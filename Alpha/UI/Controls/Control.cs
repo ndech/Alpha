@@ -1,30 +1,13 @@
 ﻿using System;
 using Alpha.Toolkit.Math;
-using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Alpha.UI.Controls
 {
     abstract class Control : UiComponent
     {
-        protected Control(IGame game)
-            : base(game)
+        protected Control(IGame game, Vector2I size, Vector2I position)
+            : base(game, size, position)
         {
-        }
-
-        public Vector2I Size { get; set; }
-        public Vector2I Position { get; set; }
-
-        public Int32 Height
-        {
-            get { return Size.Y; }
-            set { Size = new Vector2I(value, Size.Y); }
-        }
-
-        public Int32 Width
-        {
-            get { return Size.X; }
-            set { Size = new Vector2I(Size.X, value); }
         }
         
         protected bool Focused;
@@ -45,7 +28,7 @@ namespace Alpha.UI.Controls
         }
 
         public event CustomEventHandler<Vector2I> FocusGainedInternal;
-        public event CustomEventHandler <Vector2I> FocusGained
+        public event CustomEventHandler<Vector2I> FocusGained
         {
             add
             {

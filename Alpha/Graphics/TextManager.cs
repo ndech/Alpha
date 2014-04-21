@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit;
-using Alpha.Toolkit.Math;
 using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Alpha.Graphics
 {

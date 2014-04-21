@@ -1,5 +1,4 @@
-﻿using System.Xml.Serialization.Advanced;
-using Alpha.Graphics;
+﻿using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -23,12 +22,11 @@ namespace Alpha.UI.Controls
         private readonly Text _text;
         private readonly PlainRectangle _plainRectangle;
 
-        public Button(IGame game, string text, int width, int height)
-            : base(game)
+        public Button(IGame game, Vector2I size, Vector2I position, String text)
+            : base(game, size, position)
         {
             IRenderer renderer = game.Services.GetService<IRenderer>();
-            Size = new Vector2I(width, height);
-            _plainRectangle = new PlainRectangle(renderer, new Vector2I(100, 100), Size, new Vector4(1, 1, 1, 1), 0);
+            _plainRectangle = new PlainRectangle(renderer, new Vector2I(100, 100), Size, Color.White, 0);
             _text = renderer.TextManager.Create("Arial", 20, 80, Color.SteelBlue);
             _text.Content = text;
             HorizontalAlignment = HorizontalAlignment.Center;
@@ -37,7 +35,7 @@ namespace Alpha.UI.Controls
             FocusLost += (p) => { _plainRectangle.Color = new Vector4(1, 1, 1, 1); };
         }
 
-        public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        protected override void RenderComponent(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             int positionX = Position.X;
             int positionY = Position.Y;

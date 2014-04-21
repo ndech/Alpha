@@ -1,5 +1,4 @@
-﻿using System;
-using Alpha.Graphics;
+﻿using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -16,11 +15,11 @@ namespace Alpha.UI.Controls
         private Text _text;
 
         public Tooltip(IGame game, Control button, double delay, string text)
-            : base(game)
+            : base(game, Vector2I.Zero, Vector2I.Zero)
         {
             IRenderer renderer = game.Services.GetService<IRenderer>();
 
-            _text = renderer.TextManager.Create("Courrier", 14, 1080, Color.Wheat);
+            _text = renderer.TextManager.Create("Arial", 20, 1080, Color.Wheat);
             _text.Content = text;
 
             Texture texture = renderer.TextureManager.Create("tooltip.png", @"Data/UI/");
@@ -55,14 +54,14 @@ namespace Alpha.UI.Controls
             };
         }
 
-        public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        protected override void RenderComponent(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             if (!_visible) return;
             _rectangle.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
 
-        public override void Update(double delta)
+        protected override void UpdateComponent(double delta)
         {
             if (_focused && !_visible)
             {

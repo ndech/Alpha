@@ -50,13 +50,13 @@ namespace Alpha.Graphics
         private DeviceContext _deviceContext;
         public float Depth { get; set; }
 
-        public PlainRectangle(IRenderer renderer, Vector2I position, Vector2I size, Vector4 color, float depth = 0.0f)
+        public PlainRectangle(IRenderer renderer, Vector2I position, Vector2I size, Color color, float depth = 0.0f)
         {
             _shader = renderer.ColorShader;
             _deviceContext = renderer.Device.ImmediateContext;
             Position = position;
             _screenSize = renderer.ScreenSize;
-            _color = color;
+            _color = color.ToVector4();
             Depth = depth;
 
             const int vertexCount = 4;

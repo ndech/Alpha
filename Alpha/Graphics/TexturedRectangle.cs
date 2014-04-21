@@ -35,7 +35,7 @@ namespace Alpha.Graphics
         private TextureShader _shader;
         private VertexDefinition.PositionTexture[] _vertices;
         private DeviceContext _deviceContext;
-        private Texture _texture ;
+        private Texture _texture;
         public float Depth { get; set; }
 
         public TexturedRectangle(IRenderer renderer, Vector2I position, Vector2I size, Texture texture, float depth = 0.0f)

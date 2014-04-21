@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
-using Alpha.UI.Controls;
 using SharpDX;
 using SharpDX.DirectInput;
 

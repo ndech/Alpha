@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit;
 using Alpha.Toolkit.Math;

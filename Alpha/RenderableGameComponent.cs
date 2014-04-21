@@ -1,5 +1,4 @@
 ﻿using System;
-using Alpha.Graphics;
 using SharpDX;
 using SharpDX.Direct3D11;
 

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Alpha
+﻿namespace Alpha
 {
     public interface IService
     {

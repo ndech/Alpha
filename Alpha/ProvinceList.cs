@@ -4,12 +4,11 @@
     using System.Xml;
     interface IProvinceList : IService
     {
-        IEnumerable<Province> Provinces { get; }  
+        IList<Province> Provinces { get; }  
     }
     class ProvinceList : GameComponent, ISavable, IProvinceList
     {
-        IEnumerable<Province> IProvinceList.Provinces { get { return Provinces; } } 
-        private ICollection<Province> Provinces { get; set; }
+        public IList<Province> Provinces { get; protected set; }
 
         public ProvinceList(IGame game) 
             : base(game, 0)

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Xml;
-using Alpha.Graphics;
 using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Alpha
 {
@@ -16,7 +14,7 @@ namespace Alpha
 
     interface ICalendar : IService
     {
-         
+        event CustomEventHandler DayChanged;
     }
     class Calendar : GameComponent, ISavable, ICalendar
     {
