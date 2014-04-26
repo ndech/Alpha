@@ -1,34 +1,41 @@
 ﻿using System;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
+using Alpha.UI.Coordinates;
 using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace Alpha.UI.Controls
 {
-    class Label : UiComponent
+    class Label : Control
     {
-        private readonly Text _text;
+        private Text _text;
+        private String _textValue;
         public String Text
         {
-            get { return _text.Content; }
-            set { _text.Content = value; }
+            get { return _textValue; }
+            set
+            {
+                _textValue = value;
+                _text.Content = value;
+            }
         }
 
-        public Label(IGame game, Vector2I size, Vector2I position, String text)
-            : base(game, size, position)
+        public Label(IGame game, UniRectangle coordinates, String text)
+            : base(game, coordinates)
         {
-            IRenderer renderer = game.Services.GetService<IRenderer>();
-            _text = renderer.TextManager.Create("Arial", 20, text.Length, Color.SteelBlue);
-            _text.Content = text;
-            _text.Position = Position;
+            _textValue = text;
         }
 
-        protected override void RenderComponent(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+            _text.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
         }
 
-        protected override void UpdateComponent(double delta) { }
+        public override void Initialize()
+        {
+            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            _text = renderer.TextManager.Create("Arial", 20, _textValue, Size, Color.SteelBlue);
+        }
     }
 }

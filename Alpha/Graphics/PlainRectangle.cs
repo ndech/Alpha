@@ -85,18 +85,15 @@ namespace Alpha.Graphics
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            int drawX = -(_screenSize.X >> 1) + Position.X;
-            int drawY = (_screenSize.Y >> 1) - Position.Y;
-            Matrix position = Matrix.Translation(drawX, drawY, 0);
-            _shader.Render(deviceContext, _indexCount, worldMatrix*position, viewMatrix, projectionMatrix);
+            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix);
         }
 
         private void Update()
         {
-            const float left = 0;
-            float right = left + Size.X;
-            const float top = 0;
-            float bottom = top - Size.Y;
+            float left = 0;
+            float top = 0;
+            float right = Size.X;
+            float bottom = Size.Y;
 
             _vertices[0] = new VertexDefinition.PositionColor {position = new Vector3(left, top, Depth), color = _color};
             _vertices[1] = new VertexDefinition.PositionColor {position = new Vector3(right, bottom, Depth), color = _color};

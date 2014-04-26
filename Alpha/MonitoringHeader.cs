@@ -12,7 +12,7 @@ namespace Alpha
     {
         private readonly CpuUsageCounter _cpuUsageCounter;
         private readonly FpsCounter _fpsCounter;
-        private Text _text;
+        private SimpleText _simpleText;
         private String _videoCardInfo;
         private PlainRectangle _overlay;
         
@@ -25,8 +25,8 @@ namespace Alpha
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
-            _text = renderer.TextManager.Create("Courrier", 14, 80, Color.Gray);
-            _text.Position = new Vector2I(3, 0);
+            _simpleText = renderer.TextManager.Create("Courrier", 14, 80, Color.Gray);
+            _simpleText.Position = new Vector2I(3, 0);
             _videoCardInfo = renderer.VideoCardName + " (" + renderer.VideoCardMemorySize + " MB)";
             _overlay = new PlainRectangle(renderer, new Vector2I(0, 0), new Vector2I(485, 16), Color.MistyRose);
         }
@@ -35,15 +35,15 @@ namespace Alpha
         {
             _cpuUsageCounter.Update(delta);
             _fpsCounter.Update(delta);
-            _text.Content = ((int)_fpsCounter.Value) + " FPS | " + String.Format("{0:0.00}", _cpuUsageCounter.Value) + " % CPU | " + _videoCardInfo;
-            _text.Update();
-            _overlay.Size = new Vector2I(_text.Size.X + 2, 16);
+            _simpleText.Content = ((int)_fpsCounter.Value) + " FPS | " + String.Format("{0:0.00}", _cpuUsageCounter.Value) + " % CPU | " + _videoCardInfo;
+            _simpleText.Update();
+            _overlay.Size = new Vector2I(_simpleText.Size.X + 2, 16);
         }
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _overlay.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
-            _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+            _simpleText.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
 
         public override void Dispose()

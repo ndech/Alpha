@@ -61,6 +61,7 @@ namespace Alpha
             _mousePosition.X = Math.Max(0, Math.Min(_screenSize.X, _mousePosition.X + RelativeMousePosition.X));
             _mousePosition.Y = Math.Max(0, Math.Min(_screenSize.Y, _mousePosition.Y + RelativeMousePosition.Y));
 
+            Console.WriteLine(_mousePosition);
             //Send mouse position signal
             if (RelativeMousePosition != Vector2I.Zero)
                 MouseMoved.Raise(_mousePosition);

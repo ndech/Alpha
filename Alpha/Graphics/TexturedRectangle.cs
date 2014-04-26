@@ -74,7 +74,7 @@ namespace Alpha.Graphics
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
             int drawX = -(_screenSize.X >> 1) + Position.X;
-            int drawY = (_screenSize.Y >> 1) - Position.Y;
+            int drawY = -(_screenSize.Y >> 1) + Position.Y;
             Matrix position = Matrix.Translation(drawX, drawY, 0);
             _shader.Render(deviceContext, _indexCount, worldMatrix * position, viewMatrix, projectionMatrix, _texture.TextureResource);
         }
@@ -82,9 +82,9 @@ namespace Alpha.Graphics
         private void Update()
         {
             const float left = 0;
-            float right = left + Size.X;
+            float right = Size.X;
             const float top = 0;
-            float bottom = top - Size.Y;
+            float bottom = Size.Y;
 
             _vertices[0] = new VertexDefinition.PositionTexture { position = new Vector3(left, top, Depth), texture = new Vector2(0,0)};
             _vertices[1] = new VertexDefinition.PositionTexture { position = new Vector3(right, bottom, Depth), texture = new Vector2(1, 1) };

@@ -1,23 +1,31 @@
 ﻿using Alpha.Graphics;
 using Alpha.Toolkit.Math;
+using Alpha.UI.Coordinates;
 using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace Alpha.UI.Controls
 {
-    class Panel: UiComponent
+    class Panel : Control
     {
-        private PlainRectangle _rectangle;
-        public Panel(IGame game, Vector2I size, Vector2I position, Color color) 
-            : base(game, size, position)
+        protected PlainRectangle Rectangle;
+        protected Color Color;
+        
+        public Panel(IGame game, UniRectangle coordinates, Color color)
+            : base(game, coordinates)
         {
-            IRenderer renderer = game.Services.GetService<IRenderer>();
-            _rectangle = new PlainRectangle(renderer, position, size, color);
+            Color = color;
         }
 
-        protected override void RenderComponent(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _rectangle.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+            Rectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+        }
+
+        public override void Initialize()
+        {
+            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            Rectangle = new PlainRectangle(renderer, new Vector2I(0,0), Size, Color);
         }
     }
 }

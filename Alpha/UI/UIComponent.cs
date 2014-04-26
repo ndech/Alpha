@@ -1,76 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Alpha.Toolkit.Math;
+using Alpha.UI.Controls;
 using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace Alpha.UI
 {
-    enum VerticalAlignment
-    {
-        Top,
-        Bottom,
-        Middle
-    }
-
-    enum HorizontalAlignment
-    {
-        Left,
-        Right,
-        Center
-    }
-
     abstract class UiComponent
     {
         protected readonly IGame Game;
-        protected readonly List<UiComponent> _components;
-        protected UiComponent _parent;
+        protected readonly List<Control> Controls;
+        protected UiComponent Parent = null;
 
-        protected UiComponent(IGame game, Vector2I size, Vector2I position)
+        protected UiComponent(IGame game)
         {
             Game = game;
-            Size = size;
-            Position = position;
-            _components = new List<UiComponent>();
+            Controls = new List<Control>();
         }
         
-        public Vector2I Size { get; set; }
-        public Vector2I Position { get; set; }
-
-        public Int32 Height
+        public void UpdateTree(double delta)
         {
-            get { return Size.Y; }
-            set { Size = new Vector2I(value, Size.Y); }
+            Update(delta);
+            foreach (Control control in Controls)
+                control.UpdateTree(delta);
         }
 
-        public Int32 Width
+        public void RenderTree(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            get { return Size.X; }
-            set { Size = new Vector2I(Size.X, value); }
-        }
-        
-        public void Update(double delta)
-        {
-            UpdateComponent(delta);
-            foreach (UiComponent component in _components)
-                component.Update(delta);
+            Render(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);
+            foreach (Control control in Controls)
+                control.RenderTree(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);
         }
 
-        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        protected virtual void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix) { }
+
+        protected virtual void Update(double delta) { }
+
+        public UiComponent Register(Control component)
         {
-            RenderComponent(deviceContext, viewMatrix, projectionMatrix);
-            foreach (UiComponent component in _components)
-                component.Render(deviceContext, viewMatrix, projectionMatrix);
-        }
-
-        protected virtual void RenderComponent(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix) { }
-
-        protected virtual void UpdateComponent(double delta) { }
-
-        public UiComponent Register(UiComponent component)
-        {
-            _components.Add(component);
-            component._parent = this;
+            Controls.Add(component);
+            component.Parent = this;
+            component.Initialize();
             return this;
         }
 
@@ -80,5 +50,26 @@ namespace Alpha.UI
                 Register(component);
             return this;
         }
+
+        public abstract bool InBounds(Vector2I position);
+
+        internal Control GetHoveredControl(Vector2I position)
+        {
+            if (!InBounds(position))
+                return null;
+            foreach (Control control in Controls)
+            {
+                Control hoveredControl = control.GetHoveredControl(position);
+                if (hoveredControl != null)
+                    return control;
+            }
+            return this as Control;
+        }
+
+        public virtual Matrix DisplacementMatrix { get { return Matrix.Translation(RelativePosition.X, RelativePosition.Y, 0); } }
+
+        public abstract Vector2I Size { get; }
+        public abstract Vector2I Position { get; }
+        public abstract Vector2I RelativePosition { get; }
     }
 }

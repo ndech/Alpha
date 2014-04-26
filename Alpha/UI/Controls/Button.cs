@@ -1,5 +1,6 @@
 ﻿using Alpha.Graphics;
 using Alpha.Toolkit.Math;
+using Alpha.UI.Coordinates;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -8,50 +9,48 @@ namespace Alpha.UI.Controls
     using System;
     class Button : Control
     {
-        public VerticalAlignment VerticalAlignment { get; set; }
-        public HorizontalAlignment HorizontalAlignment { get; set; }
-        public Color BackgroundColor { get; set; }
-        public Color TextColor { get; set; }
+        private String _textValue;
+        //public String Text
+        //{
+        //    get { return _textValue; }
+        //    set
+        //    {
+        //        _textValue = value;
+        //        _text.Content = value;
+        //    }
+        //}
+        
+        private Text _text;
+        private PlainRectangle _plainRectangle;
 
-        public String Text
+        public Button(IGame game, UniRectangle coordinates, String text)
+            : base(game, coordinates)
         {
-            get { return _text.Content; }
-            set { _text.Content = value; }
+            _textValue = text;
         }
         
-        private readonly Text _text;
-        private readonly PlainRectangle _plainRectangle;
-
-        public Button(IGame game, Vector2I size, Vector2I position, String text)
-            : base(game, size, position)
+        public override void Initialize()
         {
-            IRenderer renderer = game.Services.GetService<IRenderer>();
-            _plainRectangle = new PlainRectangle(renderer, new Vector2I(100, 100), Size, Color.White, 0);
-            _text = renderer.TextManager.Create("Arial", 20, 80, Color.SteelBlue);
-            _text.Content = text;
-            HorizontalAlignment = HorizontalAlignment.Center;
-            VerticalAlignment = VerticalAlignment.Middle;
-            FocusGained += (p) => { _plainRectangle.Color = new Vector4(1, 0, 0, 1); };
-            FocusLost += (p) => { _plainRectangle.Color = new Vector4(1, 1, 1, 1); };
+            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            _plainRectangle = new PlainRectangle(renderer, new Vector2I(0,0), Size, Color.White);
+            _text = renderer.TextManager.Create("Arial", 20, _textValue, Size, Color.Red);
+            _text.Content = _textValue;
         }
 
-        protected override void RenderComponent(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        public override void OnMouseEntered()
         {
-            int positionX = Position.X;
-            int positionY = Position.Y;
-            _plainRectangle.Position = new Vector2I(positionX, positionY);
-            if (VerticalAlignment == VerticalAlignment.Middle)
-                positionY += (Height - _text.Size.Y) >> 1;
-            if (VerticalAlignment == VerticalAlignment.Bottom)
-                positionY += (Height - _text.Size.Y);
-            if (HorizontalAlignment == HorizontalAlignment.Center)
-                positionX += (Width - _text.Size.X) >> 1;
-            else if (HorizontalAlignment == HorizontalAlignment.Right)
-                positionX += (Width - _text.Size.X);
-            _text.Position = new Vector2I(positionX, positionY);
+            _plainRectangle.Color = Color.Khaki.ToVector4();
+        }
 
-            _plainRectangle.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
-            _text.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+        public override void OnMouseLeft()
+        {
+            _plainRectangle.Color = new Vector4(1, 1, 1, 1);
+        }
+
+        protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            _plainRectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+            _text.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
         }
     }
 }

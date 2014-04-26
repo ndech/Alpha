@@ -1,103 +1,45 @@
-﻿using System;
-using Alpha.Toolkit.Math;
+﻿using Alpha.Toolkit.Math;
+using Alpha.UI.Coordinates;
 
 namespace Alpha.UI.Controls
 {
     abstract class Control : UiComponent
     {
-        protected Control(IGame game, Vector2I size, Vector2I position)
-            : base(game, size, position)
+        public UniRectangle Coordinates { get; set; }
+        protected Control(IGame game, UniRectangle coordinates)
+            : base(game)
         {
-        }
-        
-        protected bool Focused;
-        private bool _mousePositionRegistered;
-        public void RegisterMousePosition()
-        {
-            if (_mousePositionRegistered) return;
-            Game.Services.GetService<IInput>().MouseMoved += OnMouseMoved;
-            _mousePositionRegistered = true;
+            Coordinates = coordinates;
         }
 
-        private bool _clickRegistered;
-        public void RegisterClick()
-        {
-            if (_clickRegistered) return;
-            Game.Services.GetService<IInput>().MouseButtonClicked += OnClick;
-            _clickRegistered = true;
-        }
+        public abstract void Initialize();
 
-        public event CustomEventHandler<Vector2I> FocusGainedInternal;
-        public event CustomEventHandler<Vector2I> FocusGained
+        public override bool InBounds(Vector2I position)
         {
-            add
-            {
-                RegisterMousePosition();
-                FocusGainedInternal += value;
-            }
-            remove
-            {
-                FocusGainedInternal -= value;
-            }
-        }
-
-        protected event CustomEventHandler<Vector2I> FocusLostInternal;
-        public event CustomEventHandler <Vector2I> FocusLost
-        {
-            add
-            {
-                RegisterMousePosition();
-                FocusLostInternal += value;
-            }
-            remove
-            {
-                FocusLostInternal -= value;
-            }
-        }
-
-        protected event CustomEventHandler ClickedInternal;
-        public event CustomEventHandler Clicked
-        {
-            add
-            {
-                RegisterClick();
-                ClickedInternal += value;
-            }
-            remove
-            {
-                ClickedInternal -= value;
-            }
-        }
-
-        private void OnMouseMoved(Vector2I position)
-        {
-            if (Intersect(position))
-            {
-                if (!Focused)
-                {
-                    FocusGainedInternal.Raise(position);
-                    Focused = true;
-                }
-            }
-            else if (Focused)
-            {
-                FocusLostInternal.Raise(position);
-                Focused = false;
-            }
-        }
-
-        private void OnClick(Int32 button)
-        {
-            if(Focused && button == 0)
-                ClickedInternal.Raise();
-        }
-
-        protected virtual bool Intersect(Vector2I position)
-        {
-            return position.X >= Position.X
+            return    position.X >= Position.X
                    && position.X < Position.X + Size.X
                    && position.Y >= Position.Y
                    && position.Y < Position.Y + Size.Y;
+        }
+
+        public virtual void OnMouseLeft()
+        { }
+        
+        public virtual void OnMouseEntered()
+        { }
+
+        public sealed override Vector2I Position
+        {
+            get { return Coordinates.Position.ToOffset(Parent.Size) + Parent.Position; }
+        }
+
+        public sealed override Vector2I RelativePosition
+        {
+            get { return Coordinates.Position.ToOffset(Parent.Size); }
+        }
+        public sealed override Vector2I Size
+        {
+            get { return Coordinates.Size.ToOffset(Parent.Size); }
         }
     }
 }

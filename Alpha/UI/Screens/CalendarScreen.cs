@@ -1,4 +1,4 @@
-﻿using Alpha.Toolkit.Math;
+﻿/*using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using Alpha.UI.Coordinates;
 
@@ -15,8 +15,8 @@ namespace Alpha.UI.Screens
             Register(label = new Label(game, new Vector2I(400, 50), new Vector2I(200, 200), _calendar.ToString()+"   "));
             _calendar.DayChanged += () =>
             {
-                label.Text = _calendar.ToString();
+                label.SimpleText = _calendar.ToString();
             };
         }
     }
-}
+}*/

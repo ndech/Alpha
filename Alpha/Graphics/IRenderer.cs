@@ -12,6 +12,7 @@ namespace Alpha.Graphics
         TextManager TextManager { get; }
         ColorShader ColorShader { get; }
         TextureShader TextureShader { get; }
+        FontShader FontShader { get; }
         TextureManager TextureManager { get; }
         Device Device { get; }
         Vector2I ScreenSize { get; }

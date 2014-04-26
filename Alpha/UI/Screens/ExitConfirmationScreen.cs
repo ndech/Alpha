@@ -1,4 +1,4 @@
-﻿using Alpha.Toolkit.Math;
+﻿/*using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using SharpDX;
 
@@ -21,4 +21,4 @@ namespace Alpha.UI.Screens
             noButton.Clicked += () => UiManager.DeleteScreen(this);
         }
     }
-}
+}*/

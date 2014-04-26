@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 using SharpDX;
 
 namespace Alpha.Graphics
@@ -27,12 +28,20 @@ namespace Alpha.Graphics
                 keyValuePair.Value.Dispose();
         }
 
-        public Text Create(String font, int size, int maxLength, Color color)
+        public SimpleText Create(String font, int size, int maxLength, Color color)
         {
             String fontKey = font + "-" + size;
             if(!_fontDictionary.ContainsKey(fontKey))
                 _fontDictionary.Add(fontKey, new Font(_renderer, font, size));
-            return new Text(_renderer, _fontShader, _fontDictionary[fontKey], maxLength, color);
+            return new SimpleText(_renderer, _fontShader, _fontDictionary[fontKey], maxLength, color);
+        }
+
+        public Text Create(String fontName, int fontSize, String content, Vector2I size, Color color)
+        {
+            String fontKey = fontName + "-" + size;
+            if (!_fontDictionary.ContainsKey(fontKey))
+                _fontDictionary.Add(fontKey, new Font(_renderer, fontName, fontSize));
+            return new Text(_renderer, content, _fontDictionary[fontKey], size, color);
         }
     }
 }
