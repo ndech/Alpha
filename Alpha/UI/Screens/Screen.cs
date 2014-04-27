@@ -18,6 +18,8 @@ namespace Alpha.UI.Screens
             get { return Vector2I.Zero; }
         }
 
+        public bool Transparent { get; set; }
+
         public override Vector2I RelativePosition
         {
             get { return Vector2I.Zero; }
@@ -67,9 +69,10 @@ namespace Alpha.UI.Screens
             } 
         }
 
-        protected Screen(IGame game) : base(game)
+        protected Screen(IGame game, bool transparent = false) : base(game)
         {
             UiManager = game.Services.GetService<IUiManager>();
+            Transparent = transparent;
         }
 
         public void OnMouseMoved(Vector2I position)

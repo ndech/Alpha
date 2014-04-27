@@ -14,10 +14,8 @@ namespace Alpha.UI.Screens
         private readonly Button _cancelButton;
         private readonly Panel _panel;
         public MenuScreen(IGame game)
-            :base(game)
+            :base(game, true)
         {
-            Register(new Button(game, new UniRectangle(0, 0.1f, 500, 500),
-                "Le Lorem Ipsum est simplement du faux texte employé dans la [yellow]composition[-] et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker."));
             Register(_panel = new Panel(game, new UniRectangle(new UniScalar(.5f, -150), new UniScalar(.5f, -172), 300, 345), Color.Black));
             _panel.Register(new Label(game, new UniRectangle(0.05f, 15, 0.9f, 40), "Menu"));
             _panel.Register(_calendarButton = new Button(game, new UniRectangle(0.05f, 70, 0.9f, 40), "Calendar"));
@@ -26,7 +24,8 @@ namespace Alpha.UI.Screens
             _panel.Register(_exitButton = new Button(game, new UniRectangle(0.05f, 235, 0.9f, 40), "Exit to desktop"));
             _panel.Register(_cancelButton = new Button(game, new UniRectangle(0.25f, 290, 0.5f, 40), "Cancel"));
 
-            _exitButton.Clicked += game.Exit;
+            _exitButton.Clicked += () => UiManager.AddScreen(new ExitConfirmationScreen(game));
+            _cancelButton.Clicked += () => UiManager.DeleteScreen(this);
             /*Register(new Tooltip(game, _calendarButton, 1d, "Show the calendar"));
             Register(new Tooltip(game, _provincesButton, 1d, "Show the provinces details"));
             Register(new Tooltip(game, _exitButton, 1d, "Return to desktop"));

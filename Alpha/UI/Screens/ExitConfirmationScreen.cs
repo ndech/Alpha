@@ -1,24 +1,25 @@
-﻿/*using Alpha.Toolkit.Math;
-using Alpha.UI.Controls;
+﻿using Alpha.UI.Controls;
+using Alpha.UI.Coordinates;
 using SharpDX;
 
 namespace Alpha.UI.Screens
 {
     class ExitConfirmationScreen : Screen
     {
-        public ExitConfirmationScreen(IGame game) : base(game)
+        public ExitConfirmationScreen(IGame game) : base(game, true)
         {
-            Button yesButton = new Button(game, new Vector2I(200, 50), new Vector2I(350, 500), "Yes");
-            Button noButton = new Button(game, new Vector2I(200, 50), new Vector2I(650, 500), "No");
-
-            Register(
-                new Panel(game, new Vector2I(600, 300), new Vector2I(300, 300), new Color(0f, 0f, 0f, 0.5f)).Register(
-                    new Label(game, new Vector2I(200, 50), new Vector2I(250, 400), "Are you sure you want to quit ?"),
-                    yesButton,
-                    noButton));
+            Panel panel;
+            Panel subPanel;
+            Button yesButton;
+            Button noButton;
+            Register(panel =new Panel(game, new UniRectangle(0, 0, 1.0f, 1.0f), new Color(0, 0, 0, 0.8f)));
+            panel.Register(subPanel = new Panel(game, new UniRectangle(new UniScalar(0.5f,-200), new UniScalar(0.5f,-70), 400, 140), Color.LightPink));
+            subPanel.Register(yesButton = new Button(game, new UniRectangle(20, 70, 160, 50), "Yes"));
+            subPanel.Register(noButton = new Button(game, new UniRectangle(220, 70, 160, 50), "No"));
+            subPanel.Register(new Label(game, new UniRectangle(20, 20, 360, 50), "Are you sure you want to quit ?"));
 
             yesButton.Clicked += game.Exit;
             noButton.Clicked += () => UiManager.DeleteScreen(this);
         }
     }
-}*/
+}

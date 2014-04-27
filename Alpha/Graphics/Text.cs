@@ -57,7 +57,7 @@ namespace Alpha.Graphics
             Font = font;
             Size = size;
             VerticalAlignment = VerticalAlignment.Middle;
-            HorizontalAlignment = HorizontalAlignment.Justify;
+            HorizontalAlignment = HorizontalAlignment.Center;
             BaseColor = color;
             _shader = renderer.FontShader;
 

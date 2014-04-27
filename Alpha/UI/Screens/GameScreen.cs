@@ -1,22 +1,22 @@
-﻿/*using Alpha.Toolkit.Math;
+﻿using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using Alpha.UI.Coordinates;
 
 namespace Alpha.UI.Screens
 {
-    class CalendarScreen : Screen
+    class GameScreen : Screen
     {
         private ICalendar _calendar;
 
-        public CalendarScreen(IGame game) : base(game)
+        public GameScreen(IGame game) : base(game)
         {
             _calendar = game.Services.GetService<ICalendar>();
             Label label;
-            Register(label = new Label(game, new Vector2I(400, 50), new Vector2I(200, 200), _calendar.ToString()+"   "));
+            Register(label = new Label(game, new UniRectangle(new UniScalar(1.0f, -200), 0, 200, 100 ), _calendar.ToString()+"   "));
             _calendar.DayChanged += () =>
             {
-                label.SimpleText = _calendar.ToString();
+                label.Text = _calendar.ToString();
             };
         }
     }
-}*/
+}

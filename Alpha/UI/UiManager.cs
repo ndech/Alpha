@@ -37,6 +37,7 @@ namespace Alpha.UI
             input.MouseClicked += OnMouseClicked;
             input.MouseReleased += OnMouseReleased;
             ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
+            AddScreen(new GameScreen(Game));
             AddScreen(new MenuScreen(Game));
         }
 
@@ -60,8 +61,12 @@ namespace Alpha.UI
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            if(_activeScreens.Count > 0)
-                _activeScreens[0].RenderTree(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+            int i;
+            for(i = 0; i< _activeScreens.Count; i++)
+                if (!_activeScreens[i].Transparent)
+                    break;
+            for (int j = i; j >= 0; j--)
+                _activeScreens[j].RenderTree(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
         }
 
         public override void Dispose()
