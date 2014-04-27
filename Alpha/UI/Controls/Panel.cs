@@ -25,7 +25,7 @@ namespace Alpha.UI.Controls
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
-            Rectangle = new PlainRectangle(renderer, new Vector2I(0,0), Size, Color);
+            Rectangle = new PlainRectangle(renderer, Size, Color);
         }
     }
 }

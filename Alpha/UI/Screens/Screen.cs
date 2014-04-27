@@ -23,7 +23,17 @@ namespace Alpha.UI.Screens
             get { return Vector2I.Zero; }
         }
 
-        protected Control ClickedControl { get; set; }
+        private Control _clickedControl;
+        protected Control ClickedControl
+        {
+            get { return _clickedControl; }
+            set
+            {
+                _clickedControl = value;
+                if (_clickedControl != null)
+                    _clickedControl.OnMouseClicked();
+            }
+        }
 
         private Control _activatedControl = null;
         public Control ActivatedControl
@@ -64,6 +74,8 @@ namespace Alpha.UI.Screens
 
         public void OnMouseMoved(Vector2I position)
         {
+            if(ClickedControl != null)
+                return;
             //Todo : if activated control
             //If we are still hovering the same component, we search if we hover one of it's child
             UiComponent node;
@@ -89,6 +101,21 @@ namespace Alpha.UI.Screens
             HoveredControl = null;
             ClickedControl = null;
             ActivatedControl = null;
+        }
+
+        public void OnMouseClicked(Vector2I position, int button)
+        {
+            ClickedControl = HoveredControl;
+        }
+
+        public void OnMouseReleased(Vector2I position, int button)
+        {
+            if(ClickedControl == null) return;
+            if (ClickedControl.InBounds(position))
+                ClickedControl.OnMouseReleased();
+            else
+                ClickedControl.OnMouseClickCanceled();
+            ClickedControl = null;
         }
     }
 }

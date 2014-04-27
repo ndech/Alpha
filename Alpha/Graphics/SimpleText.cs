@@ -18,7 +18,6 @@ namespace Alpha.Graphics
             MaxLength = maxLength;
             Color = color;
             _shader = shader;
-            _screenSize = renderer.ScreenSize;
             _icons = new List<TexturedRectangle>();
             // The index buffer is static and do not change when the text changes
             UInt32[] indices = new UInt32[maxLength * 6]; // 6 indices per character
@@ -78,25 +77,20 @@ namespace Alpha.Graphics
             }
         }
 
-
         public Vector2I Position { get; set; }
         public Color Color { get; set; }
         public Font Font { get; private set; }
-
-        private Vector2I _screenSize;
-
+        
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix orthoMatrix)
         {
 			deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<FontShader.Vertex>(), 0));
 			deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
 			deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            int drawX = -(_screenSize.X >> 1) + Position.X;
-            int drawY = (_screenSize.Y >> 1) - Position.Y;
-            Matrix position = Matrix.Translation(drawX, drawY, 0);
-			_shader.Render(deviceContext, _content.Length*6, worldMatrix*position, viewMatrix, orthoMatrix, Font.Texture.TextureResource);
+            
+			_shader.Render(deviceContext, _content.Length*6, worldMatrix, viewMatrix, orthoMatrix, Font.Texture.TextureResource);
             foreach (TexturedRectangle icon in _icons)
-                icon.Render(deviceContext, worldMatrix * position, viewMatrix, orthoMatrix);
+                icon.Render(deviceContext, worldMatrix, viewMatrix, orthoMatrix);
         }
 
         public void Update()

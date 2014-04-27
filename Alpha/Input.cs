@@ -11,8 +11,8 @@ namespace Alpha
     {
         Vector2I AbsoluteMousePosition { get; }
         event CustomEventHandler<Vector2I> MouseMoved;
-        event CustomEventHandler<Int32> MouseButtonClicked;
-        event CustomEventHandler<Int32> MouseButtonReleased;
+        event CustomEventHandler<Vector2I, Int32> MouseClicked;
+        event CustomEventHandler<Vector2I, Int32> MouseReleased;
     }
     class Input : GameComponent, IInput
     {
@@ -26,8 +26,8 @@ namespace Alpha
         private readonly bool[] _previousMouseButtons;
         
         public event CustomEventHandler<Vector2I> MouseMoved;
-        public event CustomEventHandler<Int32> MouseButtonClicked;
-        public event CustomEventHandler<Int32> MouseButtonReleased;
+        public event CustomEventHandler<Vector2I, Int32> MouseClicked;
+        public event CustomEventHandler<Vector2I, Int32> MouseReleased;
 
         public Input(IGame game) : base(game, updateOrder: -10000)
         {
@@ -61,7 +61,6 @@ namespace Alpha
             _mousePosition.X = Math.Max(0, Math.Min(_screenSize.X, _mousePosition.X + RelativeMousePosition.X));
             _mousePosition.Y = Math.Max(0, Math.Min(_screenSize.Y, _mousePosition.Y + RelativeMousePosition.Y));
 
-            Console.WriteLine(_mousePosition);
             //Send mouse position signal
             if (RelativeMousePosition != Vector2I.Zero)
                 MouseMoved.Raise(_mousePosition);
@@ -71,9 +70,9 @@ namespace Alpha
             {
                 if (_mouseState.Buttons[i] ==_previousMouseButtons[i]) continue;
                 if (_mouseState.Buttons[i] && ! _previousMouseButtons[i])
-                    MouseButtonClicked.Raise(i);
+                    MouseClicked.Raise(_mousePosition, i);
                 else if (_previousMouseButtons[i] && ! _mouseState.Buttons[i])
-                    MouseButtonReleased.Raise(i);
+                    MouseReleased.Raise(_mousePosition, i);
                 _previousMouseButtons[i] = _mouseState.Buttons[i];
             }
         }

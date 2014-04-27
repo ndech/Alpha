@@ -15,6 +15,7 @@ namespace Alpha
         private SimpleText _simpleText;
         private String _videoCardInfo;
         private PlainRectangle _overlay;
+        private Matrix _position;
         
         public MonitoringHeader(IGame game) : base(game, 0, false, true)
         {
@@ -28,7 +29,12 @@ namespace Alpha
             _simpleText = renderer.TextManager.Create("Courrier", 14, 80, Color.Gray);
             _simpleText.Position = new Vector2I(3, 0);
             _videoCardInfo = renderer.VideoCardName + " (" + renderer.VideoCardMemorySize + " MB)";
-            _overlay = new PlainRectangle(renderer, new Vector2I(0, 0), new Vector2I(485, 16), Color.MistyRose);
+            _overlay = new PlainRectangle(renderer, new Vector2I(485, 16), Color.MistyRose);
+
+
+            int drawX = -(renderer.ScreenSize.X >> 1);
+            int drawY = -(renderer.ScreenSize.Y >> 1);
+            _position = Matrix.Translation(drawX, drawY, 0);
         }
 
         public override void Update(double delta)
@@ -42,8 +48,8 @@ namespace Alpha
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _overlay.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
-            _simpleText.Render(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+            _overlay.Render(deviceContext, _position, viewMatrix, projectionMatrix);
+            _simpleText.Render(deviceContext, _position, viewMatrix, projectionMatrix);
         }
 
         public override void Dispose()

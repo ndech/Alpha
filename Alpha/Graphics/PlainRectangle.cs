@@ -16,7 +16,6 @@ namespace Alpha.Graphics
         private readonly Buffer _indexBuffer;
         private readonly int _indexCount;
 
-        public Vector2I Position { get; set; }
 
         private Vector2I _size;
         public Vector2I Size
@@ -31,7 +30,6 @@ namespace Alpha.Graphics
                 }
             }
         }
-        private Vector2I _screenSize;
         private Vector4 _color;
         public Vector4 Color
         {
@@ -48,17 +46,12 @@ namespace Alpha.Graphics
         private ColorShader _shader;
         private VertexDefinition.PositionColor[] _vertices;
         private DeviceContext _deviceContext;
-        public float Depth { get; set; }
 
-        public PlainRectangle(IRenderer renderer, Vector2I position, Vector2I size, Color color, float depth = 0.0f)
+        public PlainRectangle(IRenderer renderer, Vector2I size, Color color)
         {
             _shader = renderer.ColorShader;
             _deviceContext = renderer.Device.ImmediateContext;
-            Position = position;
-            _screenSize = renderer.ScreenSize;
             _color = color.ToVector4();
-            Depth = depth;
-
             const int vertexCount = 4;
             _vertices = new VertexDefinition.PositionColor[vertexCount];
             _vertexBuffer = Buffer.Create(renderer.Device, _vertices,
@@ -95,10 +88,10 @@ namespace Alpha.Graphics
             float right = Size.X;
             float bottom = Size.Y;
 
-            _vertices[0] = new VertexDefinition.PositionColor {position = new Vector3(left, top, Depth), color = _color};
-            _vertices[1] = new VertexDefinition.PositionColor {position = new Vector3(right, bottom, Depth), color = _color};
-            _vertices[2] = new VertexDefinition.PositionColor {position = new Vector3(left, bottom, Depth), color = _color};
-            _vertices[3] = new VertexDefinition.PositionColor {position = new Vector3(right, top, Depth), color = _color};
+            _vertices[0] = new VertexDefinition.PositionColor {position = new Vector3(left, top, 0), color = _color};
+            _vertices[1] = new VertexDefinition.PositionColor {position = new Vector3(right, bottom, 0), color = _color};
+            _vertices[2] = new VertexDefinition.PositionColor {position = new Vector3(left, bottom, 0), color = _color};
+            _vertices[3] = new VertexDefinition.PositionColor {position = new Vector3(right, top, 0), color = _color};
 
             DataStream mappedResource;
             _deviceContext.MapSubresource(_vertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,

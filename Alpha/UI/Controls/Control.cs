@@ -28,6 +28,14 @@ namespace Alpha.UI.Controls
         public virtual void OnMouseEntered()
         { }
 
+        public virtual void OnMouseClicked()
+        { }
+
+        public virtual void OnMouseReleased()
+        { }
+        public virtual void OnMouseClickCanceled()
+        { }
+
         public sealed override Vector2I Position
         {
             get { return Coordinates.Position.ToOffset(Parent.Size) + Parent.Position; }

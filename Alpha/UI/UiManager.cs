@@ -34,8 +34,22 @@ namespace Alpha.UI
         {
             IInput input = Game.Services.GetService<IInput>();
             input.MouseMoved += OnMouseMoved;
+            input.MouseClicked += OnMouseClicked;
+            input.MouseReleased += OnMouseReleased;
             ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
             AddScreen(new MenuScreen(Game));
+        }
+
+        private void OnMouseClicked(Vector2I position, int button)
+        {
+            if (_activeScreens.Count > 0)
+                _activeScreens[0].OnMouseClicked(position, button);
+        }
+
+        private void OnMouseReleased(Vector2I position, int button)
+        {
+            if (_activeScreens.Count > 0)
+                _activeScreens[0].OnMouseReleased(position, button);
         }
 
         public override void Update(double delta)

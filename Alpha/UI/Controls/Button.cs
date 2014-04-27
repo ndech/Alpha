@@ -22,6 +22,7 @@ namespace Alpha.UI.Controls
         
         private Text _text;
         private PlainRectangle _plainRectangle;
+        public event CustomEventHandler Clicked;
 
         public Button(IGame game, UniRectangle coordinates, String text)
             : base(game, coordinates)
@@ -32,7 +33,7 @@ namespace Alpha.UI.Controls
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
-            _plainRectangle = new PlainRectangle(renderer, new Vector2I(0,0), Size, Color.White);
+            _plainRectangle = new PlainRectangle(renderer, Size, Color.White);
             _text = renderer.TextManager.Create("Arial", 20, _textValue, Size, Color.Red);
             _text.Content = _textValue;
         }
@@ -45,6 +46,22 @@ namespace Alpha.UI.Controls
         public override void OnMouseLeft()
         {
             _plainRectangle.Color = new Vector4(1, 1, 1, 1);
+        }
+
+        public override void OnMouseClicked()
+        {
+            _plainRectangle.Color = Color.SaddleBrown.ToVector4();
+        }
+
+        public override void OnMouseReleased()
+        {
+            _plainRectangle.Color = Color.Khaki.ToVector4();
+            Clicked.Raise();
+        }
+
+        public override void OnMouseClickCanceled()
+        {
+            OnMouseLeft();
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
