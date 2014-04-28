@@ -11,6 +11,7 @@ namespace Alpha.UI
         protected readonly IGame Game;
         protected readonly List<Control> Controls;
         protected UiComponent Parent = null;
+        public abstract bool Visible { get; set; }
 
         protected UiComponent(IGame game)
         {
@@ -27,6 +28,7 @@ namespace Alpha.UI
 
         public void RenderTree(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
+            if (!Visible) return;
             Render(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);
             foreach (Control control in Controls)
                 control.RenderTree(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);
@@ -36,19 +38,12 @@ namespace Alpha.UI
 
         protected virtual void Update(double delta) { }
 
-        public UiComponent Register(Control component)
+        public T Register<T>(T component) where T : Control
         {
             Controls.Add(component);
             component.Parent = this;
             component.Initialize();
-            return this;
-        }
-
-        public UiComponent Register(params UiComponent[] components)
-        {
-            foreach (UiComponent component in components)
-                Register(component);
-            return this;
+            return component;
         }
 
         public abstract bool InBounds(Vector2I position);

@@ -8,6 +8,12 @@ namespace Alpha.UI.Screens
     {
         protected readonly IUiManager UiManager;
 
+        public override bool Visible
+        {
+            get { return true; }
+            set { }
+        }
+
         public override Vector2I Size
         {
             get { return UiManager.ScreenSize; }
@@ -104,7 +110,12 @@ namespace Alpha.UI.Screens
             HoveredControl = null;
             ClickedControl = null;
             ActivatedControl = null;
+            Desactivate();
         }
+
+        public virtual void Desactivate() { }
+
+        public virtual void Activate() { }
 
         public void OnMouseClicked(Vector2I position, int button)
         {

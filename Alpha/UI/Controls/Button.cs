@@ -10,15 +10,15 @@ namespace Alpha.UI.Controls
     class Button : Control
     {
         private String _textValue;
-        //public String Text
-        //{
-        //    get { return _textValue; }
-        //    set
-        //    {
-        //        _textValue = value;
-        //        _text.Content = value;
-        //    }
-        //}
+        public String Text
+        {
+            get { return _textValue; }
+            set
+            {
+                _textValue = value;
+                _text.Content = value;
+            }
+        }
         
         private Text _text;
         private PlainRectangle _plainRectangle;

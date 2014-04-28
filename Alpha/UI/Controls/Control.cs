@@ -6,16 +6,22 @@ namespace Alpha.UI.Controls
     abstract class Control : UiComponent
     {
         public UniRectangle Coordinates { get; set; }
+
+        public override bool Visible { get; set; }
+        public bool Overlay { get; set; }
         protected Control(IGame game, UniRectangle coordinates)
             : base(game)
         {
             Coordinates = coordinates;
+            Overlay = false;
+            Visible = true;
         }
 
         public abstract void Initialize();
 
         public override bool InBounds(Vector2I position)
         {
+            if (Overlay) return false;
             return    position.X >= Position.X
                    && position.X < Position.X + Size.X
                    && position.Y >= Position.Y

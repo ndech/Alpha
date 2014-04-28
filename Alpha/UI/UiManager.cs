@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using Alpha.UI.Screens;
@@ -38,7 +37,6 @@ namespace Alpha.UI
             input.MouseReleased += OnMouseReleased;
             ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
             AddScreen(new GameScreen(Game));
-            AddScreen(new MenuScreen(Game));
         }
 
         private void OnMouseClicked(Vector2I position, int button)
@@ -88,7 +86,11 @@ namespace Alpha.UI
 
         public void DeleteScreen(Screen screen)
         {
+
+            Screen first = _activeScreens.Count > 0 ? _activeScreens[0] : null;
             _activeScreens.Remove(screen);
+            if (_activeScreens.Count > 0 && first != _activeScreens[0])
+                _activeScreens[0].Activate();
         }
     }
 }

@@ -142,10 +142,12 @@
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
+    <Compile Include="Graphics\Rectangle.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\TexturedExtensibleRectangle.cs" />
     <Compile Include="Graphics\TexturedRectangle.cs" />
     <Compile Include="IGame.cs" />
+    <Compile Include="UI\Controls\Icon.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
     <Compile Include="UI\Coordinates\UniScalar.cs" />
     <Compile Include="UI\Coordinates\UniVector.cs" />
@@ -305,6 +307,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Icons\gold.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\Icons\pauseIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\tooltip.png">

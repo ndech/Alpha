@@ -15,6 +15,9 @@ namespace Alpha
     interface ICalendar : IService
     {
         event CustomEventHandler DayChanged;
+        bool Pause();
+        bool Unpause();
+        bool Paused { get; set; }
     }
     class Calendar : GameComponent, ISavable, ICalendar
     {
@@ -27,7 +30,22 @@ namespace Alpha
         public Int32 Day { get; set; }
         public Int32 Month { get; set; }
         public Int32 Year { get; set; }
-        public Bool Paused { get; set; }
+        public bool Paused { get; set; }
+
+        public bool Pause()
+        {
+            bool previousStatus = Paused;
+            Paused = true;
+            return previousStatus;
+        }
+
+        public bool Unpause()
+        {
+            bool previousStatus = Paused;
+            Paused = false;
+            return previousStatus;
+        }
+
         public Calendar(IGame game) : base(game, 0)
         {
             Paused = false;

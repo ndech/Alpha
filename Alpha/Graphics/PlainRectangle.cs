@@ -10,26 +10,8 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.Graphics
 {
-    class PlainRectangle
+    class PlainRectangle : Rectangle
     {
-        private readonly Buffer _vertexBuffer;
-        private readonly Buffer _indexBuffer;
-        private readonly int _indexCount;
-
-
-        private Vector2I _size;
-        public Vector2I Size
-        {
-            get { return _size; }
-            set
-            {
-                if (value != _size)
-                {
-                    _size = value;
-                    Update();
-                }
-            }
-        }
         private Vector4 _color;
         public Vector4 Color
         {
@@ -45,7 +27,6 @@ namespace Alpha.Graphics
         }
         private ColorShader _shader;
         private VertexDefinition.PositionColor[] _vertices;
-        private DeviceContext _deviceContext;
 
         public PlainRectangle(IRenderer renderer, Vector2I size, Color color)
         {
@@ -71,17 +52,16 @@ namespace Alpha.Graphics
             Size = size;
         }
 
-        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             int stride = Utilities.SizeOf<VertexDefinition.PositionColor>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, stride, 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-
             _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix);
         }
 
-        private void Update()
+        public override void Update()
         {
             float left = 0;
             float top = 0;

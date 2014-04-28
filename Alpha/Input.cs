@@ -4,6 +4,7 @@ using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.DirectInput;
+using Point = System.Drawing.Point;
 
 namespace Alpha
 {
@@ -22,14 +23,14 @@ namespace Alpha
         private KeyboardState _keyboardState;
         private MouseState _mouseState;
         private Vector2I _mousePosition;
-        private Vector2I _screenSize;
+        private IRenderer _renderer;
         private readonly bool[] _previousMouseButtons;
         
         public event CustomEventHandler<Vector2I> MouseMoved;
         public event CustomEventHandler<Vector2I, Int32> MouseClicked;
         public event CustomEventHandler<Vector2I, Int32> MouseReleased;
 
-        public Input(IGame game) : base(game, updateOrder: -10000)
+        public Input(IGame game) : base(game, -10000)
         {
             _directInput = new DirectInput();
             _keyboard = new Keyboard(_directInput);
@@ -39,31 +40,30 @@ namespace Alpha
         
         public override void Initialize()
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
-            _mousePosition = renderer.ScreenSize/2;
-            IntPtr handle = renderer.Form.Handle;
+            _renderer = Game.Services.GetService<IRenderer>();
+            IntPtr handle = _renderer.Form.Handle;
             _keyboard.Properties.BufferSize = 256;
             _keyboard.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
             _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
             _mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
-            _screenSize = Game.Services.GetService<IRenderer>().ScreenSize;
+            _mousePosition = _renderer.ScreenSize/2;
             Cursor.Hide();
         }
 
         public override void Update(double delta)
-        {
+        { 
             ReadMouse();
             ReadKeyboard();
 
             if (_mouseState == null) return;
 
             //Truncate mouse position to screen dimensions
-            _mousePosition.X = Math.Max(0, Math.Min(_screenSize.X, _mousePosition.X + RelativeMousePosition.X));
-            _mousePosition.Y = Math.Max(0, Math.Min(_screenSize.Y, _mousePosition.Y + RelativeMousePosition.Y));
 
-            //Send mouse position signal
-            if (RelativeMousePosition != Vector2I.Zero)
-                MouseMoved.Raise(_mousePosition);
+            Point position = _renderer.Form.PointToClient(Cursor.Position);
+            _mousePosition = new Vector2I(position.X, position.Y);
+            //_mousePosition.X = Math.Max(0, Math.Min(_screenSize.X, _mousePosition.X + RelativeMousePosition.X));
+            //_mousePosition.Y = Math.Max(0, Math.Min(_screenSize.Y, _mousePosition.Y + RelativeMousePosition.Y));
+            MouseMoved.Raise(_mousePosition);
 
             //Send mouse clicks signals
             for (int i = 0; i < 8; i ++)
@@ -134,15 +134,6 @@ namespace Alpha
             }
         }
 
-        public Vector2I RelativeMousePosition
-        {
-            get
-            {
-                if (_mouseState == null)
-                    return new Vector2I(0, 0);
-                return new Vector2I(_mouseState.X, _mouseState.Y);
-            }
-        }
 
         public Vector2I AbsoluteMousePosition { get { return _mousePosition; } }
         

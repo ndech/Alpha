@@ -95,7 +95,7 @@ namespace Alpha.Graphics
                         color = defaultColor.ToVector4();
                     else if (token == "gold")
                     {
-                        icons.Add(new TexturedRectangle(_renderer, new Vector2I(positionX + 512, -positionY + 384), new Vector2I(height, height), _renderer.TextureManager.Create("gold.png", "Data/UI/Icons/")));
+                        icons.Add(new TexturedRectangle(_renderer, new Vector2I(height, height), _renderer.TextureManager.Create("gold.png", "Data/UI/Icons/")));
                         positionX += height + 1;
                         width += height + 1;
                     }

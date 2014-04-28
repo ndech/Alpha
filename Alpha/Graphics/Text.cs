@@ -35,7 +35,16 @@ namespace Alpha.Graphics
     {
         public VerticalAlignment VerticalAlignment { get; set; }
         public HorizontalAlignment HorizontalAlignment { get; set; }
-        public String Content { get; set; }
+        private String _content;
+        public String Content
+        {
+            get { return _content; }
+            set
+            {
+                _content = value;
+                Update();
+            } 
+        }
         public Color BaseColor { get; set; }
         public Font Font;
         public Vector2I Size;
@@ -48,22 +57,29 @@ namespace Alpha.Graphics
         private Buffer _vertexBuffer;
         private FontShader.Vertex[] _vertices;
         private readonly FontShader _shader;
+        private readonly IRenderer _renderer;
 
         public List<TextLine> Lines { get; set; } 
 
         public Text(IRenderer renderer, string content, Font font, Vector2I size, Color color)
         {
-            Content = content;
+            _content = content;
             Font = font;
             Size = size;
             VerticalAlignment = VerticalAlignment.Middle;
             HorizontalAlignment = HorizontalAlignment.Center;
             BaseColor = color;
             _shader = renderer.FontShader;
+            _renderer = renderer;
 
+            Update();
+        }
+
+        private void Update()
+        {
             Lines = SplitInLines();
-            CreateIndexBuffer(renderer);
-            CreateVertexBuffer(renderer);
+            CreateIndexBuffer(_renderer);
+            CreateVertexBuffer(_renderer);
         }
 
         private void CreateVertexBuffer(IRenderer renderer)
