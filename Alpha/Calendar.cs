@@ -17,11 +17,29 @@ namespace Alpha
         event CustomEventHandler DayChanged;
         bool Pause();
         bool Unpause();
+        void DecreaseMultiplier();
+        void IncreaseMultiplier();
+        int Multiplier { get; }
         bool Paused { get; set; }
     }
     class Calendar : GameComponent, ISavable, ICalendar
     {
-        public const double TimePerDay = 1.0;
+        private static readonly int[] AvailableMultipliers = new[] {1, 2, 3, 5, 10};
+        private int _multiplierIndex = 0;
+
+        public void IncreaseMultiplier()
+        {
+            if (_multiplierIndex < AvailableMultipliers.Length - 1)
+                _multiplierIndex++;
+        }
+        public void DecreaseMultiplier()
+        {
+
+            if (_multiplierIndex > 0)
+                _multiplierIndex--;
+        }
+        public int Multiplier { get { return AvailableMultipliers[_multiplierIndex]; } }
+        public double TimePerDay {get { return 5.0f / Multiplier; }}
         private double _elapsed = 0;
 
         public event CustomEventHandler DayChanged;

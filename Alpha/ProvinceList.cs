@@ -6,14 +6,16 @@
     {
         IList<Province> Provinces { get; }  
     }
-    class ProvinceList : GameComponent, ISavable, IProvinceList
+    class ProvinceList : GameComponent, ISavable, IProvinceList, IDailyUpdatable
     {
         public IList<Province> Provinces { get; protected set; }
+        private IList<ProvinceEvent> Events; 
 
         public ProvinceList(IGame game) 
             : base(game, 0)
         {
             Provinces = new List<Province>();
+            Events = new List<ProvinceEvent>();
         }
 
         #region Savable
@@ -43,11 +45,20 @@
         {
             for (int i = 0; i < 10; i++)
                 Provinces.Add(new Province());
+            Events.Add(new ProvinceEvent());
         }
 
         public override void Update(double delta)
-        {
+        {}
 
+        public void DayUpdate()
+        {
+            foreach (Province province in Provinces)
+            {
+                province.DayUpdate();
+                foreach (ProvinceEvent provinceEvent in Events)
+                    provinceEvent.Process(province);
+            }
         }
 
         public override void Dispose()

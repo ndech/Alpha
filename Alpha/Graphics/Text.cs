@@ -61,13 +61,13 @@ namespace Alpha.Graphics
 
         public List<TextLine> Lines { get; set; } 
 
-        public Text(IRenderer renderer, string content, Font font, Vector2I size, Color color)
+        public Text(IRenderer renderer, string content, Font font, Vector2I size, Color color, HorizontalAlignment horizontalAligment, VerticalAlignment verticalAlignment)
         {
             _content = content;
             Font = font;
             Size = size;
-            VerticalAlignment = VerticalAlignment.Middle;
-            HorizontalAlignment = HorizontalAlignment.Center;
+            VerticalAlignment = verticalAlignment;
+            HorizontalAlignment = horizontalAligment;
             BaseColor = color;
             _shader = renderer.FontShader;
             _renderer = renderer;

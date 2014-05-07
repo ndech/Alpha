@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<styles for="label">
+	<style>
+		<horizontalAlignment>Center</horizontalAlignment>
+		<verticalAlignment>Middle</verticalAlignment>
+		<textColor>Blue</textColor>
+	</style>
+	<style in="calendar_multiplier_label">
+		<horizontalAlignment>Right</horizontalAlignment>
+	</style>
+</styles>

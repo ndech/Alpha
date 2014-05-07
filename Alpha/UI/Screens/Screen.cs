@@ -1,12 +1,16 @@
 ﻿using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using SharpDX;
+using SharpDX.DirectInput;
 
 namespace Alpha.UI.Screens
 {
     abstract class Screen : UiComponent
     {
-        protected readonly IUiManager UiManager;
+        public override string ComponentType
+        {
+            get { return "screen"; }
+        }
 
         public override bool Visible
         {
@@ -68,16 +72,15 @@ namespace Alpha.UI.Screens
                 if (ReferenceEquals(_hoveredControl, value))
                     return;
                 if (_hoveredControl != null)
-                    _hoveredControl.OnMouseLeft();
+                    _hoveredControl.MouseLeft();
                 _hoveredControl = value;
                 if (_hoveredControl != null)
-                    _hoveredControl.OnMouseEntered();
+                    _hoveredControl.MouseEntered();
             } 
         }
 
-        protected Screen(IGame game, bool transparent = false) : base(game)
+        protected Screen(IGame game, string id, bool transparent = false) : base(game, id)
         {
-            UiManager = game.Services.GetService<IUiManager>();
             Transparent = transparent;
         }
 
@@ -110,13 +113,9 @@ namespace Alpha.UI.Screens
             HoveredControl = null;
             ClickedControl = null;
             ActivatedControl = null;
-            Desactivate();
+            DesactivateTree();
         }
-
-        public virtual void Desactivate() { }
-
-        public virtual void Activate() { }
-
+        
         public void OnMouseClicked(Vector2I position, int button)
         {
             ClickedControl = HoveredControl;

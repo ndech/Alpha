@@ -36,12 +36,14 @@ namespace Alpha.Graphics
             return new SimpleText(_renderer, _fontShader, _fontDictionary[fontKey], maxLength, color);
         }
 
-        public Text Create(String fontName, int fontSize, String content, Vector2I size, Color color)
+        public Text Create(String fontName, int fontSize, String content, Vector2I size, Color color, 
+            HorizontalAlignment horizontalAligment = HorizontalAlignment.Center, 
+            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
         {
             String fontKey = fontName + "-" + size;
             if (!_fontDictionary.ContainsKey(fontKey))
                 _fontDictionary.Add(fontKey, new Font(_renderer, fontName, fontSize));
-            return new Text(_renderer, content, _fontDictionary[fontKey], size, color);
+            return new Text(_renderer, content, _fontDictionary[fontKey], size, color, horizontalAligment, verticalAlignment);
         }
     }
 }

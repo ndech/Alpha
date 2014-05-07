@@ -15,9 +15,7 @@ namespace Alpha.Graphics
         private readonly Buffer _vertexBuffer;
         private readonly Buffer _indexBuffer;
         private readonly int _indexCount;
-
-        public Vector2I Position { get; set; }
-
+        
         private Vector2I _size;
         public Vector2I Size
         {
@@ -39,11 +37,10 @@ namespace Alpha.Graphics
         private int _fixedBorderRadius;
         public float Depth { get; set; }
 
-        public TexturedExtensibleRectangle(IRenderer renderer, Vector2I position, Vector2I size, Texture texture, int fixedBorderRadius, float depth = 0.0f)
+        public TexturedExtensibleRectangle(IRenderer renderer, Vector2I size, Texture texture, int fixedBorderRadius, float depth = 0.0f)
         {
             _shader = renderer.TextureShader;
             _deviceContext = renderer.Device.ImmediateContext;
-            Position = position;
             _texture = texture;
             _screenSize = renderer.ScreenSize;
             _fixedBorderRadius = fixedBorderRadius;
@@ -67,12 +64,12 @@ namespace Alpha.Graphics
             for(UInt32 i=0; i< 3; i++)
                 for (UInt32 j = 0; j < 3; j++)
                 {
-                    indices[(i*3 + j)*6] = i*4 + j;
-                    indices[(i*3 + j)*6 + 1] = i*4 + j + 1;
-                    indices[(i*3 + j)*6 + 2] = (i + 1)*4 + j + 1;
-                    indices[(i*3 + j)*6 + 3] = i*4 + j;
-                    indices[(i*3 + j)*6 + 4] = (i + 1)*4 + j + 1;
-                    indices[(i*3 + j)*6 + 5] = (i + 1)*4 + j;
+                    indices[(i * 3 + j) * 6] = (i + 1) * 4 + j + 1;
+                    indices[(i * 3 + j) * 6 + 1] = i * 4 + j + 1;
+                    indices[(i * 3 + j) * 6 + 2] = i * 4 + j;
+                    indices[(i * 3 + j) * 6 + 3] = (i + 1) * 4 + j;
+                    indices[(i * 3 + j) * 6 + 4] = (i + 1) * 4 + j + 1;
+                    indices[(i * 3 + j) * 6 + 5] = i * 4 + j;
                 }
             _indexBuffer = Buffer.Create(renderer.Device, BindFlags.IndexBuffer, indices);
             Size = size;
@@ -85,16 +82,14 @@ namespace Alpha.Graphics
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
-            int drawX = -(_screenSize.X >> 1) + Position.X;
-            int drawY = (_screenSize.Y >> 1) - Position.Y;
-            Matrix position = Matrix.Translation(drawX, drawY, 0);
-            _shader.Render(deviceContext, _indexCount, worldMatrix * position, viewMatrix, projectionMatrix, _texture.TextureResource);
+            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _texture.TextureResource);
         }
 
         private void Update()
         {
             float[] xVertexCoordinates = { 0f, _fixedBorderRadius, Size.X - _fixedBorderRadius, Size.X };
-            float[] yVertexCoordinates = { -Size.Y, _fixedBorderRadius - Size.Y, - _fixedBorderRadius, 0f };
+            //float[] yVertexCoordinates = { -Size.Y, _fixedBorderRadius - Size.Y, - _fixedBorderRadius, 0f };
+            float[] yVertexCoordinates = { 0f, _fixedBorderRadius, Size.Y - _fixedBorderRadius, Size.Y };
             float[] xTextureCoordinates = { 0f, (float)_fixedBorderRadius / _texture.Width, 1f - (float)_fixedBorderRadius / _texture.Width, 1f };
             float[] yTextureCoordinates = { 0f, (float)_fixedBorderRadius / _texture.Height, 1f - (float)_fixedBorderRadius / _texture.Height, 1f };
             for (int x = 0; x < 4; x++)

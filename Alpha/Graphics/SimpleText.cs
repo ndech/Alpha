@@ -77,7 +77,6 @@ namespace Alpha.Graphics
             }
         }
 
-        public Vector2I Position { get; set; }
         public Color Color { get; set; }
         public Font Font { get; private set; }
         

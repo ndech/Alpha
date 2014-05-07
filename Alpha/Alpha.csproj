@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEventHandler.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
@@ -146,14 +147,24 @@
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Graphics\TexturedExtensibleRectangle.cs" />
     <Compile Include="Graphics\TexturedRectangle.cs" />
+    <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IGame.cs" />
+    <Compile Include="ProvinceEvent.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="UI\Controls\CalendarWidget.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
+    <Compile Include="UI\Controls\ProvinceButton.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
     <Compile Include="UI\Coordinates\UniScalar.cs" />
     <Compile Include="UI\Coordinates\UniVector.cs" />
     <Compile Include="UI\Screens\GameScreen.cs" />
     <Compile Include="UI\Screens\ExitConfirmationScreen.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Screens\SaveScreen.cs" />
+    <Compile Include="UI\Styles\ButtonStyle.cs" />
+    <Compile Include="UI\Styles\LabelStyle.cs" />
+    <Compile Include="UI\Styles\StyleItem.cs" />
+    <Compile Include="UI\Styles\StyleManager.cs" />
     <Compile Include="UI\UiComponent.cs" />
     <Compile Include="UI\Controls\Button.cs" />
     <Compile Include="UI\Controls\Control.cs" />
@@ -253,6 +264,7 @@
     <Folder Include="Toolkit\Configuration\" />
     <Folder Include="Toolkit\Extensions\" />
     <Folder Include="Toolkit\Physics\" />
+    <Folder Include="UI\StyleManager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Fonts\Arial-20px.png">
@@ -310,6 +322,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Icons\pauseIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\Styles\Button.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\Styles\Label.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\tooltip.png">

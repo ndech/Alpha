@@ -13,6 +13,7 @@ namespace Alpha
 
         private readonly Timer _timer;
         private readonly Renderer _renderer;
+        private readonly Calendar _calendar;
 
         public Game()
         {
@@ -20,13 +21,13 @@ namespace Alpha
             Services = new ServiceContainer();
 
             _timer = new Timer();
-
+            _calendar = new Calendar(this);
             _renderer = new Renderer(this);
 
             Register(_renderer,
+                     _calendar,
                      new Input(this),
                      new Camera(this),
-                     new Calendar(this),
                      new UiManager(this),
                      new MonitoringHeader(this),
                      new ProvinceList(this),
@@ -38,6 +39,7 @@ namespace Alpha
 
             foreach (GameComponent component in _gameComponents)
                 component.Initialize();
+            _calendar.DayChanged += OnDayChanged;
         }
 
         private void Register(params GameComponent[] items)
@@ -67,6 +69,8 @@ namespace Alpha
 
         private void OnDayChanged()
         {
+            foreach (IDailyUpdatable component in _gameComponents.OfType<IDailyUpdatable>())
+                component.DayUpdate();
         }
 
         private void OnMonthChanged()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
@@ -14,9 +15,31 @@ namespace Alpha
         event CustomEventHandler<Vector2I> MouseMoved;
         event CustomEventHandler<Vector2I, Int32> MouseClicked;
         event CustomEventHandler<Vector2I, Int32> MouseReleased;
+        event CustomEventHandler<Key, bool> KeyPressed;
+        event CustomEventHandler<Key> KeyReleased;
     }
     class Input : GameComponent, IInput
     {
+        struct PressedKey
+        {
+            public Key key;
+            public double duration;
+
+            public PressedKey(Key key)
+            {
+                this.key = key;
+                duration = 0.0f;
+            }
+            public void Increment(double delta)
+            {
+                duration += delta;
+            }
+
+            public void Reset()
+            {
+                duration = 0.0f;
+            }
+        }
         private readonly DirectInput _directInput;
         private readonly Keyboard _keyboard;
         private readonly Mouse _mouse;
@@ -25,10 +48,13 @@ namespace Alpha
         private Vector2I _mousePosition;
         private IRenderer _renderer;
         private readonly bool[] _previousMouseButtons;
+        private readonly List<PressedKey> _pressedKeys; 
         
         public event CustomEventHandler<Vector2I> MouseMoved;
         public event CustomEventHandler<Vector2I, Int32> MouseClicked;
         public event CustomEventHandler<Vector2I, Int32> MouseReleased;
+        public event CustomEventHandler<Key, bool> KeyPressed;
+        public event CustomEventHandler<Key> KeyReleased;
 
         public Input(IGame game) : base(game, -10000)
         {
@@ -36,6 +62,7 @@ namespace Alpha
             _keyboard = new Keyboard(_directInput);
             _mouse = new Mouse(_directInput);
             _previousMouseButtons = new bool[8];
+            _pressedKeys = new List<PressedKey>();
         }
         
         public override void Initialize()
@@ -57,15 +84,12 @@ namespace Alpha
 
             if (_mouseState == null) return;
 
-            //Truncate mouse position to screen dimensions
-
+            // Truncate mouse position to screen dimensions
             Point position = _renderer.Form.PointToClient(Cursor.Position);
             _mousePosition = new Vector2I(position.X, position.Y);
-            //_mousePosition.X = Math.Max(0, Math.Min(_screenSize.X, _mousePosition.X + RelativeMousePosition.X));
-            //_mousePosition.Y = Math.Max(0, Math.Min(_screenSize.Y, _mousePosition.Y + RelativeMousePosition.Y));
             MouseMoved.Raise(_mousePosition);
 
-            //Send mouse clicks signals
+            // Send mouse clicks signals
             for (int i = 0; i < 8; i ++)
             {
                 if (_mouseState.Buttons[i] ==_previousMouseButtons[i]) continue;
@@ -74,6 +98,36 @@ namespace Alpha
                 else if (_previousMouseButtons[i] && ! _mouseState.Buttons[i])
                     MouseReleased.Raise(_mousePosition, i);
                 _previousMouseButtons[i] = _mouseState.Buttons[i];
+            }
+            // Send keyboard signals
+            for (int i = _pressedKeys.Count - 1; i >= 0; i--)
+            {
+                if (_keyboardState.IsPressed(_pressedKeys[i].key))
+                {
+                    _pressedKeys[i].Increment(delta);
+                    if (delta > 1.0f)
+                    {
+                        _pressedKeys[i].Reset();
+                        KeyPressed.Raise(_pressedKeys[i].key, true);
+                    }
+                }
+                else
+                {
+                    KeyReleased.Raise(_pressedKeys[i].key);
+                    _pressedKeys.RemoveAt(i);
+                }
+            }
+            foreach (Key key in _keyboardState.PressedKeys)
+            {
+                bool found = false;
+                foreach (var pressedKey in _pressedKeys)
+                    if (key == pressedKey.key)
+                        found = true;
+                if (!found)
+                {
+                    _pressedKeys.Add(new PressedKey(key));
+                    KeyPressed.Raise(key, false);
+                }
             }
         }
 

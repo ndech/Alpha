@@ -1,4 +1,5 @@
-﻿using Alpha.Graphics;
+﻿using System;
+using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using Alpha.UI.Coordinates;
 using SharpDX;
@@ -11,10 +12,15 @@ namespace Alpha.UI.Controls
         protected PlainRectangle Rectangle;
         protected Color Color;
         
-        public Panel(IGame game, UniRectangle coordinates, Color color)
-            : base(game, coordinates)
+        public Panel(IGame game, String id, UniRectangle coordinates, Color color)
+            : base(game, id, coordinates)
         {
             Color = color;
+        }
+
+        public override string ComponentType
+        {
+            get { return "panel"; }
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)

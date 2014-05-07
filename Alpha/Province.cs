@@ -10,21 +10,24 @@ namespace Alpha
         public String Id { get; private set; }
         public Character Ruler { get; set; }
         public String Name { get; set; }
-        public Int32 Population { get; set; }
+        public float YearlyGrowth { get; set; }
+        private float _population;
+        public Int32 Population { get { return (int)_population; } }
         
         public Province()
         {
             Id = "province_" + _counter++;
-            Population = 1000;
+            _population = 1000;
             Name = "Province " + _counter;
             Ruler = null;
+            YearlyGrowth = 0.1f;
         }
 
         private Province(String id, String name, Int32 population, Character ruler)
         {
             Id = id;
             Name = name;
-            Population = population;
+            _population = population;
             Ruler = ruler;
         }
 
@@ -40,12 +43,12 @@ namespace Alpha
 
         public override string ToString()
         {
-            return Id + ": " + Name +" "+ Population+ " pop (" + (Ruler!=null ? Ruler.FullName : "No Ruler") + ")";
+            return Name +" "+ Population+ " pop (" + (Ruler!=null ? Ruler.FullName : "No Ruler") + ")";
         }
 
         public void Update(double delta)
         {
-            Population++;
+            _population++;
         }
 
         public static Province FromXml(XElement element, ServiceContainer services)
@@ -57,6 +60,11 @@ namespace Alpha
                 (string)element.Element("Name"),
                 Int32.Parse((string)element.Element("Population")),
                 ruler);
+        }
+
+        public void DayUpdate()
+        {
+            _population += _population*(YearlyGrowth/365);
         }
     }
 }

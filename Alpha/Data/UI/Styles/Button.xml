@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<styles for="button">
+	<style>
+		<horizontalAlignment>Center</horizontalAlignment>
+		<verticalAlignment>Middle</verticalAlignment>
+		<textColor>Blue</textColor>
+	</style>
+	<style in="menu_screen">
+		<textColor>Red</textColor>
+	</style>
+	<style in="menu_cancel">
+		<textColor>Green</textColor>
+	</style>
+	<style in="calendar_date">
+		<horizontalAlignment>Left</horizontalAlignment>
+	</style>
+</styles>
