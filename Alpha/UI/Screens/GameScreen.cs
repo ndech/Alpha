@@ -21,7 +21,10 @@ namespace Alpha.UI.Screens
             provincesButton.Clicked += (b) => { provincesPanel.Visible = !provincesPanel.Visible; };
 
             for (int i = 0; i < _provinceList.Provinces.Count; i++)
+            {
                 provincesPanel.Register(new ProvinceButton(game, i, _provinceList.Provinces[i]));
+
+            }
         }
     }
 }

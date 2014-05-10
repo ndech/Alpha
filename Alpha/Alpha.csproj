@@ -154,6 +154,7 @@
     <Compile Include="UI\Controls\CalendarWidget.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
     <Compile Include="UI\Controls\ProvinceButton.cs" />
+    <Compile Include="UI\Controls\TextInput.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
     <Compile Include="UI\Coordinates\UniScalar.cs" />
     <Compile Include="UI\Coordinates\UniVector.cs" />

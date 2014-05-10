@@ -16,12 +16,19 @@ namespace Alpha.UI
         Vector2I ScreenSize { get; }
         StyleManager StyleManager { get; }
         Vector2I MousePosition { get; set; }
+        bool IsKeyPressed(Key key);
     }
     class UiManager : RenderableGameComponent, IUiManager
     {
         private readonly List<Screen> _activeScreens;
         public StyleManager StyleManager { get; private set; }
         public Vector2I MousePosition { get; set; }
+        private IInput _input;
+        public bool IsKeyPressed(Key key)
+        {
+            return _input.IsKeyPressed(key);
+        }
+
         public Vector2I ScreenSize { get; private set; }
         public UiManager(IGame game) 
             : base(game, 1000, false, true)
@@ -39,12 +46,12 @@ namespace Alpha.UI
 
         public override void Initialize()
         {
-            IInput input = Game.Services.GetService<IInput>();
-            input.MouseMoved += OnMouseMoved;
-            input.MouseClicked += OnMouseClicked;
-            input.MouseReleased += OnMouseReleased;
-            input.KeyPressed += OnKeyPressed;
-            input.KeyReleased += OnKeyReleased;
+            _input = Game.Services.GetService<IInput>();
+            _input.MouseMoved += OnMouseMoved;
+            _input.MouseClicked += OnMouseClicked;
+            _input.MouseReleased += OnMouseReleased;
+            _input.KeyPressed += OnKeyPressed;
+            _input.KeyReleased += OnKeyReleased;
             ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
             AddScreen(new GameScreen(Game));
         }

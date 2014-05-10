@@ -17,6 +17,7 @@ namespace Alpha
         event CustomEventHandler<Vector2I, Int32> MouseReleased;
         event CustomEventHandler<Key, bool> KeyPressed;
         event CustomEventHandler<Key> KeyReleased;
+        bool IsKeyPressed(Key key);
     }
     class Input : GameComponent, IInput
     {
