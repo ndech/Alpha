@@ -112,8 +112,7 @@ namespace Alpha
         
         public bool IsKeyPressed(Key key)
         {
-            //return _keyboardState.IsPressed(key);
-            return false;
+            return Keyboard.IsKeyDown(key);
         }
 
         public void RegisterAsService()

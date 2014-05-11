@@ -36,12 +36,14 @@ namespace Alpha.Graphics
         public VerticalAlignment VerticalAlignment { get; set; }
         public HorizontalAlignment HorizontalAlignment { get; set; }
         private String _content;
+        private Boolean _isEmpty;
         public String Content
         {
             get { return _content; }
             set
             {
                 _content = value;
+                _isEmpty = (_content.Trim().Length == 0);
                 Update();
             } 
         }
@@ -63,7 +65,6 @@ namespace Alpha.Graphics
 
         public Text(IRenderer renderer, string content, Font font, Vector2I size, Color color, HorizontalAlignment horizontalAligment, VerticalAlignment verticalAlignment)
         {
-            _content = content;
             Font = font;
             Size = size;
             VerticalAlignment = verticalAlignment;
@@ -71,12 +72,12 @@ namespace Alpha.Graphics
             BaseColor = color;
             _shader = renderer.FontShader;
             _renderer = renderer;
-
-            Update();
+            Content = content;
         }
 
         private void Update()
         {
+            if(_isEmpty) return;
             Lines = SplitInLines();
             CreateIndexBuffer(_renderer);
             CreateVertexBuffer(_renderer);
@@ -210,6 +211,7 @@ namespace Alpha.Graphics
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix orthoMatrix)
         {
+            if (_isEmpty) return;
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<FontShader.Vertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;

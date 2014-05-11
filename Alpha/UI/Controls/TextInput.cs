@@ -25,7 +25,7 @@ namespace Alpha.UI.Controls
         private PlainRectangle _plainRectangle;
         public TextInput(IGame game, string id, UniRectangle coordinates) : base(game, id, coordinates)
         {
-            _textValue = " a";
+            _textValue = "";
         }
 
         public override string ComponentType
@@ -63,6 +63,8 @@ namespace Alpha.UI.Controls
                 
                 if(letter.Length == 1)
                     Text += (UiManager.IsKeyPressed(Key.LeftShift) || UiManager.IsKeyPressed(Key.RightShift)) ? letter : letter.ToLower();
+                else
+                    return false;
             }
             return true;
         }
