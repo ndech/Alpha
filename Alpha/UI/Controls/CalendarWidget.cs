@@ -1,8 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Windows.Input;
 using Alpha.Graphics;
 using Alpha.UI.Coordinates;
 using SharpDX;
-using SharpDX.DirectInput;
 
 namespace Alpha.UI.Controls
 {

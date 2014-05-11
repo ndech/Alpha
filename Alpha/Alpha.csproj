@@ -238,6 +238,7 @@
     <Compile Include="Toolkit\Math\Vector3d.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="SharpDX">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.dll</HintPath>
     </Reference>
@@ -258,6 +259,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Models\" />

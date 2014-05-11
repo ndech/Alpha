@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using Alpha.UI.Screens;
 using Alpha.UI.Styles;
 using SharpDX;
 using SharpDX.Direct3D11;
-using SharpDX.DirectInput;
 
 namespace Alpha.UI
 {

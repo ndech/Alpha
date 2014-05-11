@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Windows.Input;
 using Alpha.Graphics;
 using Alpha.UI.Coordinates;
-using Alpha.UI.Styles;
 using SharpDX;
 using SharpDX.Direct3D11;
-using SharpDX.DirectInput;
 
 namespace Alpha.UI.Controls
 {

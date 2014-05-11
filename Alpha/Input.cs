@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
-using SharpDX;
-using SharpDX.DirectInput;
+using SharpDX.Windows;
+using Cursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
 namespace Alpha
@@ -21,36 +23,12 @@ namespace Alpha
     }
     class Input : GameComponent, IInput
     {
-        struct PressedKey
-        {
-            public Key key;
-            public double duration;
-
-            public PressedKey(Key key)
-            {
-                this.key = key;
-                duration = 0.0f;
-            }
-            public void Increment(double delta)
-            {
-                duration += delta;
-            }
-
-            public void Reset()
-            {
-                duration = 0.0f;
-            }
-        }
-        private readonly DirectInput _directInput;
-        private readonly Keyboard _keyboard;
-        private readonly Mouse _mouse;
-        private KeyboardState _keyboardState;
-        private MouseState _mouseState;
         private Vector2I _mousePosition;
-        private IRenderer _renderer;
         private readonly bool[] _previousMouseButtons;
-        private readonly List<PressedKey> _pressedKeys; 
-        
+        private readonly Dictionary<Key, double> _pressedKeys;
+        private RenderForm _form;
+        private Array _keys;
+
         public event CustomEventHandler<Vector2I> MouseMoved;
         public event CustomEventHandler<Vector2I, Int32> MouseClicked;
         public event CustomEventHandler<Vector2I, Int32> MouseReleased;
@@ -59,144 +37,83 @@ namespace Alpha
 
         public Input(IGame game) : base(game, -10000)
         {
-            _directInput = new DirectInput();
-            _keyboard = new Keyboard(_directInput);
-            _mouse = new Mouse(_directInput);
-            _previousMouseButtons = new bool[8];
-            _pressedKeys = new List<PressedKey>();
+            _previousMouseButtons = new bool[2];
+            _pressedKeys = new Dictionary<Key, double>();
         }
         
         public override void Initialize()
         {
-            _renderer = Game.Services.GetService<IRenderer>();
-            IntPtr handle = _renderer.Form.Handle;
-            _keyboard.Properties.BufferSize = 256;
-            _keyboard.SetCooperativeLevel(handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
-            _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
-            _mouse.SetCooperativeLevel(handle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
-            _mousePosition = _renderer.ScreenSize/2;
+            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            _mousePosition = renderer.ScreenSize/2;
+            _form = renderer.Form;
+
+            _keys = Enum.GetValues(typeof(Key));
             Cursor.Hide();
         }
 
         public override void Update(double delta)
-        { 
-            ReadMouse();
-            ReadKeyboard();
-
-            if (_mouseState == null) return;
-
+        {
             // Truncate mouse position to screen dimensions
-            Point position = _renderer.Form.PointToClient(Cursor.Position);
+            Point position = _form.PointToClient(Cursor.Position);
             _mousePosition = new Vector2I(position.X, position.Y);
             MouseMoved.Raise(_mousePosition);
+            
+            MouseButtons buttons = Control.MouseButtons;
+            bool leftMouseButtonPressed = (buttons == MouseButtons.Left);
+            if(leftMouseButtonPressed && !_previousMouseButtons[0])
+                MouseClicked.Raise(_mousePosition, 0);
+            else if (_previousMouseButtons[0] && ! leftMouseButtonPressed)
+                MouseReleased.Raise(_mousePosition, 0);
+            _previousMouseButtons[0] = leftMouseButtonPressed;
 
-            // Send mouse clicks signals
-            for (int i = 0; i < 8; i ++)
+            bool rightMouseButtonPressed = (buttons == MouseButtons.Right);
+            if (rightMouseButtonPressed && !_previousMouseButtons[1])
+                MouseClicked.Raise(_mousePosition, 1);
+            else if (_previousMouseButtons[1] && !rightMouseButtonPressed)
+                MouseReleased.Raise(_mousePosition, 1);
+            _previousMouseButtons[1] = rightMouseButtonPressed;
+
+
+            foreach (Key key in _keys.Cast<Key>().Where(key => key != Key.None))
             {
-                if (_mouseState.Buttons[i] ==_previousMouseButtons[i]) continue;
-                if (_mouseState.Buttons[i] && ! _previousMouseButtons[i])
-                    MouseClicked.Raise(_mousePosition, i);
-                else if (_previousMouseButtons[i] && ! _mouseState.Buttons[i])
-                    MouseReleased.Raise(_mousePosition, i);
-                _previousMouseButtons[i] = _mouseState.Buttons[i];
-            }
-            // Send keyboard signals
-            for (int i = _pressedKeys.Count - 1; i >= 0; i--)
-            {
-                if (_keyboardState.IsPressed(_pressedKeys[i].key))
+                if (Keyboard.IsKeyDown(key))
                 {
-                    _pressedKeys[i].Increment(delta);
-                    if (delta > 1.0f)
+                    if (_pressedKeys.ContainsKey(key))
                     {
-                        _pressedKeys[i].Reset();
-                        KeyPressed.Raise(_pressedKeys[i].key, true);
+                        _pressedKeys[key] += delta;
+                        if (_pressedKeys[key] > 0.2)
+                        {
+                            _pressedKeys[key] = 0.0;
+                            KeyPressed.Raise(key, true);
+                        }
+                    }
+                    else
+                    {
+                        _pressedKeys.Add(key, -0.8);
+                        KeyPressed.Raise(key, false);
                     }
                 }
                 else
                 {
-                    KeyReleased.Raise(_pressedKeys[i].key);
-                    _pressedKeys.RemoveAt(i);
-                }
-            }
-            foreach (Key key in _keyboardState.PressedKeys)
-            {
-                bool found = false;
-                foreach (var pressedKey in _pressedKeys)
-                    if (key == pressedKey.key)
-                        found = true;
-                if (!found)
-                {
-                    _pressedKeys.Add(new PressedKey(key));
-                    KeyPressed.Raise(key, false);
+                    if (_pressedKeys.ContainsKey(key))
+                    {
+                        _pressedKeys.Remove(key);
+                        KeyReleased.Raise(key);
+                    }
                 }
             }
         }
 
         public override void Dispose()
-        {
-            _keyboard.Unacquire();
-            _keyboard.Dispose();
-
-            _mouse.Unacquire();
-            _mouse.Dispose();
-
-            _directInput.Dispose();
-        }
-
-        private void ReadMouse()
-        {
-            try
-            {
-                _mouseState = _mouse.GetCurrentState();
-            }
-            catch (SharpDXException e)
-            {
-                if (e.Descriptor == ResultCode.InputLost || e.Descriptor == ResultCode.NotAcquired)
-                {
-                    try
-                    {
-                        _mouse.Acquire();
-                        _mouseState = _mouse.GetCurrentState();
-                    }
-                    catch (SharpDXException)
-                    { }
-                }
-                else
-                    throw;
-            }
-        }
-
-        private void ReadKeyboard()
-        {
-            try
-            {
-                _keyboardState = _keyboard.GetCurrentState();
-            }
-            catch (SharpDXException e)
-            {
-                if (e.Descriptor == ResultCode.InputLost || e.Descriptor == ResultCode.NotAcquired)
-                {
-                    try
-                    {
-                        _keyboard.Acquire();
-                        _keyboardState = _keyboard.GetCurrentState();
-                    }
-                    catch(SharpDXException)
-                    { }
-                }
-                else
-                    throw;
-            }
-        }
+        { }
 
 
         public Vector2I AbsoluteMousePosition { get { return _mousePosition; } }
         
         public bool IsKeyPressed(Key key)
         {
-            if (_keyboardState == null)
-                return false;
-            return _keyboardState.IsPressed(key);
+            //return _keyboardState.IsPressed(key);
+            return false;
         }
 
         public void RegisterAsService()
