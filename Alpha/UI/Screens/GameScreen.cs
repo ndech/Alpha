@@ -1,8 +1,9 @@
-﻿using Alpha.Graphics;
+﻿using System.Windows.Input;
 using Alpha.UI.Controls;
 using Alpha.UI.Coordinates;
 using SharpDX;
-using SharpDX.DirectInput;
+using Button = Alpha.UI.Controls.Button;
+using Panel = Alpha.UI.Controls.Panel;
 
 namespace Alpha.UI.Screens
 {
@@ -15,6 +16,7 @@ namespace Alpha.UI.Screens
             Register(new CalendarWidget(game));
             Button menuButton = Register(new Button(game, "menu", new UniRectangle(new UniScalar(0.5f, -40), 0, 80, 30), "Menu"));
             menuButton.Clicked += (b) => UiManager.AddScreen(new MenuScreen(game));
+            menuButton.Shortcut = Key.Escape;
             Panel provincesPanel = Register(new Panel(game, "provinces_panel", new UniRectangle(0, 30, 400, 400), Color.LawnGreen));
             provincesPanel.Visible = false;
             Button provincesButton = Register(new Button(game, "provinces_button", new UniRectangle(0, 0, 100, 30), "Provinces"));

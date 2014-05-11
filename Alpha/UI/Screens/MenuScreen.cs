@@ -1,4 +1,5 @@
-﻿using Alpha.UI.Controls;
+﻿using System.Windows.Input;
+using Alpha.UI.Controls;
 using Alpha.UI.Coordinates;
 using SharpDX;
 
@@ -20,6 +21,7 @@ namespace Alpha.UI.Screens
             Button saveButton = panel.Register(new Button(game, "menu_options", new UniRectangle(0.05f, 180, 0.9f, 40), "Save"));
             Button exitButton = panel.Register(new Button(game, "menu_exit", new UniRectangle(0.05f, 235, 0.9f, 40), "Exit to desktop"));
             Button cancelButton = panel.Register(new Button(game, "menu_cancel", new UniRectangle(0.25f, 290, 0.5f, 40), "Cancel"));
+            cancelButton.Shortcut = Key.Escape;
 
             exitButton.Clicked += (b) => UiManager.AddScreen(new ExitConfirmationScreen(game));
             saveButton.Clicked += (b) => UiManager.AddScreen(new SaveScreen(game));

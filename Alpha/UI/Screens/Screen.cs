@@ -1,7 +1,6 @@
 ﻿using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using SharpDX;
-using SharpDX.DirectInput;
 
 namespace Alpha.UI.Screens
 {

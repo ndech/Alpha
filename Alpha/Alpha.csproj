@@ -248,9 +248,6 @@
     <Reference Include="SharpDX.Direct3D11">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DirectInput">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.DirectInput.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX.DXGI">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.DXGI.dll</HintPath>
     </Reference>
