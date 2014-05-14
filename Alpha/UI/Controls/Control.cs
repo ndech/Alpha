@@ -75,5 +75,10 @@ namespace Alpha.UI.Controls
             Hovered = false;
             OnMouseLeft();
         }
+
+        public virtual void OnControlDragged()
+        {
+
+        }
     }
 }

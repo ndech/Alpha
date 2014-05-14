@@ -85,8 +85,11 @@ namespace Alpha.UI.Screens
 
         public void OnMouseMoved(Vector2I position)
         {
-            if(ClickedControl != null)
+            if (ClickedControl != null)
+            {
+                ClickedControl.OnControlDragged();
                 return;
+            }
             //Todo : if activated control
             //If we are still hovering the same component, we search if we hover one of it's child
             UiComponent node;

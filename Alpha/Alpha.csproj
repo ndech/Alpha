@@ -153,7 +153,9 @@
     <Compile Include="Random.cs" />
     <Compile Include="UI\Controls\CalendarWidget.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
+    <Compile Include="UI\Controls\LogicButton.cs" />
     <Compile Include="UI\Controls\ProvinceButton.cs" />
+    <Compile Include="UI\Controls\Slider.cs" />
     <Compile Include="UI\Controls\TextInput.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
     <Compile Include="UI\Coordinates\UniScalar.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="UI\Screens\GameScreen.cs" />
     <Compile Include="UI\Screens\ExitConfirmationScreen.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Screens\LoadScreen.cs" />
     <Compile Include="UI\Screens\SaveScreen.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />
     <Compile Include="UI\Styles\LabelStyle.cs" />
@@ -322,6 +325,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Icons\pauseIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\SliderFixedPart.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\SliderMovingPart.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Styles\Button.xml">

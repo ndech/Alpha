@@ -114,26 +114,27 @@ namespace Alpha
             Game.Services.AddService<ICalendar>(this);
         }
 
-        public int SaveOrder { get; private set; }
-        public string SaveName { get; private set; }
+        public int SaveOrder { get { return 0; } }
+        public string SaveName { get { return "Calendar"; }}
         public void Save(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteElementString("Day", Day.ToString());
+            writer.WriteElementString("Month", Month.ToString());
+            writer.WriteElementString("Year", Year.ToString());
         }
 
         public void PreLoading()
-        {
-            throw new NotImplementedException();
-        }
+        { }
 
         public void Load(SaveGame save)
         {
-            throw new NotImplementedException();
+            Paused = true;
+            Day = save.Reader.ReadElementContentAsInt("Day", "");
+            Month = save.Reader.ReadElementContentAsInt("Month", "");
+            Year = save.Reader.ReadElementContentAsInt("Year", "");
         }
 
         public void PostLoading()
-        {
-            throw new NotImplementedException();
-        }
+        { }
     }
 }

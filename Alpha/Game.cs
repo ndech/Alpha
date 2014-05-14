@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alpha.Graphics;
 using Alpha.UI;
@@ -80,7 +81,6 @@ namespace Alpha
 
         private void OnYearChanged()
         {
-            Save();
         }
 
         public void Exit()
@@ -88,16 +88,14 @@ namespace Alpha
             _renderer.Form.Close();
         }
 
-        private void Save()
+        public void Save(String fileName)
         {
-            //SaveGame.Create(
-            //    "Alpha_" + _calendar.Year + "-" + _calendar.Month + "-" + _calendar.Day + ".xml", 
-            //    _gameComponents.OfType<ISavable>());
+            SaveGame.Create(fileName + ".xml", _gameComponents.OfType<ISavable>());
         }
 
-        private void Load()
+        public void Load(String fileName)
         {
-            SaveGame.Load(SaveGame.ExistingSaves()[0], Services, _gameComponents.OfType<ISavable>());
+            SaveGame.Load(fileName + ".xml", Services, _gameComponents.OfType<ISavable>());
         }
 
         public void Dispose()

@@ -60,7 +60,7 @@
         {
             foreach (ISavable item in items)
                 item.PreLoading();
-            using (Reader = XmlReader.Create(_fileName))
+            using (Reader = XmlReader.Create(Path.Combine(DirectoryPath,_fileName)))
             {
                 Reader.ReadStartElement("Save");
                 while (true)
