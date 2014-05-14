@@ -80,7 +80,6 @@ namespace Alpha
         {
             if (Paused) return;
 
-            Console.WriteLine(_elapsed);
             _elapsed += delta;
             if (_elapsed > TimePerDay)
             {
