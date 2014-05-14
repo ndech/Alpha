@@ -30,7 +30,8 @@
 
         public static void Create(String fileName, IEnumerable<ISavable> items)
         {
-            using (XmlWriter writer = XmlWriter.Create(DirectoryPath + fileName))
+            using (XmlWriter writer = XmlWriter.Create(Path.Combine(DirectoryPath, fileName),
+                new XmlWriterSettings {Indent = true}))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Save");
@@ -60,7 +61,8 @@
         {
             foreach (ISavable item in items)
                 item.PreLoading();
-            using (Reader = XmlReader.Create(Path.Combine(DirectoryPath,_fileName)))
+            using (Reader = XmlReader.Create(Path.Combine(DirectoryPath, _fileName), 
+                new XmlReaderSettings { IgnoreWhitespace = true }))
             {
                 Reader.ReadStartElement("Save");
                 while (true)
@@ -72,9 +74,11 @@
                     else
                     {
                         String currentItemName = Reader.Name;
+                        bool isEmpty = Reader.IsEmptyElement;
                         Reader.Read();
                         items.First(s => s.SaveName == currentItemName).Load(this);
-                        Reader.Read();
+                        if(!isEmpty)
+                            Reader.Read();
                     }
                 }
             }

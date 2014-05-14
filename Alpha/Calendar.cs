@@ -79,24 +79,26 @@ namespace Alpha
         public override void Update(double delta)
         {
             if (Paused) return;
+
+            Console.WriteLine(_elapsed);
             _elapsed += delta;
             if (_elapsed > TimePerDay)
             {
-                DayChanged.Raise();
                 _elapsed = 0;
                 Day ++;
                 if (Day > 30)
                 {
                     Day = 1;
                     Month ++;
-                    MonthChanged.Raise();
                     if (Month > 12)
                     {
                         Month = 1;
                         Year ++;
                         YearChanged.Raise();
                     }
+                    MonthChanged.Raise();
                 }
+                DayChanged.Raise();
             }
         }
 
@@ -106,7 +108,7 @@ namespace Alpha
 
         public override String ToString()
         {
-            return Day + @"/" + Month + @"/" + Year + (Paused ? " Paused" : "");
+            return Day + @"/" + Month + @"/" + Year;
         }
 
         public void RegisterAsService()
@@ -129,6 +131,8 @@ namespace Alpha
         public void Load(SaveGame save)
         {
             Paused = true;
+            _multiplierIndex = 0;
+            _elapsed = 0;
             Day = save.Reader.ReadElementContentAsInt("Day", "");
             Month = save.Reader.ReadElementContentAsInt("Month", "");
             Year = save.Reader.ReadElementContentAsInt("Year", "");

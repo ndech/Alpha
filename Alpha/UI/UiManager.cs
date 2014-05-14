@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
+using System.Xml;
 using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using Alpha.UI.Screens;
@@ -18,7 +20,7 @@ namespace Alpha.UI
         Vector2I MousePosition { get; set; }
         bool IsKeyPressed(Key key);
     }
-    class UiManager : RenderableGameComponent, IUiManager
+    class UiManager : RenderableGameComponent, IUiManager, ISavable
     {
         private readonly List<Screen> _activeScreens;
         public StyleManager StyleManager { get; private set; }
@@ -120,6 +122,25 @@ namespace Alpha.UI
             _activeScreens.Remove(screen);
             if (_activeScreens.Count > 0 && first != _activeScreens[0])
                 _activeScreens[0].ActivateTree();
+        }
+
+        public int SaveOrder { get { return Int32.MaxValue; } }
+        public string SaveName { get { return "UI"; } }
+        public void Save(XmlWriter writer)
+        { }
+
+        public void PreLoading()
+        {
+        }
+
+        public void Load(SaveGame save)
+        {
+            _activeScreens.Clear();
+            AddScreen(new GameScreen(Game));
+        }
+
+        public void PostLoading()
+        {
         }
     }
 }
