@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 
 namespace Alpha
 {
-    class Province : IUpdatable
+    public interface IProvince
+    {
+        Int32 Population { get; }
+    }
+    class Province : IUpdatable, IProvince
     {
         private static int _counter = 0;
         public String Id { get; private set; }
