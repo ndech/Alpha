@@ -1,6 +1,5 @@
 ﻿using System;
 using Alpha.Graphics;
-using Alpha.Toolkit.Math;
 using Alpha.UI.Coordinates;
 using Alpha.UI.Styles;
 using SharpDX;

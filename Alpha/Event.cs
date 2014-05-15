@@ -2,6 +2,6 @@
 {
     abstract class Event<T>
     {
-        public abstract void Process(T item);
+        public abstract void Process(T province);
     }
 }

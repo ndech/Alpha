@@ -20,7 +20,7 @@ namespace Alpha.UI.Screens
             for (int i = 0; i < saves.Count; i++)
             {
                 Button button = panel.Register(new Button(game, "save_item", new UniRectangle(0.05f, 15 + (55 * i), 0.9f, 40), Path.GetFileNameWithoutExtension(saves[i])));
-                button.Clicked += (b) => { Game.Load(b.Text); };
+                button.Clicked += (b) => Load(b.Text);
             }
 
             Button cancelButton = panel.Register(new Button(game, "menu_cancel", new UniRectangle(0.3f, 290, 0.4f, 40), "Cancel"));
@@ -28,5 +28,15 @@ namespace Alpha.UI.Screens
             cancelButton.Shortcut = Key.Escape;
         }
 
+        public void Load(String fileName)
+        {
+            LoadingScreen screen = new LoadingScreen(Game);
+            UiManager.AddScreen(screen);
+            Game.Load(fileName, (text) =>
+            {
+                screen.LoadedContent = text;
+                Game.Draw();
+            });
+        }
     }
 }

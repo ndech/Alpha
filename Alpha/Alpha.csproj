@@ -163,6 +163,7 @@
     <Compile Include="UI\Screens\GameScreen.cs" />
     <Compile Include="UI\Screens\ExitConfirmationScreen.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Screens\LoadingScreen.cs" />
     <Compile Include="UI\Screens\LoadScreen.cs" />
     <Compile Include="UI\Screens\SaveScreen.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />

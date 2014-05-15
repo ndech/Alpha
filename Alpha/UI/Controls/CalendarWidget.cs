@@ -12,7 +12,7 @@ namespace Alpha.UI.Controls
         private Icon _icon;
         private Label _label;
         public CalendarWidget(IGame game) 
-            : base(game, "calendar", new UniRectangle(new UniScalar(1.0f, -250), 20, 200, 40), Color.MediumOrchid)
+            : base(game, "calendar", new UniRectangle(new UniScalar(1.0f, -270), 20, 250, 40), Color.MediumOrchid)
         { }
 
         public override void Initialize()

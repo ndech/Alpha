@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 
 namespace Alpha
 {
     public interface IProvince
     {
-        Int32 Population { get; }
+        Int32 Population { get; set; }
+        float YearlyGrowth { get; }
     }
     class Province : IUpdatable, IProvince
     {
@@ -17,8 +17,10 @@ namespace Alpha
         public String Name { get; set; }
         public float YearlyGrowth { get; set; }
         private float _population;
-        public Int32 Population { get { return (int)_population; } }
-        
+        public Int32 Population { get { return (int)_population; } set
+        { _population = Math.Max(0.0f, _population + value - Population); } }
+        public float BaseTax { get { return Population*0.1f; } }
+
         public Province()
         {
             Id = "province_" + _counter++;

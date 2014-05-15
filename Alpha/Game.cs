@@ -63,8 +63,8 @@ namespace Alpha
                 foreach (GameComponent item in _gameComponents)
                     if(item.Enabled)
                         item.Update(delta);
+                Draw();
 
-                _renderer.Render();
             });
         }
 
@@ -74,6 +74,10 @@ namespace Alpha
                 component.DayUpdate();
         }
 
+        public void Draw()
+        {
+            _renderer.Render();
+        }
         private void OnMonthChanged()
         {
             
@@ -93,9 +97,9 @@ namespace Alpha
             SaveGame.Create(fileName + ".xml", _gameComponents.OfType<ISavable>());
         }
 
-        public void Load(String fileName)
+        public void Load(String fileName, Action<String> feedback)
         {
-            SaveGame.Load(fileName + ".xml", Services, _gameComponents.OfType<ISavable>());
+            SaveGame.Load(fileName + ".xml", Services, _gameComponents.OfType<ISavable>(), feedback);
         }
 
         public void Dispose()

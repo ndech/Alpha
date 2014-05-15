@@ -51,13 +51,13 @@
             return Directory.GetFiles(DirectoryPath, "*.xml").ToList();
         }
 
-        public static void Load(string fileName, ServiceContainer services, IEnumerable<ISavable> items)
+        public static void Load(string fileName, ServiceContainer services, IEnumerable<ISavable> items, Action<string> feedback)
         {
             SaveGame save = new SaveGame(fileName, services);
-            save.Load(items);
+            save.Load(items, feedback);
         }
 
-        private void Load(IEnumerable<ISavable> items)
+        private void Load(IEnumerable<ISavable> items, Action<string> feedback)
         {
             foreach (ISavable item in items)
                 item.PreLoading();
@@ -74,6 +74,8 @@
                     else
                     {
                         String currentItemName = Reader.Name;
+                        feedback.Invoke(currentItemName);
+                        System.Threading.Thread.Sleep(2000);
                         bool isEmpty = Reader.IsEmptyElement;
                         Reader.Read();
                         items.First(s => s.SaveName == currentItemName).Load(this);

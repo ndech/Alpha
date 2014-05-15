@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml;
-using SharpDX;
 
 namespace Alpha
 {
@@ -66,7 +65,7 @@ namespace Alpha
 
         public Calendar(IGame game) : base(game, 0)
         {
-            Paused = false;
+            Paused = true;
             Day = 1;
             Month = 1;
             Year = 1900;

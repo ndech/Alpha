@@ -5,7 +5,6 @@ using System.Xml;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit.Math;
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
