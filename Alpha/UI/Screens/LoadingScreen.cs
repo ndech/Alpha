@@ -7,8 +7,8 @@ namespace Alpha.UI.Screens
 {
     class LoadingScreen : Screen
     {
-        private readonly Label _label;
-        public String LoadedContent { set { _label.Text = "Loading " + value.ToLower() + "."; } }
+        private Label _label;
+        public String Text { set { _label.Text = value; } }
         public LoadingScreen(IGame game) : base(game, "load_screen", true)
         {
             Panel overlay = Register(new Panel(game, "loading_overlay", new UniRectangle(0, 0, 1.0f, 1.0f), new Color(0, 0, 0, 0.6f)));

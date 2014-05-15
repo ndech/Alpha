@@ -4,13 +4,24 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.Graphics
 {
-    class MousePointer : RenderableGameComponent
+    interface IMousePointer : IService
+    {
+        MousePointer.CursorType Type { set; }
+    }
+    class MousePointer : RenderableGameComponent, IMousePointer
     {
         private Texture _texture;
         private IInput _input;
         private TexturedRectangle _rectangle;
         private Vector2I _screenSize;
-         
+        public CursorType Type { get; set; }
+
+        public enum CursorType
+        {
+            Default,
+            None
+        }
+
         public MousePointer(IGame game) 
             : base(game, -5000, false, true)
         {
@@ -37,10 +48,16 @@ namespace Alpha.Graphics
 
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
+            if (Type == CursorType.None) return;
             int drawX = -(_screenSize.X >> 1) + _input.AbsoluteMousePosition.X;
             int drawY = -(_screenSize.Y >> 1) + _input.AbsoluteMousePosition.Y;
             Matrix position = Matrix.Translation(drawX, drawY, 0);
             _rectangle.Render(deviceContext, position, viewMatrix, projectionMatrix);
+        }
+
+        public void RegisterAsService()
+        {
+            Game.Services.AddService<IMousePointer>(this);
         }
     }
 }

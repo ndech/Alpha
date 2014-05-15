@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
+using Alpha.Graphics;
 using Alpha.UI.Controls;
 using Alpha.UI.Coordinates;
 using SharpDX;
@@ -32,11 +33,15 @@ namespace Alpha.UI.Screens
         {
             LoadingScreen screen = new LoadingScreen(Game);
             UiManager.AddScreen(screen);
+
+            IMousePointer pointer = Game.Services.GetService<IMousePointer>();
+            pointer.Type = MousePointer.CursorType.None;
             Game.Load(fileName, (text) =>
             {
-                screen.LoadedContent = text;
+                screen.Text = "Loading " + text.ToLower() + ".";
                 Game.Draw();
             });
+            pointer.Type = MousePointer.CursorType.Default;
         }
     }
 }
