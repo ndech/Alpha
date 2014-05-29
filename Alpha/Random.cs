@@ -1,4 +1,6 @@
-﻿using SystemRandom = System.Random;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SystemRandom = System.Random;
 
 namespace Alpha
 {
@@ -18,5 +20,13 @@ namespace Alpha
         }
 
         public static Random Generator { get { return _instance ?? (_instance = new Random()); } }
+    }
+
+    static class RandomIEnumerableExtensions
+    {
+        public static T RandomItem<T>(this IEnumerable<T> source)
+        {
+            return source.ElementAt(Random.Generator.Get(0, source.Count()));
+        }
     }
 }

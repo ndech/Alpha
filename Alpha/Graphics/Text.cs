@@ -123,6 +123,8 @@ namespace Alpha.Graphics
                                 color = Color.Red.ToVector4();
                             else if (token == "yellow")
                                 color = Color.Yellow.ToVector4();
+                            else if (token == "green")
+                                color = Color.Green.ToVector4();
                             else if (token == "-")
                                 color = BaseColor.ToVector4();
                             else

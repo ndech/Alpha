@@ -5,18 +5,17 @@
     using System.Linq;
     using System.Xml;
 
-    interface ICharacterList : IService
+    interface ICharacterManager : IService
     {
         IEnumerable<Character> Characters { get; }
     }
-    class CharacterList : GameComponent, ISavable, ICharacterList
+    class CharacterManager : GameComponent, ISavable, ICharacterManager
     {
-
-        IEnumerable<Character> ICharacterList.Characters { get { return Characters; } }
+        IEnumerable<Character> ICharacterManager.Characters { get { return Characters; } }
         private ICollection<Character> Characters { get; set; }
 
-        public CharacterList(IGame game) 
-            : base(game, updateOrder: 0)
+        public CharacterManager(IGame game) 
+            : base(game, 1)
         {
             Characters = new List<Character>();
         }
@@ -63,7 +62,7 @@
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<ICharacterList>(this);
+            Game.Services.AddService<ICharacterManager>(this);
         }
     }
 }

@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="CustomEventHandler.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="EventManager.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
@@ -149,12 +150,19 @@
     <Compile Include="Graphics\TexturedRectangle.cs" />
     <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IGame.cs" />
+    <Compile Include="InvalidEventDataExceptioncs.cs" />
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Random.cs" />
-    <Compile Include="UI\Controls\CalendarWidget.cs" />
+    <Compile Include="Realm.cs" />
+    <Compile Include="RealmManager.cs" />
+    <Compile Include="Territory.cs" />
+    <Compile Include="Toolkit\TimeSpanParser.cs" />
+    <Compile Include="UI\Controls\Custom\AccountLine.cs" />
+    <Compile Include="UI\Controls\Custom\CalendarWidget.cs" />
+    <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
     <Compile Include="UI\Controls\LogicButton.cs" />
-    <Compile Include="UI\Controls\ProvinceButton.cs" />
+    <Compile Include="UI\Controls\Custom\ProvinceButton.cs" />
     <Compile Include="UI\Controls\Slider.cs" />
     <Compile Include="UI\Controls\TextInput.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
@@ -183,7 +191,7 @@
     </None>
     <Compile Include="Calendar.cs" />
     <Compile Include="Character.cs" />
-    <Compile Include="CharacterList.cs" />
+    <Compile Include="CharacterManager.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameComponent.cs" />
     <Compile Include="Graphics\Bitmap.cs" />
@@ -219,7 +227,7 @@
     <Compile Include="IUpdatable.cs" />
     <Compile Include="MonitoringHeader.cs" />
     <Compile Include="Province.cs" />
-    <Compile Include="ProvinceList.cs" />
+    <Compile Include="ProvinceManager.cs" />
     <Compile Include="RenderableGameComponent.cs" />
     <Compile Include="SaveGame.cs" />
     <Compile Include="ServiceContainer.cs" />
@@ -280,6 +288,10 @@
     <Folder Include="UI\StyleManager\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Events\RealmEvents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Data\Fonts\Arial-20px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -349,6 +361,7 @@
     </Content>
     <Content Include="Data\UI\Styles\Label.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -370,6 +383,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Alpha.Scripting\Alpha.Scripting.csproj">
+      <Project>{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}</Project>
+      <Name>Alpha.Scripting</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

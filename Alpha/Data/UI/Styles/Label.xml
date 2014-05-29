@@ -8,4 +8,19 @@
 	<style in="calendar_multiplier_label">
 		<horizontalAlignment>Right</horizontalAlignment>
 	</style>
+	<style in="economy_panel">
+		<horizontalAlignment>Left</horizontalAlignment>
+		<textColor>White</textColor>
+	</style>
+	<style in="account_value_income">
+		<horizontalAlignment>Right</horizontalAlignment>
+		<textColor>Green</textColor>
+	</style>
+	<style in="account_value_spending">
+		<horizontalAlignment>Right</horizontalAlignment>
+		<textColor>Red</textColor>
+	</style>
+	<style in="account_value_revenue">
+		<horizontalAlignment>Right</horizontalAlignment>
+	</style>
 </styles>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Alpha.Scripting;
 
 namespace Alpha
 {
@@ -11,7 +12,7 @@ namespace Alpha
         public Int32 Year { get; set; }
     }
 
-    interface ICalendar : IService
+    interface ICalendar : IService, IScriptableCalendar
     {
         event CustomEventHandler DayChanged;
         bool Pause();
@@ -21,6 +22,7 @@ namespace Alpha
         int Multiplier { get; }
         bool Paused { get; set; }
     }
+
     class Calendar : GameComponent, ISavable, ICalendar
     {
         private static readonly int[] AvailableMultipliers = new[] {1, 2, 3, 5, 10};

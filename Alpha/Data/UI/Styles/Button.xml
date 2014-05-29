@@ -14,4 +14,7 @@
 	<style in="calendar_date">
 		<horizontalAlignment>Left</horizontalAlignment>
 	</style>
+	<style in="economy_button">
+		<verticalAlignment>Top</verticalAlignment>
+	</style>
 </styles>

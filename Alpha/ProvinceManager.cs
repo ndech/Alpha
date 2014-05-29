@@ -2,20 +2,18 @@
 {
     using System.Collections.Generic;
     using System.Xml;
-    interface IProvinceList : IService
+    interface IProvinceManager : IService
     {
         IList<Province> Provinces { get; }  
     }
-    class ProvinceList : GameComponent, ISavable, IProvinceList, IDailyUpdatable
+    class ProvinceManager : GameComponent, ISavable, IProvinceManager, IDailyUpdatable
     {
         public IList<Province> Provinces { get; protected set; }
-        private IList<ProvinceEvent> Events; 
 
-        public ProvinceList(IGame game) 
-            : base(game, 0)
+        public ProvinceManager(IGame game) 
+            : base(game, 2)
         {
             Provinces = new List<Province>();
-            Events = new List<ProvinceEvent>();
         }
 
         #region Savable
@@ -45,7 +43,6 @@
         {
             for (int i = 0; i < 10; i++)
                 Provinces.Add(new Province());
-            Events.Add(new ProvinceEvent());
         }
 
         public override void Update(double delta)
@@ -56,8 +53,6 @@
             foreach (Province province in Provinces)
             {
                 province.DayUpdate();
-                foreach (ProvinceEvent provinceEvent in Events)
-                    provinceEvent.Process(province);
             }
         }
 
@@ -66,7 +61,7 @@
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IProvinceList>(this);
+            Game.Services.AddService<IProvinceManager>(this);
         }
     }
 }

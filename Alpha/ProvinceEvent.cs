@@ -5,10 +5,10 @@ using Roslyn.Scripting.CSharp;
 
 namespace Alpha
 {
-    class ProvinceEvent : Event<IProvince>
+    class ProvinceEvent
     {
         private readonly List<Func<IProvince, float>> _multipliers;
-        private readonly Action<IProvince> _effect;
+        private readonly Action<IProvince> _effect = delegate(IProvince province) {  };
 
         public ProvinceEvent()
         {
@@ -17,11 +17,11 @@ namespace Alpha
             ScriptEngine engine = new ScriptEngine();
             Session session = Session.Create();
             session.AddReference(typeof(IProvince).Assembly);
-            _multipliers.Add(engine.Execute<Func<IProvince, float>>("(p) => {" + "return (p.Population > 1150 ? 0.1f : 1);" + "}", session));
-            _effect = engine.Execute<Action<IProvince>>("(p) => " + "p.Population += 100", session);
+            //_multipliers.Add(engine.Execute<Func<IProvince, float>>("(p) => p.Population > 1150 ? 0.1f : 1", session));
+            //_effect = engine.Execute<Action<IProvince>>("(p) => " + "p.Population += 100", session);
         }
 
-        public override void Process(IProvince province)
+        public void Process(IProvince province)
         {
             float meanTimeToHappen = 10;
             foreach (Func<IProvince, float> multiplier in _multipliers)

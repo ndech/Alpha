@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Alpha.UI.Controls;
 
@@ -60,6 +61,11 @@ namespace Alpha.UI.Styles
                 ApplyStyle(style, control.Parent, type);
             if (_styles[type].ContainsKey(control.Id))
                 style.Apply(_styles[type][control.Id]);
+        }
+
+        public T GetStyleItem<T>(string componentType, string value) where T : StyleItem
+        {
+            return _styles[componentType][value].OfType<T>().First();
         }
     }
 }

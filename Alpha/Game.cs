@@ -31,8 +31,10 @@ namespace Alpha
                      new Camera(this),
                      new UiManager(this),
                      new MonitoringHeader(this),
-                     new ProvinceList(this),
-                     new CharacterList(this),
+                     new ProvinceManager(this),
+                     new CharacterManager(this),
+                     new EventManager(this),
+                     new RealmManager(this),
                      new MousePointer(this));
             
             foreach (IService service in _gameComponents.OfType<IService>())

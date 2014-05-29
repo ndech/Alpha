@@ -3,7 +3,7 @@ using Alpha.Graphics;
 using Alpha.UI.Coordinates;
 using SharpDX;
 
-namespace Alpha.UI.Controls
+namespace Alpha.UI.Controls.Custom
 {
     class CalendarWidget : Panel
     {

@@ -22,6 +22,8 @@ namespace Alpha.UI.Controls
             }
         }
 
+        public Color TextColor { get { return _text.BaseColor; } set { _text.BaseColor = value; } }
+
         public Label(IGame game, String id, UniRectangle coordinates, String text)
             : base(game, id, coordinates)
         {

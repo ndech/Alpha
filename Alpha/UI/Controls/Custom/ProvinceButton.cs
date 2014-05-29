@@ -1,15 +1,15 @@
 ﻿using Alpha.Graphics;
 using Alpha.UI.Coordinates;
 
-namespace Alpha.UI.Controls
+namespace Alpha.UI.Controls.Custom
 {
     class ProvinceButton : Button
     {
-        private readonly Province _province;
-        public ProvinceButton(IGame game, int position, Province province)
-            : base(game, "province_button",new UniRectangle(0.05f, 40 * position + 10, 0.9f, 30), province.ToString())
+        private readonly Territory _territory;
+        public ProvinceButton(IGame game, int position, Territory territory)
+            : base(game, "province_button",new UniRectangle(0.05f, 40 * position + 10, 0.9f, 30), territory.Name)
         {
-            _province = province;
+            _territory = territory;
         }
 
         public override void Initialize()
@@ -22,7 +22,7 @@ namespace Alpha.UI.Controls
 
         protected override void Update(double delta)
         {
-            Text = _province.ToString();
+            Text = _territory.Name;
         }
     }
 }
