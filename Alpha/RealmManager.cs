@@ -15,7 +15,7 @@ namespace Alpha
     {
         public Realm PlayerRealm { get; private set; }
         public IList<Realm> Realms { get; private set; }
-        public IList<Event<IScriptableRealm>> Events { get; private set; } 
+        public IList<Event<IScriptableRealm>> Events { get; private set; }
 
         public RealmManager(IGame game) : base(game, 3)
         {
@@ -51,7 +51,7 @@ namespace Alpha
             }
             foreach (Realm realm in Realms)
                 realm.TaxRate = (float)Random.Generator.Get(10, 40)/100;
-            Events = Game.Services.GetService<IEventManager>().LoadEvents<IScriptableRealm>();
+            Events = Game.Services.GetService<IEventManager>().LoadEvents<IScriptableRealm>(Realm.ScriptIdentifier);
         }
 
         public override void Update(double delta)

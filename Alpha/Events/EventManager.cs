@@ -12,7 +12,7 @@ namespace Alpha.Events
 {
     interface IEventManager : IService
     {
-        IList<Event<T>> LoadEvents<T>() where T : IEventable;
+        IList<Event<T>> LoadEvents<T>(string scriptIdentifier) where T : IEventable;
     }
     class EventManager : GameComponent, IEventManager
     {
@@ -37,7 +37,7 @@ namespace Alpha.Events
             _engine = new ScriptEngine();
         }
         
-        public IList<Event<T>> LoadEvents<T>() where T : IEventable
+        public IList<Event<T>> LoadEvents<T>(string scriptIdentifier) where T : IEventable
         {
             IList<Event<T>> list = new List<Event<T>>();
 
@@ -62,21 +62,21 @@ namespace Alpha.Events
                         IsTriggeredOnly = xmlEvent.Attribute("triggered-only") != null &&
                                           xmlEvent.Attribute("triggered-only").Value.Equals("true"),
                         LabelFunc =
-                            LoadStringGenerator<T>(xmlEvent.Element("label"), NewSession,
+                            LoadStringGenerator<T>(xmlEvent.Element("label"), scriptIdentifier, NewSession,
                                 "No label defined for event " + id + " in file " + file),
-                        Modifiers = LoadModifiers<T>(xMtth.Element("modifiers"), NewSession),
+                        Modifiers = LoadModifiers<T>(xMtth.Element("modifiers"), scriptIdentifier, NewSession),
                         BaseMeanTimeToHappen = TimeSpanParser.Parse(xMtth.Element("base").Mandatory("No base mean time to happen defined for event "+id+" in file "+file).Value),
-                        Conditions = LoadConditions<T>(xmlEvent.Element("conditions"), NewSession),
-                        PreExecute = LoadPreExecute<T>(xmlEvent.Element("preExecute"), sharedSession),
+                        Conditions = LoadConditions<T>(xmlEvent.Element("conditions"), scriptIdentifier, NewSession),
+                        PreExecute = LoadPreExecute<T>(xmlEvent.Element("preExecute"), scriptIdentifier, sharedSession),
                         Outcomes = xOutcomes.Elements("outcome").Select(xmlOutcome => new Outcome<T>
                         {
                             LabelFunc =
-                                LoadStringGenerator<T>(xmlOutcome.Element("label"), sharedSession,
+                                LoadStringGenerator<T>(xmlOutcome.Element("label"), scriptIdentifier, sharedSession,
                                     "No label defined for an outcome of event " + id + " in file " + file),
-                            TooltîpFunc = LoadStringGenerator<T>(xmlOutcome.Element("tooltip"), sharedSession),
-                            PreExecute = LoadPreExecute<T>(xmlOutcome.Element("preExecute"), sharedSession),
-                            Conditions = LoadConditions<T>(xmlOutcome.Element("conditions"), sharedSession),
-                            Effects = LoadEffects<T>(xmlOutcome.Element("effects"), sharedSession)
+                            TooltîpFunc = LoadStringGenerator<T>(xmlOutcome.Element("tooltip"), scriptIdentifier, sharedSession),
+                            PreExecute = LoadPreExecute<T>(xmlOutcome.Element("preExecute"), scriptIdentifier, sharedSession),
+                            Conditions = LoadConditions<T>(xmlOutcome.Element("conditions"), scriptIdentifier, sharedSession),
+                            Effects = LoadEffects<T>(xmlOutcome.Element("effects"), scriptIdentifier, sharedSession)
                         }).ToList()
                     });
                 }
@@ -84,40 +84,40 @@ namespace Alpha.Events
             return list;
         }
 
-        private IList<Action<T>> LoadEffects<T>(XElement element, Session sharedSession)
+        private IList<Action<T>> LoadEffects<T>(XElement element, string scriptIdentifier, Session sharedSession)
         {
             IList<Action<T>> effects = new List<Action<T>>();
             if (element != null)
                 foreach (XElement xmlEffect in element.Elements("effect"))
-                    effects.Add(_engine.Execute<Action<T>>("(Realm) => " + xmlEffect.Value, sharedSession));
+                    effects.Add(_engine.Execute<Action<T>>("("+scriptIdentifier+") => " + xmlEffect.Value, sharedSession));
             return effects;
         }
 
-        private Action<T> LoadPreExecute<T>(XElement element, Session session)
+        private Action<T> LoadPreExecute<T>(XElement element, string scriptIdentifier, Session session)
         {
             if (element == null) return null;
-            return _engine.Execute<Action<T>>("(Realm) => " + element.Value, session);
+            return _engine.Execute<Action<T>>("(" + scriptIdentifier + ") => " + element.Value, session);
         }
 
-        private IList<Func<T, bool>> LoadConditions<T>(XElement element, Session session)
+        private IList<Func<T, bool>> LoadConditions<T>(XElement element, string scriptIdentifier, Session session)
         {
             IList<Func<T,Boolean>> conditions = new List<Func<T, bool>>();
             if (element != null)
                 foreach (XElement xmlCondition in element.Elements("condition"))
-                    conditions.Add(_engine.Execute<Func<T, Boolean>>("(Realm) => " + xmlCondition.Value, session));
+                    conditions.Add(_engine.Execute<Func<T, Boolean>>("(" + scriptIdentifier + ") => " + xmlCondition.Value, session));
             return conditions;
         }
 
 
-        private Func<T, string> LoadStringGenerator<T>(XElement xString, Session session, String exceptionMessage = null) where T : IEventable
+        private Func<T, string> LoadStringGenerator<T>(XElement xString, string scriptIdentifier, Session session, String exceptionMessage = null) where T : IEventable
         {
             if (exceptionMessage == null && xString == null)
                 return null;
             String label = (String) xString.Mandatory(exceptionMessage);
-            return _engine.Execute<Func<T, String>>("(Realm) => { return \"" + label.Replace("{", "\"+").Replace("}", "+\"") + "\";}", session);
+            return _engine.Execute<Func<T, String>>("(" + scriptIdentifier + ") => { return \"" + label.Replace("{", "\"+").Replace("}", "+\"") + "\";}", session);
         }
 
-        private IList<IModifier<T>> LoadModifiers<T>(XElement xModifiers, Session session) where T : IEventable
+        private IList<IModifier<T>> LoadModifiers<T>(XElement xModifiers, string scriptIdentifier, Session session) where T : IEventable
         {
             if (xModifiers == null) return null;
             IList<IModifier<T>> modifiers = new List<IModifier<T>>();
@@ -133,10 +133,10 @@ namespace Alpha.Events
 
                 if (xmlModifier.Attribute("factor") == null)
                     modifiers.Add(new DynamicModifier<T>(
-                        _engine.Execute<Func<T, Double>>("(Realm) => " + xmlModifier.Value, session), type));
+                        _engine.Execute<Func<T, Double>>("(" + scriptIdentifier + ") => " + xmlModifier.Value, session), type));
                 else
                     modifiers.Add(new StaticModifier<T>(Double.Parse(xmlModifier.Attribute("factor").Value),
-                        _engine.Execute<Func<T, Boolean>>("(Realm) => " + xmlModifier.Value, session), type));
+                        _engine.Execute<Func<T, Boolean>>("(" + scriptIdentifier + ") => " + xmlModifier.Value, session), type));
             }
             return modifiers;
         }

@@ -87,5 +87,6 @@ namespace Alpha
         public int DirectVassalCount { get { return Vassals.Count; } }
         public int TotalVassalCount { get { return DirectVassalCount + Vassals.Sum((v) => v.TotalVassalCount); } }
         public bool IsIndependant { get { return Liege == null; } }
+        public static String ScriptIdentifier { get { return "Realm"; } }
     }
 }

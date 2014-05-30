@@ -1,4 +1,6 @@
 ﻿namespace Alpha.Scripting
 {
-    public interface IEventable { }
+    public interface IEventable
+    {
+    }
 }
