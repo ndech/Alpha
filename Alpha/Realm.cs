@@ -2,12 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.Scripting;
+using Alpha.Toolkit;
 
 namespace Alpha
 {
     class Realm : IDailyUpdatable, IScriptableRealm
     {
         public double Treasury { get; set; }
+        public double Income(string timeSpan)
+        {
+            return Revenue*TimeSpanParser.Parse(timeSpan);
+        }
+
+        public IScriptableRealm RandomDirectVassal { get { return Vassals.RandomItem(); } }
+        public IScriptableRealm RandomDirectVassalWhere(Func<IScriptableRealm, bool> criteria)
+        {
+            return Vassals.Where(criteria).RandomItem();
+        }
+
         public double Revenue { get { return TaxIncome + VassalsIncome - Spending; } }
         public double TaxIncome { get { return Demesne.Sum(d => d.BaseTax)*TaxRate; } }
         public double VassalsIncome { get { return Vassals.Sum(v => v.LiegeTax); } }

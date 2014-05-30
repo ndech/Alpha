@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Events;
 using Alpha.Scripting;
 
 namespace Alpha
@@ -13,7 +14,6 @@ namespace Alpha
     class RealmManager : GameComponent, IRealmManager, IDailyUpdatable
     {
         public Realm PlayerRealm { get; private set; }
-
         public IList<Realm> Realms { get; private set; }
         public IList<Event<IScriptableRealm>> Events { get; private set; } 
 
@@ -35,7 +35,11 @@ namespace Alpha
             Realms.Add(new Realm("France", characters.Where((c) => c.Realm == null).RandomItem()));
             Realms.Add(new Realm("Romania", characters.Where((c) => c.Realm == null).RandomItem()));
             Realms.Add(new Realm("Spain", characters.Where((c) => c.Realm == null).RandomItem()));
+            Realms.Add(new Realm("Italy", characters.Where((c) => c.Realm == null).RandomItem()));
+            Realms.Add(new Realm("Croatia", characters.Where((c) => c.Realm == null).RandomItem()));
             Realms[1].Liege = Realms[0];
+            Realms[4].Liege = Realms[0];
+            Realms[5].Liege = Realms[0];
             int i = 0;
             foreach (Province province in Game.Services.GetService<IProvinceManager>().Provinces)
             {
@@ -72,6 +76,8 @@ namespace Alpha
                     else
                         Console.Write("\tInvalid");
                     Console.WriteLine();
+                    if (@event.ConditionsValid(realm))
+                        @event.Process(realm);
                 }
             Console.WriteLine();
         }

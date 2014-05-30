@@ -1,31 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <events>
-	<event id="realm_1" type="realm" triggered-only="true">
-		<Label>A tithe has been collected in {Realm.Name}.</Label>
+	<event id="realm_1" type="realm" triggered-only="false">
+		<label>A tithe has been collected in {Realm.Name}.</label>
 		<conditions>
 			<condition>Realm.IsIndependant</condition>
 		</conditions>
-		<baseMtth>1y2m10d</baseMtth>
-		<multipliers>
-			<multiplier factor="2">Realm.DirectVassalCount > 1</multiplier>
-			<multiplier>Realm.TaxRate*5+0.5</multiplier>
-			<reducer factor ="5">Calendar.Month &gt; 1 &amp;&amp; Calendar.Month &lt; 3</reducer>
-		</multipliers>
+		<meanTimeToHappen>
+			<base>1y2m10d</base>
+			<modifiers>
+				<multiplier>Realm.TaxRate*5+0.5</multiplier>
+				<reducer factor ="5">Calendar.Month &gt; 1 &amp;&amp; Calendar.Month &lt; 3</reducer>
+				<reducer factor ="20">Realm.DirectVassalCount > 1</reducer>
+			</modifiers>
+		</meanTimeToHappen>
 		<outcomes>
+			<parameters>
+				IScriptableRealm realm1;
+				IScriptableRealm realm2;
+			</parameters>
 			<outcome>
-				<shortDescription>Store the coins in the vaults !</shortDescription>
+				<iaAffinity>
+					<base>10</base>
+				</iaAffinity>
+				<label>Store the coins in the vaults !</label>
+				<tooltip>Gain {Realm.Income("2m").Format()} [gold]</tooltip>
 				<effects>
 					<effect>Realm.Treasury+=Realm.Income("2m")</effect>
 				</effects>
 			</outcome>
 			<outcome>
-				<shortDescription>Distribute the money to my vassals !</shortDescription>
+				<iaAffinity>
+					<base>1</base>
+				</iaAffinity>
 				<conditions>
-					<condition>DirectVassalCount > 1</condition>
+					<condition>Realm.DirectVassalCount > 1</condition>
 				</conditions>
+				<preExecute>
+					{
+						realm1 = Realm.RandomDirectVassal;
+						realm2 = Realm.RandomDirectVassalWhere((t) => t!= realm1);
+					}
+				</preExecute>
+				<label>Distribute the money to my vassals !</label>
+				<tooltip>{realm1.Name} would receive {Realm.Income("1m").Format()} [gold] and \n{realm2.Name} would receive {Realm.Income("1m").Format()} [gold]</tooltip>
 				<effects>
-					<effect>Realm.Treasury+=Realm.Income("1m")</effect>
-					<effect>Realm.Treasury+=Realm.Income("1m")</effect>
+					<effect>realm1.Treasury+=Realm.Income("1m")</effect>
+					<effect>realm2.Treasury+=Realm.Income("1m")</effect>
 				</effects>
 			</outcome>
 		</outcomes>

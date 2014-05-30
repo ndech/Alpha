@@ -139,8 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEventHandler.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="EventManager.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\EventManager.cs" />
+    <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="Graphics\TexturedRectangle.cs" />
     <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IGame.cs" />
-    <Compile Include="InvalidEventDataExceptioncs.cs" />
+    <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Realm.cs" />

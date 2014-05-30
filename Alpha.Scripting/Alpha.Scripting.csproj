@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormatExtension.cs" />
     <Compile Include="IEventable.cs" />
     <Compile Include="IScriptableCalendar.cs" />
     <Compile Include="IScriptableRealm.cs" />

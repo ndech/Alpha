@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +14,9 @@ namespace Alpha.Scripting
         Int32 TotalVassalCount { get; }
         bool IsIndependant { get; }
         double TaxRate { get; }
+        double Treasury { get; set; }
+        double Income(String timeSpan);
+        IScriptableRealm RandomDirectVassal { get; }
+        IScriptableRealm RandomDirectVassalWhere(Func<IScriptableRealm, bool> criteria);
     }
 }
