@@ -19,6 +19,7 @@ namespace Alpha.UI
         StyleManager StyleManager { get; }
         Vector2I MousePosition { get; set; }
         bool IsKeyPressed(Key key);
+        void RecalculateActiveComponents();
     }
     class UiManager : RenderableGameComponent, IUiManager, ISavable
     {
@@ -64,10 +65,10 @@ namespace Alpha.UI
                 _activeScreens[0].KeyReleased(key);
         }
 
-        private void OnKeyPressed(Key key, bool repeat)
+        private void OnKeyPressed(Key key, char? character, bool repeat)
         {
             if (_activeScreens.Count > 0)
-                _activeScreens[0].KeyPressed(key, repeat);
+                _activeScreens[0].KeyPressed(key, character, repeat);
         }
 
         private void OnMouseClicked(Vector2I position, int button)
@@ -122,6 +123,11 @@ namespace Alpha.UI
             _activeScreens.Remove(screen);
             if (_activeScreens.Count > 0 && first != _activeScreens[0])
                 _activeScreens[0].ActivateTree();
+        }
+
+        public void RecalculateActiveComponents()
+        {
+            _activeScreens[0].RecalculateActiveComponents();
         }
 
         public int SaveOrder { get { return Int32.MaxValue; } }

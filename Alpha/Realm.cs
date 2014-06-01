@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Events;
 using Alpha.Scripting;
 using Alpha.Toolkit;
 
 namespace Alpha
 {
-    class Realm : IDailyUpdatable, IScriptableRealm
+    class Realm : IDailyUpdatable, IScriptableRealm, IEventResolver
     {
         public double Treasury { get; set; }
         public double Income(string timeSpan)
@@ -83,10 +84,41 @@ namespace Alpha
         {
             Treasury += Revenue;
         }
+        
+        public bool IsPlayer { get; set; }
 
         public int DirectVassalCount { get { return Vassals.Count; } }
         public int TotalVassalCount { get { return DirectVassalCount + Vassals.Sum((v) => v.TotalVassalCount); } }
         public bool IsIndependant { get { return Liege == null; } }
         public static String ScriptIdentifier { get { return "Realm"; } }
+        public IEventResolver EventResolver { get { return this; } }
+        public void Resolve<T>(T item, IEvent<T> @event) where T : IEventable
+        {
+            Event<T> eventRef = (Event<T>) @event;
+            if (IsPlayer)
+            {
+                foreach (Outcome<T> outcome in eventRef.Outcomes)
+                {
+                    if (outcome.PreExecute != null) outcome.PreExecute.Invoke(item);
+                    outcome.Effects.ToList().ForEach((e) => e.Invoke(item));
+                }
+            }
+            else
+            {
+                double total = eventRef.Outcomes.Where((o) => o.ConditionsValid(item)).Sum((o) => o.IaAffinity(item));
+                double rand = Random.Generator.GetDouble(0.0, total);
+                foreach (Outcome<T> outcome in eventRef.Outcomes.Where((o) => o.ConditionsValid(item)))
+                {
+                    if(outcome.PreExecute != null) outcome.PreExecute.Invoke(item);
+                    double affinity = outcome.IaAffinity(item);
+                    if (rand < affinity)
+                    {
+                        outcome.Effects.ToList().ForEach((e)=>e.Invoke(item));
+                        return;
+                    }
+                    rand -= affinity;
+                }
+            }
+        }
     }
 }

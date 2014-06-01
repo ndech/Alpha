@@ -94,6 +94,9 @@
     <None Include="Data\Fonts\Arial-20px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Fonts\Consolas-22px.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Fonts\Courrier-14px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -139,8 +142,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEventHandler.cs" />
+    <Compile Include="Events\DelayedEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventManager.cs" />
+    <Compile Include="Events\IModifier.cs" />
+    <Compile Include="Events\Outcome.cs" />
     <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
@@ -152,6 +158,7 @@
     <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
+    <Compile Include="InputInterop.cs" />
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Realm.cs" />
@@ -160,6 +167,8 @@
     <Compile Include="Toolkit\TimeSpanParser.cs" />
     <Compile Include="UI\Controls\Custom\AccountLine.cs" />
     <Compile Include="UI\Controls\Custom\CalendarWidget.cs" />
+    <Compile Include="UI\Controls\Custom\ConsoleLine.cs" />
+    <Compile Include="UI\Controls\Custom\DebugConsoleWidget.cs" />
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
     <Compile Include="UI\Controls\LogicButton.cs" />
@@ -226,7 +235,7 @@
     <Compile Include="ISavable.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="IUpdatable.cs" />
-    <Compile Include="MonitoringHeader.cs" />
+    <Compile Include="UI\Controls\Custom\MonitoringHeader.cs" />
     <Compile Include="Province.cs" />
     <Compile Include="ProvinceManager.cs" />
     <Compile Include="RenderableGameComponent.cs" />
@@ -294,6 +303,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Data\Fonts\Arial-20px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Fonts\Consolas-22px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Fonts\Courrier-14px.png">

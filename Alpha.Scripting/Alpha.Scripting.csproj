@@ -40,7 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormatExtension.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="IEventable.cs" />
+    <Compile Include="IEventPropagator.cs" />
+    <Compile Include="IEventResolver.cs" />
     <Compile Include="IScriptableCalendar.cs" />
     <Compile Include="IScriptableRealm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

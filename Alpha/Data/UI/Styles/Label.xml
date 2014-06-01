@@ -23,4 +23,7 @@
 	<style in="account_value_revenue">
 		<horizontalAlignment>Right</horizontalAlignment>
 	</style>
+	<style in="monitoring_header_label">
+		<textColor>DarkSlateGray</textColor>
+	</style>
 </styles>

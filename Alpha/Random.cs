@@ -19,6 +19,11 @@ namespace Alpha
             return _generator.Next(min, max);
         }
 
+        public double GetDouble(double min, double max)
+        {
+            return _generator.NextDouble() * max + min;
+        }
+
         public static Random Generator { get { return _instance ?? (_instance = new Random()); } }
     }
 

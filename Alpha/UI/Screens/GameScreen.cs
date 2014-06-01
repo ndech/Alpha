@@ -30,8 +30,7 @@ namespace Alpha.UI.Screens
 
             Panel economyPanel = Register(new Panel(game, "economy_panel", new UniRectangle(0, 90, 500, 600), Color.BlueViolet));
             economyPanel.Visible = false;
-
-
+            
             Button provincesButton = Register(new Button(game, "provinces_button", new UniRectangle(0, 0, 100, 90), "Provinces"));
             provincesButton.Clicked += (b) =>
             {
@@ -82,6 +81,7 @@ namespace Alpha.UI.Screens
             
             for (int i = 0; i < _demesne.Count; i++)
                 provincesPanel.Register(new ProvinceButton(game, i, _demesne[i]));
+            Register(new DebugConsoleWidget(game));
         }
     }
 }

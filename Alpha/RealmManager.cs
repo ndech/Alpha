@@ -10,10 +10,26 @@ namespace Alpha
     {
         Realm PlayerRealm { get; }
         IList<Realm> Realms { get; }
+        IList<Event<IScriptableRealm>> Events { get; }
     }
     class RealmManager : GameComponent, IRealmManager, IDailyUpdatable
     {
-        public Realm PlayerRealm { get; private set; }
+        private Realm _playerRealm;
+
+        public Realm PlayerRealm
+        {
+            get
+            {
+                return _playerRealm;
+            }
+            private set
+            {
+                _playerRealm = value;
+                Realms.ToList().ForEach((r)=>r.IsPlayer = false);
+                _playerRealm.IsPlayer = true;
+            }
+        }
+
         public IList<Realm> Realms { get; private set; }
         public IList<Event<IScriptableRealm>> Events { get; private set; }
 
@@ -31,7 +47,6 @@ namespace Alpha
         {
             IEnumerable<Character> characters = Game.Services.GetService<ICharacterManager>().Characters;
             Realms.Add(new Realm("Belgium", characters.Where((c)=> c.Realm == null).RandomItem()));
-            PlayerRealm = Realms[0];
             Realms.Add(new Realm("France", characters.Where((c) => c.Realm == null).RandomItem()));
             Realms.Add(new Realm("Romania", characters.Where((c) => c.Realm == null).RandomItem()));
             Realms.Add(new Realm("Spain", characters.Where((c) => c.Realm == null).RandomItem()));
@@ -40,6 +55,7 @@ namespace Alpha
             Realms[1].Liege = Realms[0];
             Realms[4].Liege = Realms[0];
             Realms[5].Liege = Realms[0];
+            PlayerRealm = Realms[5];
             int i = 0;
             foreach (Province province in Game.Services.GetService<IProvinceManager>().Provinces)
             {
@@ -63,23 +79,11 @@ namespace Alpha
         public void DayUpdate()
         {
             foreach (Realm realm in Realms)
+            {
                 realm.DayUpdate();
-            foreach (Realm realm in Realms)
                 foreach (Event<IScriptableRealm> @event in Events)
-                {
-                    Console.Write(@event.LabelFunc.Invoke(realm));
-                    if (@event.ConditionsValid(realm))
-                    {
-                        Console.Write("\tValid");
-                        Console.Write("\t {0}", @event.MeanTimeToHappen(realm));
-                    }
-                    else
-                        Console.Write("\tInvalid");
-                    Console.WriteLine();
-                    if (@event.ConditionsValid(realm))
-                        @event.Process(realm);
-                }
-            Console.WriteLine();
+                    @event.Process(realm);
+            }
         }
     }
 }

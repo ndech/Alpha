@@ -17,7 +17,7 @@ namespace Alpha
         event CustomEventHandler<Vector2I> MouseMoved;
         event CustomEventHandler<Vector2I, Int32> MouseClicked;
         event CustomEventHandler<Vector2I, Int32> MouseReleased;
-        event CustomEventHandler<Key, bool> KeyPressed;
+        event CustomEventHandler<Key, char?, bool> KeyPressed;
         event CustomEventHandler<Key> KeyReleased;
         bool IsKeyPressed(Key key);
     }
@@ -32,7 +32,7 @@ namespace Alpha
         public event CustomEventHandler<Vector2I> MouseMoved;
         public event CustomEventHandler<Vector2I, Int32> MouseClicked;
         public event CustomEventHandler<Vector2I, Int32> MouseReleased;
-        public event CustomEventHandler<Key, bool> KeyPressed;
+        public event CustomEventHandler<Key, char?, bool> KeyPressed;
         public event CustomEventHandler<Key> KeyReleased;
 
         public Input(IGame game) : base(game, -10000)
@@ -81,16 +81,16 @@ namespace Alpha
                     if (_pressedKeys.ContainsKey(key))
                     {
                         _pressedKeys[key] += delta;
-                        if (_pressedKeys[key] > 0.2)
+                        if (_pressedKeys[key] > 0.1)
                         {
                             _pressedKeys[key] = 0.0;
-                            KeyPressed.Raise(key, true);
+                            KeyPressed.Raise(key, InputInterop.GetCharFromKey(key),true);
                         }
                     }
                     else
                     {
-                        _pressedKeys.Add(key, -0.8);
-                        KeyPressed.Raise(key, false);
+                        _pressedKeys.Add(key, -0.9);
+                        KeyPressed.Raise(key, InputInterop.GetCharFromKey(key), false);
                     }
                 }
                 else

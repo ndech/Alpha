@@ -30,6 +30,7 @@ namespace Alpha.UI
         
         public void UpdateTree(double delta)
         {
+            if (!Visible) return;
             Update(delta);
             foreach (Control control in Controls)
                 control.UpdateTree(delta);
@@ -79,8 +80,9 @@ namespace Alpha.UI
         {
             if (!InBounds(position))
                 return null;
-            foreach (Control control in Controls)
+            for(int i = Controls.Count -1; i>=0; i--)
             {
+                Control control = Controls[i];
                 Control hoveredControl = control.GetHoveredControl(position);
                 if (hoveredControl != null)
                     return control;
@@ -88,17 +90,21 @@ namespace Alpha.UI
             return this as Control;
         }
 
-        public bool KeyPressed(Key key, bool repeat)
+        public bool KeyPressed(Key key, char? character, bool repeat)
         {
-            if (OnKeyPressed(key, repeat))
+            if (OnKeyPressed(key, character, repeat))
                 return true;
-            foreach (Control control in Controls)
-                if (control.KeyPressed(key, repeat))
+            if (!Visible) return false;
+            for (int i = Controls.Count - 1; i >= 0; i--)
+            {
+                Control control = Controls[i];
+                if (control.KeyPressed(key, character, repeat))
                     return true;
+            }
             return false;
         }
 
-        protected virtual bool OnKeyPressed(Key key, bool repeat)
+        protected virtual bool OnKeyPressed(Key key, char? character, bool repeat)
         {
             return false;
         }

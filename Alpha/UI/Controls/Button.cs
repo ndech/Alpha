@@ -75,7 +75,7 @@ namespace Alpha.UI.Controls
             get { return "button"; }
         }
 
-        protected override bool OnKeyPressed(Key key, bool repeat)
+        protected override bool OnKeyPressed(Key key, char? character, bool repeat)
         {
             if (Shortcut == null || repeat || Shortcut != key)
                 return false;

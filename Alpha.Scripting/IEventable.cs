@@ -2,5 +2,6 @@
 {
     public interface IEventable
     {
+        IEventResolver EventResolver { get; }
     }
 }

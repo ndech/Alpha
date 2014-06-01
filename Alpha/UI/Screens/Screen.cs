@@ -100,6 +100,12 @@ namespace Alpha.UI.Screens
             HoveredControl = node.GetHoveredControl(position);
         }
 
+        public void RecalculateActiveComponents()
+        {
+            ClickedControl = null;
+            HoveredControl = null;
+        }
+
         public override bool InBounds(Vector2I position)
         {
             return true;

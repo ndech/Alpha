@@ -4,6 +4,7 @@ using System.Linq;
 using Alpha.Events;
 using Alpha.Graphics;
 using Alpha.UI;
+using Alpha.UI.Controls.Custom;
 using SharpDX.Windows;
 
 namespace Alpha
@@ -31,7 +32,6 @@ namespace Alpha
                      new Input(this),
                      new Camera(this),
                      new UiManager(this),
-                     new MonitoringHeader(this),
                      new ProvinceManager(this),
                      new CharacterManager(this),
                      new EventManager(this),

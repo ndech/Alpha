@@ -5,22 +5,6 @@ using Alpha.Scripting;
 
 namespace Alpha.Events
 {
-    interface IEvent<T>
-    {
-        bool IsTriggeredOnly { get; }
-    }
-
-    interface IModifier<T>
-    {
-        double Modifier(T item);
-
-    }
-
-    enum ModifierType
-    {
-        Multiplier,
-        Reducer
-    }
 
     class StaticModifier<T> : IModifier<T>
     {
@@ -59,44 +43,13 @@ namespace Alpha.Events
         }
     }
 
-    class Outcome<T>
-    {
-        public Func<T, String> LabelFunc { get; set; }
-        public Func<T, String> TooltîpFunc { get; set; }
-        public Action<T> PreExecute { get; set; }
-        public IList<Func<T, Boolean>> Conditions { get; set; }
-        public IList<Action<T>> Effects { get; set; }
-        public int BaseIaAffinity { get; set; }
-        public IList<IModifier<T>> IaAffinityModifiers { get; set; }
-        
-        public Outcome()
-        {
-            Conditions = new List<Func<T, bool>>();
-            Effects = new List<Action<T>>();
-            IaAffinityModifiers = new List<IModifier<T>>();
-        }
-        public String Label(T item)
-        {
-            return LabelFunc.Invoke(item);
-        }
-
-        public String Tooltip(T item)
-        {
-            return TooltîpFunc == null ? null : TooltîpFunc.Invoke(item);
-        }
-
-        public bool ConditionsValid(T item)
-        {
-            return Conditions.All(condition => condition.Invoke(item));
-        }
-    }
-
     class Event<T> : IEvent<T> where T : IEventable
     {
-        String Id { get; set; }
+        public String Id { get; private set; }
         public bool IsTriggeredOnly { get; set; }
         public Func<T, String> LabelFunc { get; set; }
         public IList<Func<T, Boolean>> Conditions { get; set; }
+        public IList<Action<Object>> Initializers { get; set; } 
         public int BaseMeanTimeToHappen { get; set; }
         public IList<IModifier<T>> Modifiers { get; set; }
         public IList<Outcome<T>> Outcomes { get; set; }
@@ -107,6 +60,7 @@ namespace Alpha.Events
             Conditions = new List<Func<T, bool>>();
             Modifiers = new List<IModifier<T>>();
             Outcomes = new List<Outcome<T>>();
+            Initializers = new List<Action<Object>>();
             Id = id;
         }
 
@@ -127,23 +81,26 @@ namespace Alpha.Events
 
         public void Process(T item)
         {
-            if(!ConditionsValid(item))
+            if(!ConditionsValid(item) || IsTriggeredOnly)
                 return;
             if (Random.Generator.Get(0, MeanTimeToHappen(item)) == 0)
-            {
-                if(PreExecute != null)
-                    PreExecute.Invoke(item);
-                foreach (Outcome<T> outcome in Outcomes)
-                {
-                    if(!outcome.ConditionsValid(item))
-                        continue;
-                    Console.WriteLine();
-                    if (outcome.PreExecute != null)
-                        outcome.PreExecute.Invoke(item);
-                    Console.WriteLine(outcome.Label(item) ?? "No label");
-                    Console.WriteLine(outcome.Tooltip(item) ?? "No tooltip");
-                }
-            }
+                Execute(item);
+        }
+        public void Execute(IEventable item, object[] parameters)
+        {
+            int parametersCount = (parameters == null ? 0 : parameters.Length);
+            if (Initializers.Count != parametersCount)
+                throw new InvalidEventDataException("Invalid parameter number in event " + Id + " expected " + Initializers.Count + " and got " + parametersCount);
+            if (parametersCount > 0)
+                for (int i = 0; i < Initializers.Count; i++)
+                    Initializers[i].Invoke(parameters[i]);
+            if (PreExecute != null)
+                PreExecute.Invoke((T)item);
+            Execute((T)item);
+        }
+        private void Execute(T item)
+        {
+            item.EventResolver.Resolve<T>(item, this);
         }
     }
 }
