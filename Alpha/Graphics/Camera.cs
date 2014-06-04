@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using Vector3 = SharpDX.Vector3;
 
 namespace Alpha.Graphics
@@ -21,8 +22,9 @@ namespace Alpha.Graphics
 
         public Vector3 Position { get { return _position; } }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
+            Update(0.0);
         }
 
         public override void Update(double delta)

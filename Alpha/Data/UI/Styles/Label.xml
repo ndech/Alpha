@@ -4,6 +4,8 @@
 		<horizontalAlignment>Center</horizontalAlignment>
 		<verticalAlignment>Middle</verticalAlignment>
 		<textColor>Blue</textColor>
+		<font>Arial</font>
+		<fontSize>20</fontSize>
 	</style>
 	<style in="calendar_multiplier_label">
 		<horizontalAlignment>Right</horizontalAlignment>
@@ -25,5 +27,11 @@
 	</style>
 	<style in="monitoring_header_label">
 		<textColor>DarkSlateGray</textColor>
+	</style>
+	<style in="console_line">
+		<horizontalAlignment>Left</horizontalAlignment>
+		<textColor>LightGray</textColor>
+		<font>Consolas</font>
+		<fontSize>22</fontSize>
 	</style>
 </styles>

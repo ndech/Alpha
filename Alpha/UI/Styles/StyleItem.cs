@@ -16,6 +16,10 @@ namespace Alpha.UI.Styles
                 return new VerticalAlignmentStyleItem(styleItem.Value);
             else if (styleItem.Name.LocalName.Equals("textColor"))
                 return new TextColorStyleItem(styleItem.Value);
+            else if (styleItem.Name.LocalName.Equals("font"))
+                return new FontStyleItem(styleItem.Value);
+            else if (styleItem.Name.LocalName.Equals("fontSize"))
+                return new FontSizeStyleItem(styleItem.Value);
             else
                 throw new InvalidOperationException();
         }
@@ -43,14 +47,31 @@ namespace Alpha.UI.Styles
     }
     class TextColorStyleItem : StyleItem
     {
-        private readonly Color _textColor;
-        public Color TextColor { get { return _textColor; } }
+        public Color TextColor { get; private set; }
 
         public TextColorStyleItem(string name)
         {
-            var property = _textColor.GetType().GetField(name, BindingFlags.Public | BindingFlags.Static);
+            var property = TextColor.GetType().GetField(name, BindingFlags.Public | BindingFlags.Static);
             if(property != null)
-                _textColor = (Color)property.GetValue(null);
+                TextColor = (Color)property.GetValue(null);
+        }
+    }
+    class FontStyleItem : StyleItem
+    {
+        public String Font { get; private set; }
+
+        public FontStyleItem(string name)
+        {
+            Font = name;
+        }
+    }
+    class FontSizeStyleItem : StyleItem
+    {
+        public Int32 FontSize { get; private set; }
+
+        public FontSizeStyleItem(string name)
+        {
+            FontSize = Int32.Parse(name);
         }
     }
 }

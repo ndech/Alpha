@@ -41,7 +41,7 @@ namespace Alpha
             _pressedKeys = new Dictionary<Key, double>();
         }
         
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _mousePosition = renderer.ScreenSize/2;

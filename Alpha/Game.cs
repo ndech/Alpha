@@ -5,6 +5,8 @@ using Alpha.Events;
 using Alpha.Graphics;
 using Alpha.UI;
 using Alpha.UI.Controls.Custom;
+using Alpha.UI.Screens;
+using SharpDX;
 using SharpDX.Windows;
 
 namespace Alpha
@@ -17,6 +19,8 @@ namespace Alpha
         private readonly Timer _timer;
         private readonly Renderer _renderer;
         private readonly Calendar _calendar;
+        private readonly UiManager _uiManager;
+        private StartUpScreen _startUpScreen;
 
         public Game()
         {
@@ -26,24 +30,40 @@ namespace Alpha
             _timer = new Timer();
             _calendar = new Calendar(this);
             _renderer = new Renderer(this);
+            _uiManager = new UiManager(this);
+            MousePointer pointer = new MousePointer(this);
 
             Register(_renderer,
                      _calendar,
                      new Input(this),
                      new Camera(this),
-                     new UiManager(this),
+                     _uiManager,
                      new ProvinceManager(this),
                      new CharacterManager(this),
                      new EventManager(this),
                      new RealmManager(this),
-                     new MousePointer(this));
+                     pointer);
             
             foreach (IService service in _gameComponents.OfType<IService>())
                 service.RegisterAsService();
 
-            foreach (GameComponent component in _gameComponents)
-                component.Initialize();
+            pointer.Type = MousePointer.CursorType.None;
+            foreach (GameComponent component in _gameComponents.Where((c)=> c.RequiredForStartUp))
+                component.Initialize(InitializingFeedback);
+            _uiManager.AddScreen(_startUpScreen = new StartUpScreen(this));
+            InitializingFeedback("Loading content.");
+            foreach (GameComponent component in _gameComponents.Where((c) => !c.RequiredForStartUp))
+                component.Initialize(InitializingFeedback);
+            _uiManager.DeleteScreen(_startUpScreen);
+            _uiManager.AddScreen(new GameScreen(this));
+            pointer.Type = MousePointer.CursorType.Default;
             _calendar.DayChanged += OnDayChanged;
+        }
+
+        public void InitializingFeedback(String loadedItem)
+        {
+            _startUpScreen.Text = loadedItem;
+            Draw();
         }
 
         private void Register(params GameComponent[] items)
@@ -67,7 +87,6 @@ namespace Alpha
                     if(item.Enabled)
                         item.Update(delta);
                 Draw();
-
             });
         }
 

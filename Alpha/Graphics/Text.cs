@@ -52,7 +52,7 @@ namespace Alpha.Graphics
         public Vector2I Size;
 
         private int _numberOfLetters;
-        private const int SpaceSize = 3;
+        private int SpaceSize {get { return Font.Characters[' '].width; }}
         private const int LineSpacing = 3;
 
         private Buffer _indexBuffer;
@@ -116,21 +116,26 @@ namespace Alpha.Graphics
                         char letter = word[k];
                         if (letter == '[')
                         {
-                            if(word[k+1] == '[')
+                            if (word[k + 1] != '[')
+                            {
+                                String token = word.Substring(k + 1, word.IndexOf(']', k + 1) - (k + 1));
+                                if (token == "red")
+                                    color = Color.Red.ToVector4();
+                                else if (token == "yellow")
+                                    color = Color.Yellow.ToVector4();
+                                else if (token == "green")
+                                    color = Color.Green.ToVector4();
+                                else if (token == "-")
+                                    color = BaseColor.ToVector4();
+                                else
+                                    throw new InvalidOperationException("Unexpected token : " + token);
+                                k = word.IndexOf(']', k + 1);
                                 continue;
-                            String token = word.Substring(k + 1, word.IndexOf(']', k + 1) - (k + 1));
-                            if (token == "red")
-                                color = Color.Red.ToVector4();
-                            else if (token == "yellow")
-                                color = Color.Yellow.ToVector4();
-                            else if (token == "green")
-                                color = Color.Green.ToVector4();
-                            else if (token == "-")
-                                color = BaseColor.ToVector4();
+                            }
                             else
-                                throw new InvalidOperationException("Unexpected token : " + token);
-                            k = word.IndexOf(']', k + 1);
-                            continue;
+                            {
+                                k++;
+                            }
                         }
                         Font.Character c = Font.Characters[letter];
                         _vertices[letterIndex * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop), color = color }; //Top left
@@ -204,6 +209,8 @@ namespace Alpha.Graphics
                             i++;
                         continue;
                     }
+                    else
+                        i++;
                 }
                 width += Font.Characters[c].width + 1;
                 letterCount ++;
@@ -219,6 +226,11 @@ namespace Alpha.Graphics
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
 
             _shader.Render(deviceContext, _numberOfLetters * 6, worldMatrix, viewMatrix, orthoMatrix, Font.Texture.TextureResource);
+        }
+
+        public static String Escape(String text)
+        {
+            return text.Replace("[", "[[");
         }
     }
 }

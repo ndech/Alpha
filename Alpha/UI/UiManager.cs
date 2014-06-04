@@ -47,7 +47,7 @@ namespace Alpha.UI
                 _activeScreens[0].OnMouseMoved(position);
         }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
             _input = Game.Services.GetService<IInput>();
             _input.MouseMoved += OnMouseMoved;
@@ -56,7 +56,6 @@ namespace Alpha.UI
             _input.KeyPressed += OnKeyPressed;
             _input.KeyReleased += OnKeyReleased;
             ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
-            AddScreen(new GameScreen(Game));
         }
 
         private void OnKeyReleased(Key key)

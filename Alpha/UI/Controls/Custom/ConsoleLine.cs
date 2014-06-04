@@ -8,6 +8,7 @@ namespace Alpha.UI.Controls.Custom
         {
             Command,
             Result,
+            Info,
             Error
         }
 

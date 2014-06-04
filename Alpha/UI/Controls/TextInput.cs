@@ -17,7 +17,7 @@ namespace Alpha.UI.Controls
             set
             {
                 _textValue = value;
-                _text.Content = value;
+                _text.Content = Graphics.Text.Escape(value);
             }
         }
 
@@ -60,7 +60,9 @@ namespace Alpha.UI.Controls
             if (key == Key.Back)
             {
                 if (Text.Length >= 1)
+                {
                     Text = Text.Substring(0, Text.Length - 1);
+                }
             }
             else if(key == Key.Enter)
             {

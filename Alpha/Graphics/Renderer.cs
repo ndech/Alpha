@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Alpha.Graphics.Shaders;
@@ -92,7 +93,7 @@ namespace Alpha.Graphics
             DirectX.DrawScene();
         }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
             Camera = Game.Services.GetService<ICamera>();
         }

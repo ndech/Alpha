@@ -15,7 +15,7 @@
         private ICollection<Character> Characters { get; set; }
 
         public CharacterManager(IGame game) 
-            : base(game, 1)
+            : base(game, 1, false)
         {
             Characters = new List<Character>();
         }
@@ -48,8 +48,9 @@
         }
         #endregion
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
+            feedback.Invoke("Loading characters...");
             for (int i = 0; i < 10; i++)
                 Characters.Add(new Character());
         }

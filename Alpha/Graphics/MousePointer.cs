@@ -1,4 +1,5 @@
-﻿using Alpha.Toolkit.Math;
+﻿using System;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -28,7 +29,7 @@ namespace Alpha.Graphics
 
         }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _texture = renderer.TextureManager.Create("default.png", @"Data/MousePointers/");

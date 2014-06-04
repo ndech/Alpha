@@ -12,7 +12,7 @@ namespace Alpha.Events
 {
     interface IEventManager : IService, IEventPropagator
     {
-        IList<Event<T>> LoadEvents<T>(string scriptIdentifier) where T : IEventable;
+        IList<Event<T>> LoadEvents<T>(string scriptIdentifier, Action<string> feedback) where T : IEventable;
     }
     class EventManager : GameComponent, IEventManager, IDailyUpdatable
     {
@@ -21,9 +21,19 @@ namespace Alpha.Events
         public IList<DelayedEvent> DelayedEvents { get; protected set; } 
         private readonly ScriptEngine _engine;
         private ScriptContext _scriptContext;
+
         private ScriptContext ScriptContext
         {
-            get { return _scriptContext ?? (_scriptContext = new ScriptContext(Game.Services.GetService<ICalendar>(), Game.Services.GetService<IEventManager>())); }
+            get
+            {
+                return _scriptContext ??
+                       (_scriptContext =
+                           new ScriptContext(
+                               Game.Services.GetService<ICalendar>(),
+                               Game.Services.GetService<IEventManager>(),
+                               Game.Services.GetService<IRealmManager>().PlayerRealm,
+                               Game.Services.GetService<IRealmManager>().Realms.Cast<IScriptableRealm>().ToList()));
+            }
         }
 
         private Session NewSession
@@ -37,14 +47,14 @@ namespace Alpha.Events
         }
 
         public EventManager(IGame game)
-            : base(game)
+            : base(game, 0, false)
         {
             _engine = new ScriptEngine();
             DelayedEvents = new List<DelayedEvent>();
             Events = new Dictionary<string, IEvent>();
         }
 
-        public IList<Event<T>> LoadEvents<T>(string scriptIdentifier) where T : IEventable
+        public IList<Event<T>> LoadEvents<T>(string scriptIdentifier, Action<string> feedback) where T : IEventable
         {
             IList<Event<T>> list = new List<Event<T>>();
 
@@ -54,6 +64,7 @@ namespace Alpha.Events
                 foreach (XElement xmlEvent in document.Descendants("event"))
                 {
                     String id = (String)xmlEvent.Attribute("id").Mandatory("An event without id is defined in file " + file);
+                    feedback.Invoke("Loading "+scriptIdentifier.ToLower()+" events ... ("+id+")");
                     XElement xMtth = xmlEvent.Element("meanTimeToHappen").Mandatory("No mean time to happen defined for event " + id + " in file " + file);
                     XElement xOutcomes = xmlEvent.Element("outcomes").Mandatory("No outcomes defined for event " + id + " in file " + file);
                     if (xOutcomes.Elements("outcome").All(element => element.Element("conditions") != null))
@@ -167,7 +178,7 @@ namespace Alpha.Events
             return modifiers;
         }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         { }
 
         public override void Update(double delta)

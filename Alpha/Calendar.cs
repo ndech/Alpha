@@ -73,7 +73,7 @@ namespace Alpha
             Year = 1900;
         }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
         }
 

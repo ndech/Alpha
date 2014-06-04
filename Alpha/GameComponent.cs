@@ -6,17 +6,19 @@ namespace Alpha
     {
         public bool Enabled { get; set; }
         public int UpdateOrder { get; protected set; }
+        public bool RequiredForStartUp { get; set; }
 
         protected IGame Game;
 
-        protected GameComponent(IGame game, int updateOrder = 0)
+        protected GameComponent(IGame game, int updateOrder = 0, bool requiredForStartUp = true)
         {
             Game = game;
             UpdateOrder = updateOrder;
+            RequiredForStartUp = requiredForStartUp;
             Enabled = true;
         }
 
-        public abstract void Initialize();
+        public abstract void Initialize(Action<String> feedback);
         public abstract void Update(double delta);
         public abstract void Dispose();
         public int CompareTo(GameComponent other)

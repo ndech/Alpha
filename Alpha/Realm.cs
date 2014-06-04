@@ -120,5 +120,10 @@ namespace Alpha
                 }
             }
         }
+        
+        public override String ToString()
+        {
+            return "Realm : " + Name;
+        }
     }
 }

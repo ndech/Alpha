@@ -181,9 +181,14 @@
     <Compile Include="UI\Screens\GameScreen.cs" />
     <Compile Include="UI\Screens\ExitConfirmationScreen.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Screens\StartUpScreen.cs" />
     <Compile Include="UI\Screens\LoadingScreen.cs" />
     <Compile Include="UI\Screens\LoadScreen.cs" />
     <Compile Include="UI\Screens\SaveScreen.cs" />
+    <Compile Include="UI\Scrollable\ScrollableConsoleContainer.cs" />
+    <Compile Include="UI\Scrollable\ScrollableConsoleItem.cs" />
+    <Compile Include="UI\Scrollable\IScrollableItem.cs" />
+    <Compile Include="UI\Scrollable\IVerticalScrollableContainer.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />
     <Compile Include="UI\Styles\LabelStyle.cs" />
     <Compile Include="UI\Styles\StyleItem.cs" />
@@ -290,6 +295,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\LoadingImages\" />
     <Folder Include="Data\Models\" />
     <Folder Include="Graphics\Models\" />
     <Folder Include="Toolkit\Configuration\" />

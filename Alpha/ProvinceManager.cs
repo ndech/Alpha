@@ -1,4 +1,6 @@
-﻿namespace Alpha
+﻿using System;
+
+namespace Alpha
 {
     using System.Collections.Generic;
     using System.Xml;
@@ -11,7 +13,7 @@
         public IList<Province> Provinces { get; protected set; }
 
         public ProvinceManager(IGame game) 
-            : base(game, 2)
+            : base(game, 2, false)
         {
             Provinces = new List<Province>();
         }
@@ -39,8 +41,9 @@
         public void PostLoading() { }
         #endregion
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
+            feedback.Invoke("Loading provinces...");
             for (int i = 0; i < 10; i++)
                 Provinces.Add(new Province());
         }

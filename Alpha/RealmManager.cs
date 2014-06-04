@@ -33,7 +33,7 @@ namespace Alpha
         public IList<Realm> Realms { get; private set; }
         public IList<Event<IScriptableRealm>> Events { get; private set; }
 
-        public RealmManager(IGame game) : base(game, 3)
+        public RealmManager(IGame game) : base(game, 3, false)
         {
             Realms = new List<Realm>();
         }
@@ -43,8 +43,9 @@ namespace Alpha
             Game.Services.AddService<IRealmManager>(this);
         }
 
-        public override void Initialize()
+        public override void Initialize(Action<string> feedback)
         {
+            feedback.Invoke("Loading realms...");
             IEnumerable<Character> characters = Game.Services.GetService<ICharacterManager>().Characters;
             Realms.Add(new Realm("Belgium", characters.Where((c)=> c.Realm == null).RandomItem()));
             Realms.Add(new Realm("France", characters.Where((c) => c.Realm == null).RandomItem()));
@@ -67,7 +68,8 @@ namespace Alpha
             }
             foreach (Realm realm in Realms)
                 realm.TaxRate = (float)Random.Generator.Get(10, 40)/100;
-            Events = Game.Services.GetService<IEventManager>().LoadEvents<IScriptableRealm>(Realm.ScriptIdentifier);
+            feedback.Invoke("Loading realm events...");
+            Events = Game.Services.GetService<IEventManager>().LoadEvents<IScriptableRealm>(Realm.ScriptIdentifier, feedback);
         }
 
         public override void Update(double delta)

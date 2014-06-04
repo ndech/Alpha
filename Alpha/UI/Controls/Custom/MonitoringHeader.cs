@@ -13,8 +13,8 @@ namespace Alpha.UI.Controls.Custom
         private String _videoCardInfo;
         private Label _label;
 
-        public MonitoringHeader(IGame game)
-            : base(game, "monitoring_header", new UniRectangle(0, 0, 1.0f, 25), new Color(0.7f, 0.7f, 0.7f, 0.9f))
+        public MonitoringHeader(IGame game, UniRectangle coordinates)
+            : base(game, "monitoring_header", coordinates, new Color(0.7f, 0.7f, 0.7f, 0.9f))
         {
             _cpuUsageCounter = new CpuUsageCounter();
             _fpsCounter = new FpsCounter();
