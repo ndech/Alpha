@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Alpha.Graphics;
 using Alpha.UI.Coordinates;
+using Alpha.UI.Styles;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -43,9 +44,10 @@ namespace Alpha.UI.Controls
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();
+            TextInputStyle style = UiManager.StyleManager.GetStyle(this);
             _plainRectangle = new PlainRectangle(renderer, Size, Color.BlanchedAlmond);
-            _text = renderer.TextManager.Create("Arial", 20, _textValue, Size, Color.Red,
-                HorizontalAlignment.Left);
+            _text = renderer.TextManager.Create(style.Font, style.FontSize, _textValue, Size, style.TextColor,
+                style.HorizontalAlignment, style.VerticalAlignment, style.Padding);
             _text.Content = _textValue;
         }
 

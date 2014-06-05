@@ -45,7 +45,7 @@ namespace Alpha.UI.Controls
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _style = UiManager.StyleManager.GetStyle(this);
             _text = renderer.TextManager.Create(_style.Font, _style.FontSize, _textValue, Size, _style.TextColor,
-                _style.HorizontalAlignment, _style.VerticalAlignment);
+                _style.HorizontalAlignment, _style.VerticalAlignment, _style.Padding);
         }
     }
 }

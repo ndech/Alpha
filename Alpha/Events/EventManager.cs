@@ -64,7 +64,7 @@ namespace Alpha.Events
                 foreach (XElement xmlEvent in document.Descendants("event"))
                 {
                     String id = (String)xmlEvent.Attribute("id").Mandatory("An event without id is defined in file " + file);
-                    feedback.Invoke("Loading "+scriptIdentifier.ToLower()+" events ... ("+id+")");
+                    feedback.Invoke("Compiling "+scriptIdentifier.ToLower()+" events ... ("+id+")");
                     XElement xMtth = xmlEvent.Element("meanTimeToHappen").Mandatory("No mean time to happen defined for event " + id + " in file " + file);
                     XElement xOutcomes = xmlEvent.Element("outcomes").Mandatory("No outcomes defined for event " + id + " in file " + file);
                     if (xOutcomes.Elements("outcome").All(element => element.Element("conditions") != null))

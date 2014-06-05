@@ -46,6 +46,14 @@ namespace Alpha.UI.Styles
             return style;
         }
 
+        public TextInputStyle GetStyle(TextInput label)
+        {
+            TextInputStyle style = new TextInputStyle();
+            style.Apply(_styles[label.ComponentType]["default"]);
+            ApplyStyle(style, label, label.ComponentType);
+            return style;
+        }
+
         private void ApplyStyle(ButtonStyle style, UiComponent control, String type)
         {
             if(control.Parent != null)
@@ -56,6 +64,14 @@ namespace Alpha.UI.Styles
 
 
         private void ApplyStyle(LabelStyle style, UiComponent control, String type)
+        {
+            if (control.Parent != null)
+                ApplyStyle(style, control.Parent, type);
+            if (_styles[type].ContainsKey(control.Id))
+                style.Apply(_styles[type][control.Id]);
+        }
+
+        private void ApplyStyle(TextInputStyle style, UiComponent control, String type)
         {
             if (control.Parent != null)
                 ApplyStyle(style, control.Parent, type);

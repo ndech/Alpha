@@ -31,7 +31,23 @@ namespace Alpha.Graphics
             WordWrapped = true;
         }
     }
-    class Text
+
+    public struct Padding
+    {
+        public int Left;
+        public int Right;
+        public int Top;
+        public int Bottom;
+
+        public Padding(int padding)
+        {
+            Left = padding;
+            Right = padding;
+            Top = padding;
+            Bottom = padding;
+        }
+    }
+    class Text : IDisposable
     {
         public VerticalAlignment VerticalAlignment { get; set; }
         public HorizontalAlignment HorizontalAlignment { get; set; }
@@ -50,7 +66,7 @@ namespace Alpha.Graphics
         public Color BaseColor { get; set; }
         public Font Font;
         public Vector2I Size;
-
+        private Padding Padding { get; set; }
         private int _numberOfLetters;
         private int SpaceSize {get { return Font.Characters[' '].width; }}
         private const int LineSpacing = 3;
@@ -63,10 +79,11 @@ namespace Alpha.Graphics
 
         public List<TextLine> Lines { get; set; } 
 
-        public Text(IRenderer renderer, string content, Font font, Vector2I size, Color color, HorizontalAlignment horizontalAligment, VerticalAlignment verticalAlignment)
+        public Text(IRenderer renderer, string content, Font font, Vector2I size, Color color, HorizontalAlignment horizontalAligment, VerticalAlignment verticalAlignment, Padding padding)
         {
             Font = font;
             Size = size;
+            Padding = padding;
             VerticalAlignment = verticalAlignment;
             HorizontalAlignment = horizontalAligment;
             BaseColor = color;
@@ -91,23 +108,23 @@ namespace Alpha.Graphics
             int lineHeight = Font.Characters.First().Value.height;
             float spaceSize = SpaceSize;
 
-            float positionY = 0;
+            float positionY = Padding.Top;
             if (VerticalAlignment == VerticalAlignment.Bottom)
-                positionY = Size.Y - (lineHeight * Lines.Count + LineSpacing * (Lines.Count -1));
+                positionY = Size.Y - (lineHeight * Lines.Count + LineSpacing * (Lines.Count -1)) - Padding.Bottom;
             if (VerticalAlignment == VerticalAlignment.Middle)
-                positionY = (float)(Size.Y - (lineHeight * Lines.Count + LineSpacing * (Lines.Count - 1))) / 2;
+                positionY = Padding.Top + (float)(Size.Y - Padding.Bottom - Padding.Top - (lineHeight * Lines.Count + LineSpacing * (Lines.Count - 1))) / 2;
 
             for(int i = 0; i<Lines.Count; i++)
             {
                 TextLine line = Lines[i];
                 line.Width -= SpaceSize + 1; //Remove last space and pixel padding after last character
-                float positionX = 0;
+                float positionX = Padding.Left;
                 if (HorizontalAlignment == HorizontalAlignment.Right)
-                    positionX = Size.X - line.Width;
+                    positionX = Size.X - line.Width - Padding.Right;
                 if(HorizontalAlignment == HorizontalAlignment.Center)
-                    positionX = (float)(Size.X - line.Width) / 2;
+                    positionX = Padding.Left + (float)(Size.X - Padding.Left - Padding.Right - line.Width) / 2;
                 if (HorizontalAlignment == HorizontalAlignment.Justify && line.WordWrapped)
-                    spaceSize = SpaceSize + (float)(Size.X - line.Width)/(line.WordCount - 1);
+                    spaceSize = SpaceSize + (float)(Size.X - Padding.Left - Padding.Right - line.Width)/(line.WordCount - 1);
                 for (int j = 0; j < line.Words.Count; j++)
                 {
                     String word = line.Words[j];
@@ -125,6 +142,8 @@ namespace Alpha.Graphics
                                     color = Color.Yellow.ToVector4();
                                 else if (token == "green")
                                     color = Color.Green.ToVector4();
+                                else if (token == "blue")
+                                    color = Color.Blue.ToVector4();
                                 else if (token == "-")
                                     color = BaseColor.ToVector4();
                                 else
@@ -149,6 +168,8 @@ namespace Alpha.Graphics
                 }
                 positionY += lineHeight + LineSpacing;
             }
+            if(_vertexBuffer != null)
+                _vertexBuffer.Dispose();
             _vertexBuffer = Buffer.Create(renderer.Device, BindFlags.VertexBuffer, _vertices);
         }
 
@@ -165,7 +186,8 @@ namespace Alpha.Graphics
                 indices[i * 6 + 4] = i * 4 + 3;
                 indices[i * 6 + 5] = i * 4 + 1;
             }
-
+            if(_indexBuffer != null)
+                _indexBuffer.Dispose();
             _indexBuffer = Buffer.Create(renderer.Device, BindFlags.IndexBuffer, indices);
         }
 
@@ -180,7 +202,7 @@ namespace Alpha.Graphics
             {
                 int wordSize;
                 _numberOfLetters += CalculateWordSize(word, out wordSize);
-                if (tempLine.WordCount != 0 && tempLine.Width + wordSize > Size.X)
+                if (tempLine.WordCount != 0 && tempLine.Width + wordSize > (Size.X-Padding.Left-Padding.Right))
                 {
                     lines.Add(tempLine);
                     tempLine = new TextLine();
@@ -231,6 +253,12 @@ namespace Alpha.Graphics
         public static String Escape(String text)
         {
             return text.Replace("[", "[[");
+        }
+
+        public void Dispose()
+        {
+            if(_indexBuffer != null) _indexBuffer.Dispose();
+            if(_vertexBuffer != null) _vertexBuffer.Dispose();
         }
     }
 }

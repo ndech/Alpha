@@ -39,8 +39,8 @@ namespace Alpha.UI.Controls
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _style = UiManager.StyleManager.GetStyle(this);
             _plainRectangle = new PlainRectangle(renderer, Size, Color.White);
-            _text = renderer.TextManager.Create("Arial", 20, _textValue, Size, _style.TextColor, 
-                _style.HorizontalAlignment, _style.VerticalAlignment);
+            _text = renderer.TextManager.Create(_style.Font, _style.FontSize, _textValue, Size, _style.TextColor, 
+                _style.HorizontalAlignment, _style.VerticalAlignment, _style.Padding);
             _text.Content = _textValue;
         }
 

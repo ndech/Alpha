@@ -5,7 +5,7 @@ using SharpDX;
 
 namespace Alpha.UI.Styles
 {
-    class LabelStyle
+    class TextInputStyle
     {
         public VerticalAlignment VerticalAlignment { get; private set; }
         public HorizontalAlignment HorizontalAlignment { get; private set; }

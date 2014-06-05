@@ -20,6 +20,8 @@ namespace Alpha.UI.Styles
                 return new FontStyleItem(styleItem.Value);
             else if (styleItem.Name.LocalName.Equals("fontSize"))
                 return new FontSizeStyleItem(styleItem.Value);
+            else if (styleItem.Name.LocalName.Equals("padding"))
+                return new PaddingStyleItem(styleItem.Value);
             else
                 throw new InvalidOperationException();
         }
@@ -72,6 +74,15 @@ namespace Alpha.UI.Styles
         public FontSizeStyleItem(string name)
         {
             FontSize = Int32.Parse(name);
+        }
+    }
+    class PaddingStyleItem : StyleItem
+    {
+        public Padding Padding { get; private set; }
+
+        public PaddingStyleItem(string name)
+        {
+            Padding = new Padding(Int32.Parse(name));
         }
     }
 }

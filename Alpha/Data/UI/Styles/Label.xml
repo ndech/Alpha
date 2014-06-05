@@ -6,6 +6,7 @@
 		<textColor>Blue</textColor>
 		<font>Arial</font>
 		<fontSize>20</fontSize>
+		<padding>0</padding>
 	</style>
 	<style in="calendar_multiplier_label">
 		<horizontalAlignment>Right</horizontalAlignment>
@@ -33,5 +34,6 @@
 		<textColor>LightGray</textColor>
 		<font>Consolas</font>
 		<fontSize>22</fontSize>
+		<padding>15</padding>
 	</style>
 </styles>

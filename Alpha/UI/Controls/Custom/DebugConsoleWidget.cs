@@ -41,7 +41,7 @@ namespace Alpha.UI.Controls.Custom
             base.Initialize();
             Register(new MonitoringHeader(Game, new UniRectangle(0, 0, 1.0f, 25)));
             ScrollableConsoleContainer container;
-            Register(container = new ScrollableConsoleContainer(Game, new UniRectangle(10, 25, new UniScalar(1.0f,-10), new UniScalar(1.0f, -55)), _lines));
+            Register(container = new ScrollableConsoleContainer(Game, new UniRectangle(0, 25, new UniScalar(1.0f,-10), new UniScalar(1.0f, -55)), _lines));
             Register(_input = new TextInput(Game, "debug_console_input", new UniRectangle(0, new UniScalar(1.0f, -30), 1.0f, 30)));
 
             ScriptEngine engine = new ScriptEngine();

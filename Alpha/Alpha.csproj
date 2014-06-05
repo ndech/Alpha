@@ -193,6 +193,7 @@
     <Compile Include="UI\Styles\LabelStyle.cs" />
     <Compile Include="UI\Styles\StyleItem.cs" />
     <Compile Include="UI\Styles\StyleManager.cs" />
+    <Compile Include="UI\Styles\TextInputStyle.cs" />
     <Compile Include="UI\UiComponent.cs" />
     <Compile Include="UI\Controls\Button.cs" />
     <Compile Include="UI\Controls\Control.cs" />
@@ -374,6 +375,12 @@
     <Content Include="Data\UI\SliderMovingPart.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\SlidingBarConsole_fix.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\SlidingBarConsole_mobile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\Styles\Button.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -381,6 +388,9 @@
     <Content Include="Data\UI\Styles\Label.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Data\UI\Styles\TextInput.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

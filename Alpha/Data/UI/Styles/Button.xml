@@ -4,6 +4,9 @@
 		<horizontalAlignment>Center</horizontalAlignment>
 		<verticalAlignment>Middle</verticalAlignment>
 		<textColor>Blue</textColor>
+		<font>Arial</font>
+		<fontSize>20</fontSize>
+		<padding>0</padding>
 	</style>
 	<style in="menu_screen">
 		<textColor>Red</textColor>

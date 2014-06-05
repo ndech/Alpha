@@ -6,7 +6,8 @@
         private enum Modes
         {
             Fullscreen,
-            Windowed
+            Windowed,
+            Large
         };
         private ConfigurationManager()
         {
@@ -32,6 +33,12 @@
                 WindowedMode = true;
                 Height = 768;
                 Width = 1024;
+            }
+            else if (mode == Modes.Large)
+            {
+                WindowedMode = true;
+                Height = 800;
+                Width = 1500;
             }
         }
 
