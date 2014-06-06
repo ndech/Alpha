@@ -27,7 +27,7 @@
 		<horizontalAlignment>Right</horizontalAlignment>
 	</style>
 	<style in="monitoring_header_label">
-		<textColor>DarkSlateGray</textColor>
+		<textColor>#FF111111</textColor>
 	</style>
 	<style in="console_line">
 		<horizontalAlignment>Left</horizontalAlignment>

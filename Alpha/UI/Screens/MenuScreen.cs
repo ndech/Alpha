@@ -30,7 +30,7 @@ namespace Alpha.UI.Screens
             Register(new Tooltip(game, "calendar_tooltip", _calendarButton, 1d, "Show the calendar"));
             Register(new Tooltip(game, "provinces_tooltip", _loadButton, 1d, "Load a previously saved game"));
             Register(new Tooltip(game, "exit_tooltip", exitButton, 1d, "Return to desktop"));
-            Register(new Tooltip(game, "cancel_tooltip", cancelButton, 1d, "This button ain't [red]doing anything.[-]\nAt all.\nClicking on it will cost you [yellow] 20[-] [gold] anyway."));
+            Register(new Tooltip(game, "cancel_tooltip", cancelButton, 1d, "This button ain't [Red]doing anything.[-]\nAt all.\nClicking on it will cost you [Yellow] 20[-] [gold] anyway."));
         }
     }
 }

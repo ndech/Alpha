@@ -22,13 +22,13 @@ namespace Alpha.UI.Scrollable
             switch (item.Type)
             {
                 case ConsoleLine.ConsoleLineType.Command:
-                    prefix = "[yellow]>> ";
+                    prefix = "[Yellow]>> ";
                     break;
                 case ConsoleLine.ConsoleLineType.Error:
-                    prefix = "[red]";
+                    prefix = "[Red]";
                     break;
                 case ConsoleLine.ConsoleLineType.Info:
-                    prefix = "[blue]";
+                    prefix = "[Blue]";
                     break;
                 default:
                     prefix = "";

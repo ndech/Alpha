@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Xml.Linq;
 using Alpha.Graphics;
+using Alpha.Toolkit;
 using SharpDX;
 
 namespace Alpha.UI.Styles
@@ -51,11 +52,9 @@ namespace Alpha.UI.Styles
     {
         public Color TextColor { get; private set; }
 
-        public TextColorStyleItem(string name)
+        public TextColorStyleItem(string value)
         {
-            var property = TextColor.GetType().GetField(name, BindingFlags.Public | BindingFlags.Static);
-            if(property != null)
-                TextColor = (Color)property.GetValue(null);
+            TextColor = ColorParser.Parse(value);
         }
     }
     class FontStyleItem : StyleItem

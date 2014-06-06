@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.Graphics.Shaders;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
@@ -104,7 +105,7 @@ namespace Alpha.Graphics
         {
             _vertices = new FontShader.Vertex[_numberOfLetters * 4];
             int letterIndex = 0;
-            Vector4 color = BaseColor.ToVector4();
+            Color color = BaseColor;
             int lineHeight = Font.Characters.First().Value.height;
             float spaceSize = SpaceSize;
 
@@ -136,31 +137,21 @@ namespace Alpha.Graphics
                             if (word[k + 1] != '[')
                             {
                                 String token = word.Substring(k + 1, word.IndexOf(']', k + 1) - (k + 1));
-                                if (token == "red")
-                                    color = Color.Red.ToVector4();
-                                else if (token == "yellow")
-                                    color = Color.Yellow.ToVector4();
-                                else if (token == "green")
-                                    color = Color.Green.ToVector4();
-                                else if (token == "blue")
-                                    color = Color.Blue.ToVector4();
-                                else if (token == "-")
-                                    color = BaseColor.ToVector4();
-                                else
+                                if (token == "-")
+                                    color = BaseColor;
+                                else if(!ColorParser.TryParse(token, out color))
                                     throw new InvalidOperationException("Unexpected token : " + token);
                                 k = word.IndexOf(']', k + 1);
                                 continue;
                             }
-                            else
-                            {
-                                k++;
-                            }
+                            k++;
                         }
+                        Vector4 colorAsVector = color.ToVector4();
                         Font.Character c = Font.Characters[letter];
-                        _vertices[letterIndex * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop), color = color }; //Top left
-                        _vertices[letterIndex * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY + c.height, 0.0f), texture = new Vector2(c.uRight, c.vBottom), color = color }; //Right bottom
-                        _vertices[letterIndex * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY + c.height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom), color = color }; //Left bottom
-                        _vertices[letterIndex * 4 + 3] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY, 0.0f), texture = new Vector2(c.uRight, c.vTop), color = color }; //Top right
+                        _vertices[letterIndex * 4] = new FontShader.Vertex { position = new Vector3(positionX, positionY, 0.0f), texture = new Vector2(c.uLeft, c.vTop), color = colorAsVector }; //Top left
+                        _vertices[letterIndex * 4 + 1] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY + c.height, 0.0f), texture = new Vector2(c.uRight, c.vBottom), color = colorAsVector }; //Right bottom
+                        _vertices[letterIndex * 4 + 2] = new FontShader.Vertex { position = new Vector3(positionX, positionY + c.height, 0.0f), texture = new Vector2(c.uLeft, c.vBottom), color = colorAsVector }; //Left bottom
+                        _vertices[letterIndex * 4 + 3] = new FontShader.Vertex { position = new Vector3(positionX + c.width, positionY, 0.0f), texture = new Vector2(c.uRight, c.vTop), color = colorAsVector }; //Top right
                         positionX += c.width + 1;
                         letterIndex++;
                     }

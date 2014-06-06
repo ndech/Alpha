@@ -164,6 +164,7 @@
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />
     <Compile Include="Territory.cs" />
+    <Compile Include="Toolkit\ColorParser.cs" />
     <Compile Include="Toolkit\TimeSpanParser.cs" />
     <Compile Include="UI\Controls\Custom\AccountLine.cs" />
     <Compile Include="UI\Controls\Custom\CalendarWidget.cs" />
@@ -391,6 +392,7 @@
     </Content>
     <Content Include="Data\UI\Styles\TextInput.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
