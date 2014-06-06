@@ -12,7 +12,6 @@ namespace Alpha
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Game game = new Game();
             game.Run();
-            game.Dispose();
         }
     }
 }

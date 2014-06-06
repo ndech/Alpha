@@ -112,6 +112,7 @@ namespace Alpha
         public void Exit()
         {
             _renderer.Form.Close();
+            Dispose();
         }
 
         public void Save(String fileName)
