@@ -8,7 +8,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.UI
 {
-    abstract class UiComponent
+    abstract class UiComponent : IDisposable
     {
         protected readonly IGame Game;
         protected readonly IUiManager UiManager;
@@ -129,5 +129,12 @@ namespace Alpha.UI
         public abstract Vector2I Size { get; }
         public abstract Vector2I Position { get; }
         public abstract Vector2I RelativePosition { get; }
+        protected abstract void DisposeItem();
+        public void Dispose()
+        {
+            foreach (Control control in Controls)
+                control.Dispose();
+            DisposeItem();
+        }
     }
 }

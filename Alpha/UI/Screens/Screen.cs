@@ -138,5 +138,9 @@ namespace Alpha.UI.Screens
                 ClickedControl.OnMouseClickCanceled();
             ClickedControl = null;
         }
+
+        protected override void DisposeItem()
+        {
+        }
     }
 }

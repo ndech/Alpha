@@ -83,6 +83,12 @@ namespace Alpha.UI.Controls
             return true;
         }
 
+        protected override void DisposeItem()
+        {
+            _text.Dispose();
+            _plainRectangle.Dispose();
+        }
+
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _plainRectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);

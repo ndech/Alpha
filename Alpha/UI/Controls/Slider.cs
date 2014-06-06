@@ -84,6 +84,13 @@ namespace Alpha.UI.Controls
             movingPart.Render(deviceContext, worldMatrix * Matrix.Translation((Size.X - (2*_padding + _movingPartSize))*((float)CurrentStep/Steps) + _padding, 4.0f, 0.0f), viewMatrix, projectionMatrix);
         }
 
+        protected override void DisposeItem()
+        {
+            fixedPart.Dispose();
+            movingPart.Dispose();
+            Changed = null;
+        }
+
         public override void OnMouseClicked()
         {
             CurrentStep =

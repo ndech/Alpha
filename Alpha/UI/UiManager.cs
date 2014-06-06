@@ -100,7 +100,8 @@ namespace Alpha.UI
 
         public override void Dispose()
         {
-
+            foreach (Screen screen in _activeScreens)
+                screen.Dispose();
         }
 
         public void RegisterAsService()
@@ -119,6 +120,7 @@ namespace Alpha.UI
         {
 
             Screen first = _activeScreens.Count > 0 ? _activeScreens[0] : null;
+            screen.Dispose();
             _activeScreens.Remove(screen);
             if (_activeScreens.Count > 0 && first != _activeScreens[0])
                 _activeScreens[0].ActivateTree();

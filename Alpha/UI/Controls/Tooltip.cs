@@ -14,8 +14,8 @@ namespace Alpha.UI.Controls
         private double _delay;
         private double _cooldown;
         private SimpleText _text;
-        private Control _control;
-        private Vector2I _size;
+        private readonly Control _associatedControl;
+        private readonly Vector2I _size;
         private Vector2I _position;
 
         public override Vector2I Size
@@ -33,12 +33,18 @@ namespace Alpha.UI.Controls
             get { return _position; }
         }
 
-        public Tooltip(IGame game, String id, Control control, double delay, string text)
+        protected override void DisposeItem()
+        {
+            _text.Dispose();
+            _rectangle.Dispose();
+        }
+
+        public Tooltip(IGame game, String id, Control associatedControl, double delay, string text)
             : base(game, id, new UniRectangle())
         {
             IRenderer renderer = game.Services.GetService<IRenderer>();
 
-            _control = control;
+            _associatedControl = associatedControl;
             _text = renderer.TextManager.Create("Arial", 20, 1080, Color.Wheat);
             _text.Content = text;
             _size = new Vector2I(_text.Size.X + 16, _text.Size.Y + 16);
@@ -62,7 +68,7 @@ namespace Alpha.UI.Controls
 
         protected override void Update(double delta)
         {
-            if (!_control.Hovered)
+            if (!_associatedControl.Hovered)
             {
                 _visible = false;
                 _cooldown = 0;

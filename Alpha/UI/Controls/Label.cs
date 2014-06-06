@@ -40,6 +40,11 @@ namespace Alpha.UI.Controls
             _text.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
         }
 
+        protected override void DisposeItem()
+        {
+            _text.Dispose();
+        }
+
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();

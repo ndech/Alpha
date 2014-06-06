@@ -27,6 +27,11 @@ namespace Alpha.UI.Controls
             Rectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
         }
 
+        protected override void DisposeItem()
+        {
+            Rectangle.Dispose();
+        }
+
         public override void Initialize()
         {
             IRenderer renderer = Game.Services.GetService<IRenderer>();

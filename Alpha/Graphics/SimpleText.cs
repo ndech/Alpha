@@ -10,7 +10,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.Graphics
 {
-    class SimpleText
+    class SimpleText : IDisposable
     {
         public SimpleText(IRenderer renderer, FontShader shader, Font font, Int32 maxLength, Color color)
         {
@@ -96,6 +96,12 @@ namespace Alpha.Graphics
         {
             // Use the font class to build the vertex array from the sentence text and sentence draw location.
             Size = Font.UpdateVertexArray(_content, ref _vertices, ref _vertexBuffer, Color, _icons);
+        }
+
+        public void Dispose()
+        {
+            _vertexBuffer.Dispose();
+            _indexBuffer.Dispose();
         }
     }
 }

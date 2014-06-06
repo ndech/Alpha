@@ -23,5 +23,8 @@ namespace Alpha.UI.Controls
         {
             get { return "button"; }
         }
+
+        protected override void DisposeItem()
+        {}
     }
 }
