@@ -7,6 +7,7 @@ using Alpha.Graphics;
 using Alpha.Toolkit.Math;
 using SharpDX.Windows;
 using Cursor = System.Windows.Forms.Cursor;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using Point = System.Drawing.Point;
 
 namespace Alpha
@@ -17,6 +18,7 @@ namespace Alpha
         event CustomEventHandler<Vector2I> MouseMoved;
         event CustomEventHandler<Vector2I, Int32> MouseClicked;
         event CustomEventHandler<Vector2I, Int32> MouseReleased;
+        event CustomEventHandler<Int32> MouseScrolled;
         event CustomEventHandler<Key, char?, bool> KeyPressed;
         event CustomEventHandler<Key> KeyReleased;
         bool IsKeyPressed(Key key);
@@ -32,6 +34,7 @@ namespace Alpha
         public event CustomEventHandler<Vector2I> MouseMoved;
         public event CustomEventHandler<Vector2I, Int32> MouseClicked;
         public event CustomEventHandler<Vector2I, Int32> MouseReleased;
+        public event CustomEventHandler<Int32> MouseScrolled;
         public event CustomEventHandler<Key, char?, bool> KeyPressed;
         public event CustomEventHandler<Key> KeyReleased;
 
@@ -46,9 +49,15 @@ namespace Alpha
             IRenderer renderer = Game.Services.GetService<IRenderer>();
             _mousePosition = renderer.ScreenSize/2;
             _form = renderer.Form;
-
+            _form.MouseWheel+= OnMouseWheel;
             _keys = Enum.GetValues(typeof(Key));
+            //Hides default cursor
             Cursor.Hide();
+        }
+
+        private void OnMouseWheel(object sender, MouseEventArgs e)
+        {
+            MouseScrolled.Raise(e.Delta/120);
         }
 
         public override void Update(double delta)

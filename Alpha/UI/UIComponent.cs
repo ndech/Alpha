@@ -119,6 +119,21 @@ namespace Alpha.UI
             return false;
         }
 
+        public bool MouseScrolled(int delta)
+        {
+            if (OnMouseScrolled(delta))
+                return true;
+            foreach (Control control in Controls)
+                if (control.MouseScrolled(delta))
+                    return true;
+            return false;
+        }
+
+        protected virtual bool OnMouseScrolled(int delta)
+        {
+            return false;
+        }
+
         protected virtual bool OnKeyReleased(Key key)
         {
             return false;

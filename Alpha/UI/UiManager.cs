@@ -55,7 +55,14 @@ namespace Alpha.UI
             _input.MouseReleased += OnMouseReleased;
             _input.KeyPressed += OnKeyPressed;
             _input.KeyReleased += OnKeyReleased;
+            _input.MouseScrolled += OnMouseScrolled;
             ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
+        }
+
+        private void OnMouseScrolled(int delta)
+        {
+            if (_activeScreens.Count > 0)
+                _activeScreens[0].MouseScrolled(delta);
         }
 
         private void OnKeyReleased(Key key)

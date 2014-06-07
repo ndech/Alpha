@@ -190,6 +190,7 @@
     <Compile Include="UI\Scrollable\ScrollableConsoleItem.cs" />
     <Compile Include="UI\Scrollable\IScrollableItem.cs" />
     <Compile Include="UI\Scrollable\IVerticalScrollableContainer.cs" />
+    <Compile Include="UI\Scrollable\ScrollBar.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />
     <Compile Include="UI\Styles\LabelStyle.cs" />
     <Compile Include="UI\Styles\StyleItem.cs" />

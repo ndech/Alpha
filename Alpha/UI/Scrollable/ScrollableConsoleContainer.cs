@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using Alpha.Graphics;
-using Alpha.Toolkit.Math;
+﻿using System;
+using System.Collections.Generic;
 using Alpha.UI.Controls;
 using Alpha.UI.Controls.Custom;
 using Alpha.UI.Coordinates;
 using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Alpha.UI.Scrollable
 {
@@ -13,8 +11,8 @@ namespace Alpha.UI.Scrollable
     {
         private readonly List<ConsoleLine> _items;
         private readonly IList<ScrollableConsoleItem> _renderingItems;
-        private TexturedExtensibleRectangle _fixedPart;
-
+        private ScrollBar _scrollBar;
+        private int _lastVisible;
         public ScrollableConsoleContainer(IGame game, UniRectangle coordinates, List<ConsoleLine> items ) 
             : base(game, "console_scrollable_panel", coordinates, Color.Transparent)
         {
@@ -28,30 +26,36 @@ namespace Alpha.UI.Scrollable
             int size = Size.Y;
             for (int i = size % ScrollableConsoleItem.Height / 2 + ScrollableConsoleItem.Height; i < size; i += ScrollableConsoleItem.Height)
                 _renderingItems.Add(Register(new ScrollableConsoleItem(Game, new UniVector(0,size-i))));
+            Register(_scrollBar = new ScrollBar(Game, "console_scrollbar"));
+            _scrollBar.Moved += delta => OnMouseScrolled(delta);
+            _lastVisible = _items.Count;
             Refresh();
-            
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
-
-            Texture fixedTexture = renderer.TextureManager.Create("SlidingBarConsole_fix.png", @"Data/UI/");
-            int width = fixedTexture.Width;
-            _fixedPart = new TexturedExtensibleRectangle(renderer, new Vector2I(width,Size.Y), fixedTexture, width);
         }
-
-        protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
-        {
-            base.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
-            _fixedPart.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
-        }
-
+        
         public void Refresh()
         {
             for (int i = 0; i < _renderingItems.Count; i++)
             {
-                if(i<_items.Count)
-                    _renderingItems[i].Set(_items[_items.Count-1-i]);
+                if (i < _lastVisible)
+                    _renderingItems[i].Set(_items[_lastVisible - 1 - i]);
                 else
                     _renderingItems[i].Set(null);
             }
+            _scrollBar.Refresh(_items.Count, _renderingItems.Count, _lastVisible-_renderingItems.Count);
+        }
+
+        protected override bool OnMouseScrolled(int delta)
+        {
+            if (_renderingItems.Count >= _items.Count)
+                return false;
+            _lastVisible = Math.Max(Math.Min(_lastVisible - delta, _items.Count), _renderingItems.Count);
+            Refresh();
+            return true;
+        }
+
+        public void MoveToLast()
+        {
+            _lastVisible = _items.Count;
         }
     }
 }
