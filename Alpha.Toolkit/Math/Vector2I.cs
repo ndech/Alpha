@@ -62,5 +62,10 @@ namespace Alpha.Toolkit.Math
         {
             return "X : " + X + ", Y:" + Y;
         }
+
+        public static double Distance(Vector2I a, Vector2I b)
+        {
+            return System.Math.Sqrt(System.Math.Pow((a.X - b.X), 2)+System.Math.Pow((a.Y - b.Y), 2));
+        }
     }
 }

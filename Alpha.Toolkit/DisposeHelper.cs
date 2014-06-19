@@ -2,7 +2,7 @@
 
 namespace Alpha.Toolkit
 {
-    static class DisposeHelper
+    public static class DisposeHelper
     {
         public static void DisposeAndSetToNull(params IDisposable[] disposables)
         {

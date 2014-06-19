@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Alpha.Toolkit
 {
-    static class TimeSpanParser
+    public static class TimeSpanParser
     {
         public static int Parse(String timeSpan)
         {

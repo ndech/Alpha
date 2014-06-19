@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Roslyn.Scripting;
 using Roslyn.Scripting.CSharp;
+using Alpha.Toolkit;
 
 namespace Alpha
 {
@@ -26,7 +27,7 @@ namespace Alpha
             float meanTimeToHappen = 10;
             foreach (Func<IProvince, float> multiplier in _multipliers)
                 meanTimeToHappen *= multiplier.Invoke(province);
-            if (Random.Generator.Get(0, (int)meanTimeToHappen) == 0)
+            if (RandomGenerator.Get(0, (int)meanTimeToHappen) == 0)
                 _effect.Invoke(province);
         }
     }

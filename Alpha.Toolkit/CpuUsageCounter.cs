@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics;
-    class CpuUsageCounter : IDisposable, ICounter
+    public class CpuUsageCounter : IDisposable, ICounter
     {
         public float Value 
 		{

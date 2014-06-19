@@ -100,6 +100,9 @@
     <None Include="Data\Fonts\Courrier-14px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Models\skydome.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Shaders\Color.ps">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -160,12 +163,9 @@
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
     <Compile Include="InputInterop.cs" />
     <Compile Include="ProvinceEvent.cs" />
-    <Compile Include="Random.cs" />
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />
     <Compile Include="Territory.cs" />
-    <Compile Include="Toolkit\ColorParser.cs" />
-    <Compile Include="Toolkit\TimeSpanParser.cs" />
     <Compile Include="UI\Controls\Custom\AccountLine.cs" />
     <Compile Include="UI\Controls\Custom\CalendarWidget.cs" />
     <Compile Include="UI\Controls\Custom\ConsoleLine.cs" />
@@ -175,6 +175,7 @@
     <Compile Include="UI\Controls\LogicButton.cs" />
     <Compile Include="UI\Controls\Custom\ProvinceButton.cs" />
     <Compile Include="UI\Controls\Slider.cs" />
+    <Compile Include="UI\Controls\Terrain.cs" />
     <Compile Include="UI\Controls\TextInput.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
     <Compile Include="UI\Coordinates\UniScalar.cs" />
@@ -251,21 +252,6 @@
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="ConfigurationManager.cs" />
-    <Compile Include="Toolkit\CpuUsageCounter.cs" />
-    <Compile Include="Toolkit\DisposeHelper.cs" />
-    <Compile Include="Toolkit\FpsCounter.cs" />
-    <Compile Include="Toolkit\ICounter.cs" />
-    <Compile Include="Toolkit\IO\CsvLogger.cs" />
-    <Compile Include="Toolkit\IO\ICsvLoggable.cs" />
-    <Compile Include="Toolkit\Math\Conversion.cs" />
-    <Compile Include="Toolkit\Math\EulerIntegrator.cs" />
-    <Compile Include="Toolkit\Math\IIntegrable.cs" />
-    <Compile Include="Toolkit\Math\Integrator.cs" />
-    <Compile Include="Toolkit\Math\Matrix3x3.cs" />
-    <Compile Include="Toolkit\Math\MathUtil.cs" />
-    <Compile Include="Toolkit\Math\RK4Integrator.cs" />
-    <Compile Include="Toolkit\Math\Vector2I.cs" />
-    <Compile Include="Toolkit\Math\Vector3d.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -299,11 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\LoadingImages\" />
-    <Folder Include="Data\Models\" />
     <Folder Include="Graphics\Models\" />
-    <Folder Include="Toolkit\Configuration\" />
-    <Folder Include="Toolkit\Extensions\" />
-    <Folder Include="Toolkit\Physics\" />
     <Folder Include="UI\StyleManager\" />
   </ItemGroup>
   <ItemGroup>
@@ -420,6 +402,10 @@
     <ProjectReference Include="..\Alpha.Scripting\Alpha.Scripting.csproj">
       <Project>{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}</Project>
       <Name>Alpha.Scripting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Alpha.Toolkit\Alpha.Toolkit.csproj">
+      <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
+      <Name>Alpha.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -18,7 +18,7 @@ namespace Alpha.UI.Screens
         {
             _playerRealm = game.Services.GetService<IRealmManager>().PlayerRealm;
             _demesne = _playerRealm.Demesne;
-            
+            Register(new Terrain(game));
             Register(new CalendarWidget(game));
 
             Button menuButton = Register(new Button(game, "menu", new UniRectangle(new UniScalar(0.5f, -40), 0, 80, 30), "Menu"));

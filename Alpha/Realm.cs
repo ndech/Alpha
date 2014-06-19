@@ -106,7 +106,7 @@ namespace Alpha
             else
             {
                 double total = eventRef.Outcomes.Where((o) => o.ConditionsValid(item)).Sum((o) => o.IaAffinity(item));
-                double rand = Random.Generator.GetDouble(0.0, total);
+                double rand = RandomGenerator.GetDouble(0.0, total);
                 foreach (Outcome<T> outcome in eventRef.Outcomes.Where((o) => o.ConditionsValid(item)))
                 {
                     if(outcome.PreExecute != null) outcome.PreExecute.Invoke(item);

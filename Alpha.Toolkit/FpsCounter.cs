@@ -1,6 +1,6 @@
 ﻿namespace Alpha.Toolkit
 {
-    class FpsCounter : ICounter
+    public class FpsCounter : ICounter
     {
         public float Value { get; private set; }
         public string Unit {

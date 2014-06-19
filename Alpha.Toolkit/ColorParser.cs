@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace Alpha.Toolkit
 {
-    static class ColorParser
+    public static class ColorParser
     {
         public static Boolean TryParse(String value, out Color color)
         {

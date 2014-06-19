@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.Scripting;
+using Alpha.Toolkit;
 
 namespace Alpha.Events
 {
@@ -83,7 +84,7 @@ namespace Alpha.Events
         {
             if(!ConditionsValid(item) || IsTriggeredOnly)
                 return;
-            if (Random.Generator.Get(0, MeanTimeToHappen(item)) == 0)
+            if (RandomGenerator.Get(0, MeanTimeToHappen(item)) == 0)
                 Execute(item);
         }
         public void Execute(IEventable item, object[] parameters)

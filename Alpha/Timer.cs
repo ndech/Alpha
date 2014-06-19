@@ -1,11 +1,9 @@
-﻿using Alpha.Toolkit.IO;
-
-namespace Alpha
+﻿namespace Alpha
 {
     using System;
     using System.Diagnostics;
     using System.Globalization;
-    class Timer : ICsvLoggable
+    class Timer
     {
         private readonly Stopwatch _stopWatch;
         private Int64 _elapsedMilliseconds;
@@ -36,11 +34,6 @@ namespace Alpha
         }
 
         public override String ToString()
-        {
-            return _elapsedMilliseconds.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public string ToCsv()
         {
             return _elapsedMilliseconds.ToString(CultureInfo.InvariantCulture);
         }

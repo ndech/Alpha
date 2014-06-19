@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit.Math;
 using SharpDX;
+using SharpDX.Direct3D11;
 using SharpDX.Windows;
 using Device = SharpDX.Direct3D11.Device;
 
@@ -15,12 +16,22 @@ namespace Alpha.Graphics
         public RenderForm Form { get; private set; }
         public string VideoCardName { get { return DirectX.VideoCardName; } }
         public int VideoCardMemorySize { get { return DirectX.VideoCardMemorySize; } }
+        public DepthStencilView RenderToTextureDepthStencilView { get { return DirectX.RenderToTextureDepthStencilView; } }
+        public Matrix ProjectionMatrix { get { return DirectX.ProjectionMatrix; } }
+
+        public void SetBackBufferAsRenderTarget()
+        {
+            DirectX.SetBackBufferAsRenderTarget();
+        }
+
         public Dx11 DirectX { get; private set; }
         protected ICamera Camera { get; set; }
         public Light Light { get; set; }
         public ColorShader ColorShader { get; set; }
         public TextureShader TextureShader { get; set; }
         public LightShader LightShader { get; set; }
+        public WaterShader WaterShader { get; set; }
+        public TerrainShader TerrainShader { get; set; }
         public FontShader FontShader { get; set; }
         public TranslateShader TranslateShader { get; set; }
         public FontShader CircleShader { get; set; }
@@ -50,6 +61,8 @@ namespace Alpha.Graphics
             LightShader = new LightShader(DirectX.Device);
             TranslateShader = new TranslateShader(DirectX.Device);
             CircleShader = new FontShader(DirectX.Device);
+            TerrainShader = new TerrainShader(DirectX.Device);
+            WaterShader = new WaterShader(DirectX.Device);
             FontShader = new FontShader(DirectX.Device);
             TextManager = new TextManager(this);
             TextureManager = new TextureManager(DirectX.Device);
@@ -81,16 +94,26 @@ namespace Alpha.Graphics
                     DirectX.DisableWireFrame();
                 if (item.ZBufferEnabled)
                 {
-                    DirectX.EnableZBuffer();
+                    EnableZBuffer();
                     item.Render(DirectX.DeviceContext, Camera.ViewMatrix, DirectX.ProjectionMatrix);
                 }
                 else
                 {
-                    DirectX.DisableZBuffer();
+                    DisableZBuffer();
                     item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
                 }
             }
             DirectX.DrawScene();
+        }
+
+        public void EnableZBuffer()
+        {
+            DirectX.EnableZBuffer();
+        }
+
+        public void DisableZBuffer()
+        {
+            DirectX.DisableZBuffer();
         }
 
         public override void Initialize(Action<string> feedback)

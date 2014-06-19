@@ -37,13 +37,13 @@ namespace Alpha.UI.Controls.Custom
                 Register(new Button(Game, "calendar_speed_up",
                     new UniRectangle(new UniScalar(1.0f, -20), 0.05f, 20, 0.4f), "+"));
             upButton.Clicked += (b) => _calendar.IncreaseMultiplier();
-            upButton.Shortcut = Key.Up;
+            upButton.Shortcut = Key.U;
 
             Button downButton =
                 Register(new Button(Game, "calendar_speed_down",
                     new UniRectangle(new UniScalar(1.0f, -20), 0.55f, 20, 0.4f), "-"));
             downButton.Clicked += (b) => _calendar.DecreaseMultiplier();
-            downButton.Shortcut = Key.Down;
+            downButton.Shortcut = Key.J;
         }
 
         protected override void Update(double delta)

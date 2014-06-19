@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alpha.Events;
 using Alpha.Scripting;
+using Alpha.Toolkit;
 
 namespace Alpha
 {
@@ -67,7 +68,7 @@ namespace Alpha
                 i++;
             }
             foreach (Realm realm in Realms)
-                realm.TaxRate = (float)Random.Generator.Get(10, 40)/100;
+                realm.TaxRate = (float)RandomGenerator.Get(10, 40)/100;
             feedback.Invoke("Loading realm events...");
             Events = Game.Services.GetService<IEventManager>().LoadEvents<IScriptableRealm>(Realm.ScriptIdentifier, feedback);
         }

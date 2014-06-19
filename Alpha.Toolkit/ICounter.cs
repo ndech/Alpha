@@ -1,7 +1,7 @@
 ﻿namespace Alpha.Toolkit
 {
     using System;
-    interface ICounter : IUpdatable
+    interface ICounter
     {
         float Value { get; }
         String Unit { get; }
