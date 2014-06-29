@@ -9,5 +9,6 @@ namespace Alpha.Graphics
         Vector3 Position { get; }
         Matrix ReflectionMatrix { get; }
         void Move(int x, int y);
+        void Rotate(int tick);
     }
 }

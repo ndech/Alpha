@@ -217,14 +217,24 @@ namespace Alpha.UI.Controls
         protected override void Update(double delta)
         {
             _waveTranslation += new Vector2(0.1f, 0.15f)*(float)delta;
-            if (UiManager.IsKeyPressed(Key.Left))
-                _camera.Move(-1, 0);
-            if (UiManager.IsKeyPressed(Key.Right))
-                _camera.Move(1, 0);
-            if (UiManager.IsKeyPressed(Key.Up))
-                _camera.Move(0, 1);
-            if (UiManager.IsKeyPressed(Key.Down))
-                _camera.Move(0, -1);
+            if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+            {
+                if (UiManager.IsKeyPressed(Key.Left))
+                    _camera.Rotate(1);
+                if (UiManager.IsKeyPressed(Key.Right))
+                    _camera.Rotate(-1);
+            }
+            else
+            {
+                if (UiManager.IsKeyPressed(Key.Left))
+                    _camera.Move(-1, 0);
+                if (UiManager.IsKeyPressed(Key.Right))
+                    _camera.Move(1, 0);
+                if (UiManager.IsKeyPressed(Key.Up))
+                    _camera.Move(0, 1);
+                if (UiManager.IsKeyPressed(Key.Down))
+                    _camera.Move(0, -1);
+            }
         }
     }
 }

@@ -9,10 +9,10 @@ namespace Alpha.WorldGeneration
             Int32 width = 500;
             Int32 height = 500;
             Int32 pointCount = 5;
-            Int32 margin = 3;
-            width = 5000;
-            height = 5000;
-            pointCount = 3000;
+            Int32 margin = 15;
+            width = 2000;
+            height = 2000;
+            pointCount = 2000;
             
             Generator generator = new Generator();
             generator.Create(width, height, pointCount, margin);

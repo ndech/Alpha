@@ -1,54 +1,63 @@
-﻿//using System;
-//using Alpha.Toolkit.Math;
+﻿using System;
+using System.Linq;
+using Alpha.Toolkit.Math;
 
-//namespace Alpha.WorldGeneration
-//{
-//    class Edge
-//    {
-//        public Vector2I a;
-//        public Vector2I b;
+namespace Alpha.WorldGeneration
+{
+    class Edge
+    {
+        public Vector2I[] Points = new Vector2I[2];
+        public readonly Triangle[] Triangles = new Triangle[2];
 
-//        public Triangle t1;
-//        public Triangle t2;
+        public Edge(Triangle a, Triangle b)
+        {
+            Triangles[0] = a;
+            Triangles[1] = b;
+            int cursor = 0;
+            foreach (Vector2I point in a.Points)
+            {
+                foreach (Vector2I point2 in b.Points)
+                {
+                    if (point == point2)
+                    {
+                        if(cursor>=2)
+                            throw new InvalidOperationException("Too much common point between the two triangles used to construct the edge");
+                        Points[cursor] = point;
+                        cursor++;
+                    }
+                }
+            }
+            if (cursor != 2)
+                throw new InvalidOperationException("Too few common point between the two triangles used to construct the edge");
+        }
 
-//        public Edge(Vector2I a, Vector2I b)
-//        {
-//            this.a = a;
-//            this.b = b;
-//            t1 = Triangle.Exterior;
-//            t2 = Triangle.Exterior;
-//        }
+        public Edge(Triangle onlyOne, Vector2I a, Vector2I b)
+        {
+            if(!(onlyOne.Points.Contains(a) && onlyOne.Points.Contains(b)))
+                throw new InvalidOperationException("Points do not belong to the triangle.");
+            Points[0] = a;
+            Points[1] = b;
+            Triangles[0] = null;
+            Triangles[1] = onlyOne;
+        }
 
-//        public void Register(Triangle t)
-//        {
-//            if (t1 == Triangle.Exterior)
-//                t1 = t;
-//            else if(t2 == Triangle.Exterior)
-//                t2 = t;
-//            else
-//                throw new Exception("All triangles already set");
-//        }
+        public void Replace(Triangle oldTriangle, Triangle newTriangle)
+        {
+            for (int i = 0; i < 2; i++)
+                if (Triangles[i] == oldTriangle)
+                {
+                    Triangles[i] = newTriangle;
+                    if(Triangles[0]==Triangles[1])
+                        throw new InvalidOperationException("An edge can not refer twice to the same triangle.");
+                    return;
+                }
+            throw new InvalidOperationException("No matching triangle.");
+        }
 
-//        public Triangle Other(Triangle t)
-//        {
-//            if(t1 == null || t2 == null)
-//                throw new Exception("A triangle is null");
-//            if (t == t1)
-//                return t2;
-//            else if (t == t2)
-//                return t1;
-//            else
-//                throw new Exception("Invalid arguement");
-//        }
-
-//        public void Unregister(Triangle triangle)
-//        {
-//            if (t1 == triangle)
-//                t1 = Triangle.Exterior;
-//            else if (t2 == triangle)
-//                t2 = Triangle.Exterior;
-//            else
-//                throw new Exception("No matching triangle to unregister");
-//        }
-//    }
-//}
+        public override string ToString()
+        {
+            return (Triangles[0] == null ? "x" : Triangles[0].ToString()) + " " + (Triangles[1] == null ? "x" : Triangles[1].ToString())
+                + "("+ Points[0] + " : " + Points[1] + ")";
+        }
+    }
+}

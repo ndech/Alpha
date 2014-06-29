@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 using Alpha.Graphics;
@@ -20,6 +21,8 @@ namespace Alpha.UI
         Vector2I MousePosition { get; set; }
         bool IsKeyPressed(Key key);
         void RecalculateActiveComponents();
+
+        bool IsAnyKeyPressed(params Key[] keys);
     }
     class UiManager : RenderableGameComponent, IUiManager, ISavable
     {
@@ -136,6 +139,15 @@ namespace Alpha.UI
         public void RecalculateActiveComponents()
         {
             _activeScreens[0].RecalculateActiveComponents();
+        }
+
+        public bool IsAnyKeyPressed(params Key[] keys)
+        {
+            return keys.Any(IsKeyPressed);
+        }
+        public bool AreAllKeysPressed(params Key[] keys)
+        {
+            return keys.All(IsKeyPressed);
         }
 
         public int SaveOrder { get { return Int32.MaxValue; } }
