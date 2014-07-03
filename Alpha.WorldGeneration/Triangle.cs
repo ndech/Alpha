@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 
 namespace Alpha.WorldGeneration
@@ -10,6 +10,21 @@ namespace Alpha.WorldGeneration
         public readonly Vector2I[] Points = new Vector2I[3];
         public Edge[] Edges = new Edge[3];
         public Int32 Id { get; private set; }
+        public Vector2I A { get { return Points[0]; } }
+        public Vector2I B { get { return Points[1]; } }
+        public Vector2I C { get { return Points[2]; } }
+
+        public Vector2I Circumcenter
+        {
+            //http://en.wikipedia.org/wiki/Circumcenter#Cartesian_coordinates
+            get
+            {
+                double d = 2 * (A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y));
+                double x = A.SquaredSize() * (B.Y - C.Y) + B.SquaredSize() * (C.Y - A.Y) + C.SquaredSize() * (A.Y - B.Y);
+                double y = A.SquaredSize() * (B.X - C.X) + B.SquaredSize() * (C.X - A.X) + C.SquaredSize() * (A.X - B.X);
+                return (new Vector2I((int)(x / d), -(int)(y / d)));
+            }
+        }
 
         public static Int32 AutoIncrement = 0;
         public Triangle(Vector2I a, Vector2I b, Vector2I c)

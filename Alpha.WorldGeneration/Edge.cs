@@ -54,6 +54,15 @@ namespace Alpha.WorldGeneration
             throw new InvalidOperationException("No matching triangle.");
         }
 
+        public Triangle Other(Triangle t)
+        {
+            if (Triangles[0] == t)
+                return Triangles[1];
+            else if (Triangles[1] == t)
+                return Triangles[0];
+            throw new InvalidOperationException("Triangle does not belong to edge");
+        }
+
         public override string ToString()
         {
             return (Triangles[0] == null ? "x" : Triangles[0].ToString()) + " " + (Triangles[1] == null ? "x" : Triangles[1].ToString())

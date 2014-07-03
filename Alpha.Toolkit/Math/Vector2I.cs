@@ -33,6 +33,10 @@ namespace Alpha.Toolkit.Math
         {
             return new Vector2I(v1.X / i2, v1.Y / i2);
         }
+        public static Vector2I operator /(Vector2I v1, float i2)
+        {
+            return new Vector2I((int)(v1.X / i2), (int)(v1.Y / i2));
+        }
         public static Vector2I operator +(Vector2I v1, Vector2I v2)
         {
             return
@@ -41,6 +45,17 @@ namespace Alpha.Toolkit.Math
                         (
                         v1.X + v2.X,
                         v1.Y + v2.Y
+                        )
+                    );
+        }
+        public static Vector2I operator -(Vector2I v1, Vector2I v2)
+        {
+            return
+                (
+                    new Vector2I
+                        (
+                        v1.X - v2.X,
+                        v1.Y - v2.Y
                         )
                     );
         }
@@ -66,6 +81,11 @@ namespace Alpha.Toolkit.Math
         public static double Distance(Vector2I a, Vector2I b)
         {
             return System.Math.Sqrt(System.Math.Pow((a.X - b.X), 2)+System.Math.Pow((a.Y - b.Y), 2));
+        }
+
+        public int SquaredSize()
+        {
+            return X.Square() + Y.Square();
         }
     }
 }

@@ -238,23 +238,3 @@ namespace Alpha.UI.Controls
         }
     }
 }
-
-
-
-
-//        public float GetHeight(double x, double y)
-//        {
-//            double positionX = (y/_pitch) + (_width/2.0);
-//            double positionY = (x/_pitch) + (_height/2.0);
-//            int coordX = (int) positionX;
-//            int coordY = (int) positionY;
-//            positionX %= 1;
-//            positionY %= 1;
-
-//            float height = (float)
-//                (GetHeight(coordX, coordY)*(1-positionX)*(1-positionY)
-//                +GetHeight(coordX+1, coordY+1)*(positionX)*(positionY)
-//                +GetHeight(coordX, coordY+1)*(1-positionX)*(positionY)
-//                +GetHeight(coordX+1, coordY)*(positionX)*(1-positionY));
-//            return Math.Max(height, 0.0f);
-//        }

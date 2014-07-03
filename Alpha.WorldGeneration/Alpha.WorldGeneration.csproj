@@ -39,6 +39,7 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Triangle.cs" />
+    <Compile Include="VoronoiSite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,6 +49,10 @@
     <ProjectReference Include="..\Alpha.Toolkit\Alpha.Toolkit.csproj">
       <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
       <Name>Alpha.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Alpha.Voronoi\Alpha.Voronoi.csproj">
+      <Project>{60cfd6c1-3d1c-4323-bcc4-ff6cc1fc82cf}</Project>
+      <Name>Alpha.Voronoi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
