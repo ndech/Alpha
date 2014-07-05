@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
 using System.Linq;
 using Alpha.Voronoi;
 
 namespace Alpha.WorldGeneration
 {
-    class VoronoiSite
+    class VoronoiSite : IEquatable<VoronoiSite>
     {
         public VoronoiSite(Vector center)
         {
@@ -16,6 +15,9 @@ namespace Alpha.WorldGeneration
             Points = new List<Vector>();
             IsWater = false;
             IsOnBorder = false;
+            BaseWaterDepth = DefaultBaseHeight;
+            BaseLandHeight = DefaultBaseHeight;
+            Id = idSeed++;
         }
 
         public Vector Center { get; private set; }
@@ -24,11 +26,41 @@ namespace Alpha.WorldGeneration
         public bool IsOnBorder { get; private set; }
         public bool IsWater { get; set; }
         public List<VoronoiSite> Neighbourgs { get; set; }
+        public int BaseWaterDepth { get; set; }
+        public int BaseLandHeight { get; set; }
+        public Cluster Cluster { get; set; }
+        private int idSeed=0;
+        public int Id { get; set; }
+        public const int DefaultBaseHeight = 10000;
+
+        public void CalculateBaseWaterDepth(int newValue, Cluster cluster)
+        {
+            if(newValue >= BaseWaterDepth)
+                return;
+            if (Neighbourgs.Any(p => !p.IsWater))
+                newValue = 1;
+            BaseWaterDepth = newValue;
+            Cluster = cluster;
+            foreach (VoronoiSite site in Neighbourgs.Where(p => p.IsWater && p.BaseWaterDepth > newValue + 1))
+                site.CalculateBaseWaterDepth(newValue + 1, cluster);
+        }
+
+        public void CalculateBaseLandHeight(int newValue, Cluster cluster, VoronoiSite caller)
+        {
+            if (newValue >= BaseLandHeight)
+                return;
+            if (Neighbourgs.Any(p => p.IsWater))
+                newValue = 1;
+            BaseLandHeight = newValue;
+            Cluster = cluster;
+            foreach (VoronoiSite site in Neighbourgs.Where(p => !p.IsWater && p.BaseLandHeight > newValue + 1))
+            {
+                site.CalculateBaseLandHeight(newValue + 1, cluster, this);
+            }
+        }
 
         public void Reorder(int width, int height)
         {
-            int edgesCount = Edges.Count;
-            List<VoronoiEdge> prevEdges = new List<VoronoiEdge>(Edges);
             //Checks if the site is fully included in the frame :
             if (Edges.Select(e => e.VVertexA).All(p => IsVectorInRange(p, width, height)) &&
                 Edges.Select(e => e.VVertexB).All(p => IsVectorInRange(p, width, height)))
@@ -46,19 +78,8 @@ namespace Alpha.WorldGeneration
                         continue;
                     if (isAIn || isBIn) // One point in in, needs to be clipped
                     {
-                        Vector pointIn;
-                        Vector pointOut;
                         Double slope = edge.DirectionVector[1]/edge.DirectionVector[0];
-                        if (isAIn)
-                        {
-                            pointIn = new Vector(edge.VVertexA);
-                            pointOut = new Vector(edge.VVertexB);
-                        }
-                        else
-                        {
-                            pointIn = new Vector(edge.VVertexB);
-                            pointOut = new Vector(edge.VVertexA);
-                        }
+                        Vector pointIn = isAIn ? new Vector(edge.VVertexA) : new Vector(edge.VVertexB);
                         List<Vector> intersections = new List<Vector>();
                         //Test collision with (0,0) => (width,0) edge :
                         intersections.Add(new Vector(pointIn[0] - pointIn[1] / slope, 0));
@@ -136,6 +157,16 @@ namespace Alpha.WorldGeneration
         public bool IsVectorInRange(Vector vector, int width, int height)
         {
             return vector[0] > 0 && vector[0] < width && vector[1] > 0 && vector[1] < height;
+        }
+
+        public bool Equals(VoronoiSite other)
+        {
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
         }
     }
 }

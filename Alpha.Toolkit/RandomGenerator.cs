@@ -1,20 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Alpha.Toolkit
 {
     public class RandomGenerator
     {
-        private static readonly System.Random Generator = new System.Random();
+        private static Random _generator = new Random();
         
         public static int Get(int min, int max)
         {
-            return Generator.Next(min, max);
+            return _generator.Next(min, max);
         }
 
         public static double GetDouble(double min, double max)
         {
-            return Generator.NextDouble() * max + min;
+            return _generator.NextDouble() * max + min;
+        }
+
+        public static void ResetSeed(int seed)
+        {
+            _generator = new Random(seed);
         }
     }
 

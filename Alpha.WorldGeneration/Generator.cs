@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using Alpha.Voronoi;
 using Alpha.Toolkit;
 
 namespace Alpha.WorldGeneration
 {
+    enum RenderMode
+    {
+        Terrain,
+        Cluster
+    }
     public static class Generator
     {
         public static void Create(int width, int height, int pointCount, int relaxations)
         {
+            //RandomGenerator.ResetSeed(1236);
             Dictionary<Vector, VoronoiSite> points = new Dictionary<Vector, VoronoiSite>(pointCount);
             for (int i = 0; i < pointCount; i++)
             {
@@ -39,15 +46,20 @@ namespace Alpha.WorldGeneration
             }
             //Create water
             Stack<VoronoiSite> processingStack = new Stack<VoronoiSite>();
-            foreach (VoronoiSite site in points.Values.Where(s => s.IsOnBorder))
+            foreach (VoronoiSite site in points.Values)
             {
-                site.IsWater = true;
-                processingStack.Push(site);
+                if (site.IsOnBorder || RandomGenerator.GetDouble(0, 80) < 1)
+                {
+                    site.IsWater = true;
+                    processingStack.Push(site);
+                }
             }
             while (processingStack.Count > 0)
             {
+                if(RandomGenerator.GetDouble(0,1)<0.80)
+                    continue;
                 VoronoiSite site = processingStack.Pop();
-                double threshold = RandomGenerator.GetDouble(0, 0.7);
+                double threshold = RandomGenerator.GetDouble(0, 0.55);
                 foreach (VoronoiSite target in site.Neighbourgs)
                 {
                     if (target.IsWater)
@@ -63,7 +75,26 @@ namespace Alpha.WorldGeneration
             //Remove single cell islands
             foreach (VoronoiSite island in points.Values.Where(p=>!p.IsWater && p.Neighbourgs.All(i => i.IsWater)))
                 island.IsWater = true;
-            Draw("voronoi", width, height, points);
+            //Associate water distance from shore and split the water in cluster (independant seas)
+
+            System.Collections.Generic.HashSet<VoronoiSite> ToBeProcessedSites = new System.Collections.Generic.HashSet<VoronoiSite>();
+            while (true)
+            {
+                VoronoiSite site = points.Values.FirstOrDefault(s => s.IsWater && s.BaseWaterDepth == VoronoiSite.DefaultBaseHeight && s.Neighbourgs.Any(p => !p.IsWater));
+                if(site == null)
+                    break;
+                site.CalculateBaseWaterDepth(1, new Cluster());
+            }
+            //Do the same for land
+            while (true)
+            {
+                VoronoiSite site = points.Values.FirstOrDefault(s => !s.IsWater && s.BaseLandHeight == VoronoiSite.DefaultBaseHeight && s.Neighbourgs.Any(p => p.IsWater));
+                if (site == null)
+                    break;
+                site.CalculateBaseLandHeight(1, new Cluster(), null);
+            }
+            Draw("terrain", width, height, points, RenderMode.Terrain);
+            Draw("clusters", width, height, points, RenderMode.Cluster);
         }
 
         private static void CalculateVoronoiGraph(Dictionary<Vector, VoronoiSite> points, int width, int height)
@@ -82,10 +113,11 @@ namespace Alpha.WorldGeneration
                 site.Reorder(width, height);
         }
 
-        private static void Draw(string fileName, int width, int height, Dictionary<Vector, VoronoiSite> points)
+        private static void Draw(string fileName, int width, int height, Dictionary<Vector, VoronoiSite> points, RenderMode mode)
         {
             Bitmap bitmap = new Bitmap(width+1, height+1);
             Graphics graphics = Graphics.FromImage(bitmap);
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
             graphics.Clear(Color.Black);
 
             foreach (VoronoiSite site in points.Values)
@@ -93,18 +125,22 @@ namespace Alpha.WorldGeneration
                 PointF[] list = new PointF[site.Points.Count];
                 for (int i = 0; i < site.Points.Count; i++)
                     list[i] = new PointF((float)site.Points[i][0], (float)site.Points[i][1]);
-                try
+                if (mode == RenderMode.Terrain)
                 {
-                    if(site.IsWater)
-                        graphics.FillPolygon(new SolidBrush(Color.Blue), list);
+                    if (site.IsWater)
+                        graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 156 - 10 * site.BaseWaterDepth, 203)), list);
+                    else
+                        graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 210 - 10 * (site.BaseLandHeight==VoronoiSite.DefaultBaseHeight ? 0 : site.BaseLandHeight), 49)), list);
+                }
+                else if (mode == RenderMode.Cluster)
+                {
+                    if (site.Cluster != null)
+                        graphics.FillPolygon(new SolidBrush(site.Cluster.Color), list);
                     else
                         graphics.FillPolygon(new SolidBrush(Color.DarkGray), list);
-                    graphics.DrawPolygon(new Pen(Color.DarkRed), list);
                 }
-                catch (Exception) { }
+                graphics.DrawPolygon(new Pen(Color.Black), list);
             }
-            foreach (VoronoiSite site in points.Values)
-                bitmap.SetPixel((int)site.Center[0], (int)site.Center[1], Color.Crimson);
             bitmap.Save("C:\\Users\\Nicolas\\Desktop\\Voronoi\\"+fileName+".png");
         }
     }
