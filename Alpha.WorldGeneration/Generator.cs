@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Security.Policy;
 using Alpha.Voronoi;
 using Alpha.Toolkit;
 
@@ -76,22 +77,31 @@ namespace Alpha.WorldGeneration
             foreach (VoronoiSite island in points.Values.Where(p=>!p.IsWater && p.Neighbourgs.All(i => i.IsWater)))
                 island.IsWater = true;
             //Associate water distance from shore and split the water in cluster (independant seas)
-
-            System.Collections.Generic.HashSet<VoronoiSite> ToBeProcessedSites = new System.Collections.Generic.HashSet<VoronoiSite>();
+            Stack<VoronoiSite> ToBeProcessedSites;
             while (true)
             {
+                ToBeProcessedSites = new Stack<VoronoiSite>();
                 VoronoiSite site = points.Values.FirstOrDefault(s => s.IsWater && s.BaseWaterDepth == VoronoiSite.DefaultBaseHeight && s.Neighbourgs.Any(p => !p.IsWater));
-                if(site == null)
-                    break;
-                site.CalculateBaseWaterDepth(1, new Cluster());
-            }
-            //Do the same for land
-            while (true)
-            {
-                VoronoiSite site = points.Values.FirstOrDefault(s => !s.IsWater && s.BaseLandHeight == VoronoiSite.DefaultBaseHeight && s.Neighbourgs.Any(p => p.IsWater));
                 if (site == null)
                     break;
-                site.CalculateBaseLandHeight(1, new Cluster(), null);
+                site.BaseWaterDepth = 1;
+                ToBeProcessedSites.Push(site);
+                Cluster cluster = new Cluster();
+                while (ToBeProcessedSites.Count > 0)
+                {
+                    VoronoiSite item = ToBeProcessedSites.Pop();
+                    item.Cluster = cluster;
+                    if (item.Neighbourgs.Any(s => !s.IsWater)) item.BaseWaterDepth = 1;
+                    foreach (VoronoiSite neighbourg in item.Neighbourgs)
+                    {
+                        if (neighbourg.IsWater && neighbourg.BaseWaterDepth > item.BaseWaterDepth + 1)
+                        {
+                            neighbourg.BaseWaterDepth = item.BaseWaterDepth + 1;
+                            if (!ToBeProcessedSites.Contains(neighbourg))
+                                ToBeProcessedSites.Push(neighbourg);
+                        }
+                    }
+                }
             }
             Draw("terrain", width, height, points, RenderMode.Terrain);
             Draw("clusters", width, height, points, RenderMode.Cluster);
@@ -128,7 +138,10 @@ namespace Alpha.WorldGeneration
                 if (mode == RenderMode.Terrain)
                 {
                     if (site.IsWater)
-                        graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 156 - 10 * site.BaseWaterDepth, 203)), list);
+                    {
+                        if (site.BaseWaterDepth != VoronoiSite.DefaultBaseHeight)
+                            graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 156 - 10 * site.BaseWaterDepth, 203)), list);
+                    }
                     else
                         graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 210 - 10 * (site.BaseLandHeight==VoronoiSite.DefaultBaseHeight ? 0 : site.BaseLandHeight), 49)), list);
                 }

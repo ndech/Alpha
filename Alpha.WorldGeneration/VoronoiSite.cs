@@ -29,7 +29,7 @@ namespace Alpha.WorldGeneration
         public int BaseWaterDepth { get; set; }
         public int BaseLandHeight { get; set; }
         public Cluster Cluster { get; set; }
-        private int idSeed=0;
+        private static int idSeed=0;
         public int Id { get; set; }
         public const int DefaultBaseHeight = 10000;
 
