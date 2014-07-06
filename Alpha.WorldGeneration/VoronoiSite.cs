@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Alpha.Voronoi;
 
 namespace Alpha.WorldGeneration
 {
-    class VoronoiSite : IEquatable<VoronoiSite>
+    public class VoronoiSite : IEquatable<VoronoiSite>
     {
         public VoronoiSite(Vector center)
         {
@@ -108,9 +109,8 @@ namespace Alpha.WorldGeneration
                     throw new InvalidOperationException("Error");
             }
             if (Edges.Count == 0)
-            {
-                return;
-            }
+                throw new InvalidOperationException("No edges");
+
             VoronoiEdge first = Edges[Edges.Count-1];
             Edges.RemoveAt(Edges.Count-1);
             Vector point;
@@ -126,6 +126,11 @@ namespace Alpha.WorldGeneration
                     Points.Add(point = edge.VVertexA);
             } while (!Equals(point, first.VVertexB));
             Edges.Clear();
+            //Reverse ordering of the points if needed :
+            Vector v1 =Points[0] - Points[1];
+            Vector v2 = Center - Points[0];
+            if (v1[0]*v2[1] - v1[1]*v2[0] > 0)
+                Points.Reverse();
         }
 
         public bool IsVectorInRange(Vector vector, int width, int height)

@@ -407,6 +407,14 @@
       <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
       <Name>Alpha.Toolkit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Alpha.Voronoi\Alpha.Voronoi.csproj">
+      <Project>{60CFD6C1-3D1C-4323-BCC4-FF6CC1FC82CF}</Project>
+      <Name>Alpha.Voronoi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Alpha.WorldGeneration\Alpha.WorldGeneration.csproj">
+      <Project>{b49a9f3c-0fee-43c6-a7a0-c5e9d595c858}</Project>
+      <Name>Alpha.WorldGeneration</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

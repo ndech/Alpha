@@ -16,7 +16,7 @@ namespace Alpha.WorldGeneration
     }
     public static class Generator
     {
-        public static void Create(int width, int height, int pointCount, int relaxations)
+        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations)
         {
             RandomGenerator.ResetSeed(1256);
             Dictionary<Vector, VoronoiSite> points = new Dictionary<Vector, VoronoiSite>(pointCount);
@@ -81,6 +81,7 @@ namespace Alpha.WorldGeneration
             Console.WriteLine("Land tiles  : " + sites.Count(s => !s.IsWater) +" ("+ String.Format("{0:P}", (float)sites.Count(s => !s.IsWater) / sites.Count)+")");
             Console.WriteLine("Water tiles : " + sites.Count(s => s.IsWater) + " (" + String.Format("{0:P}", (float)sites.Count(s => s.IsWater) / sites.Count)+")");
             //Console.ReadKey();
+            return sites;
         }
 
         private static List<VoronoiSite> CalculateVoronoiGraph(Dictionary<Vector, VoronoiSite> points, int width, int height)

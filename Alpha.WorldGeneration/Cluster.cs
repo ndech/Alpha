@@ -3,7 +3,7 @@ using Alpha.Toolkit;
 
 namespace Alpha.WorldGeneration
 {
-    class Cluster
+    public class Cluster
     {
         public Color Color { get; set; }
         public int Id { get; set; }
