@@ -38,7 +38,11 @@
     <Compile Include="Cluster.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="FloodFillWaterGenerator.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="IWaterGenerator.cs" />
+    <Compile Include="NoiseGenerator.cs" />
+    <Compile Include="PerlinWaterGenerator.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="VoronoiSite.cs" />
   </ItemGroup>
