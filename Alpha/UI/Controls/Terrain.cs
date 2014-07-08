@@ -87,36 +87,43 @@ namespace Alpha.UI.Controls
             BuildBuffers(sites);
         }
 
-
-        //public Vector3 GetNormal(int x, int y)
-        //{
-        //    if (x > 1 && y > 1 && x < _width && y < _height)
-        //    {
-        //        var temp = Vector3.Normalize(new Vector3((GetHeight(x - 1, y) - GetHeight(x + 1, y))
-        //                                            , 2.0f
-        //                                            , (GetHeight(x, y - 1) - GetHeight(x, y + 1))
-        //                                            ));
-        //        return temp;
-        //    }
-        //    else
-        //        return new Vector3(0.0f, 1.0f, 0.0f);
-        //}
+        private float TerrainHeight(Vector point, List<VoronoiSite> sites)
+        {
+            List<VoronoiSite> adjacentSites = sites.Where(s => s.Points.Contains(point)).ToList();
+            if (adjacentSites.Count == 0)
+                adjacentSites = sites.Where(s => s.Center.Equals(point)).ToList();
+            return (float)adjacentSites.Average(s => s.IsWater ? 0 : s.ShoreDistance - 1) * 30;
+        }
 
         private void BuildBuffers(List<VoronoiSite> sites)
         {
-            List<Vector> points = (sites.SelectMany(s => s.Points).Union(sites.Select(s=>s.Center))).Distinct().ToList();
+            List<Vector> points = (sites.Where(s=>!s.IsWater).SelectMany(s => s.Points).Union(sites.Where(s=>!s.IsWater).Select(s=>s.Center))).Distinct().ToList();
             VertexDefinition.PositionTextureNormal4Weights[] terrainVertices = new VertexDefinition.PositionTextureNormal4Weights[points.Count];
             for (int i = 0; i < points.Count; i++)
             {
                 List<VoronoiSite> adjacentSites = sites.Where(s => s.Points.Contains(points[i])).ToList();
                 if (adjacentSites.Count == 0)
                     adjacentSites = sites.Where(s => s.Center.Equals(points[i])).ToList();
-                float height = (float)adjacentSites.Average(s => s.ShoreDistance)*20;
+                float height = (float)adjacentSites.Average(s => s.ShoreDistance-1)*30;
+                // Normal calculation (normal of each shared triangle averaged (todo : weighting by the surface of the triangle)
+                Vector3 normal = new Vector3();
+                foreach (VoronoiSite site in adjacentSites)
+                {
+                    int pointIndex = site.Points.IndexOf(points[i]);
+                    Vector3 point = new Vector3((float)points[i][0], height, (float)points[i][1]);
+                    Vector3 center = new Vector3((float)site.Center[0], TerrainHeight(site.Center, sites), (float)site.Center[1]);
+                    Vector3 previous = new Vector3((float)site.Points[(pointIndex+site.Points.Count-1)%site.Points.Count][0], TerrainHeight(site.Points[(pointIndex+site.Points.Count-1)%site.Points.Count], sites), (float)points[(pointIndex+site.Points.Count-1)%site.Points.Count][1]);
+                    Vector3 next = new Vector3((float)site.Points[(pointIndex + 1) % site.Points.Count][0], TerrainHeight(site.Points[(pointIndex + 1) % site.Points.Count], sites), (float)points[(pointIndex + 1) % site.Points.Count][1]);
+                    normal += Vector3.Cross(previous-point, center-point);
+                    normal += Vector3.Cross(center-point, next-point);
+                }
+                normal.Normalize();
+
                 terrainVertices[i] = new VertexDefinition.PositionTextureNormal4Weights
                 {
                     position = new Vector3((float)points[i][0], height, (float)points[i][1]),
                     texture = new Vector2(((float)points[i][0] / TerrainTextureRepeat), ((float)points[i][1] / TerrainTextureRepeat)),
-                    normal = new Vector3(0, 1, 0),
+                    normal = normal,
                     weights = GetWeights(height)
                 };
             }
@@ -135,52 +142,49 @@ namespace Alpha.UI.Controls
             }
             TerrainVertexBuffer = Buffer.Create(Renderer.Device, BindFlags.VertexBuffer, terrainVertices);
             TerrainIndexBuffer = Buffer.Create(Renderer.Device, BindFlags.IndexBuffer, terrainIndices);
-            //TerrainIndexCount = _width * _height * 6;
-            //UInt32[] terrainIndices = new UInt32[TerrainIndexCount];
-            //for (int i = 0; i < (_width); i++)
-            //    for (int j = 0; j < (_height); j++)
-            //    {
-            //        terrainIndices[(i * _width + j) * 6] = (uint)(i * (_width + 1) + j + 1); //Left top
-            //        terrainIndices[(i * _width + j) * 6 + 1] = (uint)((i + 1) * (_width + 1) + j); //Right bottom
-            //        terrainIndices[(i * _width + j) * 6 + 2] = (uint)(i * (_width + 1) + j); //Left bottom
-            //        terrainIndices[(i * _width + j) * 6 + 3] = (uint)(i * (_width + 1) + j + 1); //Left top
-            //        terrainIndices[(i * _width + j) * 6 + 4] = (uint)((i + 1) * (_width + 1) + j + 1); //Right top
-            //        terrainIndices[(i * _width + j) * 6 + 5] = (uint)((i + 1) * (_width + 1) + j); //Right bottom
-            //    }
-            //TerrainVertexBuffer = Buffer.Create(Renderer.Device, BindFlags.VertexBuffer, terrainVertices);
-            //TerrainIndexBuffer = Buffer.Create(Renderer.Device, BindFlags.IndexBuffer, terrainIndices);
+            
+            points = (sites.Where(s => s.IsWater).SelectMany(s => s.Points).Union(sites.Where(s => s.IsWater).Select(s => s.Center))).Distinct().ToList();
+            
+            VertexDefinition.PositionTexture[] waterVertices = new VertexDefinition.PositionTexture[points.Count];
+            for (int i = 0; i < points.Count; i++)
+            {
+                List<VoronoiSite> adjacentSites = sites.Where(s => s.Points.Contains(points[i])).ToList();
+                if (adjacentSites.Count == 0)
+                    adjacentSites = sites.Where(s => s.Center.Equals(points[i])).ToList();
+                float height = (float)adjacentSites.Average(s => s.ShoreDistance) * 30;
+                waterVertices[i] = new VertexDefinition.PositionTexture
+                {
+                    position = new Vector3((float)points[i][0], -height, (float)points[i][1]),
+                    texture = new Vector2(((float)points[i][0] / TerrainTextureRepeat), ((float)points[i][1] / TerrainTextureRepeat)),
+                };
+            }
 
-            //VertexDefinition.PositionTexture[] waterVertices = new VertexDefinition.PositionTexture[(_width + 1) * (_height + 1)];
-            //for (int i = 0; i < (_width + 1); i++)
-            //    for (int j = 0; j < (_height + 1); j++)
-            //        waterVertices[i * (_width + 1) + j] = new VertexDefinition.PositionTexture
-            //        {
-            //            position = new Vector3((-(_width / 2) + i) * _pitch, GetHeight(i, j), (-(_height / 2) + j) * _pitch),
-            //            texture = new Vector2(((float)i / WaveTextureRepeat), ((float)j / WaveTextureRepeat)),
-            //        };
-            //WaterIndexCount = _width * _height * 6;
-            //UInt32[] waterIndices = new UInt32[WaterIndexCount];
-            //for (int i = 0; i < (_width); i++)
-            //    for (int j = 0; j < (_height); j++)
-            //    {
-            //        waterIndices[(i * _width + j) * 6] = (uint)(i * (_width + 1) + j + 1); //Left top
-            //        waterIndices[(i * _width + j) * 6 + 1] = (uint)((i + 1) * (_width + 1) + j); //Right bottom
-            //        waterIndices[(i * _width + j) * 6 + 2] = (uint)(i * (_width + 1) + j); //Left bottom
-            //        waterIndices[(i * _width + j) * 6 + 3] = (uint)(i * (_width + 1) + j + 1); //Left top
-            //        waterIndices[(i * _width + j) * 6 + 4] = (uint)((i + 1) * (_width + 1) + j + 1); //Right top
-            //        waterIndices[(i * _width + j) * 6 + 5] = (uint)((i + 1) * (_width + 1) + j); //Right bottom
-            //    }
-            //WaterVertexBuffer = Buffer.Create(Renderer.Device, BindFlags.VertexBuffer, waterVertices);
-            //WaterIndexBuffer = Buffer.Create(Renderer.Device, BindFlags.IndexBuffer, waterIndices);
+            WaterIndexCount = sites.Where(s => s.IsWater).Sum(s => s.Points.Count) * 3;
+            UInt32[] waterIndices = new UInt32[WaterIndexCount];
+            index = 0;
+            foreach (VoronoiSite site in sites.Where(s => s.IsWater))
+            {
+                for (int i = 0; i < site.Points.Count; i++)
+                {
+                    waterIndices[index] = (uint)points.FindIndex(p => p.Equals(site.Center));
+                    waterIndices[index + 2] = (uint)points.FindIndex(p => p.Equals(site.Points[i]));
+                    waterIndices[index + 1] = (uint)points.FindIndex(p => p.Equals(site.Points[(i + 1) % site.Points.Count]));
+                    index += 3;
+                }
+            }
+            WaterVertexBuffer = Buffer.Create(Renderer.Device, BindFlags.VertexBuffer, waterVertices);
+            WaterIndexBuffer = Buffer.Create(Renderer.Device, BindFlags.IndexBuffer, waterIndices);
         }
 
         private Vector4 GetWeights(float altitude)
         {
-            Vector4 weights = new Vector4(1);
-            weights.X = MathUtil.Clamp((-altitude + 40)/20, 0, 1);
-            weights.Y = MathUtil.Clamp(Math.Abs(altitude-75)/40,0,1);
-            weights.Z = MathUtil.Clamp(Math.Abs(altitude - 175)/80, 0, 1);
-            weights.W = MathUtil.Clamp((altitude - 350)/50, 0, 1);
+            Vector4 weights = new Vector4(1)
+            {
+                X = MathUtil.Clamp((-altitude + 40)/20, 0, 1),
+                Y = MathUtil.Clamp(Math.Abs(altitude - 75)/40, 0, 1),
+                Z = MathUtil.Clamp(Math.Abs(altitude - 175)/80, 0, 1),
+                W = MathUtil.Clamp((altitude - 350)/50, 0, 1)
+            };
             weights.Normalize();
             return weights;
         }
@@ -196,8 +200,8 @@ namespace Alpha.UI.Controls
             Renderer.EnableZBuffer();
             viewMatrix = _camera.ViewMatrix;
             projectionMatrix = Renderer.ProjectionMatrix;
-            //_skydome.Render(deviceContext);
-            //Renderer.LightShader.Render(deviceContext, _skydome.IndexCount, Matrix.Scaling(10000) * Matrix.RotationY(MathUtil.PiOverTwo-_waveTranslation.X/8), viewMatrix, projectionMatrix, _skydome.Texture, _light, _camera);
+            _skydome.Render(deviceContext);
+            Renderer.LightShader.Render(deviceContext, _skydome.IndexCount, Matrix.Scaling(10000) * Matrix.RotationY(MathUtil.PiOverTwo - _waveTranslation.X / 8), viewMatrix, projectionMatrix, _skydome.Texture, _light, _camera);
 
             //deviceContext.ClearDepthStencilView(Renderer.RenderToTextureDepthStencilView, DepthStencilClearFlags.Depth, 1, 0);
             //_refractionTexture.SetRenderTarget(deviceContext, Renderer.RenderToTextureDepthStencilView);
@@ -211,17 +215,17 @@ namespace Alpha.UI.Controls
             //_reflectionTexture.SetRenderTarget(deviceContext, Renderer.RenderToTextureDepthStencilView);
             //_reflectionTexture.ClearRenderTarget(deviceContext, Renderer.RenderToTextureDepthStencilView, 0.0f, 0.0f, 0.0f, 1.0f);
             //_skydome.Render(deviceContext);
-            //Renderer.LightShader.Render(deviceContext, _skydome.IndexCount, Matrix.Scaling(10000) * Matrix.RotationY(MathUtil.PiOverTwo - _waveTranslation.X/8), viewMatrix, projectionMatrix, _skydome.Texture, _light, _camera);
+            //Renderer.LightShader.Render(deviceContext, _skydome.IndexCount, Matrix.Scaling(10000) * Matrix.RotationY(MathUtil.PiOverTwo - _waveTranslation.X / 8), viewMatrix, projectionMatrix, _skydome.Texture, _light, _camera);
             //deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal4Weights>(), 0));
             //deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
             //deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             //Renderer.TerrainShader.Render(deviceContext, TerrainIndexCount, worldMatrix, _camera.ReflectionMatrix, projectionMatrix, _light, _terrainTextures, _reflectionClippingPlane);
             //Renderer.SetBackBufferAsRenderTarget();
             ////Render water
-            //deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTexture>(), 0));
-            //deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
-            //deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            //Renderer.WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix, _camera.ReflectionMatrix, _reflectionTexture.ShaderResourceView, _refractionTexture.ShaderResourceView, _waterBumpMap, _waveTranslation, _camera.Position);
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(WaterVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTexture>(), 0));
+            deviceContext.InputAssembler.SetIndexBuffer(WaterIndexBuffer, Format.R32_UInt, 0);
+            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            Renderer.WaterShader.Render(deviceContext, WaterIndexCount, worldMatrix, viewMatrix, projectionMatrix, _camera.ReflectionMatrix, _reflectionTexture.ShaderResourceView, _refractionTexture.ShaderResourceView, _waterBumpMap, _waveTranslation, _camera.Position);
             ////Render terrain
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(TerrainVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal4Weights>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(TerrainIndexBuffer, Format.R32_UInt, 0);
