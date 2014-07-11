@@ -112,12 +112,12 @@ namespace Alpha.Graphics.Shaders
 
             var samplerDescBorder = new SamplerStateDescription
             {
-                Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                Filter = Filter.Anisotropic,
                 AddressU = TextureAddressMode.MirrorOnce,
                 AddressV = TextureAddressMode.Border,
                 AddressW = TextureAddressMode.Border,
                 MipLodBias = 0,
-                MaximumAnisotropy = 4,
+                MaximumAnisotropy = 16,
                 ComparisonFunction = Comparison.Always,
                 BorderColor = Color.Transparent,
                 MinimumLod = 0,

@@ -171,7 +171,7 @@ namespace Alpha.UI.Controls
                     {
                         position = center,
                         bumpTexture = new Vector2((center.X / WaveTextureRepeat), (center.Z / WaveTextureRepeat)),
-                        borderTexture = new Vector2(Vector3.Distance(intersection, center)/16, x)
+                        borderTexture = new Vector2(Vector3.Distance(intersection, center)/8, x)
                     };
                     waterVertices[index+1] = new VertexDefinition.WaterVertex
                     {
