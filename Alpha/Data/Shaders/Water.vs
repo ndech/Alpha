@@ -15,15 +15,17 @@ cbuffer MatrixBuffer
 struct VertexInputType
 {
 	float4 position : POSITION;
-	float2 tex : TEXCOORD0;
+	float2 bumpTex : TEXCOORD0;
+	float2 borderTex : TEXCOORD1;
 };
 
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
-	float2 tex : TEXCOORD0;
-    float4 reflectionPosition : TEXCOORD1;
-    float4 refractionPosition : TEXCOORD2;
+	float2 bumpTex : TEXCOORD0;
+	float2 borderTex : TEXCOORD1;
+    float4 reflectionPosition : TEXCOORD2;
+    float4 refractionPosition : TEXCOORD3;
 	float fogFactor : FOG;
 	float depth : DEPTH;
 };
@@ -46,7 +48,8 @@ PixelInputType WaterVertexShader(VertexInputType input)
 	output.position = mul(output.position, projectionMatrix);
 
 	// Store the input color for the pixel shader to use.
-	output.tex = input.tex;
+	output.bumpTex = input.bumpTex;
+	output.borderTex = input.borderTex;
 
 	// Calculate the camera position.
     float4 cameraPosition = mul(input.position, worldMatrix);

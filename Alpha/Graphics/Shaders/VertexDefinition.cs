@@ -234,5 +234,52 @@ namespace Alpha.Graphics.Shaders
                 return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
             }
         }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WaterVertex
+        {
+            private static readonly int AppendAlignedElement1 = 12;
+            private static readonly int AppendAlignedElement2 = 20;
+            public Vector3 position;
+            public Vector2 bumpTexture;
+            public Vector2 borderTexture;
+
+            public static InputLayout GetInputLayout(Device device, CompilationResult vertexShaderByteCode)
+            {
+                var inputElements = new InputElement[]
+                {
+                    new InputElement
+                    {
+                        SemanticName = "POSITION",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 0,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = AppendAlignedElement1,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 1,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = AppendAlignedElement2,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    }
+                };
+                return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
+            }
+        }
     }
 }

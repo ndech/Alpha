@@ -305,6 +305,9 @@
     <Content Include="Data\MousePointers\default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Textures\border.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Textures\Circle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

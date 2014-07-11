@@ -16,9 +16,9 @@ namespace Alpha.WorldGeneration
     }
     public static class Generator
     {
-        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations)
+        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations, int seed)
         {
-            RandomGenerator.ResetSeed(1256);
+            RandomGenerator.ResetSeed(seed);
             Dictionary<Vector, VoronoiSite> points = new Dictionary<Vector, VoronoiSite>(pointCount);
             for (int i = 0; i < pointCount; i++)
             {

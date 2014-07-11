@@ -1,4 +1,5 @@
-﻿SamplerState SampleType;
+﻿SamplerState SampleWrap : register (s0);
+SamplerState SampleBorder : register (s1);
 
 cbuffer TranslateBuffer : register (b0)
 {
@@ -15,6 +16,7 @@ cbuffer CameraPositionBuffer : register (b1)
 Texture2D reflectionTexture : register( t0 );
 Texture2D refractionTexture : register( t1 );
 Texture2D wavesTexture      : register( t2 );
+Texture2D borderTexture     : register( t3 );
 
 //////////////////////
 ////   TYPES
@@ -22,9 +24,10 @@ Texture2D wavesTexture      : register( t2 );
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
-	float2 tex : TEXCOORD0;
-    float4 reflectionPosition : TEXCOORD1;
-    float4 refractionPosition : TEXCOORD2;
+	float2 bumpTex : TEXCOORD0;
+	float2 borderTex : TEXCOORD1;
+    float4 reflectionPosition : TEXCOORD2;
+    float4 refractionPosition : TEXCOORD3;
 	float fogFactor : FOG;
 	float depth : DEPTH;
 };
@@ -40,6 +43,7 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
 	float4 refractionColor;
 	float4 normalMap;
 	float3 normal;
+	float4 border;
 	
     // Calculate the projected reflection texture coordinates.
     reflectTexCoord.x = input.reflectionPosition.x / input.reflectionPosition.w / 2.0f + 0.5f;
@@ -50,20 +54,22 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
     refractTexCoord.y = -input.refractionPosition.y / input.refractionPosition.w / 2.0f + 0.5f;
 
 	//Sample bump map :
-	normalMap = wavesTexture.Sample(SampleType, (input.tex+translateVector)/13);
-	normalMap = (normalMap + wavesTexture.Sample(SampleType, (input.tex-translateVector)/8));
+	normalMap = wavesTexture.Sample(SampleWrap, (input.bumpTex+translateVector)/17);
+	normalMap = (normalMap + wavesTexture.Sample(SampleWrap, (input.bumpTex-translateVector)/11));
 	normal = (normalMap.xyz ) - 1.0f;
 
 	float3 eyeVector = cameraPosition-input.position.xyz;
 	float fresnelTerm = -dot(normalize(eyeVector),float3(0,1,0));
+	border = borderTexture.Sample(SampleBorder, input.borderTex);
 
-    reflectionColor = reflectionTexture.Sample(SampleType, saturate(reflectTexCoord + -abs(normal.xy/8)));
-    refractionColor = refractionTexture.Sample(SampleType, saturate(refractTexCoord + normal.xy/8));
+    reflectionColor = reflectionTexture.Sample(SampleWrap, saturate(reflectTexCoord + -abs(normal.xy/8)));
+    refractionColor = refractionTexture.Sample(SampleWrap, saturate(refractTexCoord + normal.xy/8));
 	
 	float depthFactor = saturate(-input.depth/800);
 	float4 color = float4(0.05f, 0.15f, 0.35f, 1)*depthFactor + float4(0.2f, 0.4f, 0.9f, 1)*(1-depthFactor);
 	color = lerp(reflectionColor,refractionColor, fresnelTerm);
 	color = lerp(color, float4(0.11f, 0.61f, 0.80f, 1.0f),0.3f);
-	//return color;
+	color = float4(0.3f, 0.5f, 0.8f, 1) + float4(normal.x, normal.y, normal.z, 0)*0.2f+border.w*border;
+	return color;
 	return lerp(color, float4(0.75,0.75,0.75,1), 1-input.fogFactor);
 }

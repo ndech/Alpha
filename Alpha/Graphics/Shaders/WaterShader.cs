@@ -40,7 +40,8 @@ namespace Alpha.Graphics.Shaders
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantTranslationBuffer { get; set; }
         Buffer ConstantCameraPositionBuffer { get; set; }
-        SamplerState SamplerState { get; set; }
+        SamplerState SamplerStateWrap { get; set; }
+        SamplerState SamplerStateBorder { get; set; }
 
         public WaterShader(Device device)
         {
@@ -50,7 +51,7 @@ namespace Alpha.Graphics.Shaders
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
 
-            Layout = VertexDefinition.PositionTexture.GetInputLayout(device, vertexShaderByteCode);
+            Layout = VertexDefinition.WaterVertex.GetInputLayout(device, vertexShaderByteCode);
 
             vertexShaderByteCode.Dispose();
             pixelShaderByteCode.Dispose();
@@ -92,14 +93,14 @@ namespace Alpha.Graphics.Shaders
             ConstantCameraPositionBuffer = new Buffer(device, cameraPositionBufferDesc);
 
             // Create a texture sampler state description.
-            var samplerDesc = new SamplerStateDescription
+            var samplerDescWrap = new SamplerStateDescription
             {
                 Filter = Filter.ComparisonMinLinearMagPointMipLinear,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,
                 MipLodBias = 0,
-                MaximumAnisotropy = 4,
+                MaximumAnisotropy = 1,
                 ComparisonFunction = Comparison.Always,
                 BorderColor = new Color4(0, 0, 0, 0),
                 MinimumLod = 0,
@@ -107,11 +108,28 @@ namespace Alpha.Graphics.Shaders
             };
 
             // Create the texture sampler state.
-            SamplerState = new SamplerState(device, samplerDesc);
+            SamplerStateWrap = new SamplerState(device, samplerDescWrap);
+
+            var samplerDescBorder = new SamplerStateDescription
+            {
+                Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                AddressU = TextureAddressMode.MirrorOnce,
+                AddressV = TextureAddressMode.Border,
+                AddressW = TextureAddressMode.Border,
+                MipLodBias = 0,
+                MaximumAnisotropy = 4,
+                ComparisonFunction = Comparison.Always,
+                BorderColor = Color.Transparent,
+                MinimumLod = 0,
+                MaximumLod = float.MaxValue
+            };
+
+            // Create the texture sampler state.
+            SamplerStateBorder = new SamplerState(device, samplerDescBorder);
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflexionMatrix,
-            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap, Vector2 translation, Vector3 cameraPosition)
+            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap, ShaderResourceView borderTexture, Vector2 translation, Vector3 cameraPosition)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -174,10 +192,12 @@ namespace Alpha.Graphics.Shaders
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantTranslationBuffer);
             deviceContext.PixelShader.SetConstantBuffer(1, ConstantCameraPositionBuffer);
-            deviceContext.PixelShader.SetSampler(0, SamplerState);
+            deviceContext.PixelShader.SetSampler(0, SamplerStateWrap);
+            deviceContext.PixelShader.SetSampler(1, SamplerStateBorder);
             deviceContext.PixelShader.SetShaderResource(0, reflectionMap);
             deviceContext.PixelShader.SetShaderResource(1, refractionMap);
             deviceContext.PixelShader.SetShaderResource(2, bumpMap);
+            deviceContext.PixelShader.SetShaderResource(3, borderTexture);
 
             // Render the triangle.
             deviceContext.DrawIndexed(indexCount, 0, 0);
