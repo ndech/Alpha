@@ -31,9 +31,9 @@ namespace Alpha.Graphics
 
         public override void Initialize(Action<string> feedback)
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             _texture = renderer.TextureManager.Create("default.png", @"Data/MousePointers/");
-            _input = Game.Services.GetService<IInput>();
+            _input = Game.Services.Get<IInput>();
             _screenSize = renderer.ScreenSize;
             _rectangle = new TexturedRectangle(renderer, new Vector2I(_texture.Width, _texture.Height), _texture);
         }
@@ -58,7 +58,7 @@ namespace Alpha.Graphics
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IMousePointer>(this);
+            Game.Services.Register<IMousePointer>(this);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Alpha
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IProvinceManager>(this);
+            Game.Services.Register<IProvinceManager>(this);
         }
     }
 }

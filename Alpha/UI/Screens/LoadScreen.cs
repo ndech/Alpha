@@ -34,7 +34,7 @@ namespace Alpha.UI.Screens
             LoadingScreen screen = new LoadingScreen(Game);
             UiManager.AddScreen(screen);
 
-            IMousePointer pointer = Game.Services.GetService<IMousePointer>();
+            IMousePointer pointer = Game.Services.Get<IMousePointer>();
             pointer.Type = MousePointer.CursorType.None;
             Game.Load(fileName, (text) =>
             {

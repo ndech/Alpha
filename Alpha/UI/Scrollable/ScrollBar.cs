@@ -20,7 +20,7 @@ namespace Alpha.UI.Scrollable
         private int _position;
         public ScrollBar(IGame game, String id) : base(game, id, new UniRectangle())
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             _fixedTexture = renderer.TextureManager.Create("SlidingBarConsole_fix.png", @"Data/UI/");
             _movingTexture = renderer.TextureManager.Create("SlidingBarConsole_mobile.png", @"Data/UI/");
             _width = _fixedTexture.Width;
@@ -40,7 +40,7 @@ namespace Alpha.UI.Scrollable
 
         public override void Initialize()
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             _fixedPart = new TexturedExtensibleRectangle(renderer, new Vector2I(_width, Size.Y), _fixedTexture, _width);
             _movingPart = new TexturedExtensibleRectangle(renderer, new Vector2I(_width, 160), _movingTexture, 3);
         }

@@ -63,7 +63,7 @@ namespace Alpha.UI.Controls
 
         public override void Initialize()
         {
-            Renderer = Game.Services.GetService<IRenderer>();
+            Renderer = Game.Services.Get<IRenderer>();
             _terrainTextures[0] = Renderer.TextureManager.Create("Sand.png").TextureResource;
             _terrainTextures[1] = Renderer.TextureManager.Create("Grass.png").TextureResource;
             _terrainTextures[2] = Renderer.TextureManager.Create("Ground.png").TextureResource;
@@ -85,7 +85,7 @@ namespace Alpha.UI.Controls
                 SpecularColor = new Vector4(1.0f, 1.0f, 0.7f, 1.0f)
             };
 
-            _camera = Game.Services.GetService<ICamera>();
+            _camera = Game.Services.Get<ICamera>();
             List<VoronoiSite> sites = Generator.Create(_width, _height, 1000, 1, 1256);
             BuildBuffers(sites);
         }
@@ -101,7 +101,7 @@ namespace Alpha.UI.Controls
             List<VoronoiSite> adjacentSites = sites.Where(s => s.Points.Contains(point)).ToList();
             if (adjacentSites.Count == 0)
                 adjacentSites = sites.Where(s => s.Center.Equals(point)).ToList();
-            return (float)adjacentSites.Average(s => s.IsWater ? 0 : s.ShoreDistance - 1) * 70;
+            return (float)adjacentSites.Average(s => s.IsWater ? 0 : s.ShoreDistance - 1) * 30;
         }
 
         private void BuildBuffers(List<VoronoiSite> sites)

@@ -63,7 +63,7 @@
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<ICharacterManager>(this);
+            Game.Services.Register<ICharacterManager>(this);
         }
     }
 }

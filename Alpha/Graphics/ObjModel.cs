@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Alpha.Graphics.Shaders;
 using Alpha.Toolkit;
+using Assimp;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -22,6 +23,9 @@ namespace Alpha.Graphics
 
         public ObjModel(Device device, String modelFileName, Texture texture)
         {
+            AssimpContext context = new AssimpContext();
+            //Scene scene = context.ImportFile("Data/Models/" + modelFileName, PostProcessSteps.MakeLeftHanded | PostProcessSteps.Triangulate);
+            
             StreamReader reader = new StreamReader("Data/Models/"+modelFileName);
             List<Vector3> vertices = new List<Vector3>();
             List<Vector2> textures = new List<Vector2>();

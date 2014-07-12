@@ -69,7 +69,8 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
 	float4 color = float4(0.05f, 0.15f, 0.35f, 1)*depthFactor + float4(0.2f, 0.4f, 0.9f, 1)*(1-depthFactor);
 	color = lerp(reflectionColor,refractionColor, fresnelTerm);
 	color = lerp(color, float4(0.11f, 0.61f, 0.80f, 1.0f),0.3f);
-	color = float4(0.3f, 0.5f, 0.8f, 1) + float4(normal.x, normal.y, normal.z, 0)*0.2f+border.w*border;
+	color = float4(0.3f, 0.5f, 0.8f, 1) + float4(normal.x, normal.y, normal.z, 0)*0.2f;//+border.w*float4(0.2f, 0.2f, 0.2f, 1);
+	color = lerp(color, float4(0.2f, 0.2f, 0.2f, 1),border.w*2);
 	return color;
 	return lerp(color, float4(0.75,0.75,0.75,1), 1-input.fogFactor);
 }

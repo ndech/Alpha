@@ -51,7 +51,7 @@ namespace Alpha.UI.Controls
 
         public override void Initialize()
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
 
             Texture fixedTexture = renderer.TextureManager.Create("SliderFixedPart.png", @"Data/UI/");
             _padding = fixedTexture.Height;

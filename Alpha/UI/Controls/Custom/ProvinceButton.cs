@@ -15,7 +15,7 @@ namespace Alpha.UI.Controls.Custom
         public override void Initialize()
         {
             base.Initialize();
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             Register(new Icon(Game, "growth_icon", new UniRectangle(new UniScalar(1.0f, -30), 5, 20, 20),
                 renderer.TextureManager.Create("PauseIcon.png", "Data/UI/Icons/")));
         }

@@ -25,7 +25,7 @@ namespace Alpha.UI
             Id = id;
             Parent = null;
             Controls = new List<Control>();
-            UiManager = game.Services.GetService<IUiManager>();
+            UiManager = game.Services.Get<IUiManager>();
         }
         
         public void UpdateTree(double delta)

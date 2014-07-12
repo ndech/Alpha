@@ -65,7 +65,7 @@ namespace Alpha.Graphics
         public override void Dispose() { }
         public void RegisterAsService()
         {
-            Game.Services.AddService<ICamera>(this);
+            Game.Services.Register<ICamera>(this);
         }
     }
 }

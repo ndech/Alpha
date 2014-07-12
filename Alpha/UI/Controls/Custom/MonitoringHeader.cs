@@ -23,7 +23,7 @@ namespace Alpha.UI.Controls.Custom
         public override void Initialize()
         {
             base.Initialize();
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             _videoCardInfo = renderer.VideoCardName + " (" + renderer.VideoCardMemorySize + " MB)";
             _label = Register(new Label(Game, "monitoring_header_label", Coordinates, ""));
         }

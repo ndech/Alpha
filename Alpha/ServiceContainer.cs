@@ -12,7 +12,7 @@
             _services = new Dictionary<Type, object>();
         }
 
-        public void AddService<T>(T item) where T : IService
+        public void Register<T>(T item) where T : IService
         {
             _services[typeof(T)] = item;
         }
@@ -22,7 +22,7 @@
             _services.Remove(typeof(T));
         }
         
-        public T GetService<T>() where T : IService
+        public T Get<T>() where T : IService
         {
             return (T)_services[typeof(T)];
         }

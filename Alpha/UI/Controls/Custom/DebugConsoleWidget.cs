@@ -25,10 +25,11 @@ namespace Alpha.UI.Controls.Custom
             get { return _scriptContext ?? 
                 (_scriptContext = 
                 new ScriptContext(
-                    Game.Services.GetService<ICalendar>(), 
-                    Game.Services.GetService<IEventManager>(), 
-                    Game.Services.GetService<IRealmManager>().PlayerRealm, 
-                    Game.Services.GetService<IRealmManager>().Realms.Cast<IScriptableRealm>().ToList())); }
+                    Game.Services.Get<ICalendar>(), 
+                    Game.Services.Get<IEventManager>(), 
+                    Game.Services.Get<IRealmManager>().PlayerRealm, 
+                    Game.Services.Get<IRealmManager>().Realms.Cast<IScriptableRealm>().ToList(),
+                    Game.Services.Get<IFleetManager>())); }
         }
 
         public DebugConsoleWidget(IGame game) : base(game, "debug_console", new UniRectangle(0,0,1.0f,1.0f), new Color(0,0,0,0.8f))

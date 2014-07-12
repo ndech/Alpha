@@ -46,7 +46,7 @@ namespace Alpha
         
         public override void Initialize(Action<string> feedback)
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             _mousePosition = renderer.ScreenSize/2;
             _form = renderer.Form;
             _form.MouseWheel+= OnMouseWheel;
@@ -126,7 +126,7 @@ namespace Alpha
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IInput>(this);
+            Game.Services.Register<IInput>(this);
         }
     }
 }

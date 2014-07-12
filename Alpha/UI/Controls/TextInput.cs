@@ -43,7 +43,7 @@ namespace Alpha.UI.Controls
 
         public override void Initialize()
         {
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
             TextInputStyle style = UiManager.StyleManager.GetStyle(this);
             _plainRectangle = new PlainRectangle(renderer, Size, Color.BlanchedAlmond);
             _text = renderer.TextManager.Create(style.Font, style.FontSize, _textValue, Size, style.TextColor,

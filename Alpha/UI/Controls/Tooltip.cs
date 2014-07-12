@@ -42,7 +42,7 @@ namespace Alpha.UI.Controls
         public Tooltip(IGame game, String id, Control associatedControl, double delay, string text)
             : base(game, id, new UniRectangle())
         {
-            IRenderer renderer = game.Services.GetService<IRenderer>();
+            IRenderer renderer = game.Services.Get<IRenderer>();
 
             _associatedControl = associatedControl;
             _text = renderer.TextManager.Create("Arial", 20, 1080, Color.Wheat);

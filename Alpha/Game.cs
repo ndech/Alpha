@@ -42,6 +42,7 @@ namespace Alpha
                      new CharacterManager(this),
                      new EventManager(this),
                      new RealmManager(this),
+                     new FleetManager(this),
                      pointer);
             
             foreach (IService service in _gameComponents.OfType<IService>())

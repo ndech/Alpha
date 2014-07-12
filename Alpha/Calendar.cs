@@ -113,7 +113,7 @@ namespace Alpha
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<ICalendar>(this);
+            Game.Services.Register<ICalendar>(this);
         }
 
         public int SaveOrder { get { return 0; } }

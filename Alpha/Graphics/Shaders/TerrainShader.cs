@@ -47,8 +47,8 @@ namespace Alpha.Graphics.Shaders
 
         public TerrainShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "TerrainVertexShader", "vs_4_0", ShaderFlags.None, EffectFlags.None);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "TerrainPixelShader", "ps_4_0", ShaderFlags.None, EffectFlags.None);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "TerrainVertexShader", "vs_4_0", ShaderFlags.Debug, EffectFlags.None);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "TerrainPixelShader", "ps_4_0", ShaderFlags.Debug, EffectFlags.None);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

@@ -118,7 +118,7 @@ namespace Alpha.Graphics
 
         public override void Initialize(Action<string> feedback)
         {
-            Camera = Game.Services.GetService<ICamera>();
+            Camera = Game.Services.Get<ICamera>();
         }
 
         public override void Update(double delta)
@@ -138,7 +138,7 @@ namespace Alpha.Graphics
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IRenderer>(this);
+            Game.Services.Register<IRenderer>(this);
         }
     }
 }

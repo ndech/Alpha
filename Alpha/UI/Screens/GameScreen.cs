@@ -17,7 +17,7 @@ namespace Alpha.UI.Screens
         private Terrain _terrain;
         public GameScreen(IGame game) : base(game, "game_screen")
         {
-            _playerRealm = game.Services.GetService<IRealmManager>().PlayerRealm;
+            _playerRealm = game.Services.Get<IRealmManager>().PlayerRealm;
             _demesne = _playerRealm.Demesne;
             Register(_terrain = new Terrain(game));
             Register(new CalendarWidget(game));
@@ -28,6 +28,11 @@ namespace Alpha.UI.Screens
             Button regenerateButton =
                 Register(new Button(game, "regenerate", new UniRectangle(new UniScalar(0.5f, -220), 0, 160, 30), "Regenerate map"));
             regenerateButton.Clicked += (b) => _terrain.Regenerate();
+
+            Button newFleetButton =
+                Register(new Button(game, "new_fleet", new UniRectangle(new UniScalar(0.5f, -340), 0, 120, 30), "New fleet"));
+            newFleetButton.Clicked += (b) => Game.Services.Get<IFleetManager>().Fleets.Add(new Fleet{Name = "Reinforcement", ShipCount = 11});
+
             Panel provincesPanel = Register(new Panel(game, "provinces_panel", new UniRectangle(0, 90, 500, 400), Color.LawnGreen));
             provincesPanel.Visible = false;
 

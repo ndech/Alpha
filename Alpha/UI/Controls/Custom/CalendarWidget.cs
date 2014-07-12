@@ -18,8 +18,8 @@ namespace Alpha.UI.Controls.Custom
         public override void Initialize()
         {
             base.Initialize();
-            _calendar = Game.Services.GetService<ICalendar>();
-            IRenderer renderer = Game.Services.GetService<IRenderer>();
+            _calendar = Game.Services.Get<ICalendar>();
+            IRenderer renderer = Game.Services.Get<IRenderer>();
 
             Button dateButton = Register(new Button(Game, "calendar_date", new UniRectangle(0.05f, 0.1f, 0.82f, 0.8f), _calendar + "   "));
             dateButton.Clicked += (b) => _calendar.Paused = !_calendar.Paused;

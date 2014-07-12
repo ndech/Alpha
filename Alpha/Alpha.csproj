@@ -100,6 +100,9 @@
     <None Include="Data\Fonts\Courrier-14px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Models\basicBoat.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\Models\skydome.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -151,6 +154,8 @@
     <Compile Include="Events\IModifier.cs" />
     <Compile Include="Events\Outcome.cs" />
     <Compile Include="Events\XmlEventParsingExtension.cs" />
+    <Compile Include="Fleet.cs" />
+    <Compile Include="FleetManager.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
@@ -254,6 +259,9 @@
     <Compile Include="ConfigurationManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AssimpNet">
+      <HintPath>..\AssimpNet\AssimpNet.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="Roslyn.Compilers">
       <HintPath>..\Roslyn\Roslyn.Compilers.dll</HintPath>

@@ -29,10 +29,11 @@ namespace Alpha.Events
                 return _scriptContext ??
                        (_scriptContext =
                            new ScriptContext(
-                               Game.Services.GetService<ICalendar>(),
-                               Game.Services.GetService<IEventManager>(),
-                               Game.Services.GetService<IRealmManager>().PlayerRealm,
-                               Game.Services.GetService<IRealmManager>().Realms.Cast<IScriptableRealm>().ToList()));
+                               Game.Services.Get<ICalendar>(),
+                               Game.Services.Get<IEventManager>(),
+                               Game.Services.Get<IRealmManager>().PlayerRealm,
+                               Game.Services.Get<IRealmManager>().Realms.Cast<IScriptableRealm>().ToList(),
+                               Game.Services.Get<IFleetManager>()));
             }
         }
 
@@ -188,7 +189,7 @@ namespace Alpha.Events
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IEventManager>(this);
+            Game.Services.Register<IEventManager>(this);
         }
 
         public void Trigger(IEventable target, string eventId, string delay, object[] parameters)

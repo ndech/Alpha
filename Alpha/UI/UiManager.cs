@@ -52,14 +52,14 @@ namespace Alpha.UI
 
         public override void Initialize(Action<string> feedback)
         {
-            _input = Game.Services.GetService<IInput>();
+            _input = Game.Services.Get<IInput>();
             _input.MouseMoved += OnMouseMoved;
             _input.MouseClicked += OnMouseClicked;
             _input.MouseReleased += OnMouseReleased;
             _input.KeyPressed += OnKeyPressed;
             _input.KeyReleased += OnKeyReleased;
             _input.MouseScrolled += OnMouseScrolled;
-            ScreenSize = Game.Services.GetService<IRenderer>().ScreenSize;
+            ScreenSize = Game.Services.Get<IRenderer>().ScreenSize;
         }
 
         private void OnMouseScrolled(int delta)
@@ -116,7 +116,7 @@ namespace Alpha.UI
 
         public void RegisterAsService()
         {
-            Game.Services.AddService<IUiManager>(this);
+            Game.Services.Register<IUiManager>(this);
         }
 
         public void AddScreen(Screen screen)
