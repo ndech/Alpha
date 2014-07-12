@@ -34,7 +34,7 @@ namespace Alpha
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.WaterVertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            renderer.WaterShader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _bumpMapTexture, _borderTexture, _waveTranslation);
+            renderer.WaterShader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _bumpMapTexture, _borderTexture, _waveTranslation, sun);
         }
 
         public void Update(double delta)

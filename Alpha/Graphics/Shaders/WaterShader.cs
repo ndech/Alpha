@@ -24,6 +24,24 @@ namespace Alpha.Graphics.Shaders
             public Vector2 translation;
             public Vector2 padding;
         }
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct LightBuffer
+        {
+            public Vector4 ambiantColor;
+            public Vector4 diffuseColor;
+            public Vector3 direction;
+            public float specularPower;
+            public Vector4 specularColor;
+
+            public LightBuffer(Light light)
+            {
+                ambiantColor = light.AmbiantColor;
+                diffuseColor = light.Color;
+                direction = light.Direction;
+                specularColor = light.SpecularColor;
+                specularPower = light.SpecularPower;
+            }
+        }
 
         private const string ShaderFileName = @"Data/Shaders/Water.hlsl";
         VertexShader VertexShader { get; set; }
@@ -31,6 +49,7 @@ namespace Alpha.Graphics.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantTranslationBuffer { get; set; }
+        Buffer ConstantLightBuffer { get; set; }
         SamplerState SamplerStateWrap { get; set; }
         SamplerState SamplerStateBorder { get; set; }
 
@@ -70,6 +89,19 @@ namespace Alpha.Graphics.Shaders
                 StructureByteStride = 0
             };
             ConstantTranslationBuffer = new Buffer(device, translateBufferDesc);
+
+
+            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+            var lightBufferDesc = new BufferDescription
+            {
+                Usage = ResourceUsage.Dynamic, // Updated each frame
+                SizeInBytes = Utilities.SizeOf<LightBuffer>(),
+                BindFlags = BindFlags.ConstantBuffer,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = ResourceOptionFlags.None,
+                StructureByteStride = 0
+            };
+            ConstantLightBuffer = new Buffer(device, lightBufferDesc);
             
             // Create a texture sampler state description.
             var samplerDescWrap = new SamplerStateDescription
@@ -108,7 +140,7 @@ namespace Alpha.Graphics.Shaders
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix,
-            ShaderResourceView bumpMap, ShaderResourceView borderTexture, Vector2 translation)
+            ShaderResourceView bumpMap, ShaderResourceView borderTexture, Vector2 translation, Light light)
         {
             DataStream mappedResource;
 
@@ -128,12 +160,17 @@ namespace Alpha.Graphics.Shaders
             mappedResource.Write(new TranslationBuffer { translation = translation });
             deviceContext.UnmapSubresource(ConstantTranslationBuffer, 0);
 
+            deviceContext.MapSubresource(ConstantLightBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
+            mappedResource.Write(new LightBuffer(light));
+            deviceContext.UnmapSubresource(ConstantLightBuffer, 0);
+
             deviceContext.InputAssembler.InputLayout = Layout;
 
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetConstantBuffer(1, ConstantTranslationBuffer);
+            deviceContext.PixelShader.SetConstantBuffer(2, ConstantLightBuffer);
             deviceContext.PixelShader.SetSampler(0, SamplerStateWrap);
             deviceContext.PixelShader.SetSampler(1, SamplerStateBorder);
             deviceContext.PixelShader.SetShaderResource(0, bumpMap);

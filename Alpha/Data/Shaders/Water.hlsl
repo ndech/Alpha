@@ -49,6 +49,15 @@ cbuffer TranslateBuffer : register (b1)
 	float2 padding;
 };
 
+cbuffer LightBuffer : register (b2)
+{
+	float4 ambiantColor;
+	float4 diffuseColor;
+	float3 lightDirection;
+	float specularPower;
+	float4 specularColor;
+};
+
 Texture2D wavesTexture      : register(t0);
 Texture2D borderTexture     : register(t1);
 
