@@ -23,7 +23,7 @@ namespace Alpha
         public abstract void Dispose();
         public int CompareTo(GameComponent other)
         {
-            return UpdateOrder- other.UpdateOrder;
+            return UpdateOrder - other.UpdateOrder;
         }
     }
 }

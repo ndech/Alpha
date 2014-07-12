@@ -14,20 +14,15 @@ namespace Alpha.UI.Screens
     {
         private readonly IList<Territory> _demesne;
         private Realm _playerRealm;
-        private Terrain _terrain;
         public GameScreen(IGame game) : base(game, "game_screen")
         {
             _playerRealm = game.Services.Get<IRealmManager>().PlayerRealm;
             _demesne = _playerRealm.Demesne;
-            Register(_terrain = new Terrain(game));
             Register(new CalendarWidget(game));
 
             Button menuButton = Register(new Button(game, "menu", new UniRectangle(new UniScalar(0.5f, -40), 0, 80, 30), "Menu"));
             menuButton.Clicked += (b) => UiManager.AddScreen(new MenuScreen(game));
             menuButton.Shortcut = Key.Escape;
-            Button regenerateButton =
-                Register(new Button(game, "regenerate", new UniRectangle(new UniScalar(0.5f, -220), 0, 160, 30), "Regenerate map"));
-            regenerateButton.Clicked += (b) => _terrain.Regenerate();
 
             Button newFleetButton =
                 Register(new Button(game, "new_fleet", new UniRectangle(new UniScalar(0.5f, -340), 0, 120, 30), "New fleet"));

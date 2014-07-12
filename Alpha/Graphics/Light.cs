@@ -2,7 +2,7 @@
 
 namespace Alpha.Graphics
 {
-    class Light
+    abstract class Light
     {
         public Vector3 Direction { get; set; }
         public Vector4 Color { get; set; }
@@ -11,9 +11,7 @@ namespace Alpha.Graphics
         public Vector4 SpecularColor { get; set; }
 
         public Light()
-        {
-            
-        }
+        { }
 
         public Light(Vector3 direction, Vector4 color, Vector4 ambiantColor, float specularPower, Vector4 specularColor)
         {

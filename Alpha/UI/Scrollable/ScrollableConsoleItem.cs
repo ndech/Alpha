@@ -34,7 +34,7 @@ namespace Alpha.UI.Scrollable
                     prefix = "";
                     break;
             }
-            Text = prefix+item.Content;
+            Text = prefix + Graphics.Text.Escape(item.Content); ;
         }
 
         public static int Height { get { return 20; } }

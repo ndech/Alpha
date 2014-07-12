@@ -37,12 +37,13 @@ namespace Alpha
                      _calendar,
                      new Input(this),
                      new Camera(this),
+                     new World(this),
+                     new FleetManager(this),
                      _uiManager,
                      new ProvinceManager(this),
                      new CharacterManager(this),
                      new EventManager(this),
                      new RealmManager(this),
-                     new FleetManager(this),
                      pointer);
             
             foreach (IService service in _gameComponents.OfType<IService>())
@@ -61,10 +62,19 @@ namespace Alpha
             _calendar.DayChanged += OnDayChanged;
         }
 
-        public void InitializingFeedback(String loadedItem)
+        private void InitializingFeedback(String loadedItem)
         {
             _startUpScreen.Text = loadedItem;
-            Draw();
+            Draw(_uiManager);
+        }
+
+        private void Draw(params RenderableGameComponent[] items)
+        {
+            _renderer.Render(items.ToList());
+        }
+        public void Draw()
+        {
+            _renderer.Render();
         }
 
         private void Register(params GameComponent[] items)
@@ -97,10 +107,6 @@ namespace Alpha
                 component.DayUpdate();
         }
 
-        public void Draw()
-        {
-            _renderer.Render();
-        }
         private void OnMonthChanged()
         {
             

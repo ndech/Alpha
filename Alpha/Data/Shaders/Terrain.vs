@@ -8,11 +8,6 @@ cbuffer MatrixBuffer
     matrix projectionMatrix;
 };
 
-cbuffer ClippingPlane
-{
-	float4 clipPlane;
-}
-
 //////////////
 // TYPEDEFS //
 //////////////
@@ -31,7 +26,6 @@ struct PixelInputType
 	float4 weights : TEXCOORD1;
     float3 normal : NORMAL;
 	float fogFactor : FOG;
-	float clip : SV_ClipDistance0;
 };
 
 
@@ -52,18 +46,9 @@ PixelInputType TerrainVertexShader(VertexInputType input)
     
     // Calculate the normal vector against the world matrix only.
     output.normal = normalize(mul(input.normal, (float3x3)worldMatrix));
-
-	// Calculate the camera position.
-    float4 cameraPosition = mul(input.position, worldMatrix);
-    cameraPosition = mul(cameraPosition, viewMatrix);
-
-    // Calculate linear fog.
-    output.fogFactor = 1.0 / pow(2.71828,cameraPosition.z * 0.00008);
-
+	
 	output.tex = input.tex;
 	output.weights = input.weights;
-	
-    output.clip = dot(mul(input.position, worldMatrix), clipPlane);
 
     return output;
 }

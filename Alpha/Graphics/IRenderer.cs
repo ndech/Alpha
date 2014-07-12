@@ -27,6 +27,5 @@ namespace Alpha.Graphics
         Matrix ProjectionMatrix { get; }
         void SetBackBufferAsRenderTarget();
         void EnableZBuffer();
-        void DisableZBuffer();
     }
 }

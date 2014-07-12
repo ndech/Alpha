@@ -7,6 +7,7 @@ using Alpha.Events;
 using Alpha.Scripting;
 using Alpha.UI.Coordinates;
 using Alpha.UI.Scrollable;
+using Roslyn.Compilers;
 using Roslyn.Scripting;
 using Roslyn.Scripting.CSharp;
 using SharpDX;
@@ -48,6 +49,8 @@ namespace Alpha.UI.Controls.Custom
             ScriptEngine engine = new ScriptEngine();
             Session session = Session.Create(ScriptContext);
             session.AddReference(typeof(ScriptContext).Assembly);
+            session.AddReference(new AssemblyNameReference("System.Core"));
+            engine.Execute("using System.Linq;", session);
             Object obj;
             _input.OnSubmit += (s) =>
             {
@@ -61,6 +64,8 @@ namespace Alpha.UI.Controls.Custom
                     _submissions.Clear();
                     session = Session.Create(ScriptContext);
                     session.AddReference(typeof(ScriptContext).Assembly);
+                    session.AddReference(new AssemblyNameReference("System.Core"));
+                    engine.Execute("using System.Linq;", session);
                     container.Refresh();
                     return;
                 }

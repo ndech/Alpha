@@ -24,9 +24,13 @@ namespace Alpha.Graphics
             DirectX.SetBackBufferAsRenderTarget();
         }
 
+        public void EnableZBuffer()
+        {
+            DirectX.EnableZBuffer();
+        }
+
         public Dx11 DirectX { get; private set; }
         protected ICamera Camera { get; set; }
-        public Light Light { get; set; }
         public ColorShader ColorShader { get; set; }
         public TextureShader TextureShader { get; set; }
         public LightShader LightShader { get; set; }
@@ -48,14 +52,7 @@ namespace Alpha.Graphics
             CreateWindow();
             DirectX = new Dx11(Form);
             ScreenSize = new Vector2I(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
-            Light = new Light
-            {
-                Direction = new Vector3(1.0f, -1.0f, 0.0f),
-                Color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                AmbiantColor = new Vector4(0.16f, 0.16f, 0.16f, 1.0f),
-                SpecularPower = 32.0f,
-                SpecularColor = new Vector4(1.0f, 1.0f, 0.7f, 1.0f)
-            };
+            
             ColorShader = new ColorShader(DirectX.Device);
             TextureShader = new TextureShader(DirectX.Device);
             LightShader = new LightShader(DirectX.Device);
@@ -81,8 +78,12 @@ namespace Alpha.Graphics
 
         public void Render()
         {
+            Render(_renderables);
+        }
+        public void Render(List<RenderableGameComponent> items)
+        {
             DirectX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
-            foreach (RenderableGameComponent item in _renderables)
+            foreach (RenderableGameComponent item in items)
             {
                 if(item.BlendingEnabled)
                     DirectX.EnableAlphaBlending();
@@ -94,28 +95,18 @@ namespace Alpha.Graphics
                     DirectX.DisableWireFrame();
                 if (item.ZBufferEnabled)
                 {
-                    EnableZBuffer();
+                    DirectX.EnableZBuffer();
                     item.Render(DirectX.DeviceContext, Camera.ViewMatrix, DirectX.ProjectionMatrix);
                 }
                 else
                 {
-                    DisableZBuffer();
+                    DirectX.DisableZBuffer();
                     item.Render(DirectX.DeviceContext, Camera.UiMatrix, DirectX.OrthoMatrix);
                 }
             }
             DirectX.DrawScene();
         }
-
-        public void EnableZBuffer()
-        {
-            DirectX.EnableZBuffer();
-        }
-
-        public void DisableZBuffer()
-        {
-            DirectX.DisableZBuffer();
-        }
-
+        
         public override void Initialize(Action<string> feedback)
         {
             Camera = Game.Services.Get<ICamera>();

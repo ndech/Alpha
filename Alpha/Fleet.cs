@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Alpha.Scripting;
 
 namespace Alpha
 {
-    class Fleet : IScriptableFleet
+    interface IFleet : IScriptableFleet
+    { }
+    class Fleet : IFleet
     {
         public Realm Owner { get; set; }
         public int ShipCount { get; set; }

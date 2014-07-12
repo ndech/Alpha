@@ -17,7 +17,6 @@ namespace Alpha.Graphics.Shaders
             public Matrix world;
             public Matrix view;
             public Matrix projection;
-            public Matrix reflection;
         }
         [StructLayout(LayoutKind.Sequential)]
         public struct TranslationBuffer
@@ -25,28 +24,20 @@ namespace Alpha.Graphics.Shaders
             public Vector2 translation;
             public Vector2 padding;
         }
-        [StructLayout(LayoutKind.Sequential)]
-        public struct CameraPositionBuffer
-        {
-            public Vector3 position;
-            public float padding;
-        }
 
-        private const string VertexShaderFileName = @"Data/Shaders/Water.vs";
-        private const string PixelShaderFileName = @"Data/Shaders/Water.ps";
+        private const string ShaderFileName = @"Data/Shaders/Water.hlsl";
         VertexShader VertexShader { get; set; }
         PixelShader PixelShader { get; set; }
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantTranslationBuffer { get; set; }
-        Buffer ConstantCameraPositionBuffer { get; set; }
         SamplerState SamplerStateWrap { get; set; }
         SamplerState SamplerStateBorder { get; set; }
 
         public WaterShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "WaterVertexShader", "vs_4_0", ShaderFlags.Debug, EffectFlags.None);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "WaterPixelShader", "ps_4_0", ShaderFlags.Debug, EffectFlags.None);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "WaterVertexShader", "vs_4_0", ShaderFlags.Debug);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "WaterPixelShader", "ps_4_0", ShaderFlags.Debug);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
@@ -72,26 +63,14 @@ namespace Alpha.Graphics.Shaders
             var translateBufferDesc = new BufferDescription
             {
                 Usage = ResourceUsage.Dynamic, // Updated each frame
-                SizeInBytes = Utilities.SizeOf<TranslationBuffer>(), // Contains three matrices
+                SizeInBytes = Utilities.SizeOf<TranslationBuffer>(),
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.Write,
                 OptionFlags = ResourceOptionFlags.None,
                 StructureByteStride = 0
             };
             ConstantTranslationBuffer = new Buffer(device, translateBufferDesc);
-
-            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
-            var cameraPositionBufferDesc = new BufferDescription
-            {
-                Usage = ResourceUsage.Dynamic, // Updated each frame
-                SizeInBytes = Utilities.SizeOf<TranslationBuffer>(), // Contains three matrices
-                BindFlags = BindFlags.ConstantBuffer,
-                CpuAccessFlags = CpuAccessFlags.Write,
-                OptionFlags = ResourceOptionFlags.None,
-                StructureByteStride = 0
-            };
-            ConstantCameraPositionBuffer = new Buffer(device, cameraPositionBufferDesc);
-
+            
             // Create a texture sampler state description.
             var samplerDescWrap = new SamplerStateDescription
             {
@@ -128,78 +107,38 @@ namespace Alpha.Graphics.Shaders
             SamplerStateBorder = new SamplerState(device, samplerDescBorder);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflexionMatrix,
-            ShaderResourceView reflectionMap, ShaderResourceView refractionMap, ShaderResourceView bumpMap, ShaderResourceView borderTexture, Vector2 translation, Vector3 cameraPosition)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix,
+            ShaderResourceView bumpMap, ShaderResourceView borderTexture, Vector2 translation)
         {
-            worldMatrix.Transpose();
-            viewMatrix.Transpose();
-            projectionMatrix.Transpose();
-            reflexionMatrix.Transpose();
-            // Lock the constant memory buffer so it can be written to.
             DataStream mappedResource;
-            deviceContext.MapSubresource(ConstantMatrixBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
 
             // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
-            var matrixBuffer = new MatrixBuffer()
-            {
-                world = worldMatrix,
-                view = viewMatrix,
-                projection = projectionMatrix,
-                reflection = reflexionMatrix
-            };
-            mappedResource.Write(matrixBuffer);
-
-            // Unlock the constant buffer.
+            deviceContext.MapSubresource(ConstantMatrixBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
+            mappedResource.Write(
+                new MatrixBuffer
+                {
+                    world = Matrix.Transpose(worldMatrix),
+                    view = Matrix.Transpose(viewMatrix),
+                    projection = Matrix.Transpose(projectionMatrix)
+                });
             deviceContext.UnmapSubresource(ConstantMatrixBuffer, 0);
 
-
-            deviceContext.MapSubresource(ConstantTranslationBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-
-            // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
-            var translationBuffer = new TranslationBuffer()
-            {
-                translation = translation
-            };
-            mappedResource.Write(translationBuffer);
-
-            // Unlock the constant buffer.
+            //Copy translation buffer to GPU
+            deviceContext.MapSubresource(ConstantTranslationBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
+            mappedResource.Write(new TranslationBuffer { translation = translation });
             deviceContext.UnmapSubresource(ConstantTranslationBuffer, 0);
 
-
-            deviceContext.MapSubresource(ConstantCameraPositionBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-
-            // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
-            var cameraPositionBuffer = new CameraPositionBuffer()
-            {
-                position = cameraPosition
-            };
-            mappedResource.Write(cameraPositionBuffer);
-
-            // Unlock the constant buffer.
-            deviceContext.UnmapSubresource(ConstantCameraPositionBuffer, 0);
-
-            // Set the position of the constant buffer in the vertex shader.
-            var bufferNumber = 0;
-
-            // Finally set the constant buffer in the vertex shader with the updated values.
-            deviceContext.VertexShader.SetConstantBuffer(bufferNumber, ConstantMatrixBuffer);
-
-            // Set the vertex input layout.
             deviceContext.InputAssembler.InputLayout = Layout;
 
-            // Set the vertex and pixel shaders that will be used to render this triangle.
             deviceContext.VertexShader.Set(VertexShader);
+            deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
             deviceContext.PixelShader.Set(PixelShader);
-            deviceContext.PixelShader.SetConstantBuffer(0, ConstantTranslationBuffer);
-            deviceContext.PixelShader.SetConstantBuffer(1, ConstantCameraPositionBuffer);
+            deviceContext.PixelShader.SetConstantBuffer(1, ConstantTranslationBuffer);
             deviceContext.PixelShader.SetSampler(0, SamplerStateWrap);
             deviceContext.PixelShader.SetSampler(1, SamplerStateBorder);
-            deviceContext.PixelShader.SetShaderResource(0, reflectionMap);
-            deviceContext.PixelShader.SetShaderResource(1, refractionMap);
-            deviceContext.PixelShader.SetShaderResource(2, bumpMap);
-            deviceContext.PixelShader.SetShaderResource(3, borderTexture);
+            deviceContext.PixelShader.SetShaderResource(0, bumpMap);
+            deviceContext.PixelShader.SetShaderResource(1, borderTexture);
 
-            // Render the triangle.
             deviceContext.DrawIndexed(indexCount, 0, 0);
         }
 

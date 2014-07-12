@@ -317,7 +317,7 @@ namespace Alpha.Graphics
 
         public void EnableZBuffer()
         {
-            if (_isZBufferEnabled) return;
+            //if (_isZBufferEnabled) return;
             DeviceContext.OutputMerger.SetDepthStencilState(_depthStencilState, 1);
             _isZBufferEnabled = true;
         }

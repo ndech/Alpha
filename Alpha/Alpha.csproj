@@ -139,12 +139,9 @@
     <None Include="Data\Shaders\Translate.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Shaders\Water.ps">
+    <Content Include="Data\Shaders\Water.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\Shaders\Water.vs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEventHandler.cs" />
@@ -170,6 +167,8 @@
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />
+    <Compile Include="Sky.cs" />
+    <Compile Include="Sun.cs" />
     <Compile Include="Territory.cs" />
     <Compile Include="UI\Controls\Custom\AccountLine.cs" />
     <Compile Include="UI\Controls\Custom\CalendarWidget.cs" />
@@ -180,7 +179,7 @@
     <Compile Include="UI\Controls\LogicButton.cs" />
     <Compile Include="UI\Controls\Custom\ProvinceButton.cs" />
     <Compile Include="UI\Controls\Slider.cs" />
-    <Compile Include="UI\Controls\Terrain.cs" />
+    <Compile Include="Terrain.cs" />
     <Compile Include="UI\Controls\TextInput.cs" />
     <Compile Include="UI\Coordinates\UniRectangle.cs" />
     <Compile Include="UI\Coordinates\UniScalar.cs" />
@@ -210,6 +209,8 @@
     <Compile Include="UI\Screens\MenuScreen.cs" />
     <Compile Include="UI\Screens\Screen.cs" />
     <Compile Include="UI\UiManager.cs" />
+    <Compile Include="Water.cs" />
+    <Compile Include="World.cs" />
     <None Include="Data\Shaders\Texture.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -28,13 +28,7 @@ namespace Alpha.Graphics.Shaders
             public Vector3 direction;
             public float padding;
         }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct ClippingPlaneBuffer
-        {
-            public Vector4 plane;
-        }
-
+        
         private const string VertexShaderFileName = @"Data/Shaders/Terrain.vs";
         private const string PixelShaderFileName = @"Data/Shaders/Terrain.ps";
         VertexShader VertexShader { get; set; }
@@ -42,13 +36,12 @@ namespace Alpha.Graphics.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         Buffer ConstantLightBuffer { get; set; }
-        Buffer ConstantClippingPlaneBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
         public TerrainShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "TerrainVertexShader", "vs_4_0", ShaderFlags.Debug, EffectFlags.None);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "TerrainPixelShader", "ps_4_0", ShaderFlags.Debug, EffectFlags.None);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(VertexShaderFileName, "TerrainVertexShader", "vs_4_0", ShaderFlags.Debug);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(PixelShaderFileName, "TerrainPixelShader", "ps_4_0", ShaderFlags.Debug);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);
@@ -83,18 +76,6 @@ namespace Alpha.Graphics.Shaders
             ConstantLightBuffer = new Buffer(device, lightBufferDesc);
 
 
-            // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
-            var clipPLaneBufferDesc = new BufferDescription
-            {
-                Usage = ResourceUsage.Dynamic, // Updated each frame
-                SizeInBytes = Utilities.SizeOf<ClippingPlaneBuffer>(), // Contains three matrices
-                BindFlags = BindFlags.ConstantBuffer,
-                CpuAccessFlags = CpuAccessFlags.Write,
-                OptionFlags = ResourceOptionFlags.None,
-                StructureByteStride = 0
-            };
-            ConstantClippingPlaneBuffer = new Buffer(device, clipPLaneBufferDesc);
-
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
@@ -114,7 +95,7 @@ namespace Alpha.Graphics.Shaders
             SamplerState = new SamplerState(device, samplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, ShaderResourceView[] textures, Vector4 clippingPlane)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light, ShaderResourceView[] textures)
         {
             worldMatrix.Transpose();
             viewMatrix.Transpose();
@@ -122,21 +103,16 @@ namespace Alpha.Graphics.Shaders
             // Lock the constant memory buffer so it can be written to.
             DataStream mappedResource;
             deviceContext.MapSubresource(ConstantMatrixBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
-
-            // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
-            var matrixBuffer = new MatrixBuffer
-            {
-                world = worldMatrix,
-                view = viewMatrix,
-                projection = projectionMatrix
-            };
-            mappedResource.Write(matrixBuffer);
-
-            // Unlock the constant buffer.
+            mappedResource.Write(
+                new MatrixBuffer
+                {
+                    world = worldMatrix,
+                    view = viewMatrix,
+                    projection = projectionMatrix
+                });
             deviceContext.UnmapSubresource(ConstantMatrixBuffer, 0);
 
             deviceContext.MapSubresource(ConstantLightBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
-
             mappedResource.Write(
                 new LightBuffer
                 {
@@ -144,19 +120,11 @@ namespace Alpha.Graphics.Shaders
                     diffuseColor = light.Color,
                     direction = light.Direction
                 });
-
             deviceContext.UnmapSubresource(ConstantLightBuffer, 0);
 
-            deviceContext.MapSubresource(ConstantClippingPlaneBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
-
-            mappedResource.Write( new ClippingPlaneBuffer {plane = clippingPlane});
-
-            deviceContext.UnmapSubresource(ConstantClippingPlaneBuffer, 0);
             
             // Finally set the constant buffers in the vertex shader with the updated values.
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
-            deviceContext.VertexShader.SetConstantBuffer(1, ConstantClippingPlaneBuffer);
-
             deviceContext.PixelShader.SetConstantBuffer(0, ConstantLightBuffer);
             deviceContext.PixelShader.SetShaderResources(0, textures);
             
