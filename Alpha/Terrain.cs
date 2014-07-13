@@ -51,18 +51,18 @@ namespace Alpha
                 List<VoronoiSite> adjacentSites = sites.Where(s => s.Points.Contains(points[i])).ToList();
                 float height = TerrainHeight(points[i], sites);
                 // Normal calculation (normal of each shared triangle averaged (todo : weighting by the surface of the triangle)
-                Vector3 normal = new Vector3();
-                foreach (VoronoiSite site in adjacentSites)
-                {
-                    int pointIndex = site.Points.IndexOf(points[i]);
-                    Vector3 point = new Vector3((float)points[i][0], height, (float)points[i][1]);
-                    Vector3 center = new Vector3((float)site.Center[0], TerrainHeight(site.Center, sites), (float)site.Center[1]);
-                    Vector3 previous = new Vector3((float)site.Points[(pointIndex+site.Points.Count-1)%site.Points.Count][0], TerrainHeight(site.Points[(pointIndex+site.Points.Count-1)%site.Points.Count], sites), (float)points[(pointIndex+site.Points.Count-1)%site.Points.Count][1]);
-                    Vector3 next = new Vector3((float)site.Points[(pointIndex + 1) % site.Points.Count][0], TerrainHeight(site.Points[(pointIndex + 1) % site.Points.Count], sites), (float)points[(pointIndex + 1) % site.Points.Count][1]);
-                    normal += Vector3.Cross(previous-point, center-point);
-                    normal += Vector3.Cross(center-point, next-point);
-                }
-                normal.Normalize();
+                Vector3 normal = new Vector3(1,0,0);
+                //foreach (VoronoiSite site in adjacentSites)
+                //{
+                //    int pointIndex = site.Points.IndexOf(points[i]);
+                //    Vector3 point = new Vector3((float)points[i][0], height, (float)points[i][1]);
+                //    Vector3 center = new Vector3((float)site.Center[0], TerrainHeight(site.Center, sites), (float)site.Center[1]);
+                //    Vector3 previous = new Vector3((float)site.Points[(pointIndex+site.Points.Count-1)%site.Points.Count][0], TerrainHeight(site.Points[(pointIndex+site.Points.Count-1)%site.Points.Count], sites), (float)points[(pointIndex+site.Points.Count-1)%site.Points.Count][1]);
+                //    Vector3 next = new Vector3((float)site.Points[(pointIndex + 1) % site.Points.Count][0], TerrainHeight(site.Points[(pointIndex + 1) % site.Points.Count], sites), (float)points[(pointIndex + 1) % site.Points.Count][1]);
+                //    normal += Vector3.Cross(previous-point, center-point);
+                //    normal += Vector3.Cross(center-point, next-point);
+                //}
+                //normal.Normalize();
 
                 terrainVertices[i] = new VertexDefinition.PositionTextureNormal4Weights
                 {
@@ -111,27 +111,5 @@ namespace Alpha
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             renderer.TerrainShader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, light, _terrainTextures);
         }
-
-        //protected override void Update(double delta)
-        //{
-        //    if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
-        //    {
-        //        if (UiManager.IsKeyPressed(Key.Left))
-        //            _camera.Rotate(1);
-        //        if (UiManager.IsKeyPressed(Key.Right))
-        //            _camera.Rotate(-1);
-        //    }
-        //    else
-        //    {
-        //        if (UiManager.IsKeyPressed(Key.Left))
-        //            _camera.Move(-1, 0);
-        //        if (UiManager.IsKeyPressed(Key.Right))
-        //            _camera.Move(1, 0);
-        //        if (UiManager.IsKeyPressed(Key.Up))
-        //            _camera.Move(0, 1);
-        //        if (UiManager.IsKeyPressed(Key.Down))
-        //            _camera.Move(0, -1);
-        //    }
-        //}
     }
 }

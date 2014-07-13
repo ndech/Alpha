@@ -21,14 +21,14 @@ namespace Alpha.Graphics
         public Matrix ReflectionMatrix { get { return _reflectionMatrix; } }
         public void Move(int x, int y)
         {
-            _position.X += 15*x;
-            _position.Z += 15*y;
+            Vector3 move = new Vector3(5*x, 0, 5*y);
+            _position += Vector3.TransformCoordinate(move,Matrix.RotationY(_orientation.X));
             Calculate();
         }
 
         public void Rotate(int tick)
         {
-            _orientation.X += tick*-0.03f;
+            _orientation.X += tick*-0.02f;
             Calculate();
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Alpha.Graphics;
 using Alpha.UI.Controls;
 using Alpha.UI.Controls.Custom;
 using Alpha.UI.Coordinates;
@@ -14,10 +15,12 @@ namespace Alpha.UI.Screens
     {
         private readonly IList<Territory> _demesne;
         private Realm _playerRealm;
+        private ICamera _camera;
         public GameScreen(IGame game) : base(game, "game_screen")
         {
             _playerRealm = game.Services.Get<IRealmManager>().PlayerRealm;
             _demesne = _playerRealm.Demesne;
+            _camera = game.Services.Get<ICamera>();
             Register(new CalendarWidget(game));
 
             Button menuButton = Register(new Button(game, "menu", new UniRectangle(new UniScalar(0.5f, -40), 0, 80, 30), "Menu"));
@@ -85,6 +88,27 @@ namespace Alpha.UI.Screens
             for (int i = 0; i < _demesne.Count; i++)
                 provincesPanel.Register(new ProvinceButton(game, i, _demesne[i]));
             Register(new DebugConsoleWidget(game));
+        }
+        protected override void Update(double delta)
+        {
+            if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+            {
+                if (UiManager.IsKeyPressed(Key.Left))
+                    _camera.Rotate(1);
+                if (UiManager.IsKeyPressed(Key.Right))
+                    _camera.Rotate(-1);
+            }
+            else
+            {
+                if (UiManager.IsKeyPressed(Key.Left))
+                    _camera.Move(-1, 0);
+                if (UiManager.IsKeyPressed(Key.Right))
+                    _camera.Move(1, 0);
+                if (UiManager.IsKeyPressed(Key.Up))
+                    _camera.Move(0, 1);
+                if (UiManager.IsKeyPressed(Key.Down))
+                    _camera.Move(0, -1);
+            }
         }
     }
 }

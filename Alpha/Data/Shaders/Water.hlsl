@@ -67,9 +67,11 @@ float4 WaterPixelShader(PixelInputType input) : SV_TARGET
 	float4 normalMap = wavesTexture.Sample(SampleWrap, (input.bumpTex + translateVector) / 17);
 	normalMap = (normalMap + wavesTexture.Sample(SampleWrap, (input.bumpTex - translateVector) / 11));
 	float3 normal = (normalMap.xyz) - 1.0f;
+	normal = normalize(normal);
 	//Sample border texture :
 	float4 border = borderTexture.Sample(SampleBorder, input.borderTex);
-
-	float4 color = float4(0.3f, 0.5f, 0.8f, 1) + float4(normal.x, normal.y, normal.z, 0)*0.2f;
+	float factor = saturate(dot(normal, lightDirection)+0.2f);
+	float4 color = lerp(float4(0.3f, 0.5f, 0.8f, 1), float4(0.4f, 0.4f, 0.8f, 1), factor);
+	//float4 color = float4(0.3f, 0.5f, 0.8f, 1) + float4(normal.x, normal.y, normal.z, 0)*0.2f;
 	return lerp(color, float4(0.2f, 0.2f, 0.2f, 1), border.w * 2);
 }

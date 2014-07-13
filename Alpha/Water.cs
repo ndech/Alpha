@@ -19,7 +19,7 @@ namespace Alpha
         private int _indexCount;
         private readonly ShaderResourceView _bumpMapTexture;
         private readonly ShaderResourceView _borderTexture;
-        private const int WaveTextureRepeat = 10;
+        private const int WaveTextureRepeat = 3;
         private Vector2 _waveTranslation = new Vector2(0,0);
 
         public Water(IRenderer renderer, List<VoronoiSite> sites)
