@@ -83,7 +83,7 @@ namespace Alpha.UI.Screens
             Transparent = transparent;
         }
 
-        public void OnMouseMoved(Vector2I position)
+        public void MouseMoved(Vector2I position)
         {
             if (ClickedControl != null)
             {
@@ -124,12 +124,18 @@ namespace Alpha.UI.Screens
             DesactivateTree();
         }
         
-        public void OnMouseClicked(Vector2I position, int button)
+        public void MouseClicked(Vector2I position, int button)
         {
             ClickedControl = HoveredControl;
+            if(ClickedControl == null)
+                OnMouseClicked(position, button);
         }
 
-        public void OnMouseReleased(Vector2I position, int button)
+        protected virtual void OnMouseClicked(Vector2I position, int button)
+        { }
+
+
+        public void MouseReleased(Vector2I position, int button)
         {
             if(ClickedControl == null) return;
             if (ClickedControl.InBounds(position))

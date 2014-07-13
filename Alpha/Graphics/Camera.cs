@@ -26,6 +26,11 @@ namespace Alpha.Graphics
             Calculate();
         }
 
+        public void Zoom(int tick)
+        {
+            _position.Y += 10*tick;
+            Calculate();
+        }
         public void Rotate(int tick)
         {
             _orientation.X += tick*-0.02f;
@@ -36,7 +41,7 @@ namespace Alpha.Graphics
 
         public override void Initialize(Action<string> feedback)
         {
-            _position = new Vector3(1, 200, 0);
+            _position = new Vector3(1000, 200, 0);
             _orientation = new Vector3(0, 0.5f, 0);
             Calculate();
         }

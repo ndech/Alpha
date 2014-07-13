@@ -39,7 +39,7 @@ namespace Alpha
 
         public void Update(double delta)
         {
-            _waveTranslation += new Vector2(0.2f, 0.5f) * (float)delta;
+            _waveTranslation += new Vector2(0.4f, 0.9f) * (float)delta;
         }
 
         private void BuildBuffers(IRenderer renderer, List<VoronoiSite> sites)

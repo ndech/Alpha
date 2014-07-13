@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Alpha.Graphics;
+using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using Alpha.UI.Controls.Custom;
 using Alpha.UI.Coordinates;
+using Alpha.Voronoi;
 using SharpDX;
 using Button = Alpha.UI.Controls.Button;
 using Panel = Alpha.UI.Controls.Panel;
@@ -29,7 +32,7 @@ namespace Alpha.UI.Screens
 
             Button newFleetButton =
                 Register(new Button(game, "new_fleet", new UniRectangle(new UniScalar(0.5f, -340), 0, 120, 30), "New fleet"));
-            newFleetButton.Clicked += (b) => Game.Services.Get<IFleetManager>().Fleets.Add(new Fleet{Name = "Reinforcement", ShipCount = 11});
+            newFleetButton.Clicked += (b) => Game.Services.Get<IFleetManager>().CreateFleet();
 
             Panel provincesPanel = Register(new Panel(game, "provinces_panel", new UniRectangle(0, 90, 500, 400), Color.LawnGreen));
             provincesPanel.Visible = false;
@@ -108,6 +111,45 @@ namespace Alpha.UI.Screens
                     _camera.Move(0, 1);
                 if (UiManager.IsKeyPressed(Key.Down))
                     _camera.Move(0, -1);
+            }
+        }
+
+        protected override bool OnMouseScrolled(int delta)
+        {
+            Game.Services.Get<ICamera>().Zoom(delta);
+            return true;
+        }
+
+        protected override void OnMouseClicked(Vector2I position, int button)
+        {
+            if (button == 1) //Right click
+            {
+                Vector2I mousePosition = UiManager.MousePosition;
+                ICamera camera = Game.Services.Get<ICamera>();
+                IRenderer renderer = Game.Services.Get<IRenderer>();
+                //Calculate the intersection between the map and a ray coming from the camera and passing by the clicked point
+                Vector3 origin = camera.Position;
+
+                Vector2 point;
+                // Move the mouse cursor coordinates into the -1 to +1 range.
+                point.X = ((2.0f * mousePosition.X) / renderer.ScreenSize.X) - 1.0f;
+                point.Y = (((2.0f * mousePosition.Y) / renderer.ScreenSize.Y) - 1.0f) * -1.0f;
+
+                // Adjust the points using the projection matrix to account for the aspect ratio of the viewport.
+                point.X = point.X/renderer.ProjectionMatrix.M11;
+                point.Y = point.Y/renderer.ProjectionMatrix.M22;
+
+                Matrix inverseViewMatrix = Matrix.Invert(camera.ViewMatrix);
+                
+                // Calculate the direction of the picking ray in view space.
+                Vector3 direction = new Vector3(
+                    (point.X*inverseViewMatrix.M11) + (point.Y*inverseViewMatrix.M21) + inverseViewMatrix.M31,
+                    (point.X * inverseViewMatrix.M12) + (point.Y * inverseViewMatrix.M22) + inverseViewMatrix.M32,
+                    (point.X * inverseViewMatrix.M13) + (point.Y * inverseViewMatrix.M23) + inverseViewMatrix.M33);
+                Vector3 intersection = origin - direction * (origin.Y / direction.Y);
+                Vector target = new Vector(intersection.X, intersection.Z);
+                Game.Services.Get<IFleetManager>().Fleets[0].Location =
+                    Game.Services.Get<IWorld>().Sites.OrderBy(s => Vector.Dist(s.Center, target)).First();
             }
         }
     }

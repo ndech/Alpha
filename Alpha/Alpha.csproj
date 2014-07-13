@@ -153,6 +153,7 @@
     <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="FleetManager.cs" />
+    <Compile Include="FleetRenderer.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\MousePointer.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="IGame.cs" />
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
     <Compile Include="InputInterop.cs" />
+    <Compile Include="Move.cs" />
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />
@@ -345,6 +347,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Textures\seafloor.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Textures\SelectedCircle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Textures\Sky.png">

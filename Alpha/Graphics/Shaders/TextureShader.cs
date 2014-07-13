@@ -91,7 +91,7 @@ namespace Alpha.Graphics.Shaders
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,
                 MipLodBias = 0,
-                MaximumAnisotropy = 1,
+                MaximumAnisotropy = 16,
                 ComparisonFunction = Comparison.Always,
                 BorderColor = new Color4(0, 0, 0, 0),
                 MinimumLod = 0,

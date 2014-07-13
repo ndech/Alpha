@@ -10,5 +10,6 @@ namespace Alpha.Graphics
         Matrix ReflectionMatrix { get; }
         void Move(int x, int y);
         void Rotate(int tick);
+        void Zoom(int tick);
     }
 }

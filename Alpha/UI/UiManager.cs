@@ -47,7 +47,7 @@ namespace Alpha.UI
         {
             MousePosition = position;
             if (_activeScreens.Count > 0)
-                _activeScreens[0].OnMouseMoved(position);
+                _activeScreens[0].MouseMoved(position);
         }
 
         public override void Initialize(Action<string> feedback)
@@ -83,13 +83,13 @@ namespace Alpha.UI
         private void OnMouseClicked(Vector2I position, int button)
         {
             if (_activeScreens.Count > 0)
-                _activeScreens[0].OnMouseClicked(position, button);
+                _activeScreens[0].MouseClicked(position, button);
         }
 
         private void OnMouseReleased(Vector2I position, int button)
         {
             if (_activeScreens.Count > 0)
-                _activeScreens[0].OnMouseReleased(position, button);
+                _activeScreens[0].MouseReleased(position, button);
         }
 
         public override void Update(double delta)

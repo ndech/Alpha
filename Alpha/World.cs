@@ -9,7 +9,8 @@ namespace Alpha
 {
     interface IWorld : IService
     {
-         Sun Sun { get; }
+        Sun Sun { get; }
+        List<VoronoiSite> Sites { get; }
     }
     class World : RenderableGameComponent, IWorld
     {
@@ -19,8 +20,9 @@ namespace Alpha
         private Water _water;
         private IRenderer _renderer;
         private ICamera _camera;
+        public List<VoronoiSite> Sites { get; set; }
 
-        public World(IGame game) : base(game, 0)
+        public World(IGame game) : base(game, -1)
         {
             RequiredForStartUp = false;
             Sun = new Sun();
@@ -34,14 +36,14 @@ namespace Alpha
         public override void Initialize(Action<string> feedback)
         {
             feedback.Invoke("Generating world ...");
-            List<VoronoiSite> sites = Generator.Create(2000, 1000, 1000, 1, 1256);
+            Sites = Generator.Create(2000, 1000, 1000, 1, 1256);
             _renderer = Game.Services.Get<IRenderer>();
             _camera = Game.Services.Get<ICamera>();
             _sky = new Sky(_renderer);
             feedback.Invoke("Drawing terrain ...");
-            _terrain = new Terrain(_renderer, sites);
+            _terrain = new Terrain(_renderer, Sites);
             feedback.Invoke("Drawing water ...");
-            _water = new Water(_renderer, sites);
+            _water = new Water(_renderer, Sites);
         }
 
         public override void Update(double delta)
@@ -56,8 +58,8 @@ namespace Alpha
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _sky.Render(_renderer, deviceContext, viewMatrix, projectionMatrix, Sun, _camera);
-            _water.Render(_renderer, deviceContext, Matrix.Translation(-1000,0,0), viewMatrix, projectionMatrix, Sun);
-            _terrain.Render(_renderer, deviceContext, Matrix.Translation(-1000, 0, 0), viewMatrix, projectionMatrix, Sun);
+            _water.Render(_renderer, deviceContext, Matrix.Identity, viewMatrix, projectionMatrix, Sun);
+            _terrain.Render(_renderer, deviceContext, Matrix.Identity, viewMatrix, projectionMatrix, Sun);
         }
     }
 }
