@@ -165,7 +165,7 @@
     <Compile Include="IGame.cs" />
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
     <Compile Include="InputInterop.cs" />
-    <Compile Include="Move.cs" />
+    <Compile Include="FleetMoveOrder.cs" />
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />

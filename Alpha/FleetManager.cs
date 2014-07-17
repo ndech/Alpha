@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Alpha.Graphics;
-using Alpha.Graphics.Shaders;
 using Alpha.Scripting;
 using Alpha.Scripting.Providers;
 using Alpha.Toolkit;
-using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -17,22 +13,33 @@ namespace Alpha
     {
         IList<Fleet> Fleets { get; set; }
         void CreateFleet();
+        IEnumerable<FleetMoveOrder> Moves { get; }
+        void RegisterMove(FleetMoveOrder move);
     }
     class FleetManager : RenderableGameComponent, IFleetManager, IDailyUpdatable
     {
         public IList<Fleet> Fleets { get; set; }
-        public IList<Move> Moves { get; set; }
+        public IList<FleetMoveOrder> Moves { get; set; }
+        IEnumerable<FleetMoveOrder> IFleetManager.Moves { get { return Moves; } }
+        public void RegisterMove(FleetMoveOrder move)
+        {
+            Moves = Moves.Where(m => m.Fleet != move.Fleet).ToList();
+            Moves.Add(move);
+        }
+
         private IWorld _world;
         private FleetRenderer _fleetRenderer;
         public void CreateFleet()
         {
-            Fleets.Add(new Fleet { Name = "Reinforcements", ShipCount = 15, Location = _world.Sites.Where(s => s.IsWater).RandomItem() });
+            Fleets.Add(new Fleet { Name = "Reinforcements", ShipCount = 15, Location = _world.Sites.Where(s => s.IsWater).RandomItem(), Speed = 2 });
         }
+
 
         public FleetManager(IGame game) : base(game, 0, true, true)
         {
             RequiredForStartUp = false;
             Fleets = new List<Fleet>();
+            Moves = new List<FleetMoveOrder>();
         }
         
         public void RegisterAsService()
@@ -44,7 +51,7 @@ namespace Alpha
         {
             _fleetRenderer = new FleetRenderer(Game);
             _world = Game.Services.Get<IWorld>();
-            Fleets.Add(new Fleet { Name = "Royal fleet", ShipCount = 120, Location = _world.Sites.Where(s=>s.IsWater).RandomItem() });
+            Fleets.Add(new Fleet { Name = "Royal fleet", ShipCount = 120, Location = _world.Sites.Where(s=>s.IsWater).RandomItem(), Speed=2 });
         }
 
         public override void Update(double delta)

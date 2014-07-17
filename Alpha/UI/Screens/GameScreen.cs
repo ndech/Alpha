@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Alpha.Graphics;
@@ -8,6 +9,7 @@ using Alpha.UI.Controls;
 using Alpha.UI.Controls.Custom;
 using Alpha.UI.Coordinates;
 using Alpha.Voronoi;
+using Alpha.WorldGeneration;
 using SharpDX;
 using Button = Alpha.UI.Controls.Button;
 using Panel = Alpha.UI.Controls.Panel;
@@ -148,8 +150,71 @@ namespace Alpha.UI.Screens
                     (point.X * inverseViewMatrix.M13) + (point.Y * inverseViewMatrix.M23) + inverseViewMatrix.M33);
                 Vector3 intersection = origin - direction * (origin.Y / direction.Y);
                 Vector target = new Vector(intersection.X, intersection.Z);
-                Game.Services.Get<IFleetManager>().Fleets[0].Location =
-                    Game.Services.Get<IWorld>().Sites.OrderBy(s => Vector.Dist(s.Center, target)).First();
+                
+                Fleet fleet = Game.Services.Get<IFleetManager>().Fleets[0];
+                VoronoiSite destination = Game.Services.Get<IWorld>().Sites.OrderBy(s => Vector.Dist(s.Center, target)).First();
+                if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+                {
+                    fleet.Location = destination;
+                }
+                else
+                {
+                    List<FleetMoveOrder.Step> steps = new List<FleetMoveOrder.Step>();
+                    //Calculate path using A* algorithm
+                    SortedSet<PathfindingNode> openList = 
+                        new SortedSet<PathfindingNode>(Comparer<PathfindingNode>.Create((a,b)=> a.CompareTo(b)));
+                    System.Collections.Generic.HashSet<VoronoiSite> closedList = new System.Collections.Generic.HashSet<VoronoiSite>();
+                    openList.Add(new PathfindingNode(fleet.Location, Vector.Dist(destination.Center, fleet.Location.Center)));
+                    bool pathFound = false;
+                    while (!pathFound)
+                    {
+                        PathfindingNode currentNode = openList.First();
+                        foreach (VoronoiSite neighbourg in currentNode.Site.Neighbourgs)
+                        {
+                            if(closedList.Contains(neighbourg))
+                                continue;
+                            openList.Add(new PathfindingNode(neighbourg, 
+                                Vector.Dist(destination.Center, neighbourg.Center)
+                                , currentNode));
+                            if (neighbourg == destination) // Path found !
+                            {
+                                pathFound = true;
+                                steps.Add(new FleetMoveOrder.Step(destination, (int)(Vector.Dist(currentNode.Site.Center, destination.Center)/fleet.Speed)));
+                                while (currentNode.Parent != null)
+                                {
+                                    steps.Add(new FleetMoveOrder.Step(currentNode.Site, (int)(Vector.Dist(currentNode.Site.Center, currentNode.Parent.Site.Center)/fleet.Speed)));
+                                    currentNode = currentNode.Parent;
+                                }
+                                steps.Reverse();
+                                break;
+                            }
+                        }
+                    }
+                    FleetMoveOrder moveOrder = new FleetMoveOrder(fleet, destination, steps);
+                    Game.Services.Get<IFleetManager>().RegisterMove(moveOrder);
+                }
+            }
+        }
+
+        class PathfindingNode : IComparable<PathfindingNode>
+        {
+            public VoronoiSite Site { get; set; }
+            public PathfindingNode Parent { get; set; }
+
+            public double PathLength { get; set; }
+            public double EstimateRemainingDistance { get; set; }
+            public double Cost { get { return PathLength + EstimateRemainingDistance; } }
+
+            public PathfindingNode(VoronoiSite site, double estimateRemainingDistance, PathfindingNode parent = null)
+            {
+                Site = site;
+                EstimateRemainingDistance = estimateRemainingDistance;
+                PathLength = parent == null ? 0 : parent.PathLength + Vector.Dist(parent.Site.Center, site.Center);
+                Parent = parent;
+            }
+            public int CompareTo(PathfindingNode other)
+            {
+                return Comparer<double>.Default.Compare(Cost, other.Cost);
             }
         }
     }

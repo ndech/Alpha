@@ -12,6 +12,7 @@ namespace Alpha
         public int ShipCount { get; set; }
         public String Name { get; set; }
         public VoronoiSite Location { get; set; }
+        public Double Speed { get; set; } //Expressed as distance-unit per day
 
         public override string ToString()
         {

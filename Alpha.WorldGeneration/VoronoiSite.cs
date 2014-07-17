@@ -64,7 +64,7 @@ namespace Alpha.WorldGeneration
                         intersections.Add(new Vector(width, pointIn[1] + (width - pointIn[0]) * slope));
                         Vector intersection = intersections.OrderBy(p => Vector.Dist(p, pointIn)).First();
                         Edges.RemoveAt(i);
-                        Edges.Add(new VoronoiEdge(){VVertexA = intersection, VVertexB = pointIn});
+                        Edges.Add(new VoronoiEdge {VVertexA = intersection, VVertexB = pointIn});
                         if (previousIntersection == null)
                             previousIntersection = intersection;
                         else
@@ -72,7 +72,7 @@ namespace Alpha.WorldGeneration
                             if (intersection[0].Equals(previousIntersection[0]) ||
                                 intersection[1].Equals(previousIntersection[1]))
                             {
-                                Edges.Add(new VoronoiEdge() { VVertexA = intersection, VVertexB = previousIntersection });
+                                Edges.Add(new VoronoiEdge { VVertexA = intersection, VVertexB = previousIntersection });
                                 IsOnBorder = true;
                                 previousIntersection = null;
                             }
@@ -92,8 +92,8 @@ namespace Alpha.WorldGeneration
                                         (corner[1].Equals(previousIntersection[1]) ||
                                          corner[1].Equals(intersection[1])))
                                     {
-                                        Edges.Add(new VoronoiEdge() { VVertexA = corner, VVertexB = previousIntersection });
-                                        Edges.Add(new VoronoiEdge() { VVertexA = corner, VVertexB = intersection });
+                                        Edges.Add(new VoronoiEdge { VVertexA = corner, VVertexB = previousIntersection });
+                                        Edges.Add(new VoronoiEdge { VVertexA = corner, VVertexB = intersection });
                                         IsOnBorder = true;
                                         break;
                                     }
@@ -146,6 +146,11 @@ namespace Alpha.WorldGeneration
         public override int GetHashCode()
         {
             return Id;
+        }
+
+        public override string ToString()
+        {
+            return Id.ToString();
         }
     }
 }
