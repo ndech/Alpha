@@ -18,6 +18,7 @@ namespace Alpha.Graphics
         TerrainShader TerrainShader { get; }
         LightShader LightShader { get; }
         FontShader FontShader { get; }
+        PathShader PathShader { get; }
         TextureManager TextureManager { get; }
         Device Device { get; }
         Vector2I ScreenSize { get; }

@@ -24,7 +24,8 @@ namespace Alpha
         public void RegisterMove(FleetMoveOrder move)
         {
             Moves = Moves.Where(m => m.Fleet != move.Fleet).ToList();
-            Moves.Add(move);
+            if(move.Steps.Count > 0)
+                Moves.Add(move);
         }
 
         private IWorld _world;
@@ -67,6 +68,9 @@ namespace Alpha
         public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _fleetRenderer.Render(Fleets, deviceContext, viewMatrix, projectionMatrix);
+            foreach (FleetMoveOrder moveOrder in Moves)
+                moveOrder.Render(deviceContext, viewMatrix, projectionMatrix);
+
         }
 
         public void DayUpdate()

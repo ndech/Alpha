@@ -165,13 +165,15 @@ namespace Alpha.UI.Screens
                         new SortedSet<PathfindingNode>(Comparer<PathfindingNode>.Create((a,b)=> a.CompareTo(b)));
                     System.Collections.Generic.HashSet<VoronoiSite> closedList = new System.Collections.Generic.HashSet<VoronoiSite>();
                     openList.Add(new PathfindingNode(fleet.Location, Vector.Dist(destination.Center, fleet.Location.Center)));
-                    bool pathFound = false;
+                    bool pathFound = destination == fleet.Location;
                     while (!pathFound)
                     {
+                        if (openList.Count == 0)
+                            break;
                         PathfindingNode currentNode = openList.First();
-                        foreach (VoronoiSite neighbourg in currentNode.Site.Neighbourgs)
+                        foreach (VoronoiSite neighbourg in currentNode.Site.Neighbourgs.Where(s=>s.IsWater))
                         {
-                            if(closedList.Contains(neighbourg))
+                            if(closedList.Contains(neighbourg)||openList.Any(n=>n.Site == neighbourg))
                                 continue;
                             openList.Add(new PathfindingNode(neighbourg, 
                                 Vector.Dist(destination.Center, neighbourg.Center)
@@ -189,8 +191,10 @@ namespace Alpha.UI.Screens
                                 break;
                             }
                         }
+                        openList.Remove(currentNode);
+                        closedList.Add(currentNode.Site);
                     }
-                    FleetMoveOrder moveOrder = new FleetMoveOrder(fleet, destination, steps);
+                    FleetMoveOrder moveOrder = new FleetMoveOrder(renderer, fleet, destination, steps);
                     Game.Services.Get<IFleetManager>().RegisterMove(moveOrder);
                 }
             }

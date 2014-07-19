@@ -38,6 +38,7 @@ namespace Alpha.Graphics
         public TerrainShader TerrainShader { get; set; }
         public FontShader FontShader { get; set; }
         public TranslateShader TranslateShader { get; set; }
+        public PathShader PathShader { get; set; }
         public FontShader CircleShader { get; set; }
         public Device Device { get { return DirectX.Device; } }
         public Vector2I ScreenSize { get; private set; }
@@ -61,6 +62,7 @@ namespace Alpha.Graphics
             TerrainShader = new TerrainShader(DirectX.Device);
             WaterShader = new WaterShader(DirectX.Device);
             FontShader = new FontShader(DirectX.Device);
+            PathShader = new PathShader(DirectX.Device);
             TextManager = new TextManager(this);
             TextureManager = new TextureManager(DirectX.Device);
             _renderables = new List<RenderableGameComponent>();
