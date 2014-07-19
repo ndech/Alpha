@@ -20,7 +20,7 @@ namespace Alpha.Graphics.Shaders
         {
             var vertexShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "VS", "vs_4_0", ShaderFlags.None);
             var pixelShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "PS", "ps_4_0", ShaderFlags.None);
-            var geometryShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "GS", "gs_4_0", ShaderFlags.None);
+            var geometryShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "GS", "gs_4_0", ShaderFlags.Debug);
             
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

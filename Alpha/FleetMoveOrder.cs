@@ -75,7 +75,7 @@ namespace Alpha
         public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<VertexDefinition.PositionColor>(), 0));
-            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStrip;
+            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStripWithAdjacency;
             Shader.Render(deviceContext, VertexCount, viewMatrix, projectionMatrix);
         }
     }
