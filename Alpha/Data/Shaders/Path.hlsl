@@ -71,7 +71,6 @@ void GS(lineadj VertexInputType input[4], inout TriangleStream<PixelInputType> T
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
 	TriStream.Append(output);
-	TriStream.RestartStrip();
 
 	output.position = input[2].position;
 	output.color = input[2].color;
@@ -81,25 +80,6 @@ void GS(lineadj VertexInputType input[4], inout TriangleStream<PixelInputType> T
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
 	TriStream.Append(output);
-
-	output.position = input[1].position;
-	output.color = input[1].color;
-	output.position += normal1;
-	output.position.w = 1.0f;
-	output.position = mul(output.position, worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
-	TriStream.Append(output);
-
-	output.position = input[2].position;
-	output.position -= normal2;
-	output.color = input[2].color;
-	output.position.w = 1.0f;
-	output.position = mul(output.position, worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
-	TriStream.Append(output);
-	TriStream.RestartStrip();
 }
 
 float4 PS(PixelInputType input) : SV_TARGET
