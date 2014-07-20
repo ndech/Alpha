@@ -11,12 +11,12 @@ using SharpDX.Direct3D;
 
 namespace Alpha
 {
-    class FleetMoveOrder
+    class FleetMoveOrder : IDailyUpdatable
     {
         public class Step
         {
             public VoronoiSite Destination { get; set; }
-            private Int32 Duration { get; set; }
+            public Int32 Duration { get; set; }
 
             public Step(VoronoiSite destination, Int32 duration)
             {
@@ -31,6 +31,7 @@ namespace Alpha
         private PathShader Shader { get; set; }
         public Int32 VertexCount { get; set; }
         public Buffer VertexBuffer { get; set; }
+        ShaderResourceView PathTexture { get; set; }
 
         public FleetMoveOrder(IRenderer renderer, Fleet fleet, VoronoiSite destination, List<Step> steps)
         {
@@ -39,44 +40,84 @@ namespace Alpha
             Destination = destination;
             Steps = steps;
             Shader = renderer.PathShader;
+            Vector4 color = Color.Green.ToVector4();
 
-            List<Vector3> positions = new List<Vector3>
-            { new Vector3((float) fleet.Location.Center[0], 1.0f, (float) fleet.Location.Center[1]) };
+            List<Step> allSteps;
+            (allSteps = new List<Step> {new Step(fleet.Location, 0)}).AddRange(Steps);
 
-            for (int i = 0; i < Steps.Count; i++)
+            List<VertexDefinition.Path> vertices = new List<VertexDefinition.Path>();
+            int filling = 0;
+            Vector3 position, prevPosition = new Vector3((float)fleet.Location.Center[0], 0.5f, (float)fleet.Location.Center[1]);
+            float totalDistance = 0.0f, arcLength;
+            for (int i = 0; i < allSteps.Count-1; i++)
             {
-                VoronoiSite polyOne = Steps[i].Destination;
-                VoronoiSite polyTwo = i == 0 ? fleet.Location : Steps[i - 1].Destination;
-                var commonPoints = polyOne.Points.Where(p => polyTwo.Points.Contains(p)).ToList();
-
-                positions.Add(new Vector3((float)((commonPoints[0][0] + commonPoints[1][0]) / 2), 0.05f, (float)((commonPoints[0][1] + commonPoints[1][1]) / 2)));
-                positions.Add(new Vector3((float)Steps[i].Destination.Center[0], 1.0f, (float)Steps[i].Destination.Center[1]));
-            }
-            
-            const int subdivisions = 10;
-            var newPositions = positions.SelectMany((p, i) =>
-            {
-                List<Vector3> newPoints = new List<Vector3>();
-                if (i == positions.Count - 1)
-                    return newPoints;
+                Vector3 middlePoint = GetMiddlePoint(allSteps[i].Destination, allSteps[i+1].Destination);
+                Vector3 startPoint = new Vector3((float)allSteps[i].Destination.Center[0], 0.5f, (float)allSteps[i].Destination.Center[1]);
+                Vector3 endPoint = new Vector3((float)allSteps[i + 1].Destination.Center[0], 0.5f, (float)allSteps[i + 1].Destination.Center[1]);
+                Vector3 prevPoint = i == 0 ? startPoint : GetMiddlePoint(allSteps[i].Destination, allSteps[i - 1].Destination);
+                Vector3 nextPoint = i == allSteps.Count - 2 ? endPoint : GetMiddlePoint(allSteps[i+1].Destination, allSteps[i+2].Destination);
+                int subdivisions = allSteps[i + 1].Duration;
+                //First part of the arc
                 for (int j = 0; j < subdivisions; j++)
-                    newPoints.Add(Vector3.CatmullRom(positions[Math.Max(0, i - 1)], positions[i],
-                        positions[Math.Min(positions.Count-1, i + 1)]
-                        , positions[Math.Min(positions.Count-1, i + 2)], (1.0f*j)/subdivisions));
-                return newPoints;
-            }).ToList();
-            positions = newPositions;
-            VertexDefinition.PositionColor[] vertices = positions.Select((p) => new VertexDefinition.PositionColor
-            { position = p, color = Color.Red.ToVector4() }).ToArray();
-            VertexCount = vertices.Count();
-            VertexBuffer = Buffer.Create(renderer.Device, BindFlags.VertexBuffer, vertices);
+                {
+                    position = Vector3.CatmullRom(prevPoint, startPoint, middlePoint, endPoint, (1.0f*j)/subdivisions);
+                    arcLength = Vector3.Distance(prevPosition, position);
+                    vertices.Add(new VertexDefinition.Path
+                    {
+                        color = color,
+                        fillingIndex = (uint)((++filling)/2),
+                        position = position,
+                        pathLength = new Vector2(totalDistance,arcLength)
+                    });
+                    totalDistance += arcLength;
+                    prevPosition = position;
+                }
+                //Second part of the arc
+                for (int j = 0; j < subdivisions; j++)
+                {
+                    position = Vector3.CatmullRom(startPoint, middlePoint, endPoint, nextPoint, (1.0f*j)/subdivisions);
+                    arcLength = Vector3.Distance(prevPosition, position);
+                    vertices.Add(new VertexDefinition.Path
+                    {
+                        color = color,
+                        fillingIndex = (uint)((++filling) / 2),
+                        position = position,
+                        pathLength = new Vector2(totalDistance, arcLength)
+                    });
+                    totalDistance += arcLength;
+                    prevPosition = position;
+                }
+            }
+            VertexCount = vertices.Count;
+            VertexBuffer = Buffer.Create(renderer.Device, BindFlags.VertexBuffer, vertices.ToArray());
+            PathTexture = renderer.TextureManager.Create("Path.png").TextureResource;
+        }
+
+        private static Vector3 GetMiddlePoint(VoronoiSite polyOne, VoronoiSite polyTwo)
+        {
+            var commonPoints = polyOne.Points.Where(p => polyTwo.Points.Contains(p)).ToList();
+            var point = new Vector3((float) ((commonPoints[0][0] + commonPoints[1][0])/2), 0.5f,
+                (float) ((commonPoints[0][1] + commonPoints[1][1])/2));
+            return point;
         }
 
         public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<VertexDefinition.PositionColor>(), 0));
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<VertexDefinition.Path>(), 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStripWithAdjacency;
-            Shader.Render(deviceContext, VertexCount, viewMatrix, projectionMatrix);
+            Shader.Render(deviceContext, VertexCount, viewMatrix, projectionMatrix, Progress, PathTexture, Translation);
+        }
+
+        public float Translation { get; set; }
+
+        public void DayUpdate()
+        {
+            Progress++;
+        }
+
+        public void Update(double delta)
+        {
+            Translation += (float) delta*2;
         }
     }
 }

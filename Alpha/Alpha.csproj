@@ -344,6 +344,9 @@
     <Content Include="Data\Textures\OceanWater.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Textures\Path.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Textures\Rock.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

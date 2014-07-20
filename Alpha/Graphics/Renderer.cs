@@ -62,7 +62,7 @@ namespace Alpha.Graphics
             TerrainShader = new TerrainShader(DirectX.Device);
             WaterShader = new WaterShader(DirectX.Device);
             FontShader = new FontShader(DirectX.Device);
-            PathShader = new PathShader(DirectX.Device);
+            PathShader = new PathShader(this);
             TextManager = new TextManager(this);
             TextureManager = new TextureManager(DirectX.Device);
             _renderables = new List<RenderableGameComponent>();

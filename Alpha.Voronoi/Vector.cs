@@ -303,8 +303,7 @@ namespace Alpha.Voronoi
 				D=(V1[i]-V2[i]);
 				E+=D*D;
 			}
-			return E;
-
+			return Math.Sqrt(E);
 		}
 
 		/// <summary>

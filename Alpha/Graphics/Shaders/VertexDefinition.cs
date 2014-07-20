@@ -200,6 +200,62 @@ namespace Alpha.Graphics.Shaders
             }
         }
         [StructLayout(LayoutKind.Sequential)]
+        public struct Path
+        {
+            public Vector3 position;
+            public Vector4 color;
+            public Vector2 pathLength; //1 : total path length up to the current segment, 2 : current segment length
+            public uint fillingIndex;
+
+            public static InputLayout GetInputLayout(Device device, CompilationResult vertexShaderByteCode)
+            {
+                var inputElements = new InputElement[]
+                {
+                    new InputElement
+                    {
+                        SemanticName = "POSITION",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 0,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "COLOR",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32A32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 12,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 28,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 1,
+                        Format = Format.R32_UInt,
+                        Slot = 0,
+                        AlignedByteOffset = 36,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    }
+                };
+                return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
+            }
+        }
+        [StructLayout(LayoutKind.Sequential)]
         public struct PositionTexture
         {
             public static int AppendAlignedElement1 = 12;

@@ -29,5 +29,25 @@ namespace Alpha.Graphics.Shaders
                 };
             }
         }
+
+        public SamplerStateDescription WrapSamplerStateDescription
+        {
+            get
+            {
+                return new SamplerStateDescription
+                {
+                    Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                    AddressU = TextureAddressMode.Wrap,
+                    AddressV = TextureAddressMode.Wrap,
+                    AddressW = TextureAddressMode.Wrap,
+                    MipLodBias = 0,
+                    MaximumAnisotropy = 1,
+                    ComparisonFunction = Comparison.Always,
+                    BorderColor = new Color4(0, 0, 0, 0),
+                    MinimumLod = 0,
+                    MaximumLod = float.MaxValue
+                };
+            }
+        }
     }
 }

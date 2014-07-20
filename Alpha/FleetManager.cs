@@ -57,7 +57,10 @@ namespace Alpha
 
         public override void Update(double delta)
         {
-
+            foreach (FleetMoveOrder move in Moves)
+            {
+                move.Update(delta);
+            }
         }
 
         public override void Dispose()
@@ -75,7 +78,10 @@ namespace Alpha
 
         public void DayUpdate()
         {
-
+            foreach (FleetMoveOrder move in Moves)
+            {
+                move.DayUpdate();
+            }
         }
 
         IList<IScriptableFleet> IFleetProvider.ScripableFleets

@@ -45,7 +45,7 @@ namespace Alpha.Voronoi
 			get
 			{
 				if(!IsPartlyInfinite)
-					return (VVertexB-VVertexA)*(1.0/Math.Sqrt(Vector.Dist(VVertexA,VVertexB)));
+					return (VVertexB-VVertexA)*(1.0/Vector.Dist(VVertexA,VVertexB));
 				if(LeftData[0]==RightData[0])
 				{
 					if(LeftData[1]<RightData[1])
@@ -65,7 +65,7 @@ namespace Alpha.Voronoi
 			{
 				if(IsPartlyInfinite)
 					return double.PositiveInfinity;
-				return Math.Sqrt(Vector.Dist(VVertexA,VVertexB));
+				return Vector.Dist(VVertexA,VVertexB);
 			}
 		}
 	}
@@ -642,7 +642,7 @@ namespace Alpha.Voronoi
 			VoronoiGraph VGErg = new VoronoiGraph();
 			foreach(VoronoiEdge VE in VG.Edges)
 			{
-				if(Math.Sqrt(Vector.Dist(VE.LeftData,VE.RightData))>=minLeftRightDist)
+				if(Vector.Dist(VE.LeftData,VE.RightData)>=minLeftRightDist)
 					VGErg.Edges.Add(VE);
 			}
 			foreach(VoronoiEdge VE in VGErg.Edges)
