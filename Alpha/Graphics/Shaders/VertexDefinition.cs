@@ -203,7 +203,6 @@ namespace Alpha.Graphics.Shaders
         public struct Path
         {
             public Vector3 position;
-            public Vector4 color;
             public Vector2 pathLength; //1 : total path length up to the current segment, 2 : current segment length
             public uint fillingIndex;
 
@@ -223,21 +222,11 @@ namespace Alpha.Graphics.Shaders
                     },
                     new InputElement
                     {
-                        SemanticName = "COLOR",
-                        SemanticIndex = 0,
-                        Format = Format.R32G32B32A32_Float,
-                        Slot = 0,
-                        AlignedByteOffset = 12,
-                        Classification = InputClassification.PerVertexData,
-                        InstanceDataStepRate = 0
-                    },
-                    new InputElement
-                    {
                         SemanticName = "TEXCOORD",
                         SemanticIndex = 0,
                         Format = Format.R32G32_Float,
                         Slot = 0,
-                        AlignedByteOffset = 28,
+                        AlignedByteOffset = 12,
                         Classification = InputClassification.PerVertexData,
                         InstanceDataStepRate = 0
                     },
@@ -247,7 +236,7 @@ namespace Alpha.Graphics.Shaders
                         SemanticIndex = 1,
                         Format = Format.R32_UInt,
                         Slot = 0,
-                        AlignedByteOffset = 36,
+                        AlignedByteOffset = 20,
                         Classification = InputClassification.PerVertexData,
                         InstanceDataStepRate = 0
                     }

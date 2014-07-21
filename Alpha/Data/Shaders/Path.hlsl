@@ -10,12 +10,13 @@ cbuffer PathData : register (b1)
 	float translation;
 	uint positionIndex;
 	float2 padding;
+	float4 mainColor;
+	float4 backgroundColor;
 }
 
 struct VertexInputType
 {
 	float4 position : POSITION;
-	float4 color : COLOR;
 	float2 length : TEXCOORD0;
 	uint fillingIndex : TEXCOORD1;
 };
@@ -23,7 +24,6 @@ struct VertexInputType
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
-	float4 color : COLOR;
 	float2 tex : TEXCOORD0;
 	bool fill : TEXCOORD1;
 };
@@ -60,46 +60,42 @@ void GS(lineadj VertexInputType input[4], inout TriangleStream<PixelInputType> T
 	normal2 = normalize((normal2 + normalCenter) / 2)*1.5f;
 
 	output.position = input[1].position;
-	output.color = input[1].color;
 	output.position -= normal1;
 	output.position.w = 1.0f;
 	output.position = mul(output.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.fill = input[2].fillingIndex < positionIndex;
+	output.fill = input[2].fillingIndex <= positionIndex;
 	output.tex = float2((input[1].length[0]/3), 0);
 	TriStream.Append(output);
 
 	output.position = input[2].position;
-	output.color = input[2].color;
 	output.position -= normal2;
 	output.position.w = 1.0f;
 	output.position = mul(output.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.fill = input[2].fillingIndex < positionIndex;
+	output.fill = input[2].fillingIndex <= positionIndex;
 	output.tex = float2((input[2].length[0] / 3), 0);
 	TriStream.Append(output);
 
 	output.position = input[1].position;
 	output.position += normal1;
-	output.color = input[1].color;
 	output.position.w = 1.0f;
 	output.position = mul(output.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.fill = input[2].fillingIndex < positionIndex;
+	output.fill = input[2].fillingIndex <= positionIndex;
 	output.tex = float2((input[1].length[0] / 3), 1);
 	TriStream.Append(output);
 
 	output.position = input[2].position;
-	output.color = input[2].color;
 	output.position += normal2;
 	output.position.w = 1.0f;
 	output.position = mul(output.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.fill = input[2].fillingIndex < positionIndex;
+	output.fill = input[2].fillingIndex <= positionIndex;
 	output.tex = float2((input[2].length[0] / 3), 1);
 	TriStream.Append(output);
 }
@@ -107,10 +103,10 @@ void GS(lineadj VertexInputType input[4], inout TriangleStream<PixelInputType> T
 float4 PS(PixelInputType input) : SV_TARGET
 {
 	if (input.fill)
-		return input.color;
+		return mainColor;
 	else
 	{
 		input.tex.x += translation;
-		return input.color*PathTexture.Sample(SampleWrap, input.tex).w;
+		return lerp(backgroundColor, mainColor, PathTexture.Sample(SampleWrap, input.tex).w);
 	}
 }

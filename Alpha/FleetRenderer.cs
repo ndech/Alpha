@@ -29,7 +29,7 @@ namespace Alpha
             _model.Render(deviceContext);
             foreach (Fleet fleet in fleets)
             {
-                _shader.Render(deviceContext, _model.IndexCount, Matrix.RotationY((float)Math.PI / 2) * Matrix.Translation((float)fleet.Location.Center[0], 0, (float)fleet.Location.Center[1]), viewMatrix, projectionMatrix, _model.Texture, _light, _camera);
+                _shader.Render(deviceContext, _model.IndexCount, Matrix.RotationY(-(float)(Math.PI / 2 + fleet.Angle)) * Matrix.Translation((float)fleet.Location.Center[0], 0, (float)fleet.Location.Center[1]), viewMatrix, projectionMatrix, _model.Texture, _light, _camera);
             }
             _selectedOverlay.Render(deviceContext, Matrix.RotationX(-(float)Math.PI / 2) * Matrix.Translation((float)fleets[0].Location.Center[0] - 12.5f, 0.2f, (float)fleets[0].Location.Center[1] + 12.5f), viewMatrix, projectionMatrix);
         }

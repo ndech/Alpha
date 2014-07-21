@@ -25,6 +25,8 @@ namespace Alpha.Graphics.Shaders
             public float Translation;
             public int PositionIndex;
             private readonly Vector2 padding;
+            public Vector4 MainColor;
+            public Vector4 BackgroundColor;
         }
         public PathShader(IRenderer renderer)
         {
@@ -55,7 +57,7 @@ namespace Alpha.Graphics.Shaders
             SamplerState = new SamplerState(renderer.Device, WrapSamplerStateDescription);
         }
 
-        public void Render(DeviceContext deviceContext, int vertexCount, Matrix viewMatrix, Matrix projectionMatrix, int positionIndex, ShaderResourceView pathTexture, float translation)
+        public void Render(DeviceContext deviceContext, int vertexCount, int vertexOffset, Matrix viewMatrix, Matrix projectionMatrix, int positionIndex, ShaderResourceView pathTexture, float translation, Vector4 mainColor, Vector4 backgroundColor)
         {
             DataStream mappedResource;
             deviceContext.MapSubresource(ConstantMatrixBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
@@ -71,7 +73,9 @@ namespace Alpha.Graphics.Shaders
             mappedResource.Write(new PathData
             {
                 Translation = translation,
-                PositionIndex = positionIndex
+                PositionIndex = positionIndex,
+                MainColor = mainColor,
+                BackgroundColor = backgroundColor
             });
             deviceContext.UnmapSubresource(ConstantPathDataBuffer, 0);
 
@@ -84,7 +88,7 @@ namespace Alpha.Graphics.Shaders
             deviceContext.GeometryShader.Set(GeometryShader);
             deviceContext.GeometryShader.SetConstantBuffer(0, ConstantMatrixBuffer);
             deviceContext.GeometryShader.SetConstantBuffer(1, ConstantPathDataBuffer);
-            deviceContext.Draw(vertexCount,0);
+            deviceContext.Draw(vertexCount-vertexOffset ,vertexOffset);
             deviceContext.GeometryShader.Set(null);
         }
 

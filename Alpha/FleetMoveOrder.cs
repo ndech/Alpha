@@ -27,7 +27,7 @@ namespace Alpha
         public VoronoiSite Destination { get; set; }
         public List<Step> Steps { get; set; } 
         public Fleet Fleet { get; set; }
-        public Int32 Progress { get; set; }
+        public Int32 CurrentStepProgress { get; set; }
         private PathShader Shader { get; set; }
         public Int32 VertexCount { get; set; }
         public Buffer VertexBuffer { get; set; }
@@ -35,16 +35,15 @@ namespace Alpha
 
         public FleetMoveOrder(IRenderer renderer, Fleet fleet, VoronoiSite destination, List<Step> steps)
         {
-            Progress = 0;
+            CurrentStepProgress = 0;
             Fleet = fleet;
             Destination = destination;
             Steps = steps;
             Shader = renderer.PathShader;
-            Vector4 color = Color.Green.ToVector4();
 
             List<Step> allSteps;
             (allSteps = new List<Step> {new Step(fleet.Location, 0)}).AddRange(Steps);
-
+            Fleet.Angle = (float)Math.Atan2(steps[0].Destination.Center[1] - fleet.Location.Center[1], steps[0].Destination.Center[0] - fleet.Location.Center[0]);
             List<VertexDefinition.Path> vertices = new List<VertexDefinition.Path>();
             int filling = 0;
             Vector3 position, prevPosition = new Vector3((float)fleet.Location.Center[0], 0.5f, (float)fleet.Location.Center[1]);
@@ -64,8 +63,7 @@ namespace Alpha
                     arcLength = Vector3.Distance(prevPosition, position);
                     vertices.Add(new VertexDefinition.Path
                     {
-                        color = color,
-                        fillingIndex = (uint)((++filling)/2),
+                        fillingIndex = (uint)(++filling),
                         position = position,
                         pathLength = new Vector2(totalDistance,arcLength)
                     });
@@ -79,8 +77,7 @@ namespace Alpha
                     arcLength = Vector3.Distance(prevPosition, position);
                     vertices.Add(new VertexDefinition.Path
                     {
-                        color = color,
-                        fillingIndex = (uint)((++filling) / 2),
+                        fillingIndex = (uint)(++filling),
                         position = position,
                         pathLength = new Vector2(totalDistance, arcLength)
                     });
@@ -105,19 +102,28 @@ namespace Alpha
         {
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, Utilities.SizeOf<VertexDefinition.Path>(), 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStripWithAdjacency;
-            Shader.Render(deviceContext, VertexCount, viewMatrix, projectionMatrix, Progress, PathTexture, Translation);
+            Shader.Render(deviceContext, VertexCount, ElapsedProgress*2, viewMatrix, projectionMatrix, (ElapsedProgress + CurrentStepProgress)*2, PathTexture, Translation, Color.Green.ToVector4(), Color.LimeGreen.ToVector4());
         }
 
         public float Translation { get; set; }
 
         public void DayUpdate()
         {
-            Progress++;
+            CurrentStepProgress++;
+            if (CurrentStepProgress >= Steps[0].Duration)
+            {
+                Fleet.Location = Steps[0].Destination;
+                ElapsedProgress += CurrentStepProgress;
+                Steps.RemoveAt(0);
+                CurrentStepProgress = 0;
+            }
         }
+
+        public int ElapsedProgress { get; set; }
 
         public void Update(double delta)
         {
-            Translation += (float) delta*2;
+            Translation -= (float) delta * Fleet.Speed;
         }
     }
 }
