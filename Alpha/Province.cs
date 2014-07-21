@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Xml.Linq;
+using Alpha.Scripting;
 
 namespace Alpha
 {
-    public interface IProvince
+    public interface IProvince : IScriptableProvince
     {
         Int32 Population { get; set; }
         float YearlyGrowth { get; }
@@ -11,7 +12,7 @@ namespace Alpha
     class Province : Territory, IUpdatable, IProvince
     {
         private static int _counter = 0;
-        public String Id { get; private set; }
+        private String Id { get; set; }
         public float YearlyGrowth { get; set; }
 
         public Province()

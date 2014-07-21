@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Security.Policy;
 using Alpha.Voronoi;
 using Alpha.Toolkit;
 
@@ -16,7 +15,7 @@ namespace Alpha.WorldGeneration
     }
     public static class Generator
     {
-        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations, int seed)
+        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations, int seed, bool outputPictures = false)
         {
             RandomGenerator.ResetSeed(seed);
             Dictionary<Vector, VoronoiSite> points = new Dictionary<Vector, VoronoiSite>(pointCount);
@@ -76,8 +75,11 @@ namespace Alpha.WorldGeneration
                     }
                 }
             }
-            Draw("terrain", width, height, sites, RenderMode.Terrain);
-            Draw("clusters", width, height, sites, RenderMode.Cluster);
+            if (outputPictures)
+            {
+                Draw("terrain", width, height, sites, RenderMode.Terrain);
+                Draw("clusters", width, height, sites, RenderMode.Cluster);
+            }
             Console.WriteLine("Land tiles  : " + sites.Count(s => !s.IsWater) +" ("+ String.Format("{0:P}", (float)sites.Count(s => !s.IsWater) / sites.Count)+")");
             Console.WriteLine("Water tiles : " + sites.Count(s => s.IsWater) + " (" + String.Format("{0:P}", (float)sites.Count(s => s.IsWater) / sites.Count)+")");
             //Console.ReadKey();

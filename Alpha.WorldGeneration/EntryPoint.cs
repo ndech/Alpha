@@ -8,7 +8,7 @@
             const int height = 500;
             const int pointCount = 1000;
             
-            Generator.Create(width, height, pointCount, 1, 1256);
+            Generator.Create(width, height, pointCount, 1, 1256, true);
         }
     }
 }

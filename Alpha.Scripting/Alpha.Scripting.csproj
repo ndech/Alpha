@@ -44,6 +44,7 @@
     <Compile Include="IEventResolver.cs" />
     <Compile Include="IScriptableCalendar.cs" />
     <Compile Include="IScriptableFleet.cs" />
+    <Compile Include="IScriptableProvince.cs" />
     <Compile Include="IScriptableRealm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IFleetProvider.cs" />
