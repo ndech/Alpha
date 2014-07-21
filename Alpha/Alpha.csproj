@@ -156,6 +156,7 @@
     <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="FleetManager.cs" />
+    <Compile Include="FleetMoveOrderRenderer.cs" />
     <Compile Include="FleetRenderer.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />

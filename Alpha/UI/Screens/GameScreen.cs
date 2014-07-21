@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Alpha.Graphics;
@@ -19,7 +18,7 @@ namespace Alpha.UI.Screens
     class GameScreen : Screen
     {
         private readonly IList<Territory> _demesne;
-        private Realm _playerRealm;
+        private readonly Realm _playerRealm;
         private ICamera _camera;
         public GameScreen(IGame game) : base(game, "game_screen")
         {
@@ -159,6 +158,11 @@ namespace Alpha.UI.Screens
                 }
                 else
                 {
+                    if (fleet.Location == destination || destination.IsWater == false)
+                    {
+                        fleet.MoveOrder = null;
+                        return;
+                    }
                     List<FleetMoveOrder.Step> steps = new List<FleetMoveOrder.Step>();
                     //Calculate path using A* algorithm
                     SortedSet<PathfindingNode> openList = 
@@ -194,8 +198,7 @@ namespace Alpha.UI.Screens
                         openList.Remove(currentNode);
                         closedList.Add(currentNode.Site);
                     }
-                    FleetMoveOrder moveOrder = new FleetMoveOrder(renderer, fleet, destination, steps);
-                    Game.Services.Get<IFleetManager>().RegisterMove(moveOrder);
+                    fleet.MoveOrder = new FleetMoveOrder(renderer, fleet, destination, steps);
                 }
             }
         }
