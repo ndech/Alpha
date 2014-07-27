@@ -14,12 +14,17 @@ namespace Alpha
         {
             return Revenue*TimeSpanParser.Parse(timeSpan);
         }
-
+        IScriptableRealm IScriptableRealm.Liege { get { return Liege; }}
         public IScriptableRealm RandomDirectVassal { get { return Vassals.RandomItem(); } }
         public IScriptableRealm RandomDirectVassalWhere(Func<IScriptableRealm, bool> criteria)
         {
             return Vassals.Where(criteria).RandomItem();
         }
+        IList<IScriptableProvince> IScriptableRealm.Demesne { 
+            get {
+            return Demesne.Cast<IScriptableProvince>().ToList();
+        } }
+        public int DemesneSize { get { return Demesne.Count; } }
 
         public double Revenue { get { return TaxIncome + VassalsIncome - Spending; } }
         public double TaxIncome { get { return Demesne.Sum(d => d.BaseTax)*TaxRate; } }

@@ -25,6 +25,6 @@ namespace Alpha
             _population += _population * (YearlyGrowth / 365);
         }
 
-        public override sealed string Name { get; protected set; }
+        public override sealed string Name { get; set; }
     }
 }

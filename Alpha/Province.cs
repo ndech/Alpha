@@ -7,9 +7,7 @@ using SharpDX;
 namespace Alpha
 {
     public interface IProvince : IScriptableProvince
-    {
-        String Name { get; }
-    }
+    { }
 
     abstract class Province : IProvince, IDailyUpdatable
     {
@@ -27,7 +25,7 @@ namespace Alpha
             Adjacencies = new List<ProvinceAdjacency>();
         }
 
-        public abstract string Name { get; protected set; }
+        public abstract string Name { get; set; }
 
         public virtual void DayUpdate()
         { }
