@@ -27,8 +27,8 @@ namespace Alpha
             _shader = renderer.PathShader;
             _pathTexture = renderer.TextureManager.Create("Path.png").TextureResource;
 
-            List<FleetMoveOrder.Step> allSteps;
-            (allSteps = new List<FleetMoveOrder.Step> { new FleetMoveOrder.Step(_fleetMoveOrder.Fleet.Location, 0) }).AddRange(_fleetMoveOrder.Steps);
+            List<MoveOrder.Step> allSteps;
+            (allSteps = new List<MoveOrder.Step> { new MoveOrder.Step(_fleetMoveOrder.Fleet.Location, 0) }).AddRange(_fleetMoveOrder.Steps);
             _fleetMoveOrder.Fleet.Angle = (float)Math.Atan2(allSteps[1].Destination.Center[1] - allSteps[0].Destination.Center[1], allSteps[1].Destination.Center[0] - allSteps[0].Destination.Center[0]);
             List<VertexDefinition.Path> vertices = new List<VertexDefinition.Path>();
             int filling = 0;
@@ -36,11 +36,17 @@ namespace Alpha
             float totalDistance = 0.0f;
             for (int i = 0; i < allSteps.Count - 1; i++)
             {
-                Vector3 middlePoint = GetMiddlePoint(allSteps[i].Destination, allSteps[i + 1].Destination);
-                Vector3 startPoint = new Vector3((float)allSteps[i].Destination.Center[0], 0.5f, (float)allSteps[i].Destination.Center[1]);
-                Vector3 endPoint = new Vector3((float)allSteps[i + 1].Destination.Center[0], 0.5f, (float)allSteps[i + 1].Destination.Center[1]);
-                Vector3 prevPoint = i == 0 ? startPoint : GetMiddlePoint(allSteps[i].Destination, allSteps[i - 1].Destination);
-                Vector3 nextPoint = i == allSteps.Count - 2 ? endPoint : GetMiddlePoint(allSteps[i + 1].Destination, allSteps[i + 2].Destination);
+                Vector3 middlePoint =
+                    allSteps[i].Destination.Adjacencies.Single(a => a.Neighbourg == allSteps[i + 1].Destination)
+                        .PassingPoints.First();
+                Vector3 startPoint = allSteps[i].Destination.Center;
+                Vector3 endPoint = allSteps[i + 1].Destination.Center;
+                Vector3 prevPoint = i == 0 ? startPoint :
+                    allSteps[i].Destination.Adjacencies.Single(a => a.Neighbourg == allSteps[i - 1].Destination)
+                        .PassingPoints.First();
+                Vector3 nextPoint = i == allSteps.Count - 2 ? endPoint :
+                    allSteps[i + 1].Destination.Adjacencies.Single(a => a.Neighbourg == allSteps[i + 2].Destination)
+                        .PassingPoints.First();
                 int subdivisions = allSteps[i + 1].Duration;
                 //First part of the arc
                 for (int j = 0; j < subdivisions; j++)
@@ -74,21 +80,14 @@ namespace Alpha
             _vertexCount = vertices.Count;
             _vertexBuffer = Buffer.Create(renderer.Device, BindFlags.VertexBuffer, vertices.ToArray());
         }
+
         public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.Path>(), 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStripWithAdjacency;
             _shader.Render(deviceContext, _vertexCount, _fleetMoveOrder.ElapsedProgress * 2, viewMatrix, projectionMatrix, (_fleetMoveOrder.ElapsedProgress + _fleetMoveOrder.CurrentStepProgress) * 2, _pathTexture, _translation, Color.Green.ToVector4(), Color.LimeGreen.ToVector4());
         }
-
-        private static Vector3 GetMiddlePoint(VoronoiSite polyOne, VoronoiSite polyTwo)
-        {
-            var commonPoints = polyOne.Points.Where(p => polyTwo.Points.Contains(p)).ToList();
-            var point = new Vector3((float)((commonPoints[0][0] + commonPoints[1][0]) / 2), 0.5f,
-                (float)((commonPoints[0][1] + commonPoints[1][1]) / 2));
-            return point;
-        }
-
+        
         public void Update(double delta)
         {
             _translation -= (float)delta * _fleetMoveOrder.Fleet.Speed;

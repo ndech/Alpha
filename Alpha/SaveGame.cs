@@ -74,7 +74,7 @@
                     else
                     {
                         String currentItemName = Reader.Name;
-                        feedback.Invoke(currentItemName);
+                        feedback(currentItemName);
                         System.Threading.Thread.Sleep(200);
                         bool isEmpty = Reader.IsEmptyElement;
                         Reader.Read();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Graphics;
 using Alpha.Scripting;
 using Alpha.Scripting.Providers;
 using Alpha.Toolkit;
@@ -13,16 +14,23 @@ namespace Alpha
     {
         IList<Fleet> Fleets { get; set; }
         void CreateFleet();
+        void SetMoveOrder(Fleet fleet, List<MoveOrder.Step> steps);
+
     }
     class FleetManager : RenderableGameComponent, IFleetManager, IDailyUpdatable
     {
         public IList<Fleet> Fleets { get; set; }
 
-        private IWorld _world;
         private FleetRenderer _fleetRenderer;
+        private IProvinceManager _provinceManager;
         public void CreateFleet()
         {
-            Fleets.Add(new Fleet { Name = "Reinforcements", ShipCount = 15, Location = _world.Sites.Where(s => s.IsWater).RandomItem(), Speed = 2 });
+            Fleets.Add(new Fleet { Name = "Reinforcements", ShipCount = 15, Location = _provinceManager.SeaProvinces.RandomItem(), Speed = 2 });
+        }
+        
+        public void SetMoveOrder(Fleet fleet, List<MoveOrder.Step> steps)
+        {
+            fleet.MoveOrder = steps == null ? null : new FleetMoveOrder(Game.Services.Get<IRenderer>(), fleet, steps);
         }
 
         public FleetManager(IGame game)
@@ -40,8 +48,8 @@ namespace Alpha
         public override void Initialize(Action<string> feedback)
         {
             _fleetRenderer = new FleetRenderer(Game);
-            _world = Game.Services.Get<IWorld>();
-            Fleets.Add(new Fleet { Name = "Royal fleet", ShipCount = 120, Location = _world.Sites.Where(s => s.IsWater).RandomItem(), Speed = 2 });
+            _provinceManager = Game.Services.Get<IProvinceManager>();
+            Fleets.Add(new Fleet { Name = "Royal fleet", ShipCount = 120, Location = _provinceManager.SeaProvinces.RandomItem(), Speed = 2 });
         }
 
         public override void Update(double delta)

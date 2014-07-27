@@ -33,6 +33,7 @@ SamplerState SampleWrap : register (s0);
 
 VertexInputType VS(VertexInputType input)
 {
+	input.position.y += 0.5f;
 	return input;
 }
 

@@ -32,7 +32,7 @@ namespace Alpha
 
         public IList<Realm> Vassals { get; private set; }
 
-        public IList<Territory> Demesne { get; private set; }
+        public IList<LandProvince> Demesne { get; private set; }
 
         private Character _ruler;
 
@@ -75,7 +75,7 @@ namespace Alpha
             TaxRate = 0.0f;
             SpendingRate = 0.0f;
             Vassals = new List<Realm>();
-            Demesne = new List<Territory>();
+            Demesne = new List<LandProvince>();
             Liege = null;
             Treasury = 50;
         }
@@ -99,8 +99,8 @@ namespace Alpha
             {
                 foreach (Outcome<T> outcome in eventRef.Outcomes)
                 {
-                    if (outcome.PreExecute != null) outcome.PreExecute.Invoke(item);
-                    outcome.Effects.ToList().ForEach((e) => e.Invoke(item));
+                    if (outcome.PreExecute != null) outcome.PreExecute(item);
+                    outcome.Effects.ToList().ForEach((e) => e(item));
                 }
             }
             else
@@ -109,11 +109,11 @@ namespace Alpha
                 double rand = RandomGenerator.GetDouble(0.0, total);
                 foreach (Outcome<T> outcome in eventRef.Outcomes.Where((o) => o.ConditionsValid(item)))
                 {
-                    if(outcome.PreExecute != null) outcome.PreExecute.Invoke(item);
+                    if(outcome.PreExecute != null) outcome.PreExecute(item);
                     double affinity = outcome.IaAffinity(item);
                     if (rand < affinity)
                     {
-                        outcome.Effects.ToList().ForEach((e)=>e.Invoke(item));
+                        outcome.Effects.ToList().ForEach((e)=>e(item));
                         return;
                     }
                     rand -= affinity;

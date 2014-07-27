@@ -23,17 +23,17 @@ namespace Alpha.Events
 
         public String Label(T item)
         {
-            return LabelFunc.Invoke(item);
+            return LabelFunc(item);
         }
 
         public String Tooltip(T item)
         {
-            return TooltîpFunc == null ? null : TooltîpFunc.Invoke(item);
+            return TooltîpFunc == null ? null : TooltîpFunc(item);
         }
 
         public bool ConditionsValid(T item)
         {
-            return Conditions.All(condition => condition.Invoke(item));
+            return Conditions.All(condition => condition(item));
         }
 
         public Double IaAffinity(T item)

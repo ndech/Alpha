@@ -46,7 +46,7 @@ namespace Alpha
 
         public override void Initialize(Action<string> feedback)
         {
-            feedback.Invoke("Loading realms...");
+            feedback("Loading realms...");
             IEnumerable<Character> characters = Game.Services.Get<ICharacterManager>().Characters;
             Realms.Add(new Realm("Belgium", characters.Where((c)=> c.Realm == null).RandomItem()));
             Realms.Add(new Realm("France", characters.Where((c) => c.Realm == null).RandomItem()));
@@ -59,7 +59,7 @@ namespace Alpha
             Realms[5].Liege = Realms[0];
             PlayerRealm = Realms[5];
             int i = 0;
-            foreach (Province province in Game.Services.Get<IProvinceManager>().Provinces)
+            foreach (LandProvince province in Game.Services.Get<IProvinceManager>().LandProvinces)
             {
                 if(i< Realms.Count)
                     Realms[i].Demesne.Add(province);
@@ -69,7 +69,7 @@ namespace Alpha
             }
             foreach (Realm realm in Realms)
                 realm.TaxRate = (float)RandomGenerator.Get(10, 40)/100;
-            feedback.Invoke("Loading realm events...");
+            feedback("Loading realm events...");
             Events = Game.Services.Get<IEventManager>().LoadEvents<IScriptableRealm>(Realm.ScriptIdentifier, feedback);
         }
 

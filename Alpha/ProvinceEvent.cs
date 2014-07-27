@@ -26,9 +26,9 @@ namespace Alpha
         {
             float meanTimeToHappen = 10;
             foreach (Func<IProvince, float> multiplier in _multipliers)
-                meanTimeToHappen *= multiplier.Invoke(province);
+                meanTimeToHappen *= multiplier(province);
             if (RandomGenerator.Get(0, (int)meanTimeToHappen) == 0)
-                _effect.Invoke(province);
+                _effect(province);
         }
     }
 }

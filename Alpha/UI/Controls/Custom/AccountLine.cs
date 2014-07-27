@@ -43,7 +43,7 @@ namespace Alpha.UI.Controls.Custom
 
         private String GenerateValue()
         {
-            double value = _valueCallback.Invoke();
+            double value = _valueCallback();
             if (_valueType == ValueType.Revenue)
                 _valueLabel.TextColor = value < 0 ? _negativeColor : _positiveColor;
             return value.ToString("N2");

@@ -22,7 +22,7 @@ namespace Alpha.Events
 
         double IModifier<T>.Modifier(T item)
         {
-            double value = _expression.Invoke(item) ? _factor : 1.0;
+            double value = _expression(item) ? _factor : 1.0;
             return (_type == ModifierType.Reducer ? 1.0 / value : value);
         }
     }
@@ -39,7 +39,7 @@ namespace Alpha.Events
 
         double IModifier<T>.Modifier(T item)
         {
-            double value = _expression.Invoke(item);
+            double value = _expression(item);
             return (_type == ModifierType.Reducer ? 1.0/value : value);
         }
     }
@@ -67,7 +67,7 @@ namespace Alpha.Events
 
         public bool ConditionsValid(T item)
         {
-            return Conditions.All(condition => condition.Invoke(item));
+            return Conditions.All(condition => condition(item));
         }
 
         public int MeanTimeToHappen(T item)
@@ -77,7 +77,7 @@ namespace Alpha.Events
 
         public String Label(T item)
         {
-            return LabelFunc.Invoke(item);
+            return LabelFunc(item);
         }
 
         public void Process(T item)
@@ -94,9 +94,9 @@ namespace Alpha.Events
                 throw new InvalidEventDataException("Invalid parameter number in event " + Id + " expected " + Initializers.Count + " and got " + parametersCount);
             if (parametersCount > 0)
                 for (int i = 0; i < Initializers.Count; i++)
-                    Initializers[i].Invoke(parameters[i]);
+                    Initializers[i](parameters[i]);
             if (PreExecute != null)
-                PreExecute.Invoke((T)item);
+                PreExecute((T)item);
             Execute((T)item);
         }
         private void Execute(T item)

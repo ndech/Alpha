@@ -50,7 +50,7 @@
 
         public override void Initialize(Action<string> feedback)
         {
-            feedback.Invoke("Loading characters...");
+            feedback("Loading characters...");
             for (int i = 0; i < 10; i++)
                 Characters.Add(new Character());
         }

@@ -15,12 +15,12 @@ namespace Alpha.UI.Controls
         public override void Initialize()
         {
             base.Initialize();
-            Text = Expression.Invoke();
+            Text = Expression();
         }
 
         protected override void Update(double delta)
         {
-            Text = Expression.Invoke();
+            Text = Expression();
         }
     }
 }

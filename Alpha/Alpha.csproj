@@ -169,14 +169,19 @@
     <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
+    <Compile Include="IMovable.cs" />
     <Compile Include="InputInterop.cs" />
     <Compile Include="FleetMoveOrder.cs" />
+    <Compile Include="LandProvince.cs" />
+    <Compile Include="MoveOrder.cs" />
+    <Compile Include="PathfindingNode.cs" />
+    <Compile Include="ProvinceAdjacency.cs" />
     <Compile Include="ProvinceEvent.cs" />
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />
+    <Compile Include="SeaProvince.cs" />
     <Compile Include="Sky.cs" />
     <Compile Include="Sun.cs" />
-    <Compile Include="Territory.cs" />
     <Compile Include="UI\Controls\Custom\AccountLine.cs" />
     <Compile Include="UI\Controls\Custom\CalendarWidget.cs" />
     <Compile Include="UI\Controls\Custom\ConsoleLine.cs" />
@@ -218,6 +223,7 @@
     <Compile Include="UI\UiManager.cs" />
     <Compile Include="Water.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="Zone.cs" />
     <None Include="Data\Shaders\Texture.vs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -263,7 +269,6 @@
     <Compile Include="RenderableGameComponent.cs" />
     <Compile Include="SaveGame.cs" />
     <Compile Include="ServiceContainer.cs" />
-    <Compile Include="Timer.cs" />
     <Compile Include="ConfigurationManager.cs" />
   </ItemGroup>
   <ItemGroup>

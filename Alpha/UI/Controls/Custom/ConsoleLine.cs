@@ -1,5 +1,4 @@
 ﻿using System;
-using Alpha.Graphics;
 
 namespace Alpha.UI.Controls.Custom
 {

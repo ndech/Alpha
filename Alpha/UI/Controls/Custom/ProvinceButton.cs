@@ -5,11 +5,11 @@ namespace Alpha.UI.Controls.Custom
 {
     class ProvinceButton : Button
     {
-        private readonly Territory _territory;
-        public ProvinceButton(IGame game, int position, Territory territory)
-            : base(game, "province_button",new UniRectangle(0.05f, 40 * position + 10, 0.9f, 30), territory.Name)
+        private readonly LandProvince _province;
+        public ProvinceButton(IGame game, int position, LandProvince province)
+            : base(game, "province_button",new UniRectangle(0.05f, 40 * position + 10, 0.9f, 30), province.Name)
         {
-            _territory = territory;
+            _province = province;
         }
 
         public override void Initialize()
@@ -22,7 +22,7 @@ namespace Alpha.UI.Controls.Custom
 
         protected override void Update(double delta)
         {
-            Text = _territory.Name;
+            Text = _province.Name;
         }
     }
 }

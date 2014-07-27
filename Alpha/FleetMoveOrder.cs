@@ -1,37 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Alpha.Graphics;
-using Alpha.WorldGeneration;
 using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace Alpha
 {
-    class FleetMoveOrder : IDailyUpdatable, IUpdatable
+    class FleetMoveOrder : MoveOrder, IDailyUpdatable, IUpdatable
     {
-        public class Step
-        {
-            public VoronoiSite Destination { get; set; }
-            public Int32 Duration { get; set; }
-
-            public Step(VoronoiSite destination, Int32 duration)
-            {
-                Destination = destination;
-                Duration = duration;
-            }
-        }
-        public VoronoiSite Destination { get; set; }
+        public Province Destination { get { return Steps.Last().Destination; } }
         public List<Step> Steps { get; set; } 
         public Fleet Fleet { get; set; }
         public Int32 CurrentStepProgress { get; set; }
         public Int32 ElapsedProgress { get; set; }
         private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
         
-        public FleetMoveOrder(IRenderer renderer, Fleet fleet, VoronoiSite destination, List<Step> steps)
+        public FleetMoveOrder(IRenderer renderer, Fleet fleet, List<Step> steps)
         {
-            CurrentStepProgress = 0;
             Fleet = fleet;
-            Destination = destination;
             Steps = steps;
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(renderer, this);
         }

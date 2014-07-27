@@ -1,9 +1,10 @@
-﻿namespace Alpha
+﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+
+namespace Alpha.Toolkit
 {
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
-    class Timer
+    public class Timer
     {
         private readonly Stopwatch _stopWatch;
         private Int64 _elapsedMilliseconds;

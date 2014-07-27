@@ -2,8 +2,6 @@
 using Alpha.Toolkit.Math;
 using Alpha.UI.Coordinates;
 using Alpha.UI.Styles;
-using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Alpha.UI.Controls
 {

@@ -7,8 +7,6 @@ using Alpha.Toolkit.Math;
 using Alpha.UI.Controls;
 using Alpha.UI.Controls.Custom;
 using Alpha.UI.Coordinates;
-using Alpha.Voronoi;
-using Alpha.WorldGeneration;
 using SharpDX;
 using Button = Alpha.UI.Controls.Button;
 using Panel = Alpha.UI.Controls.Panel;
@@ -17,7 +15,7 @@ namespace Alpha.UI.Screens
 {
     class GameScreen : Screen
     {
-        private readonly IList<Territory> _demesne;
+        private readonly IList<LandProvince> _demesne;
         private readonly Realm _playerRealm;
         private ICamera _camera;
         public GameScreen(IGame game) : base(game, "game_screen")
@@ -148,80 +146,18 @@ namespace Alpha.UI.Screens
                     (point.X * inverseViewMatrix.M12) + (point.Y * inverseViewMatrix.M22) + inverseViewMatrix.M32,
                     (point.X * inverseViewMatrix.M13) + (point.Y * inverseViewMatrix.M23) + inverseViewMatrix.M33);
                 Vector3 intersection = origin - direction * (origin.Y / direction.Y);
-                Vector target = new Vector(intersection.X, intersection.Z);
                 
                 Fleet fleet = Game.Services.Get<IFleetManager>().Fleets[0];
-                VoronoiSite destination = Game.Services.Get<IWorld>().Sites.OrderBy(s => Vector.Dist(s.Center, target)).First();
+                Province destination = Game.Services.Get<IProvinceManager>().Provinces.OrderBy(s => Vector3.Distance(s.Center, intersection)).First();
+
                 if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
                 {
                     fleet.Location = destination;
                 }
                 else
                 {
-                    if (fleet.Location == destination || destination.IsWater == false)
-                    {
-                        fleet.MoveOrder = null;
-                        return;
-                    }
-                    List<FleetMoveOrder.Step> steps = new List<FleetMoveOrder.Step>();
-                    //Calculate path using A* algorithm
-                    SortedSet<PathfindingNode> openList = 
-                        new SortedSet<PathfindingNode>(Comparer<PathfindingNode>.Create((a,b)=> a.CompareTo(b)));
-                    System.Collections.Generic.HashSet<VoronoiSite> closedList = new System.Collections.Generic.HashSet<VoronoiSite>();
-                    openList.Add(new PathfindingNode(fleet.Location, Vector.Dist(destination.Center, fleet.Location.Center)));
-                    bool pathFound = destination == fleet.Location;
-                    while (!pathFound)
-                    {
-                        if (openList.Count == 0)
-                            break;
-                        PathfindingNode currentNode = openList.First();
-                        foreach (VoronoiSite neighbourg in currentNode.Site.Neighbourgs.Where(s=>s.IsWater))
-                        {
-                            if(closedList.Contains(neighbourg)||openList.Any(n=>n.Site == neighbourg))
-                                continue;
-                            openList.Add(new PathfindingNode(neighbourg, 
-                                Vector.Dist(destination.Center, neighbourg.Center)
-                                , currentNode));
-                            if (neighbourg == destination) // Path found !
-                            {
-                                pathFound = true;
-                                steps.Add(new FleetMoveOrder.Step(destination, (int)(Vector.Dist(currentNode.Site.Center, destination.Center)/fleet.Speed)));
-                                while (currentNode.Parent != null)
-                                {
-                                    steps.Add(new FleetMoveOrder.Step(currentNode.Site, (int)(Vector.Dist(currentNode.Site.Center, currentNode.Parent.Site.Center)/fleet.Speed)));
-                                    currentNode = currentNode.Parent;
-                                }
-                                steps.Reverse();
-                                break;
-                            }
-                        }
-                        openList.Remove(currentNode);
-                        closedList.Add(currentNode.Site);
-                    }
-                    fleet.MoveOrder = new FleetMoveOrder(renderer, fleet, destination, steps);
+                    Game.Services.Get<IFleetManager>().SetMoveOrder(fleet, Game.Services.Get<IProvinceManager>().CalculatePath(fleet, destination));
                 }
-            }
-        }
-
-        class PathfindingNode : IComparable<PathfindingNode>
-        {
-            public VoronoiSite Site { get; set; }
-            public PathfindingNode Parent { get; set; }
-
-            public double PathLength { get; set; }
-            public double EstimateRemainingDistance { get; set; }
-            public double Cost { get { return PathLength + EstimateRemainingDistance; } }
-
-            public PathfindingNode(VoronoiSite site, double estimateRemainingDistance, PathfindingNode parent = null)
-            {
-                Site = site;
-                EstimateRemainingDistance = estimateRemainingDistance;
-                PathLength = parent == null ? 0 : parent.PathLength + Vector.Dist(parent.Site.Center, site.Center);
-                Parent = parent;
-            }
-            public int CompareTo(PathfindingNode other)
-            {
-                return Comparer<double>.Default.Compare(Cost, other.Cost);
             }
         }
     }

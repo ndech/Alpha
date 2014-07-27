@@ -1,65 +1,35 @@
 ﻿using System;
-using System.Xml.Linq;
+using System.Collections.Generic;
 using Alpha.Scripting;
+using Alpha.Toolkit;
+using SharpDX;
 
 namespace Alpha
 {
     public interface IProvince : IScriptableProvince
     {
-        Int32 Population { get; set; }
-        float YearlyGrowth { get; }
+        String Name { get; }
     }
-    class Province : Territory, IUpdatable, IProvince
+
+    abstract class Province : IProvince, IDailyUpdatable
     {
-        private static int _counter = 0;
-        private String Id { get; set; }
-        public float YearlyGrowth { get; set; }
-
-        public Province()
+        private static int _idSequence = 0;
+        protected static int IdSequence { get { return ++_idSequence; } }
+        public List<Zone> Zones { get; set; }
+        public Vector3 Center { get; private set; }
+        public List<ProvinceAdjacency> Adjacencies { get; private set; }
+        public String Id { get; private set; }
+        public Province(List<Zone> zones, String id)
         {
-            Id = "province_" + _counter++;
-            _population = 1000;
-            Name = "Province " + _counter;
-            YearlyGrowth = 0.1f;
-        }
-
-        private Province(String id, String name, Int32 population)
-        {
+            Zones = zones;
+            Center = zones.RandomItem().Center;
             Id = id;
-            Name = name;
-            _population = population;
+            Adjacencies = new List<ProvinceAdjacency>();
         }
 
-        public void Save(System.Xml.XmlWriter writer)
-        {
-            writer.WriteStartElement("Province");
-            writer.WriteAttributeString("id", Id);
-            writer.WriteElementString("Name", Name);
-            writer.WriteElementString("Population", Population.ToString());
-            writer.WriteEndElement();
-        }
+        public abstract string Name { get; protected set; }
 
-        public override string ToString()
-        {
-            return Name +" "+ Population+ " pop";
-        }
-
-        public void Update(double delta)
-        {
-            _population++;
-        }
-
-        public static Province FromXml(XElement element, ServiceContainer services)
-        {
-            return new Province(
-                (string)element.Attribute("id"),
-                (string)element.Element("Name"),
-                Int32.Parse((string)element.Element("Population")));
-        }
-
-        public void DayUpdate()
-        {
-            _population += _population*(YearlyGrowth/365);
-        }
+        public virtual void DayUpdate()
+        { }
     }
 }

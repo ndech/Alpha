@@ -61,6 +61,7 @@
     <Compile Include="Math\Vector3d.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="TimeSpanParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Alpha.Graphics;
 using Alpha.Graphics.Shaders;
-using Alpha.WorldGeneration;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -22,11 +21,11 @@ namespace Alpha
         private const int WaveTextureRepeat = 3;
         private Vector2 _waveTranslation = new Vector2(0,0);
 
-        public Water(IRenderer renderer, List<VoronoiSite> sites)
+        public Water(IRenderer renderer, IList<SeaProvince> provinces)
         {
             _bumpMapTexture = renderer.TextureManager.Create("OceanWater.png").TextureResource;
             _borderTexture = renderer.TextureManager.Create("Border.png").TextureResource;
-            BuildBuffers(renderer, sites);
+            BuildBuffers(renderer, provinces);
         }
 
         public void Render(IRenderer renderer, DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Sun sun)
@@ -42,24 +41,23 @@ namespace Alpha
             _waveTranslation += new Vector2(0.4f, 0.9f) * (float)delta;
         }
 
-        private void BuildBuffers(IRenderer renderer, List<VoronoiSite> sites)
+        private void BuildBuffers(IRenderer renderer, IList<SeaProvince> provinces)
         {
-            _indexCount = sites.Where(s => s.IsWater).Sum(s => s.Points.Count) * 3;
+            _indexCount = provinces.SelectMany(p=>p.Zones).Sum(z => z.Points.Count) * 3;
             UInt32[] waterIndices = new UInt32[_indexCount];
             VertexDefinition.WaterVertex[] waterVertices = new VertexDefinition.WaterVertex[_indexCount];
             int index = 0;
-            foreach (VoronoiSite site in sites.Where(s => s.IsWater))
+            foreach (Zone zone in provinces.SelectMany(p=>p.Zones))
             {
-                for (int i = 0; i < site.Points.Count; i++)
+                for (int i = 0; i < zone.Points.Count; i++)
                 {
-                    Vector3 pointA = new Vector3((float)site.Points[i][0], 0.0f, (float)site.Points[i][1]);
-                    Vector3 pointB = new Vector3((float)site.Points[(i + 1) % site.Points.Count][0], 0.0f,
-                        (float)site.Points[(i + 1) % site.Points.Count][1]);
-                    Vector3 center = new Vector3((float)site.Center[0], 0.0f, (float)site.Center[1]);
+                    Vector3 pointA = zone.Points[i];
+                    Vector3 pointB = zone.Points[(i + 1)%zone.Points.Count];
+                    Vector3 center = zone.Center;
+
                     float x = Vector3.Dot(center - pointA, pointB - pointA);
                     x /= Vector3.DistanceSquared(pointA, pointB);
                     Vector3 intersection = new Vector3(pointA.X + (x * (pointB.X - pointA.X)), 0.0f, pointA.Z + (x * (pointB.Z - pointA.Z)));
-
 
                     waterVertices[index] = new VertexDefinition.WaterVertex
                     {
