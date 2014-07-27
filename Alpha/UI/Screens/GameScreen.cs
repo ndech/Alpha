@@ -16,13 +16,17 @@ namespace Alpha.UI.Screens
     class GameScreen : Screen
     {
         private readonly IList<LandProvince> _demesne;
+        private readonly List<ISelectable> _selectedItems; 
         private readonly Realm _playerRealm;
+        private readonly IProvinceManager _provinceManager;
         private ICamera _camera;
         public GameScreen(IGame game) : base(game, "game_screen")
         {
             _playerRealm = game.Services.Get<IRealmManager>().PlayerRealm;
             _demesne = _playerRealm.Demesne;
+            _selectedItems = new List<ISelectable>();
             _camera = game.Services.Get<ICamera>();
+            _provinceManager = Game.Services.Get<IProvinceManager>();
             Register(new CalendarWidget(game));
 
             Button menuButton = Register(new Button(game, "menu", new UniRectangle(new UniScalar(0.5f, -40), 0, 80, 30), "Menu"));
@@ -121,43 +125,19 @@ namespace Alpha.UI.Screens
 
         protected override void OnMouseClicked(Vector2I position, int button)
         {
-            if (button == 1) //Right click
+            Picker picker = new Picker(Game, UiManager.MousePosition);
+            if (button == 0)
             {
-                Vector2I mousePosition = UiManager.MousePosition;
-                ICamera camera = Game.Services.Get<ICamera>();
-                IRenderer renderer = Game.Services.Get<IRenderer>();
-                //Calculate the intersection between the map and a ray coming from the camera and passing by the clicked point
-                Vector3 origin = camera.Position;
-
-                Vector2 point;
-                // Move the mouse cursor coordinates into the -1 to +1 range.
-                point.X = ((2.0f * mousePosition.X) / renderer.ScreenSize.X) - 1.0f;
-                point.Y = (((2.0f * mousePosition.Y) / renderer.ScreenSize.Y) - 1.0f) * -1.0f;
-
-                // Adjust the points using the projection matrix to account for the aspect ratio of the viewport.
-                point.X = point.X/renderer.ProjectionMatrix.M11;
-                point.Y = point.Y/renderer.ProjectionMatrix.M22;
-
-                Matrix inverseViewMatrix = Matrix.Invert(camera.ViewMatrix);
                 
-                // Calculate the direction of the picking ray in view space.
-                Vector3 direction = new Vector3(
-                    (point.X*inverseViewMatrix.M11) + (point.Y*inverseViewMatrix.M21) + inverseViewMatrix.M31,
-                    (point.X * inverseViewMatrix.M12) + (point.Y * inverseViewMatrix.M22) + inverseViewMatrix.M32,
-                    (point.X * inverseViewMatrix.M13) + (point.Y * inverseViewMatrix.M23) + inverseViewMatrix.M33);
-                Vector3 intersection = origin - direction * (origin.Y / direction.Y);
-                
+            }
+            else if (button == 1) //Right click
+            {
                 Fleet fleet = Game.Services.Get<IFleetManager>().Fleets[0];
-                Province destination = Game.Services.Get<IProvinceManager>().Provinces.OrderBy(s => Vector3.Distance(s.Center, intersection)).First();
-
+                Province destination = _provinceManager.SelectProvince(picker);
                 if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
-                {
                     fleet.Location = destination;
-                }
                 else
-                {
-                    Game.Services.Get<IFleetManager>().SetMoveOrder(fleet, Game.Services.Get<IProvinceManager>().CalculatePath(fleet, destination));
-                }
+                    Game.Services.Get<IFleetManager>().SetMoveOrder(fleet, _provinceManager.CalculatePath(fleet, destination));
             }
         }
     }

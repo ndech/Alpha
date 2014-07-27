@@ -1,4 +1,6 @@
-﻿namespace Alpha
+﻿using System.Diagnostics.Contracts;
+
+namespace Alpha
 {
     using System;
     using System.Collections.Generic;
@@ -21,7 +23,7 @@
         {
             _services.Remove(typeof(T));
         }
-        
+        [Pure]
         public T Get<T>() where T : IService
         {
             return (T)_services[typeof(T)];

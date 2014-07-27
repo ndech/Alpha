@@ -13,6 +13,7 @@ namespace Alpha
         IList<SeaProvince> SeaProvinces { get; }
         List<MoveOrder.Step> CalculatePath(IMovable movable, Province destination);
         void ProcessWorld(List<VoronoiSite> sites);
+        Province SelectProvince(Picker picker);
     }
     class ProvinceManager : GameComponent, IProvinceManager, IDailyUpdatable
     {
@@ -144,6 +145,11 @@ namespace Alpha
             }
             LandProvinces = Provinces.OfType<LandProvince>().ToList();
             SeaProvinces = Provinces.OfType<SeaProvince>().ToList();
+        }
+
+        public Province SelectProvince(Picker picker)
+        {
+            return Provinces.OrderBy(s => Vector3.Distance(s.Center, picker.GroundIntersection)).First();
         }
     }
 }

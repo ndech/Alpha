@@ -172,6 +172,7 @@
     <Compile Include="IMovable.cs" />
     <Compile Include="InputInterop.cs" />
     <Compile Include="FleetMoveOrder.cs" />
+    <Compile Include="ISelectable.cs" />
     <Compile Include="LandProvince.cs" />
     <Compile Include="MoveOrder.cs" />
     <Compile Include="PathfindingNode.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Realm.cs" />
     <Compile Include="RealmManager.cs" />
     <Compile Include="SeaProvince.cs" />
+    <Compile Include="Picker.cs" />
     <Compile Include="Sky.cs" />
     <Compile Include="Sun.cs" />
     <Compile Include="UI\Controls\Custom\AccountLine.cs" />

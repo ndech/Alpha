@@ -6,7 +6,7 @@ namespace Alpha
 {
     interface IFleet : IScriptableFleet
     { }
-    class Fleet : IFleet, IMovable, IUpdatable, IDailyUpdatable
+    class Fleet : IFleet, IMovable, IUpdatable, IDailyUpdatable, ISelectable
     {
         public Realm Owner { get; set; }
         public int ShipCount { get; set; }
