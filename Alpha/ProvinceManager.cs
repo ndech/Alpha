@@ -133,6 +133,8 @@ namespace Alpha
                     Province neighbourgProvince = Provinces.Single(p => p.Id == neighbourg.ProvinceId);
                     List<Vector3> commonPoints = province.Zones.SelectMany(z => z.Points).
                         Where(p => neighbourgProvince.Zones.SelectMany(z => z.Points).Contains(p)).ToList();
+                    if (commonPoints.Count != 2)
+                        continue;
                     province.Adjacencies.Add(new ProvinceAdjacency()
                     {
                         Neighbourg = neighbourgProvince,

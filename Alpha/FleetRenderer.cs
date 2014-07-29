@@ -26,14 +26,15 @@ namespace Alpha
         }
         public void Render(IList<Fleet> fleets, DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _model.Render(deviceContext);
             foreach (Fleet fleet in fleets)
             {
+                _model.Render(deviceContext);
                 _shader.Render(deviceContext, _model.IndexCount, Matrix.RotationY(-(float)(Math.PI / 2 + fleet.Angle)) * Matrix.Translation(fleet.Location.Center), viewMatrix, projectionMatrix, _model.Texture, _light, _camera);
-                if(fleet.MoveOrder!=null)
+                if(fleet.Selected)
+                    _selectedOverlay.Render(deviceContext, Matrix.RotationX(-(float)Math.PI / 2) * Matrix.Translation(fleet.Location.Center.X - 12.5f, 0.2f, fleet.Location.Center.Z + 12.5f), viewMatrix, projectionMatrix);
+                if (fleet.MoveOrder != null)
                     fleet.MoveOrder.Render(deviceContext, viewMatrix, projectionMatrix);
             }
-            _selectedOverlay.Render(deviceContext, Matrix.RotationX(-(float)Math.PI / 2) * Matrix.Translation(fleets[0].Location.Center.X - 12.5f, 0.2f, fleets[0].Location.Center.Z + 12.5f), viewMatrix, projectionMatrix);
         }
     }
 }

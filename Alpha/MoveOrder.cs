@@ -6,8 +6,8 @@ namespace Alpha
     {
         public class Step
         {
-            public Province Destination { get; set; }
-            public Int32 Duration { get; set; }
+            public Province Destination { get; private set; }
+            public Int32 Duration { get; private set; }
 
             public Step(Province destination, Int32 duration)
             {

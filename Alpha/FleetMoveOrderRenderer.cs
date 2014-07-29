@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Alpha.Graphics;
 using Alpha.Graphics.Shaders;
-using Alpha.WorldGeneration;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;

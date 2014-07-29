@@ -173,6 +173,7 @@
     <Compile Include="InputInterop.cs" />
     <Compile Include="FleetMoveOrder.cs" />
     <Compile Include="ISelectable.cs" />
+    <Compile Include="ISelectableManager.cs" />
     <Compile Include="LandProvince.cs" />
     <Compile Include="MoveOrder.cs" />
     <Compile Include="PathfindingNode.cs" />

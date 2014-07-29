@@ -16,10 +16,11 @@ namespace Alpha.UI.Screens
     class GameScreen : Screen
     {
         private readonly IList<LandProvince> _demesne;
-        private readonly List<ISelectable> _selectedItems; 
+        private readonly List<ISelectable> _selectedItems;
+        private readonly List<ISelectableManager> _selectableManagers; 
         private readonly Realm _playerRealm;
         private readonly IProvinceManager _provinceManager;
-        private ICamera _camera;
+        private readonly ICamera _camera;
         public GameScreen(IGame game) : base(game, "game_screen")
         {
             _playerRealm = game.Services.Get<IRealmManager>().PlayerRealm;
@@ -27,6 +28,7 @@ namespace Alpha.UI.Screens
             _selectedItems = new List<ISelectable>();
             _camera = game.Services.Get<ICamera>();
             _provinceManager = Game.Services.Get<IProvinceManager>();
+            _selectableManagers = new List<ISelectableManager> {Game.Services.Get<IFleetManager>()};
             Register(new CalendarWidget(game));
 
             Button menuButton = Register(new Button(game, "menu", new UniRectangle(new UniScalar(0.5f, -40), 0, 80, 30), "Menu"));
@@ -35,7 +37,7 @@ namespace Alpha.UI.Screens
 
             Button newFleetButton =
                 Register(new Button(game, "new_fleet", new UniRectangle(new UniScalar(0.5f, -340), 0, 120, 30), "New fleet"));
-            newFleetButton.Clicked += (b) => Game.Services.Get<IFleetManager>().CreateFleet();
+            newFleetButton.Clicked += (b) => Game.Services.Get<IFleetManager>().CreateFleet(_playerRealm);
 
             Panel provincesPanel = Register(new Panel(game, "provinces_panel", new UniRectangle(0, 90, 500, 400), Color.LawnGreen));
             provincesPanel.Visible = false;
@@ -128,16 +130,32 @@ namespace Alpha.UI.Screens
             Picker picker = new Picker(Game, UiManager.MousePosition);
             if (button == 0)
             {
-                
+                if (!UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+                {
+                    foreach (ISelectable item in _selectedItems)
+                        item.UnSelect();
+                    _selectedItems.Clear();
+                }
+                foreach (ISelectableManager manager in _selectableManagers)
+                {
+                    ISelectable item = manager.Select(picker);
+                    if (item != null)
+                    {
+                        item.Select();
+                        _selectedItems.Add(item);
+                    }
+                }
             }
             else if (button == 1) //Right click
             {
-                Fleet fleet = Game.Services.Get<IFleetManager>().Fleets[0];
-                Province destination = _provinceManager.SelectProvince(picker);
-                if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
-                    fleet.Location = destination;
-                else
-                    Game.Services.Get<IFleetManager>().SetMoveOrder(fleet, _provinceManager.CalculatePath(fleet, destination));
+                foreach (IMovable selectedItem in _selectedItems.OfType<IMovable>())
+                {
+                    Province destination = _provinceManager.SelectProvince(picker);
+                    if (UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+                        selectedItem.Location = destination;
+                    else
+                        selectedItem.SetMoveOrder(Game, _provinceManager.CalculatePath(selectedItem, destination));
+                }
             }
         }
     }

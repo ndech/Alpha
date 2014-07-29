@@ -10,11 +10,10 @@ using SharpDX.Direct3D11;
 
 namespace Alpha
 {
-    interface IFleetManager : IService, IFleetProvider
+    interface IFleetManager : IService, IFleetProvider, ISelectableManager
     {
         IList<Fleet> Fleets { get; set; }
-        void CreateFleet();
-        void SetMoveOrder(Fleet fleet, List<MoveOrder.Step> steps);
+        void CreateFleet(Realm realm);
 
     }
     class FleetManager : RenderableGameComponent, IFleetManager, IDailyUpdatable
@@ -23,14 +22,9 @@ namespace Alpha
 
         private FleetRenderer _fleetRenderer;
         private IProvinceManager _provinceManager;
-        public void CreateFleet()
+        public void CreateFleet(Realm realm)
         {
-            Fleets.Add(new Fleet { Name = "Reinforcements", ShipCount = 15, Location = _provinceManager.SeaProvinces.RandomItem(), Speed = 2 });
-        }
-        
-        public void SetMoveOrder(Fleet fleet, List<MoveOrder.Step> steps)
-        {
-            fleet.MoveOrder = steps == null ? null : new FleetMoveOrder(Game.Services.Get<IRenderer>(), fleet, steps);
+            Fleets.Add(new Fleet(realm, 15, "Reinforcements", _provinceManager.SeaProvinces.RandomItem(), 2));
         }
 
         public FleetManager(IGame game)
@@ -49,7 +43,7 @@ namespace Alpha
         {
             _fleetRenderer = new FleetRenderer(Game);
             _provinceManager = Game.Services.Get<IProvinceManager>();
-            Fleets.Add(new Fleet { Name = "Royal fleet", ShipCount = 120, Location = _provinceManager.SeaProvinces.RandomItem(), Speed = 2 });
+            Fleets.Add(new Fleet(Game.Services.Get<IRealmManager>().PlayerRealm, 120, "Royal fleet", _provinceManager.SeaProvinces.RandomItem(), 2));
         }
 
         public override void Update(double delta)
@@ -75,6 +69,11 @@ namespace Alpha
         IList<IScriptableFleet> IFleetProvider.ScripableFleets
         {
             get { return Fleets.Cast<IScriptableFleet>().ToList(); }
+        }
+
+        public ISelectable Select(Picker picker)
+        {
+            return Fleets.FirstOrDefault(fleet => Vector3.Distance(fleet.Location.Center, picker.GroundIntersection) < 15);
         }
     }
 }
