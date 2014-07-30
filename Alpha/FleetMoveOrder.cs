@@ -40,9 +40,9 @@ namespace Alpha
             _fleetMoveOrderRenderer.Update(delta);
         }
 
-        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix, DiplomaticStatus status)
         {
-            _fleetMoveOrderRenderer.Render(deviceContext, viewMatrix, projectionMatrix);
+            _fleetMoveOrderRenderer.Render(deviceContext, viewMatrix, projectionMatrix, status);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Alpha
         }
 
         public FleetManager(IGame game)
-            : base(game, 0, true, true)
+            : base(game, 5, true, true)
         {
             RequiredForStartUp = false;
             Fleets = new List<Fleet>();
@@ -44,6 +44,8 @@ namespace Alpha
             _fleetRenderer = new FleetRenderer(Game);
             _provinceManager = Game.Services.Get<IProvinceManager>();
             Fleets.Add(new Fleet(Game.Services.Get<IRealmManager>().PlayerRealm, 120, "Royal fleet", _provinceManager.SeaProvinces.RandomItem(), 2));
+            Fleets.Add(new Fleet(Game.Services.Get<IRealmManager>().Realms[2], 120, "Ennemi's fleet", _provinceManager.SeaProvinces.RandomItem(), 2));
+            Fleets[1].SetMoveOrder(Game, _provinceManager.CalculatePath(Fleets[1], _provinceManager.SeaProvinces.RandomItem()));
         }
 
         public override void Update(double delta)

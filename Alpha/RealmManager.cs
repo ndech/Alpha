@@ -7,11 +7,19 @@ using Alpha.Toolkit;
 
 namespace Alpha
 {
+    public enum DiplomaticStatus
+    {
+        Self,
+        Allied,
+        AtPeace,
+        AtWar
+    }
     interface IRealmManager : IService
     {
         Realm PlayerRealm { get; }
         IList<Realm> Realms { get; }
         IList<Event<IScriptableRealm>> Events { get; }
+        DiplomaticStatus DiplomaticStatus(Realm current, Realm other);
     }
     class RealmManager : GameComponent, IRealmManager, IDailyUpdatable
     {
@@ -87,6 +95,14 @@ namespace Alpha
                 foreach (Event<IScriptableRealm> @event in Events)
                     @event.Process(realm);
             }
+        }
+
+        public DiplomaticStatus DiplomaticStatus(Realm current, Realm other)
+        {
+            if (current == other)
+                return Alpha.DiplomaticStatus.Self;
+            else
+                return Alpha.DiplomaticStatus.AtWar;
         }
     }
 }

@@ -80,11 +80,11 @@ namespace Alpha
             _vertexBuffer = Buffer.Create(renderer.Device, BindFlags.VertexBuffer, vertices.ToArray());
         }
 
-        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix, DiplomaticStatus status)
         {
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.Path>(), 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStripWithAdjacency;
-            _shader.Render(deviceContext, _vertexCount, _fleetMoveOrder.ElapsedProgress * 2, viewMatrix, projectionMatrix, (_fleetMoveOrder.ElapsedProgress + _fleetMoveOrder.CurrentStepProgress) * 2, _pathTexture, _translation, Color.Green.ToVector4(), Color.LimeGreen.ToVector4());
+            _shader.Render(deviceContext, _vertexCount, _fleetMoveOrder.ElapsedProgress * 2, viewMatrix, projectionMatrix, (_fleetMoveOrder.ElapsedProgress + _fleetMoveOrder.CurrentStepProgress) * 2, _pathTexture, _translation, MoveOrder.MainColor(status), MoveOrder.BackgroundColor(status));
         }
         
         public void Update(double delta)

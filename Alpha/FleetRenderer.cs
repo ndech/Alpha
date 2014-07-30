@@ -14,10 +14,12 @@ namespace Alpha
         private readonly LightShader _shader;
         private readonly Light _light;
         private readonly ICamera _camera;
+        private readonly IRealmManager _realmManager;
         private readonly TexturedRectangle _selectedOverlay;
         public FleetRenderer(IGame game)
         {
             IRenderer renderer = game.Services.Get<IRenderer>();
+            _realmManager = game.Services.Get<IRealmManager>();
             _shader = renderer.LightShader;
             _model = new ObjModel(renderer.Device, "BasicBoat.obj", renderer.TextureManager.Create("Metal.png"));
             _camera = game.Services.Get<ICamera>();
@@ -33,7 +35,10 @@ namespace Alpha
                 if(fleet.Selected)
                     _selectedOverlay.Render(deviceContext, Matrix.RotationX(-(float)Math.PI / 2) * Matrix.Translation(fleet.Location.Center.X - 12.5f, 0.2f, fleet.Location.Center.Z + 12.5f), viewMatrix, projectionMatrix);
                 if (fleet.MoveOrder != null)
-                    fleet.MoveOrder.Render(deviceContext, viewMatrix, projectionMatrix);
+                {
+                    DiplomaticStatus status = _realmManager.DiplomaticStatus(_realmManager.PlayerRealm, fleet.Owner);
+                    fleet.MoveOrder.Render(deviceContext, viewMatrix, projectionMatrix, status);
+                }
             }
         }
     }
