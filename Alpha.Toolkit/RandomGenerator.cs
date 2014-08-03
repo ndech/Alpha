@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Alpha.Toolkit
 {
-    public class RandomGenerator
+    public static class RandomGenerator
     {
         private static Random _generator = new Random();
         

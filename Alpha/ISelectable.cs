@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace Alpha
+﻿namespace Alpha
 {
     interface ISelectable
     {

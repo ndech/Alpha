@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Alpha.Graphics;
 using Alpha.Scripting;
 using Alpha.Scripting.Providers;
 using Alpha.Toolkit;
@@ -14,8 +14,8 @@ namespace Alpha
     {
         IList<Fleet> Fleets { get; set; }
         void CreateFleet(Realm realm);
-
     }
+
     class FleetManager : RenderableGameComponent, IFleetManager, IDailyUpdatable
     {
         public IList<Fleet> Fleets { get; set; }
