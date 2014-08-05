@@ -53,7 +53,7 @@ namespace Alpha
             if(MoveOrder!=null)
                 MoveOrder.Update(delta);
         }
-        IScriptableProvince IScriptableFleet.Location { get { return Location; } }
+        //IScriptableProvince IScriptableFleet.Location { get { return Location; } }
         public void Select()
         {
             Selected = true;

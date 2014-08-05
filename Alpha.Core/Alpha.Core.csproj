@@ -40,12 +40,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\FleetRenameCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
+    <Compile Include="Fleets\Fleet.cs" />
+    <Compile Include="Fleets\FleetManager.cs" />
+    <Compile Include="Fleets\IFleet.cs" />
+    <Compile Include="Fleets\IFleetManager.cs" />
+    <Compile Include="Fleets\IShip.cs" />
+    <Compile Include="Fleets\Ship.cs" />
+    <Compile Include="Fleets\ShipModel.cs" />
+    <Compile Include="IDailyUpdatable.cs" />
+    <Compile Include="IWorld.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Alpha.Scripting\Alpha.Scripting.csproj">
+      <Project>{6e8e73ce-c2ac-4e57-81fe-431fcc733c70}</Project>
+      <Name>Alpha.Scripting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Alpha.Toolkit\Alpha.Toolkit.csproj">
       <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
       <Name>Alpha.Toolkit</Name>

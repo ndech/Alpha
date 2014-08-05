@@ -2,9 +2,9 @@
 {
     class MoveFleetCommand : Command
     {
-        public override void Execute()
+        internal override void Execute()
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }
