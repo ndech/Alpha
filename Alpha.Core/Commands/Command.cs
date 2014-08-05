@@ -1,10 +1,10 @@
 ﻿namespace Alpha.Core.Commands
 {
-    public abstract class Command : ICommand
+    public abstract class Command
     {
         internal abstract void Execute();
 
-        public virtual bool IsValid()
+        internal bool IsValid()
         {
             return true;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Alpha.AI;
+using Alpha.Common;
 using Alpha.Core;
 using Alpha.UI;
 
@@ -29,7 +30,7 @@ namespace Alpha.EntryPoint
             new Thread(()=>_ui.StartRenderLoop(_dataLock)).Start();
             while (_continue)
             {
-                _world.Process(_dataLock);
+                ((IProcessableWorld)_world).Process(_dataLock);
                 Parallel.ForEach(_ais, 
                     new ParallelOptions { MaxDegreeOfParallelism = 4 },
                     ai => _world.RegisterCommands(ai.Process()));

@@ -2,20 +2,19 @@
 
 namespace Alpha.Core.Fleets
 {
-    class FleetManager : IFleetManager, IDailyUpdatable
+    public class FleetManager : IDailyUpdatable
     {
-        IEnumerable<IFleet> IFleetManager.Fleets { get { return Fleets; } } 
-        private IList<Fleet> Fleets { get; set; }
+        public List<Fleet> Fleets { get; private set; }
 
         public FleetManager()
         {
             Fleets = new List<Fleet>();
         }
 
-        public void DayUpdate(object dataLock)
+        void IDailyUpdatable.DayUpdate(object dataLock)
         {
             foreach (Fleet fleet in Fleets)
-                fleet.DayUpdate(dataLock);
+                (fleet as IDailyUpdatable).DayUpdate(dataLock);
         }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3716EDFD-B003-48FB-BD7E-020243D4E654}</ProjectGuid>
+    <ProjectGuid>{7488FCB4-75B7-41E6-B8A7-B342D7396B74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Alpha.Core</RootNamespace>
-    <AssemblyName>Alpha.Core</AssemblyName>
+    <RootNamespace>Alpha.Common</RootNamespace>
+    <AssemblyName>Alpha.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,26 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\FleetRenameCommand.cs" />
-    <Compile Include="Commands\MoveFleetCommand.cs" />
-    <Compile Include="Fleets\Fleet.cs" />
-    <Compile Include="Fleets\FleetManager.cs" />
-    <Compile Include="Fleets\Ship.cs" />
-    <Compile Include="Fleets\ShipModel.cs" />
-    <Compile Include="IDailyUpdatable.cs" />
-    <Compile Include="World.cs" />
+    <Compile Include="IProcessableWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Alpha.Common\Alpha.Common.csproj">
-      <Project>{7488fcb4-75b7-41e6-b8a7-b342d7396b74}</Project>
-      <Name>Alpha.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Alpha.Toolkit\Alpha.Toolkit.csproj">
-      <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
-      <Name>Alpha.Toolkit</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

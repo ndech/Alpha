@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Alpha.Core\Alpha.Core.csproj">
+      <Project>{3716edfd-b003-48fb-bd7e-020243d4e654}</Project>
+      <Name>Alpha.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Alpha.Toolkit\Alpha.Toolkit.csproj">
       <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
       <Name>Alpha.Toolkit</Name>

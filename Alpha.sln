@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha", "Alpha\Alpha.csproj", "{0C6B91BB-D564-478F-89E5-0153B6CEFBBB}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.EntryPoint", "Alpha.EntryPoint\Alpha.EntryPoint.csproj", "{EEC90A2F-FD2C-4F61-A225-46E117E85EC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.UI", "Alpha.UI\Alpha.UI.csproj", "{447484D8-C59E-41D6-A41B-AF73F8973C47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.Common", "Alpha.Common\Alpha.Common.csproj", "{7488FCB4-75B7-41E6-B8A7-B342D7396B74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +147,18 @@ Global
 		{447484D8-C59E-41D6-A41B-AF73F8973C47}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{447484D8-C59E-41D6-A41B-AF73F8973C47}.Release|x64.ActiveCfg = Release|Any CPU
 		{447484D8-C59E-41D6-A41B-AF73F8973C47}.Release|x86.ActiveCfg = Release|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Release|x64.ActiveCfg = Release|Any CPU
+		{7488FCB4-75B7-41E6-B8A7-B342D7396B74}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

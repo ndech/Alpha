@@ -15,11 +15,11 @@ namespace Alpha.AI
             _id = id;
         }
 
-        public IList<ICommand> Process()
+        public IList<Command> Process()
         {
             Thread.Sleep(RandomGenerator.Get(100, 1000));
             Console.WriteLine("IA calculations done for realm " + _id);
-            return new List<ICommand>();
+            return new List<Command>();
         }
     }
 }

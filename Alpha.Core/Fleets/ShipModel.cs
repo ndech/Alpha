@@ -1,6 +1,6 @@
 ﻿namespace Alpha.Core.Fleets
 {
-    class ShipModel
+    public class ShipModel
     {
         public float MaxSpeed { get; set; }
     }
