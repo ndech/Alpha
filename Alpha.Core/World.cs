@@ -4,19 +4,26 @@ using System.Collections.Generic;
 using Alpha.Common;
 using Alpha.Core.Commands;
 using Alpha.Core.Fleets;
+using Alpha.Core.Province;
+using Alpha.Core.Realms;
 
 namespace Alpha.Core
 {
     public class World : IProcessableWorld
     {
         private readonly ConcurrentQueue<Command> _commands = new ConcurrentQueue<Command>();
-        private List<IDailyUpdatable> Updatables { get; set; }
+        private List<IManager> Managers { get; set; }
         public FleetManager FleetManager { get; private set; }
+        public RealmManager RealmManager { get; private set; }
+        public ProvinceManager ProvinceManager { get; private set; }
 
         public World()
         {
+            RealmManager = new RealmManager();
             FleetManager = new FleetManager();
-            Updatables = new List<IDailyUpdatable> {FleetManager};
+            ProvinceManager = new ProvinceManager();
+            Managers = new List<IManager> {FleetManager, RealmManager, ProvinceManager};
+
         }
 
         public void RegisterCommand(Command command)
@@ -32,7 +39,7 @@ namespace Alpha.Core
 
         private void DayUpdate(Object datalock)
         {
-            Updatables.ForEach(u => u.DayUpdate(datalock));
+            Managers.ForEach(u => u.DayUpdate(datalock));
         }
 
         private void ProcessCommands(Object datalock)
@@ -49,7 +56,7 @@ namespace Alpha.Core
             }
         }
 
-        void IProcessableWorld.Process(object dataLock)
+        void IProcessableWorld.Process(Object dataLock)
         {
             ProcessCommands(dataLock);
             DayUpdate(dataLock);

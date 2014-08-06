@@ -47,6 +47,8 @@
     <Compile Include="Fleets\Ship.cs" />
     <Compile Include="Fleets\ShipModel.cs" />
     <Compile Include="IDailyUpdatable.cs" />
+    <Compile Include="Realms\Realm.cs" />
+    <Compile Include="Realms\RealmManager.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,6 +61,9 @@
       <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
       <Name>Alpha.Toolkit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Province\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,7 +2,7 @@
 
 namespace Alpha.Core.Fleets
 {
-    public class FleetManager : IDailyUpdatable
+    public class FleetManager : IManager
     {
         public List<Fleet> Fleets { get; private set; }
 
