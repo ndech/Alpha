@@ -1,6 +1,7 @@
-﻿namespace Alpha
+﻿using System;
+
+namespace Alpha.UI
 {
-    using System;
     class ConfigurationManager
     {
         private enum Modes
@@ -15,7 +16,6 @@
             AntiAliasing = true;
             FarLimit = 50000.0f;
             NearLimit = 10f;
-            DisplayOverlay = true;
             VSync = true;
         }
 
@@ -45,13 +45,12 @@
         private static readonly ConfigurationManager Instance = new ConfigurationManager();
         public static ConfigurationManager Config { get { return Instance; } }
         public String Title { get { return "Test DirectX"; } }
-        public bool AntiAliasing { get; set; }
-        public bool WindowedMode { get; set; }
-        public bool VSync { get; set; }
-        public bool DisplayOverlay { get; set; }
-        public int Height { get; set; }
-        public int Width { get; set; }
-        public float NearLimit { get; set; }
-        public float FarLimit { get; set; }
+        public bool AntiAliasing { get; private set; }
+        public bool WindowedMode { get; private set; }
+        public bool VSync { get; private set; }
+        public int Height { get; private set; }
+        public int Width { get; private set; }
+        public float NearLimit { get; private set; }
+        public float FarLimit { get; private set; }
     }
 }

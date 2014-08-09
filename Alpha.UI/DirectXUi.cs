@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Alpha.Common;
-using Alpha.Core.Commands;
 using SharpDX.Windows;
 
 namespace Alpha.UI
@@ -14,7 +13,7 @@ namespace Alpha.UI
 
         private RenderForm _form;
         private Dx11 _directX;
-        private IGame _game;
+        private readonly IGame _game;
 
         public DirectXUi(IGame game)
         {
@@ -22,14 +21,14 @@ namespace Alpha.UI
             _game = game;
         }
 
-        public void Update(double delta)
+        private void Update(double delta)
         {
             Console.WriteLine("UI Update begin");
-            Thread.Sleep(00);
+            Thread.Sleep((int)(delta+100));
             Console.WriteLine("UI Update end");
         }
 
-        public void Draw()
+        private void Draw()
         {
             Console.WriteLine("UI Draw begin");
             _directX.BeginScene(0.75f, 0.75f, 0.75f, 1f);

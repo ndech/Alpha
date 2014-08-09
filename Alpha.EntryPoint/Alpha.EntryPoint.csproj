@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLogger.cs" />
+    <Compile Include="DayTimer.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

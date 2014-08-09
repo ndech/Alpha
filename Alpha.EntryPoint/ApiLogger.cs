@@ -5,9 +5,9 @@ using Alpha.Core;
 
 namespace Alpha.EntryPoint
 {
-    class ApiLogger
+    static class Api
     {
-        public ApiLogger()
+        public static void LogPublicElements()
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"API.csv"))
             {

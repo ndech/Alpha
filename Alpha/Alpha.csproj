@@ -256,7 +256,6 @@
     <Compile Include="Graphics\Shaders\TranslateShader.cs" />
     <Compile Include="Graphics\Shaders\VertexDefinition.cs" />
     <Compile Include="Graphics\Shaders\WaterShader.cs" />
-    <Compile Include="Graphics\States\RasterizerState.cs" />
     <Compile Include="Graphics\SimpleText.cs" />
     <Compile Include="Graphics\TextManager.cs" />
     <Compile Include="Graphics\Texture.cs" />
@@ -309,7 +308,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\LoadingImages\" />
-    <Folder Include="Graphics\Models\" />
     <Folder Include="UI\StyleManager\" />
   </ItemGroup>
   <ItemGroup>
