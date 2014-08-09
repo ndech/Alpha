@@ -4,12 +4,23 @@ namespace Alpha.Core.Realms
 {
     public class RealmManager : IManager
     {
-        readonly List<Realm> _realms = new List<Realm>();
-        IEnumerable<Realm> Realms { get { return _realms; } } 
+        private readonly List<Realm> _realms = new List<Realm>();
+        public IEnumerable<Realm> Realms { get { return _realms; } } 
 
-        public void DayUpdate(object dataLock)
+        void IDailyUpdatable.DayUpdate(object dataLock)
         {
             _realms.ForEach(realm=>((IDailyUpdatable)realm).DayUpdate(dataLock));
+        }
+
+        void IManager.Setup()
+        {
+            for (int i = 0; i < 10; i++)
+                _realms.Add(new Realm());
+        }
+
+        internal RealmManager()
+        {
+            
         }
     }
 }

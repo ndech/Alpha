@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Alpha.AI;
 using Alpha.Common;
 using Alpha.Core;
+using Alpha.Core.Realms;
 using Alpha.UI;
 
 namespace Alpha.EntryPoint
@@ -21,8 +22,8 @@ namespace Alpha.EntryPoint
             _world = new World();
             _ui = new DirectXUi();
             _ais = new List<IAi>();
-            for (int i = 0; i < 10; i++)
-                _ais.Add(new Ai(i));
+            foreach (Realm realm in _world.RealmManager.Realms)
+                _ais.Add(new Ai(realm));
         }
 
         public void Run()

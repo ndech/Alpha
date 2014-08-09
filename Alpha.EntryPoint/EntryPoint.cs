@@ -4,6 +4,7 @@
     {
         public static void Main()
         {
+            new ApiLogger();
             new Game().Run();
         }
     }

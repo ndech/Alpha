@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Alpha.Common;
 using Alpha.Core.Commands;
 using Alpha.Core.Fleets;
-using Alpha.Core.Province;
+using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
 
 namespace Alpha.Core
@@ -23,7 +23,8 @@ namespace Alpha.Core
             FleetManager = new FleetManager();
             ProvinceManager = new ProvinceManager();
             Managers = new List<IManager> {FleetManager, RealmManager, ProvinceManager};
-
+            foreach (IManager manager in Managers)
+                manager.Setup();
         }
 
         public void RegisterCommand(Command command)

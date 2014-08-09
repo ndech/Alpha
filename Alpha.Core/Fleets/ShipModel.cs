@@ -2,6 +2,10 @@
 {
     public class ShipModel
     {
-        public float MaxSpeed { get; set; }
+        internal ShipModel()
+        {
+            
+        }
+        public float MaxSpeed { get; internal set; }
     }
 }

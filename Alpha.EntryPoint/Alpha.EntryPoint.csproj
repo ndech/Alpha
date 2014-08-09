@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiLogger.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IGame.cs" />
