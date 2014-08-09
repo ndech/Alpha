@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\Calendar.cs" />
+    <Compile Include="Calendars\Date.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\FleetRenameCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Alpha.Common;
+using Alpha.Core.Calendars;
 using Alpha.Core.Commands;
 using Alpha.Core.Fleets;
 using Alpha.Core.Provinces;
@@ -16,13 +17,15 @@ namespace Alpha.Core
         public FleetManager FleetManager { get; private set; }
         public RealmManager RealmManager { get; private set; }
         public ProvinceManager ProvinceManager { get; private set; }
+        public Calendar Calendar { get; private set; }
 
         public World()
         {
             RealmManager = new RealmManager();
             FleetManager = new FleetManager();
             ProvinceManager = new ProvinceManager();
-            Managers = new List<IManager> {FleetManager, RealmManager, ProvinceManager};
+            Calendar = new Calendar();
+            Managers = new List<IManager> {FleetManager, RealmManager, ProvinceManager, Calendar};
             foreach (IManager manager in Managers)
                 manager.Setup();
         }

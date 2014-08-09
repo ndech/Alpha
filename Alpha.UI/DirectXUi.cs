@@ -1,38 +1,65 @@
 ﻿using System;
+using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
+using Alpha.Common;
 using Alpha.Core.Commands;
+using SharpDX.Windows;
 
 namespace Alpha.UI
 {
     public class DirectXUi : IUi
     {
         private readonly Toolkit.Timer _timer;
-        public DirectXUi()
+
+        private RenderForm _form;
+        private Dx11 _directX;
+        private IGame _game;
+
+        public DirectXUi(IGame game)
         {
             _timer = new Toolkit.Timer();
+            _game = game;
         }
+
         public void Update(double delta)
         {
             Console.WriteLine("UI Update begin");
-            Thread.Sleep(1000);
+            Thread.Sleep(00);
             Console.WriteLine("UI Update end");
         }
 
         public void Draw()
         {
             Console.WriteLine("UI Draw begin");
-            Thread.Sleep(1000);
+            _directX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
+            Thread.Sleep(50);
+            _directX.DrawScene();
             Console.WriteLine("UI Draw end");
         }
 
         public void StartRenderLoop(object dataLock)
         {
-            while (true)
+            CreateWindow();
+            _directX = new Dx11(_form);
+            RenderLoop.Run(_form, () =>
             {
                 lock (dataLock)
                     Update(_timer.Tick());
                 Draw();
-            }
+            });
+            _game.Exit();
+        }
+
+        private void CreateWindow()
+        {
+            _form = new RenderForm(ConfigurationManager.Config.Title)
+            {
+                ClientSize = new Size(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height),
+                FormBorderStyle = FormBorderStyle.FixedSingle
+            };
+            _form.Show();
+            _form.Name = "Alpha";
         }
     }
 }

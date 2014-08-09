@@ -20,7 +20,7 @@ namespace Alpha.EntryPoint
         public Game()
         {
             _world = new World();
-            _ui = new DirectXUi();
+            _ui = new DirectXUi(this);
             _ais = new List<IAi>();
             foreach (Realm realm in _world.RealmManager.Realms)
                 _ais.Add(new Ai(realm));
