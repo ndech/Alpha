@@ -9,7 +9,7 @@ using SharpDX.Windows;
 using Device = SharpDX.Direct3D11.Device;
 using Resource = SharpDX.Direct3D11.Resource;
 
-namespace Alpha.UI
+namespace Alpha.DirectX
 {
     class Dx11 : IDisposable
     {

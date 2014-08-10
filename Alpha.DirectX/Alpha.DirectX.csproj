@@ -7,8 +7,8 @@
     <ProjectGuid>{447484D8-C59E-41D6-A41B-AF73F8973C47}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Alpha.UI</RootNamespace>
-    <AssemblyName>Alpha.UI</AssemblyName>
+    <RootNamespace>Alpha.DirectX</RootNamespace>
+    <AssemblyName>Alpha.DirectX</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,7 +54,6 @@
     <Compile Include="ConfigurationManager.cs" />
     <Compile Include="DirectXUi.cs" />
     <Compile Include="DX11.cs" />
-    <Compile Include="IUi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

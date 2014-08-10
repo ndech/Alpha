@@ -3,9 +3,10 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Alpha.Common;
+using Alpha.UI;
 using SharpDX.Windows;
 
-namespace Alpha.UI
+namespace Alpha.DirectX
 {
     public class DirectXUi : IUi
     {

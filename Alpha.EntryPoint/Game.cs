@@ -6,6 +6,7 @@ using Alpha.AI;
 using Alpha.Common;
 using Alpha.Core;
 using Alpha.Core.Realms;
+using Alpha.DirectX;
 using Alpha.UI;
 
 namespace Alpha.EntryPoint

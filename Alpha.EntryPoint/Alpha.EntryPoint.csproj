@@ -65,9 +65,9 @@
       <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
       <Name>Alpha.Toolkit</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Alpha.UI\Alpha.UI.csproj">
+    <ProjectReference Include="..\Alpha.DirectX\Alpha.DirectX.csproj">
       <Project>{447484d8-c59e-41d6-a41b-af73f8973c47}</Project>
-      <Name>Alpha.UI</Name>
+      <Name>Alpha.DirectX</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

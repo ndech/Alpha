@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.AI", "Alpha.AI\Alpha.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.EntryPoint", "Alpha.EntryPoint\Alpha.EntryPoint.csproj", "{EEC90A2F-FD2C-4F61-A225-46E117E85EC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.UI", "Alpha.UI\Alpha.UI.csproj", "{447484D8-C59E-41D6-A41B-AF73F8973C47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.DirectX", "Alpha.DirectX\Alpha.DirectX.csproj", "{447484D8-C59E-41D6-A41B-AF73F8973C47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.Common", "Alpha.Common\Alpha.Common.csproj", "{7488FCB4-75B7-41E6-B8A7-B342D7396B74}"
 EndProject
