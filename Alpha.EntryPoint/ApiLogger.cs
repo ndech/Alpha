@@ -31,8 +31,8 @@ namespace Alpha.EntryPoint
                                     continue;
                             }
                             var toBeDeleted = new[] { "System.", "Collections.Generic.", "`1", "`2", "Alpha.Core.Realms.", "Alpha.Core.Provinces.", "Alpha.Core.Fleets.", "Alpha.Core.Commands." };
-                            String name = member.ToString();
-                            name = toBeDeleted.Aggregate(name, (current, value) => current.Replace(value, ""));
+                            string name = member.ToString();
+                            name = toBeDeleted.Aggregate(name, (current, value) => current.Replace(value, String.Empty));
                             name = name.Replace(" ", ";");
                             file.WriteLine(name);
                         }
