@@ -15,7 +15,7 @@ namespace Alpha.Core.Provinces
         }
         public abstract string Name { get; internal set; }
 
-        private static int _idSequence = 0;
+        private static int _idSequence;
         protected static int IdSequence { get { return ++_idSequence; } }
 
         private readonly List<Zone> _zones = new List<Zone>();
@@ -26,14 +26,15 @@ namespace Alpha.Core.Provinces
         public Vector3D Center { get; private set; }
         public String Id { get; private set; }
 
-        void IDailyUpdatable.DayUpdate(object dataLock)
-        {
-
-        }
-
         public bool Equals(Province other)
         {
             return Id == other.Id;
+        }
+
+        protected abstract void DayUpdate();
+        void IDailyUpdatable.DayUpdate(object dataLock)
+        {
+            DayUpdate();
         }
     }
 }

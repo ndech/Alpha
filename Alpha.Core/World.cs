@@ -25,7 +25,7 @@ namespace Alpha.Core
             FleetManager = new FleetManager();
             ProvinceManager = new ProvinceManager();
             Calendar = new Calendar();
-            Managers = new List<IManager> {FleetManager, RealmManager, ProvinceManager, Calendar};
+            Managers = new List<IManager> { Calendar, FleetManager, RealmManager, ProvinceManager };
             foreach (IManager manager in Managers)
                 manager.Setup();
         }

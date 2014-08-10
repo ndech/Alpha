@@ -21,7 +21,6 @@ namespace Alpha.UI
         Vector2I MousePosition { get; set; }
         bool IsKeyPressed(Key key);
         void RecalculateActiveComponents();
-
         bool IsAnyKeyPressed(params Key[] keys);
     }
     class UiManager : RenderableGameComponent, IUiManager, ISavable
