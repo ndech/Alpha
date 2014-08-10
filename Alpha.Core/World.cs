@@ -10,7 +10,7 @@ using Alpha.Core.Realms;
 
 namespace Alpha.Core
 {
-    public class World : IProcessableWorld
+    public class World : IProcessableWorld, IWorld
     {
         private readonly ConcurrentQueue<Command> _commands = new ConcurrentQueue<Command>();
         private List<IManager> Managers { get; set; }

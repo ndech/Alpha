@@ -30,7 +30,7 @@ namespace Alpha.EntryPoint
                                 if(!member.DeclaringType.IsPublic)
                                     continue;
                             }
-                            var toBeDeleted = new[] { "System.", "Collections.Generic.", "`1", "`2", "Alpha.Core.Realms.", "Alpha.Core.Provinces.", "Alpha.Core.Fleets.", "Alpha.Core.Commands." };
+                            var toBeDeleted = new[] { "System.", "Collections.Generic.", "`1", "`2", "Alpha.Core.Realms.", "Alpha.Core.Provinces.", "Alpha.Core.Fleets.", "Alpha.Core.Commands.", "Alpha.Core.Calendars.", "Alpha.Toolkit.Math." };
                             string name = member.ToString();
                             name = toBeDeleted.Aggregate(name, (current, value) => current.Replace(value, String.Empty));
                             name = name.Replace(" ", ";");

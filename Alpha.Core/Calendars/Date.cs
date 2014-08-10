@@ -36,7 +36,7 @@ namespace Alpha.Core.Calendars
             return Day + @"/" + Month + @"/" + Year;
         }
 
-        public Date NextDay()
+        internal Date NextDay()
         {
             int day = Day + 1;
             int month = Month;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using SharpDX;
+using SystemMath = System.Math;
 
 namespace Alpha.Toolkit.Math
 {
@@ -228,6 +229,14 @@ namespace Alpha.Toolkit.Math
         public static explicit operator SharpDX.Vector3(Vector3D vector)
         {
             return new Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
+        }
+
+        public static double Distance(Vector3D value1, Vector3D value2)
+        {
+            double num1 = value1.X - value2.X;
+            double num2 = value1.Y - value2.Y;
+            double num3 = value1.Z - value2.Z;
+            return SystemMath.Sqrt(num1 * num1 + num2 * num2 + num3 * num3);
         }
     }
 }

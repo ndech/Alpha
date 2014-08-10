@@ -50,8 +50,12 @@
     <Compile Include="Fleets\ShipModel.cs" />
     <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IManager.cs" />
+    <Compile Include="IWorld.cs" />
+    <Compile Include="Provinces\PathfindingNode.cs" />
     <Compile Include="Provinces\Province.cs" />
+    <Compile Include="Provinces\ProvinceAdjacency.cs" />
     <Compile Include="Provinces\ProvinceManager.cs" />
+    <Compile Include="Provinces\Zone.cs" />
     <Compile Include="Realms\Realm.cs" />
     <Compile Include="Realms\RealmEconomy.cs" />
     <Compile Include="Realms\RealmManager.cs" />

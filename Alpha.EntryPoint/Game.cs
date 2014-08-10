@@ -27,7 +27,7 @@ namespace Alpha.EntryPoint
             _world = new World();
             _ais = new List<IAi>();
             foreach (Realm realm in _world.RealmManager.Realms)
-                _ais.Add(new Ai(realm));
+                _ais.Add(new Ai(realm, _world));
         }
 
         public void Run()
