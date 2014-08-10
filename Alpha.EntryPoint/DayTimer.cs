@@ -5,7 +5,7 @@ namespace Alpha.EntryPoint
 {
     class DayTimer
     {
-        private const int SecondsPerDay = 5;
+        private const int SecondsPerDay = 10;
         private readonly Stopwatch _stopWatch;
         internal DayTimer()
         {
@@ -17,9 +17,9 @@ namespace Alpha.EntryPoint
             _stopWatch.Restart();
         }
 
-        public void WaitForNextDay()
+        public void WaitForNextDay(ContinueFlag continueFlag)
         {
-            while(_stopWatch.ElapsedMilliseconds < SecondsPerDay*1000)
+            while(continueFlag && _stopWatch.ElapsedMilliseconds < SecondsPerDay*1000)
                 Thread.Sleep(25);
             _stopWatch.Restart();
         }

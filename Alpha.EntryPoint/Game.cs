@@ -18,7 +18,7 @@ namespace Alpha.EntryPoint
         private readonly World _world;
         private readonly DayTimer _dayTimer;
         private readonly object _dataLock = new Object();
-        private volatile bool _continue = true;
+        private readonly ContinueFlag _continue = new ContinueFlag();
 
         public Game()
         {
@@ -41,14 +41,14 @@ namespace Alpha.EntryPoint
                     new ParallelOptions { MaxDegreeOfParallelism = 4 },
                     ai => _world.RegisterCommands(ai.Process()));
                 Console.WriteLine("Computations done");
-                _dayTimer.WaitForNextDay();
+                _dayTimer.WaitForNextDay(_continue);
                 Console.WriteLine("Day end");
             }
         }
 
         public void Exit()
         {
-            _continue = false;
+            _continue.Stop();
         }
     }
 }
