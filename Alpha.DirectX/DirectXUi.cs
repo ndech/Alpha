@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using Alpha.Common;
+using Alpha.DirectX.UI;
 using Alpha.UI;
 using SharpDX.Windows;
 
@@ -14,34 +15,67 @@ namespace Alpha.DirectX
 
         private RenderForm _form;
         private Dx11 _directX;
+        private UiManager _uiManager;
+        private Input.Input _input;
+        private Context _context;
         private readonly IGame _game;
+        private List<RenderableComponent> _components;
 
         public DirectXUi(IGame game)
         {
-            _timer = new Toolkit.Timer();
             _game = game;
+            _timer = new Toolkit.Timer();
+        }
+
+        public void Initialize()
+        {
+            CreateWindow();
+            _directX = new Dx11(_form);
+            _context = new Context(_form, _directX);
+            _uiManager = new UiManager(_context);
+            _input = new Input.Input(_context);
+            _context.Initialize(_uiManager, _input);
+            _components = new List<RenderableComponent>() { _uiManager };
+            _input.Initialize();
+            _components.ForEach(c => c.Initialize());
         }
 
         private void Update(double delta)
         {
-            Console.WriteLine("UI Update begin");
-            Thread.Sleep((int)(delta+100));
-            Console.WriteLine("UI Update end");
+            _input.Update(delta);
+            _uiManager.Update(delta);
         }
 
         private void Draw()
         {
-            Console.WriteLine("UI Draw begin");
             _directX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
-            Thread.Sleep(50);
+            foreach (RenderableComponent item in _components)
+            {
+                if (item.BlendingEnabled)
+                    _directX.EnableAlphaBlending();
+                else
+                    _directX.DisableAlphaBlending();
+                if (item.DisplayWireframe)
+                    _directX.EnableWireFrame();
+                else
+                    _directX.DisableWireFrame();
+                if (item.ZBufferEnabled)
+                {
+                    _directX.EnableZBuffer();
+                    item.Render(_directX.DeviceContext, _context.Camera.ViewMatrix, _directX.ProjectionMatrix);
+                }
+                else
+                {
+                    _directX.DisableZBuffer();
+                    item.Render(_directX.DeviceContext, _context.Camera.UiMatrix, _directX.OrthoMatrix);
+                }
+            }
             _directX.DrawScene();
-            Console.WriteLine("UI Draw end");
         }
 
         public void StartRenderLoop(object dataLock)
         {
-            CreateWindow();
-            _directX = new Dx11(_form);
+            Initialize();
             RenderLoop.Run(_form, () =>
             {
                 lock (dataLock)

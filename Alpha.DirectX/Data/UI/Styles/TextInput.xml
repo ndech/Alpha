@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<styles for="textInput">
+	<style>
+		<horizontalAlignment>Left</horizontalAlignment>
+		<verticalAlignment>Middle</verticalAlignment>
+		<textColor>Gray</textColor>
+		<font>Consolas</font>
+		<fontSize>22</fontSize>
+		<padding>0</padding>
+	</style>
+</styles>

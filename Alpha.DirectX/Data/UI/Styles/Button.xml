@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<styles for="button">
+	<style>
+		<horizontalAlignment>Center</horizontalAlignment>
+		<verticalAlignment>Middle</verticalAlignment>
+		<textColor>Blue</textColor>
+		<font>Arial</font>
+		<fontSize>20</fontSize>
+		<padding>0</padding>
+	</style>
+	<style in="menu_screen">
+		<textColor>Red</textColor>
+	</style>
+	<style in="menu_cancel">
+		<textColor>Green</textColor>
+	</style>
+	<style in="calendar_date">
+		<horizontalAlignment>Left</horizontalAlignment>
+	</style>
+	<style in="economy_button">
+		<verticalAlignment>Top</verticalAlignment>
+	</style>
+</styles>

@@ -147,7 +147,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomEventHandler.cs" />
     <Compile Include="Events\DelayedEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventManager.cs" />
@@ -308,7 +307,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\LoadingImages\" />
-    <Folder Include="UI\StyleManager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Events\RealmEvents.xml">

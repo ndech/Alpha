@@ -32,7 +32,9 @@ namespace Alpha.EntryPoint
 
         public void Run()
         {
-            new Thread(()=>_ui.StartRenderLoop(_dataLock)).Start();
+            Thread uiThread = new Thread(()=>_ui.StartRenderLoop(_dataLock));
+            uiThread.SetApartmentState(ApartmentState.STA);
+            uiThread.Start();
             _dayTimer.Start();
             while (_continue)
             {

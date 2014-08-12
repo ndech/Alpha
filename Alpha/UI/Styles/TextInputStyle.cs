@@ -10,11 +10,11 @@ namespace Alpha.UI.Styles
         public VerticalAlignment VerticalAlignment { get; private set; }
         public HorizontalAlignment HorizontalAlignment { get; private set; }
         public Color TextColor { get; private set; }
-        public String Font { get; set; }
-        public Int32 FontSize { get; set; }
-        public Padding Padding { get; set; }
+        public String Font { get; private set; }
+        public Int32 FontSize { get; private set; }
+        public Padding Padding { get; private set; }
 
-        public void Apply(List<StyleItem> stylePartials)
+        public void Apply(IEnumerable<StyleItem> stylePartials)
         {
             foreach (StyleItem styleItem in stylePartials)
             {

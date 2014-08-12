@@ -61,7 +61,7 @@ namespace Alpha.UI.Screens
             } 
         }
 
-        private Control _hoveredControl = null;
+        private Control _hoveredControl;
         protected Control HoveredControl 
         { 
             get { return _hoveredControl; }
@@ -146,7 +146,6 @@ namespace Alpha.UI.Screens
         }
 
         protected override void DisposeItem()
-        {
-        }
+        { }
     }
 }

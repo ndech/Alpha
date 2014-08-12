@@ -26,11 +26,6 @@ namespace Alpha.Graphics
             }
         }
 
-        public Rectangle()
-        {
-            
-        }
-
         public abstract void Update();
 
         public abstract void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix,
