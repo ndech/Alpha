@@ -340,6 +340,14 @@ namespace Alpha.DirectX
             _isBlendingEnabled = false;
         }
 
+        public void SetAlphaBlending(bool isBlendingEnabled)
+        {
+            if (isBlendingEnabled)
+                EnableAlphaBlending();
+            else
+                DisableAlphaBlending();
+        }
+
         public void EnableWireFrame()
         {
             if (_isWireframeEnabled) return;
@@ -357,6 +365,22 @@ namespace Alpha.DirectX
         public void SetBackBufferAsRenderTarget()
         {
             DeviceContext.OutputMerger.SetRenderTargets(DepthStencilView, _renderTargetView);
+        }
+
+        public void SetWireFrameMode(bool displayWireframe)
+        {
+            if (displayWireframe)
+                EnableWireFrame();
+            else
+                DisableWireFrame();
+        }
+
+        public void SetZBuffer(bool zBufferEnabled)
+        {
+            if (zBufferEnabled)
+                EnableZBuffer();
+            else
+                DisableZBuffer();
         }
     }
 }

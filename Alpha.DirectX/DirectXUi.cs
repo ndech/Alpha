@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Alpha.Common;
@@ -27,7 +26,7 @@ namespace Alpha.DirectX
             _timer = new Toolkit.Timer();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
             CreateWindow();
             _directX = new Dx11(_form);
@@ -35,7 +34,7 @@ namespace Alpha.DirectX
             _uiManager = new UiManager(_context);
             _input = new Input.Input(_context);
             _context.Initialize(_uiManager, _input);
-            _components = new List<RenderableComponent>() { _uiManager, new MousePointer(_context) };
+            _components = new List<RenderableComponent> { _uiManager, new MousePointer(_context) };
             _input.Initialize();
             _components.ForEach(c => c.Initialize());
         }
@@ -51,24 +50,13 @@ namespace Alpha.DirectX
             _directX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
             foreach (RenderableComponent item in _components)
             {
-                if (item.BlendingEnabled)
-                    _directX.EnableAlphaBlending();
-                else
-                    _directX.DisableAlphaBlending();
-                if (item.DisplayWireframe)
-                    _directX.EnableWireFrame();
-                else
-                    _directX.DisableWireFrame();
+                _directX.SetAlphaBlending(item.BlendingEnabled);
+                _directX.SetWireFrameMode(item.DisplayWireframe);
+                _directX.SetZBuffer(item.ZBufferEnabled);
                 if (item.ZBufferEnabled)
-                {
-                    _directX.EnableZBuffer();
                     item.Render(_directX.DeviceContext, _context.Camera.ViewMatrix, _directX.ProjectionMatrix);
-                }
                 else
-                {
-                    _directX.DisableZBuffer();
                     item.Render(_directX.DeviceContext, _context.Camera.UiMatrix, _directX.OrthoMatrix);
-                }
             }
             _directX.DrawScene();
         }
