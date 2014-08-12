@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Alpha.Common;
 using Alpha.DirectX.UI;
+using Alpha.DirectX.UI.Screens;
 using Alpha.UI;
 using SharpDX.Windows;
 
@@ -37,6 +38,7 @@ namespace Alpha.DirectX
             _components = new List<RenderableComponent> { _uiManager, new MousePointer(_context) };
             _input.Initialize();
             _components.ForEach(c => c.Initialize());
+            _uiManager.AddScreen(new WorldParametersScreen(_context));
         }
 
         private void Update(double delta)

@@ -71,6 +71,7 @@
     <Compile Include="Shaders\ShaderManager.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
+    <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\PlainRectangle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IContext.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="UI\Coordinates\UniVector.cs" />
     <Compile Include="UI\IUiManager.cs" />
     <Compile Include="UI\Screens\Screen.cs" />
+    <Compile Include="UI\Screens\WorldParametersScreen.cs" />
     <Compile Include="UI\Styles\Alignments.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />
     <Compile Include="UI\Styles\LabelStyle.cs" />
@@ -116,8 +118,27 @@
       <Name>Alpha.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <None Include="Data\Fonts\Arial-20px.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Fonts\Consolas-22px.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Fonts\Courrier-14px.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Fonts\Arial-20px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Fonts\Consolas-22px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Fonts\Courrier-14px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\MousePointers\default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
