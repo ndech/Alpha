@@ -64,6 +64,7 @@
     <Compile Include="ICamera.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputInterop.cs" />
+    <Compile Include="MousePointer.cs" />
     <Compile Include="Shaders\ColorShader.cs" />
     <Compile Include="Shaders\FontShader.cs" />
     <Compile Include="Shaders\Shader.cs" />
@@ -117,6 +118,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Data\MousePointers\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Shaders\Color.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

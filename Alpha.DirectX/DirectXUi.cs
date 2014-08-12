@@ -35,7 +35,7 @@ namespace Alpha.DirectX
             _uiManager = new UiManager(_context);
             _input = new Input.Input(_context);
             _context.Initialize(_uiManager, _input);
-            _components = new List<RenderableComponent>() { _uiManager };
+            _components = new List<RenderableComponent>() { _uiManager, new MousePointer(_context) };
             _input.Initialize();
             _components.ForEach(c => c.Initialize());
         }

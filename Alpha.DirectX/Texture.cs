@@ -1,5 +1,6 @@
 ﻿using System;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX
@@ -40,6 +41,20 @@ namespace Alpha.DirectX
                     using (var texture2D = resource.QueryInterface<Texture2D>())
                     {
                         return texture2D.Description.Height;
+                    }
+                }
+            }
+        }
+
+        public Vector2I Size
+        {
+            get
+            {
+                using (var resource = TextureResource.Resource)
+                {
+                    using (var texture2D = resource.QueryInterface<Texture2D>())
+                    {
+                        return new Vector2I(texture2D.Description.Width, texture2D.Description.Height);
                     }
                 }
             }
