@@ -29,7 +29,8 @@ namespace Alpha.Toolkit
         public static T RandomItem<T>(this IEnumerable<T> source) where T : class
         {
             int count = source.Count();
-            return count > 0 ? null : source.ElementAt(RandomGenerator.Get(0, count));
+            int randomPosition = RandomGenerator.Get(0, count);
+            return count == 0 ? null : source.ElementAt(randomPosition);
         }
     }
 }

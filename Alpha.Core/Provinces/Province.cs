@@ -36,5 +36,10 @@ namespace Alpha.Core.Provinces
         {
             DayUpdate();
         }
+
+        public void CreateAdjacency(ProvinceAdjacency provinceAdjacency)
+        {
+            _adjacencies.Add(provinceAdjacency);
+        }
     }
 }

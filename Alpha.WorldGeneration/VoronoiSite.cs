@@ -1,26 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Toolkit.Math;
 using Alpha.Voronoi;
 
 namespace Alpha.WorldGeneration
 {
     public class VoronoiSite : IEquatable<VoronoiSite>
     {
-        public VoronoiSite(Vector center)
+        public VoronoiSite(Vector voronoiCenter)
         {
-            Center = center;
+            VoronoiCenter = voronoiCenter;
             Edges = new List<VoronoiEdge>();
             Neighbourgs = new List<VoronoiSite>();
-            Points = new List<Vector>();
+            VoronoiPoints = new List<Vector>();
             IsWater = false;
             IsOnBorder = false;
             ShoreDistance = DefaultShoreDistance;
             Id = idSeed++;
         }
 
-        public Vector Center { get; private set; }
-        public List<Vector> Points { get; private set; }
+        public Vector VoronoiCenter { get; private set; }
+        public Vector3D Center { get { return new Vector3D(VoronoiCenter[0], 0.0f, VoronoiCenter[1]); } }
+        
+        public List<Vector> VoronoiPoints { get; private set; }
+
+        public List<Vector3D> Points { get
+        {
+            return VoronoiPoints.Select(p => new Vector3D((float) p[0], 0.0f, (float) p[1])).ToList();
+        } } 
         public List<VoronoiEdge> Edges { get; private set; }
         public bool IsOnBorder { get; private set; }
         public bool IsWater { get; set; }
@@ -115,23 +123,23 @@ namespace Alpha.WorldGeneration
             VoronoiEdge first = Edges[Edges.Count-1];
             Edges.RemoveAt(Edges.Count-1);
             Vector point;
-            Points.Add(point = first.VVertexA);
+            VoronoiPoints.Add(point = first.VVertexA);
             Edges.RemoveAll((e) => Equals(e.VVertexA, e.VVertexB));
             do
             {
                 VoronoiEdge edge = Edges.Single(e => e.VVertexA.Equals(point) || e.VVertexB.Equals(point));
                 Edges.Remove(edge);
                 if(Equals(edge.VVertexA, point))
-                    Points.Add(point = edge.VVertexB);
+                    VoronoiPoints.Add(point = edge.VVertexB);
                 else
-                    Points.Add(point = edge.VVertexA);
+                    VoronoiPoints.Add(point = edge.VVertexA);
             } while (!Equals(point, first.VVertexB));
             Edges.Clear();
             //Reverse ordering of the points if needed :
-            Vector v1 =Points[0] - Points[1];
-            Vector v2 = Center - Points[0];
+            Vector v1 =VoronoiPoints[0] - VoronoiPoints[1];
+            Vector v2 = VoronoiCenter - VoronoiPoints[0];
             if (v1[0]*v2[1] - v1[1]*v2[0] > 0)
-                Points.Reverse();
+                VoronoiPoints.Reverse();
         }
 
         public bool IsVectorInRange(Vector vector, int width, int height)

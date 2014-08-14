@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Alpha.Toolkit.Math;
+using Alpha.WorldGeneration;
 
 namespace Alpha.Core.Provinces
 {
@@ -15,10 +16,9 @@ namespace Alpha.Core.Provinces
             Center = center;
         }
 
-        //public static explicit operator Zone(VoronoiSite site)
-        //{
-        //    return new Zone(new Vector3((float)site.Center[0], 0.0f, (float)site.Center[1]),
-        //                                site.Points.Select(p => new Vector3((float)p[0], 0.0f, (float)p[1])));
-        //}
+        public static explicit operator Zone(VoronoiSite site)
+        {
+            return new Zone(site.Center, site.Points);
+        }
     }
 }

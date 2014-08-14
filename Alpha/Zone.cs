@@ -18,8 +18,8 @@ namespace Alpha
 
         public static explicit operator Zone(VoronoiSite site)
         {
-            return new Zone(new Vector3((float)site.Center[0], 0.0f, (float)site.Center[1]),
-                                        site.Points.Select(p => new Vector3((float)p[0], 0.0f, (float)p[1])));
+            return new Zone(new Vector3((float)site.VoronoiCenter[0], 0.0f, (float)site.VoronoiCenter[1]),
+                                        site.VoronoiPoints.Select(p => new Vector3((float)p[0], 0.0f, (float)p[1])));
         }
     }
 }

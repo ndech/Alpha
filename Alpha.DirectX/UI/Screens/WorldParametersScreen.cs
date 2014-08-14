@@ -9,7 +9,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             Button validateButton = Register(new Button(context, "ok_button",
                 new UniRectangle(new UniScalar(1.0f, -300), new UniScalar(1.0f, -120), 250, 70),"Generate world"));
-            validateButton.Clicked += (b) =>
+            validateButton.Clicked += b =>
             {
                 Context.Game.GenerateWorldEvent.Set();
                 Context.UiManager.DeleteScreen(this);

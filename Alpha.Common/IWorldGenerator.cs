@@ -1,7 +1,9 @@
-﻿namespace Alpha.Common
+﻿using System;
+
+namespace Alpha.Common
 {
     public interface IWorldGenerator
     {
-        IProcessableWorld Generate();
+        IProcessableWorld Generate(Action<String> feedback);
     }
 }

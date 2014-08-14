@@ -11,7 +11,7 @@ namespace Alpha.WorldGeneration
             NoiseGenerator.Frequency = 0.0005;
             foreach (VoronoiSite site in sites)
             {
-                if ((site.IsOnBorder && RandomGenerator.GetDouble(0, 1) < 0.60) || (NoiseGenerator.Noise((int) site.Center[0], (int) site.Center[1]) + 1)*127 < 125)
+                if ((site.IsOnBorder && RandomGenerator.GetDouble(0, 1) < 0.60) || (NoiseGenerator.Noise((int) site.VoronoiCenter[0], (int) site.VoronoiCenter[1]) + 1)*127 < 125)
                     site.IsWater = true;
             }
             Stack<VoronoiSite> processingStack = new Stack<VoronoiSite>(sites.Where(s=>s.IsWater));

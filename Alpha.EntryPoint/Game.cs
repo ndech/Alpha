@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Alpha.AI;
@@ -38,14 +37,9 @@ namespace Alpha.EntryPoint
             uiThread.SetApartmentState(ApartmentState.STA);
             uiThread.Start();
             GenerateWorldEvent.WaitOne();
-            Console.WriteLine("Ready to roll");
-            for (int i = 0; i < 10; i++)
-            {
-                _loadingMessage = "Loading component " + i;
-                Thread.Sleep(1000);
-            }
-            Console.WriteLine("Shit is done");
-            _world = (World)((IWorldGenerator) (new WorldGenerator())).Generate();
+            Console.WriteLine("Generation begin");
+            _world = (World)((IWorldGenerator)(new WorldGenerator())).Generate(s => _loadingMessage = s);
+            Console.WriteLine("Generation is done");
             foreach (Realm realm in _world.RealmManager.Realms)
                 _ais.Add(new Ai(realm, _world));
             _dayTimer.Start();

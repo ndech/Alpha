@@ -37,8 +37,8 @@ namespace Alpha.WorldGeneration
                 Dictionary<Vector, VoronoiSite> newPoints = new Dictionary<Vector, VoronoiSite>();
                 foreach (VoronoiSite site in sites)
                 {
-                    Vector newPoint = new Vector(site.Points.Average(p => p[0]),
-                       site.Points.Average(p => p[1]));
+                    Vector newPoint = new Vector(site.VoronoiPoints.Average(p => p[0]),
+                       site.VoronoiPoints.Average(p => p[1]));
                     newPoints.Add(newPoint, new VoronoiSite(newPoint));
                 }
                 points = newPoints;
@@ -112,11 +112,11 @@ namespace Alpha.WorldGeneration
 
             foreach (VoronoiSite site in sites)
             {
-                if(site.Points.Count==0)
+                if(site.VoronoiPoints.Count==0)
                     return;
-                PointF[] list = new PointF[site.Points.Count];
-                for (int i = 0; i < site.Points.Count; i++)
-                    list[i] = new PointF((float)site.Points[i][0], (float)site.Points[i][1]);
+                PointF[] list = new PointF[site.VoronoiPoints.Count];
+                for (int i = 0; i < site.VoronoiPoints.Count; i++)
+                    list[i] = new PointF((float)site.VoronoiPoints[i][0], (float)site.VoronoiPoints[i][1]);
                 if (mode == RenderMode.Terrain)
                 {
                     if (site.IsWater)

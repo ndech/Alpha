@@ -5,7 +5,7 @@ namespace Alpha.Core.Provinces
 {
     public class ProvinceAdjacency
     {
-        public Province Neighbourg { get; private set; }
-        public List<Vector3D> PassingPoints { get; private set; } 
+        public Province Neighbourg { get; internal set; }
+        public List<Vector3D> PassingPoints { get; internal set; } 
     }
 }
