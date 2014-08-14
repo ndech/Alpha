@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Alpha.AI;
@@ -15,19 +16,20 @@ namespace Alpha.EntryPoint
     {
         private readonly IUi _ui;
         private readonly IList<IAi> _ais;
-        private readonly World _world;
+        private World _world;
         private readonly DayTimer _dayTimer;
         private readonly object _dataLock = new Object();
         private readonly ContinueFlag _continue = new ContinueFlag();
+        public AutoResetEvent GenerateWorldEvent { get; private set; }
+        private volatile string _loadingMessage = "";
+        public string LoadingMessage { get { return _loadingMessage; } }
 
         public Game()
         {
             _ui = new DirectXUi(this);
+            GenerateWorldEvent = new AutoResetEvent(false);
             _dayTimer = new DayTimer();
-            _world = new World();
             _ais = new List<IAi>();
-            foreach (Realm realm in _world.RealmManager.Realms)
-                _ais.Add(new Ai(realm, _world));
         }
 
         public void Run()
@@ -35,6 +37,17 @@ namespace Alpha.EntryPoint
             Thread uiThread = new Thread(()=>_ui.StartRenderLoop(_dataLock));
             uiThread.SetApartmentState(ApartmentState.STA);
             uiThread.Start();
+            GenerateWorldEvent.WaitOne();
+            Console.WriteLine("Ready to roll");
+            for (int i = 0; i < 10; i++)
+            {
+                _loadingMessage = "Loading component " + i;
+                Thread.Sleep(1000);
+            }
+            Console.WriteLine("Shit is done");
+            _world = (World)((IWorldGenerator) (new WorldGenerator())).Generate();
+            foreach (Realm realm in _world.RealmManager.Realms)
+                _ais.Add(new Ai(realm, _world));
             _dayTimer.Start();
             while (_continue)
             {

@@ -1,4 +1,5 @@
-﻿using Alpha.DirectX.Input;
+﻿using Alpha.Common;
+using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
 using Alpha.DirectX.UI.Text;
@@ -17,5 +18,6 @@ namespace Alpha.DirectX
         TextManager TextManager { get; }
         TextureManager TextureManager { get; }
         ShaderManager Shaders { get; }
+        IGame Game { get; }
     }
 }

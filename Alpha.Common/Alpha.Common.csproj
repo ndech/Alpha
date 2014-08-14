@@ -42,6 +42,7 @@
     <Compile Include="IGame.cs" />
     <Compile Include="IProcessableWorld.cs" />
     <Compile Include="IUi.cs" />
+    <Compile Include="IWorldGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -71,6 +71,7 @@
     <Compile Include="Shaders\ShaderManager.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
+    <Compile Include="UI\Controls\Custom\HintPanel.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\PlainRectangle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="UI\Coordinates\UniVector.cs" />
     <Compile Include="UI\IUiManager.cs" />
     <Compile Include="UI\Screens\Screen.cs" />
+    <Compile Include="UI\Screens\WorldGeneratingScreen.cs" />
     <Compile Include="UI\Screens\WorldParametersScreen.cs" />
     <Compile Include="UI\Styles\Alignments.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />

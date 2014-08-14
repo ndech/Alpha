@@ -31,7 +31,7 @@ namespace Alpha.DirectX
         {
             CreateWindow();
             _directX = new Dx11(_form);
-            _context = new Context(_form, _directX);
+            _context = new Context(_form, _directX, _game);
             _uiManager = new UiManager(_context);
             _input = new Input.Input(_context);
             _context.Initialize(_uiManager, _input);

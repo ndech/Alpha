@@ -1,4 +1,5 @@
-﻿using Alpha.DirectX.Input;
+﻿using Alpha.Common;
+using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
 using Alpha.DirectX.UI.Text;
@@ -18,11 +19,13 @@ namespace Alpha.DirectX
         public TextureManager TextureManager { get; private set; }
         public ShaderManager Shaders { get; private set; }
         public ICamera Camera { get; private set; }
+        public IGame Game { get; private set; }
 
-        public Context(RenderForm form, Dx11 directX)
+        public Context(RenderForm form, Dx11 directX, IGame game)
         {
             Form = form;
             DirectX = directX;
+            Game = game;
             TextureManager = new TextureManager(DirectX.Device);
             TextManager = new TextManager(this);
             Shaders = new ShaderManager(DirectX.Device);

@@ -19,7 +19,7 @@ namespace Alpha.Core
         public ProvinceManager ProvinceManager { get; private set; }
         public Calendar Calendar { get; private set; }
 
-        public World()
+        internal World()
         {
             RealmManager = new RealmManager();
             FleetManager = new FleetManager();
