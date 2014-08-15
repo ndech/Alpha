@@ -67,8 +67,10 @@
     <Compile Include="IUi.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="MousePointer.cs" />
+    <Compile Include="ObjModel.cs" />
     <Compile Include="Shaders\ColorShader.cs" />
     <Compile Include="Shaders\FontShader.cs" />
+    <Compile Include="Shaders\LightShader.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderManager.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
@@ -138,6 +140,12 @@
     <None Include="Data\Fonts\Courrier-14px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\Models\basicBoat.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Models\skydome.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Fonts\Arial-20px.png">
@@ -158,6 +166,9 @@
     <Content Include="Data\Shaders\Font.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Shaders\Light.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Shaders\Texture.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -168,6 +179,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Textures\OceanWater.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Textures\Sky.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Styles\Button.xml">
@@ -183,6 +197,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

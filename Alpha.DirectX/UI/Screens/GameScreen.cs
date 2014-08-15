@@ -8,10 +8,12 @@ namespace Alpha.DirectX.UI.Screens
     {
         private readonly Sun _sun;
         private readonly Water _water;
+        private readonly Sky _sky;
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
+            _sky = new Sky(context);
         }
 
         protected override void Update(double delta)
@@ -21,6 +23,7 @@ namespace Alpha.DirectX.UI.Screens
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
+            _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
         }
     }
