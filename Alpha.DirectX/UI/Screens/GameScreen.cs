@@ -1,4 +1,6 @@
-﻿using Alpha.DirectX.UI.World;
+﻿using Alpha.DirectX.UI.Controls;
+using Alpha.DirectX.UI.Coordinates;
+using Alpha.DirectX.UI.World;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -14,6 +16,8 @@ namespace Alpha.DirectX.UI.Screens
             _sun = new Sun();
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
             _sky = new Sky(context);
+            Register(new DynamicLabel(context, "calendar", new UniRectangle(new UniScalar(1.0f, -100), 0, 100, 50),
+                () => context.World.Calendar.CurrentDate.ToString()));
         }
 
         protected override void Update(double delta)

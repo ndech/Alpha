@@ -8,9 +8,11 @@ namespace Alpha.Core.Fleets
 {
     public class Fleet : IDailyUpdatable
     {
-        internal Fleet()
+        internal Fleet(String name, Realm owner, Province location)
         {
-            
+            Name = name;
+            Owner = owner;
+            Location = location;
         }
         public String Name { get; internal set; }
 

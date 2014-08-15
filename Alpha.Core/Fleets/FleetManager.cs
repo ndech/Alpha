@@ -22,5 +22,10 @@ namespace Alpha.Core.Fleets
         {
 
         }
+
+        public void CreateFleet(Fleet fleet)
+        {
+            _fleets.Add(fleet);
+        }
     }
 }

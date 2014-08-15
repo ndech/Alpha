@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.Common;
+using Alpha.Core.Fleets;
 using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
@@ -54,6 +55,9 @@ namespace Alpha.Core
                 world.RealmManager.CreateRealm(new Realm());
             foreach (LandProvince province in world.ProvinceManager.LandProvinces)
                 world.RealmManager.Realms.RandomItem().AddProvince(province);
+            feedback("Launching the fleets");
+            foreach (Realm realm in world.RealmManager.Realms)
+                world.FleetManager.CreateFleet(new Fleet("Royal fleet of "+realm.Name, realm, world.ProvinceManager.SeaProvinces.RandomItem()));
             feedback("Polishing");
             return world;
         }
