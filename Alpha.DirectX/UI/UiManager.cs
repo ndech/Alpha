@@ -80,7 +80,7 @@ namespace Alpha.DirectX.UI
 
         public override void Update(double delta)
         {
-            foreach (Screen screen in _activeScreens)
+            foreach (Screen screen in _activeScreens.ToList())
                 screen.UpdateTree(delta);
         }
 
@@ -125,6 +125,12 @@ namespace Alpha.DirectX.UI
         public bool IsAnyKeyPressed(params Key[] keys)
         {
             return keys.Any(IsKeyPressed);
+        }
+
+        public void SetScreen(Screen screen)
+        {
+            _activeScreens.Clear();
+            _activeScreens.Add(screen);
         }
 
         public bool AreAllKeysPressed(params Key[] keys)

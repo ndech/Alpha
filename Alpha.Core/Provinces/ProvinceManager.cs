@@ -9,8 +9,8 @@ namespace Alpha.Core.Provinces
 
         private readonly List<Province> _provinces = new List<Province>();
         public IEnumerable<Province> Provinces { get { return _provinces; } }
-        public IEnumerable<Province> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
-        public IEnumerable<Province> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
+        public IEnumerable<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
+        public IEnumerable<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
 
         public Province GetById(String id)
         {

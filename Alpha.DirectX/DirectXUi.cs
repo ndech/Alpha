@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Alpha.Common;
+using Alpha.Core;
 using Alpha.DirectX.UI;
 using Alpha.DirectX.UI.Screens;
-using Alpha.UI;
 using SharpDX.Windows;
 
 namespace Alpha.DirectX
@@ -19,11 +19,13 @@ namespace Alpha.DirectX
         private Input.Input _input;
         private Context _context;
         private readonly IGame _game;
+        private readonly WorldContainer _worldContainer;
         private List<RenderableComponent> _components;
 
-        public DirectXUi(IGame game)
+        public DirectXUi(IGame game, WorldContainer worldContainer)
         {
             _game = game;
+            _worldContainer = worldContainer;
             _timer = new Toolkit.Timer();
         }
 
@@ -31,7 +33,7 @@ namespace Alpha.DirectX
         {
             CreateWindow();
             _directX = new Dx11(_form);
-            _context = new Context(_form, _directX, _game);
+            _context = new Context(_form, _directX, _game, _worldContainer);
             _uiManager = new UiManager(_context);
             _input = new Input.Input(_context);
             _context.Initialize(_uiManager, _input);

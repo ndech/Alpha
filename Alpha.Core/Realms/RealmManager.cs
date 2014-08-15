@@ -14,13 +14,16 @@ namespace Alpha.Core.Realms
 
         void IManager.Setup()
         {
-            for (int i = 0; i < 10; i++)
-                _realms.Add(new Realm());
         }
 
         internal RealmManager()
         {
             
+        }
+
+        public void CreateRealm(Realm realm)
+        {
+            _realms.Add(realm);
         }
     }
 }

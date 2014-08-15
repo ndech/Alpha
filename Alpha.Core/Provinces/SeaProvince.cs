@@ -2,7 +2,7 @@
 
 namespace Alpha.Core.Provinces
 {
-    class SeaProvince : Province
+    public class SeaProvince : Province
     {
         public override sealed string Name { get; internal set; }
         protected override void DayUpdate()

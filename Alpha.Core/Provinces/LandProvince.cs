@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Alpha.Core.Realms;
 
 namespace Alpha.Core.Provinces
 {
-    class LandProvince : Province
+    public class LandProvince : Province
     {
         private float _population = 1000;
 
@@ -27,5 +28,6 @@ namespace Alpha.Core.Provinces
         }
 
         public override sealed string Name { get; internal set; }
+        public Realm Owner { get; internal set; }
     }
 }

@@ -64,6 +64,8 @@
     <Compile Include="ICamera.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputInterop.cs" />
+    <Compile Include="IUi.cs" />
+    <Compile Include="Light.cs" />
     <Compile Include="MousePointer.cs" />
     <Compile Include="Shaders\ColorShader.cs" />
     <Compile Include="Shaders\FontShader.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Shaders\ShaderManager.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
+    <Compile Include="Shaders\WaterShader.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\PlainRectangle.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="UI\Coordinates\UniScalar.cs" />
     <Compile Include="UI\Coordinates\UniVector.cs" />
     <Compile Include="UI\IUiManager.cs" />
+    <Compile Include="UI\Screens\GameScreen.cs" />
     <Compile Include="UI\Screens\Screen.cs" />
     <Compile Include="UI\Screens\WorldGeneratingScreen.cs" />
     <Compile Include="UI\Screens\WorldParametersScreen.cs" />
@@ -105,6 +109,10 @@
     <Compile Include="UI\Text\TextManager.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <Compile Include="UI\UiManager.cs" />
+    <Compile Include="UI\World\Sky.cs" />
+    <Compile Include="UI\World\Sun.cs" />
+    <Compile Include="UI\World\Terrain.cs" />
+    <Compile Include="UI\World\Water.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Alpha.Common\Alpha.Common.csproj">
@@ -151,6 +159,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Shaders\Texture.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Shaders\Water.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Textures\border.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Textures\OceanWater.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Styles\Button.xml">

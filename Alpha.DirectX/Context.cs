@@ -1,4 +1,5 @@
 ﻿using Alpha.Common;
+using Alpha.Core;
 using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
@@ -10,6 +11,7 @@ namespace Alpha.DirectX
 {
     class Context : IContext
     {
+        private readonly WorldContainer _worldContainer;
         public IUiManager UiManager { get; private set; }
         public Vector2I ScreenSize { get { return new Vector2I(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height); } }
         public RenderForm Form { get; private set; }
@@ -20,9 +22,11 @@ namespace Alpha.DirectX
         public ShaderManager Shaders { get; private set; }
         public ICamera Camera { get; private set; }
         public IGame Game { get; private set; }
+        public World World { get { return _worldContainer.World; } }
 
-        public Context(RenderForm form, Dx11 directX, IGame game)
+        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer)
         {
+            _worldContainer = worldContainer;
             Form = form;
             DirectX = directX;
             Game = game;

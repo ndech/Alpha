@@ -1,4 +1,5 @@
 ﻿using Alpha.Common;
+using Alpha.Core;
 using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
@@ -19,5 +20,7 @@ namespace Alpha.DirectX
         TextureManager TextureManager { get; }
         ShaderManager Shaders { get; }
         IGame Game { get; }
+        ICamera Camera { get; }
+        World World { get; }
     }
 }

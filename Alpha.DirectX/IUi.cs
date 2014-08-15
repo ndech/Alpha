@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Alpha.UI
+namespace Alpha.DirectX
 {
     public interface IUi
     {

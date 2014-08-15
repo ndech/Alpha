@@ -12,8 +12,7 @@ namespace Alpha.DirectX.UI.Screens
             validateButton.Clicked += b =>
             {
                 Context.Game.GenerateWorldEvent.Set();
-                Context.UiManager.DeleteScreen(this);
-                Context.UiManager.AddScreen(new WorldGeneratingScreen(Context));
+                Context.UiManager.SetScreen(new WorldGeneratingScreen(Context));
             };
         }
     }

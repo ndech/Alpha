@@ -63,6 +63,7 @@
     <Compile Include="Realms\RealmManager.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorldContainer.cs" />
     <Compile Include="WorldGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

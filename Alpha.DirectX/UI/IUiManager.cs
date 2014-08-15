@@ -15,5 +15,6 @@ namespace Alpha.DirectX.UI
         bool IsKeyPressed(Key key);
         void RecalculateActiveComponents();
         bool IsAnyKeyPressed(params Key[] keys);
+        void SetScreen(Screen screen);
     }
 }

@@ -7,7 +7,6 @@ using Alpha.Common;
 using Alpha.Core;
 using Alpha.Core.Realms;
 using Alpha.DirectX;
-using Alpha.UI;
 
 namespace Alpha.EntryPoint
 {
@@ -22,10 +21,13 @@ namespace Alpha.EntryPoint
         public AutoResetEvent GenerateWorldEvent { get; private set; }
         private volatile string _loadingMessage = "";
         public string LoadingMessage { get { return _loadingMessage; } }
+        private volatile bool _isWorldGenerationDone;
+        public bool IsWorldGenerationDone { get { return _isWorldGenerationDone; } }
+        private readonly WorldContainer _worldContainer = new WorldContainer();
 
         public Game()
         {
-            _ui = new DirectXUi(this);
+            _ui = new DirectXUi(this, _worldContainer);
             GenerateWorldEvent = new AutoResetEvent(false);
             _dayTimer = new DayTimer();
             _ais = new List<IAi>();
@@ -42,6 +44,8 @@ namespace Alpha.EntryPoint
             Console.WriteLine("Generation is done");
             foreach (Realm realm in _world.RealmManager.Realms)
                 _ais.Add(new Ai(realm, _world));
+            _worldContainer.World = _world;
+            _isWorldGenerationDone = true;
             _dayTimer.Start();
             while (_continue)
             {

@@ -16,9 +16,9 @@ namespace Alpha.Core.Realms
         public RealmEconomy Economy { get; private set; }
         public Realm Liege { get; internal set; }
         private readonly List<Realm> _vassals = new List<Realm>();
-        private readonly List<Province> _demesne = new List<Province>();
+        private readonly List<LandProvince> _demesne = new List<LandProvince>();
         public IEnumerable<Realm> Vassals { get { return _vassals; } }
-        public IEnumerable<Province> Demesne { get { return _demesne; } } 
+        public IEnumerable<LandProvince> Demesne { get { return _demesne; } } 
         //public IEnumerable<Fleet> Fleets { get { return World.FleetManager.Fleets.Where(f => f.Owner.Equals(this)); } } 
         
         public String Name { get; internal set; }
@@ -39,5 +39,11 @@ namespace Alpha.Core.Realms
         public Int32 DemesneSize { get { return _demesne.Count; } }
         public Int32 DirectVassalCount { get { return _vassals.Count; } }
         public Int32 TotalVassalCount { get { return DirectVassalCount + Vassals.Sum((v) => v.TotalVassalCount); } }
+
+        public void AddProvince(LandProvince province)
+        {
+            _demesne.Add(province);
+            province.Owner = this;
+        }
     }
 }

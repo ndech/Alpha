@@ -20,6 +20,12 @@ namespace Alpha.DirectX.UI.Screens
         protected override void Update(double delta)
         {
             base.Update(delta);
+            if (Context.Game.IsWorldGenerationDone)
+            {
+                Context.UiManager.AddScreen(new GameScreen(Context));
+                Context.UiManager.DeleteScreen(this);
+                //Context.UiManager.SetScreen(new GameScreen(Context));
+            }
             _label.Text = Context.Game.LoadingMessage;
         }
     }

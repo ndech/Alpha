@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Alpha.Common;
 using Alpha.Core.Provinces;
+using Alpha.Core.Realms;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using Alpha.WorldGeneration;
 
@@ -47,6 +49,11 @@ namespace Alpha.Core
                     });
                 }
             }
+            feedback("Dividing in realms");
+            for (int i = 0; i < 10; i++)
+                world.RealmManager.CreateRealm(new Realm());
+            foreach (LandProvince province in world.ProvinceManager.LandProvinces)
+                world.RealmManager.Realms.RandomItem().AddProvince(province);
             feedback("Polishing");
             return world;
         }
