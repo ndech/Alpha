@@ -29,7 +29,7 @@ namespace Alpha.DirectX.Input
         private readonly Dictionary<Key, double> _pressedKeys;
         private RenderForm _form;
         private Array _keys;
-        private readonly IContext _context;
+        private IContext _context;
 
         public event CustomEventHandler<Vector2I> MouseMoved;
         public event CustomEventHandler<Vector2I, Int32> MouseClicked;
@@ -38,15 +38,15 @@ namespace Alpha.DirectX.Input
         public event CustomEventHandler<Key, char?, bool> KeyPressed;
         public event CustomEventHandler<Key> KeyReleased;
 
-        public Input(IContext context)
+        public Input()
         {
             _previousMouseButtons = new bool[2];
             _pressedKeys = new Dictionary<Key, double>();
-            _context = context;
         }
-        
-        public void Initialize()
+
+        public void Initialize(IContext context)
         {
+            _context = context;
             _mousePosition = _context.ScreenSize/2;
             _form = _context.Form;
             _form.MouseWheel+= OnMouseWheel;

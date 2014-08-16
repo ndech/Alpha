@@ -1,18 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Alpha.DirectX.Input;
-using Alpha.DirectX.UI.Screens;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
+using Screen = Alpha.DirectX.UI.Screens.Screen;
 
 namespace Alpha.DirectX.UI
 {
-    class UiManager : RenderableComponent, IUiManager
+    class UiManager : IUiManager, IDisposable
     {
         private readonly List<Screen> _activeScreens;
+        private readonly MousePointer _mousePointer;
         public StyleManager StyleManager { get; private set; }
         public Vector2I MousePosition { get; private set; }
         private IInput _input;
@@ -22,10 +24,10 @@ namespace Alpha.DirectX.UI
         }
 
         public Vector2I ScreenSize { get; private set; }
-        public UiManager(IContext context) 
-            : base(context, 1000, 1000, false, true)
+        public UiManager()
         {
             _activeScreens = new List<Screen>();
+            _mousePointer = new MousePointer();
             StyleManager = new StyleManager();
         }
 
@@ -36,16 +38,17 @@ namespace Alpha.DirectX.UI
                 _activeScreens[0].MouseMoved(position);
         }
 
-        public override void Initialize()
+        public void Initialize(IContext context)
         {
-            _input = Context.Input;
+            _mousePointer.Initialize(context);
+            _input = context.Input;
             _input.MouseMoved += OnMouseMoved;
             _input.MouseClicked += OnMouseClicked;
             _input.MouseReleased += OnMouseReleased;
             _input.KeyPressed += OnKeyPressed;
             _input.KeyReleased += OnKeyReleased;
             _input.MouseScrolled += OnMouseScrolled;
-            ScreenSize = Context.ScreenSize;
+            ScreenSize = context.ScreenSize;
         }
 
         private void OnMouseScrolled(int delta)
@@ -78,13 +81,13 @@ namespace Alpha.DirectX.UI
                 _activeScreens[0].MouseReleased(position, button);
         }
 
-        public override void Update(double delta)
+        public void Update(double delta)
         {
             foreach (Screen screen in _activeScreens.ToList())
                 screen.UpdateTree(delta);
         }
 
-        public override void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)
         {
             if(_activeScreens.Count ==0) return;
             int i;
@@ -93,9 +96,10 @@ namespace Alpha.DirectX.UI
                     break;
             for (int j = i; j >= 0; j--)
                 _activeScreens[j].RenderTree(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
+            _mousePointer.Render(deviceContext, viewMatrix, projectionMatrix);
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
             foreach (Screen screen in _activeScreens)
                 screen.Dispose();

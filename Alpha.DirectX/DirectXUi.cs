@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using Alpha.Common;
 using Alpha.Core;
@@ -20,7 +19,6 @@ namespace Alpha.DirectX
         private Context _context;
         private readonly IGame _game;
         private readonly WorldContainer _worldContainer;
-        private List<RenderableComponent> _components;
 
         public DirectXUi(IGame game, WorldContainer worldContainer)
         {
@@ -33,13 +31,11 @@ namespace Alpha.DirectX
         {
             CreateWindow();
             _directX = new Dx11(_form);
-            _context = new Context(_form, _directX, _game, _worldContainer);
-            _uiManager = new UiManager(_context);
-            _input = new Input.Input(_context);
-            _context.Initialize(_uiManager, _input);
-            _components = new List<RenderableComponent> { _uiManager, new MousePointer(_context) };
-            _input.Initialize();
-            _components.ForEach(c => c.Initialize());
+            _uiManager = new UiManager();
+            _input = new Input.Input();
+            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input);
+            _input.Initialize(_context);
+            _uiManager.Initialize(_context);
             _uiManager.AddScreen(new WorldParametersScreen(_context));
         }
 
@@ -52,16 +48,9 @@ namespace Alpha.DirectX
         private void Draw()
         {
             _directX.BeginScene(0.75f, 0.75f, 0.75f, 1f);
-            foreach (RenderableComponent item in _components)
-            {
-                _directX.SetAlphaBlending(item.BlendingEnabled);
-                _directX.SetWireFrameMode(item.DisplayWireframe);
-                _directX.SetZBuffer(item.ZBufferEnabled);
-                if (item.ZBufferEnabled)
-                    item.Render(_directX.DeviceContext, _context.Camera.ViewMatrix, _directX.ProjectionMatrix);
-                else
-                    item.Render(_directX.DeviceContext, _context.Camera.UiMatrix, _directX.OrthoMatrix);
-            }
+            _directX.SetAlphaBlending(true);
+            _directX.SetZBuffer(false);
+            _uiManager.Render(_directX.DeviceContext, _context.Camera.UiMatrix, _directX.OrthoMatrix);
             _directX.DrawScene();
         }
 

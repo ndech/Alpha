@@ -24,7 +24,7 @@ namespace Alpha.DirectX
         public IGame Game { get; private set; }
         public World World { get { return _worldContainer.World; } }
 
-        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer)
+        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, UiManager uiManager, Input.Input input)
         {
             _worldContainer = worldContainer;
             Form = form;
@@ -34,11 +34,7 @@ namespace Alpha.DirectX
             TextManager = new TextManager(this);
             Shaders = new ShaderManager(DirectX.Device);
             Camera = new Camera();
-        }
-
-        public void Initialize(IUiManager manager, IInput input)
-        {
-            UiManager = manager;
+            UiManager = uiManager;
             Input = input;
         }
     }
