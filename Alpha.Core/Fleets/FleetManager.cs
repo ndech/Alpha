@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Alpha.Core.Notifications;
+using Alpha.Toolkit;
 
 namespace Alpha.Core.Fleets
 {
@@ -12,20 +14,15 @@ namespace Alpha.Core.Fleets
 
         }
 
-        void IDailyUpdatable.DayUpdate(object dataLock)
+        void IDailyUpdatable.DayUpdate(DataLock dataLock)
         {
-            foreach (Fleet fleet in _fleets)
-                (fleet as IDailyUpdatable).DayUpdate(dataLock);
-        }
-
-        void IManager.Setup()
-        {
-
+            _fleets.ForEach(fleet => dataLock.Write(() => (fleet as IDailyUpdatableItem).DayUpdate()));
         }
 
         public void CreateFleet(Fleet fleet)
         {
             _fleets.Add(fleet);
+            new NewFleetNotification(fleet);
         }
     }
 }

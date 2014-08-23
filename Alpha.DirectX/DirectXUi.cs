@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Alpha.Common;
 using Alpha.Core;
 using Alpha.DirectX.UI;
 using Alpha.DirectX.UI.Screens;
+using Alpha.Toolkit;
 using SharpDX.Windows;
 
 namespace Alpha.DirectX
@@ -54,13 +56,13 @@ namespace Alpha.DirectX
             _directX.DrawScene();
         }
 
-        public void StartRenderLoop(object dataLock)
+        public void StartRenderLoop(DataLock dataLock)
         {
             Initialize();
             RenderLoop.Run(_form, () =>
             {
-                lock (dataLock)
-                    Update(_timer.Tick());
+                dataLock.Read(()=> Update(_timer.Tick()));
+                Console.WriteLine("Update done");
                 Draw();
             });
             _game.Exit();

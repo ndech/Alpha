@@ -5,7 +5,7 @@ using Alpha.Toolkit.Math;
 
 namespace Alpha.Core.Provinces
 {
-    public abstract class Province : IDailyUpdatable, IEquatable<Province>
+    public abstract class Province : IDailyUpdatableItem, IEquatable<Province>
     {
         protected Province(List<Zone> zones, String id)
         {
@@ -32,7 +32,7 @@ namespace Alpha.Core.Provinces
         }
 
         protected abstract void DayUpdate();
-        void IDailyUpdatable.DayUpdate(object dataLock)
+        void IDailyUpdatableItem.DayUpdate()
         {
             DayUpdate();
         }
@@ -40,6 +40,11 @@ namespace Alpha.Core.Provinces
         public void CreateAdjacency(ProvinceAdjacency provinceAdjacency)
         {
             _adjacencies.Add(provinceAdjacency);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

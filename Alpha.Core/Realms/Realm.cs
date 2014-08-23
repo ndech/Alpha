@@ -6,11 +6,12 @@ using Alpha.Toolkit;
 
 namespace Alpha.Core.Realms
 {
-    public class Realm : IDailyUpdatable
+    public class Realm : IDailyUpdatableItem
     {
-        internal Realm()
+        internal Realm(string name)
         {
             Economy = new RealmEconomy();
+            Name = name;
         }
 
         public RealmEconomy Economy { get; private set; }
@@ -23,7 +24,7 @@ namespace Alpha.Core.Realms
         
         public String Name { get; internal set; }
 
-        void IDailyUpdatable.DayUpdate(object dataLock)
+        void IDailyUpdatableItem.DayUpdate()
         {
 
         }
@@ -44,6 +45,11 @@ namespace Alpha.Core.Realms
         {
             _demesne.Add(province);
             province.Owner = this;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

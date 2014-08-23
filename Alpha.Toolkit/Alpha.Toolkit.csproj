@@ -47,6 +47,7 @@
     <Compile Include="ColorParser.cs" />
     <Compile Include="CpuUsageCounter.cs" />
     <Compile Include="CustomEventHandler.cs" />
+    <Compile Include="DataLock.cs" />
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="FpsCounter.cs" />
     <Compile Include="ICounter.cs" />

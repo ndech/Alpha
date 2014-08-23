@@ -71,6 +71,7 @@
     <Compile Include="Shaders\ColorShader.cs" />
     <Compile Include="Shaders\FontShader.cs" />
     <Compile Include="Shaders\LightShader.cs" />
+    <Compile Include="Shaders\PathShader.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderManager.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="UI\Text\TextManager.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <Compile Include="UI\UiManager.cs" />
+    <Compile Include="UI\World\FleetMoveOrderRenderer.cs" />
     <Compile Include="UI\World\FleetRenderer.cs" />
     <Compile Include="UI\World\Sky.cs" />
     <Compile Include="UI\World\Sun.cs" />
@@ -168,6 +170,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Shaders\Light.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Shaders\Path.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Shaders\Texture.hlsl">

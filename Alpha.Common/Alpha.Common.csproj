@@ -44,6 +44,12 @@
     <Compile Include="IWorldGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Alpha.Toolkit\Alpha.Toolkit.csproj">
+      <Project>{78b2a9c4-7657-4afd-8ae8-5186237f205f}</Project>
+      <Name>Alpha.Toolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

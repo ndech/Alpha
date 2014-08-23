@@ -11,19 +11,38 @@ namespace Alpha.DirectX.UI.World
     {
         private readonly ObjModel _model;
         private readonly LightShader _shader;
+        private readonly Dictionary<Int32,Matrix> _matrices = new Dictionary<int, Matrix>();
         public FleetRenderer(IContext context)
         {
             _shader = context.Shaders.LightShader;
             _model = new ObjModel(context.DirectX.Device, "BasicBoat.obj", context.TextureManager.Create("Metal.png"));
+            foreach (Fleet fleet in context.World.FleetManager.Fleets)
+                OnNewFleet(fleet);
         }
-        public void Render(IEnumerable<Fleet> fleets, DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix, Light light, ICamera camera)
+
+        private void OnNewFleet(Fleet fleet)
         {
-            foreach (Fleet fleet in fleets)
+            _matrices[fleet.Id] = Matrix.RotationY(-(float)(Math.PI / 2)) * Matrix.Translation((Vector3)fleet.Location.Center);
+        }
+
+        private void OnFleetUpdate(Fleet fleet)
+        {
+            _matrices[fleet.Id] = Matrix.RotationY(-(float)(Math.PI / 2)) * Matrix.Translation((Vector3)fleet.Location.Center);
+        }
+
+        private void OnFleetDelete(Fleet fleet)
+        {
+            _matrices.Remove(fleet.Id);
+        }
+        
+        public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix, Light light, ICamera camera)
+        {
+            foreach (Matrix matrix in _matrices.Values)
             {
                 _model.Render(deviceContext);
                 _shader.Render(deviceContext, 
                     _model.IndexCount, 
-                    Matrix.RotationY(-(float)(Math.PI / 2)) * Matrix.Translation((Vector3)fleet.Location.Center), 
+                    matrix, 
                     viewMatrix, 
                     projectionMatrix, 
                     _model.Texture, 

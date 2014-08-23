@@ -1,4 +1,6 @@
-﻿namespace Alpha.Core.Calendars
+﻿using Alpha.Toolkit;
+
+namespace Alpha.Core.Calendars
 {
     public class Calendar : IManager, IDailyUpdatable
     {
@@ -9,14 +11,9 @@
             CurrentDate = new Date(1,1,1900);
         }
 
-        void IDailyUpdatable.DayUpdate(object dataLock)
+        void IDailyUpdatable.DayUpdate(DataLock dataLock)
         {
-            CurrentDate = CurrentDate.NextDay();
-        }
-
-        void IManager.Setup()
-        {
-            
+            dataLock.Write(() => CurrentDate = CurrentDate.NextDay());
         }
     }
 }

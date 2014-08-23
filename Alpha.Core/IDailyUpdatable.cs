@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Alpha.Common;
+using Alpha.Toolkit;
 
 namespace Alpha.Core
 {
-    internal interface IDailyUpdatable
+    interface IDailyUpdatable
     {
-        void DayUpdate(Object dataLock);
+        void DayUpdate(DataLock dataLock);
     }
 }

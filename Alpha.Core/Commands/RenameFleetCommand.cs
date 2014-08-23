@@ -3,12 +3,12 @@ using Alpha.Core.Fleets;
 
 namespace Alpha.Core.Commands
 {
-    public class FleetRenameCommand : Command
+    public class RenameFleetCommand : Command
     {
         private readonly Fleet _fleet;
         private readonly string _newName;
 
-        public FleetRenameCommand(Fleet fleet, String newName)
+        public RenameFleetCommand(Fleet fleet, String newName)
         {
             _fleet = fleet;
             _newName = newName;

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Alpha.Toolkit;
 
 namespace Alpha.DirectX
 {
     public interface IUi
     {
-        void StartRenderLoop(Object dataLock);
+        void StartRenderLoop(DataLock dataLock);
     }
 }

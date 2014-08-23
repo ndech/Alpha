@@ -2,6 +2,5 @@
 {
     interface IManager : IDailyUpdatable
     {
-        void Setup();
     }
 }

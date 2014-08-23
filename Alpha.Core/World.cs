@@ -5,13 +5,17 @@ using Alpha.Common;
 using Alpha.Core.Calendars;
 using Alpha.Core.Commands;
 using Alpha.Core.Fleets;
+using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
+using Alpha.Toolkit;
 
 namespace Alpha.Core
 {
     public class World : IProcessableWorld, IWorld
     {
+        private readonly List<Notification> _dailyNotifications;
+        private readonly List<Notification> _liveNotifications;
         private readonly ConcurrentQueue<Command> _commands = new ConcurrentQueue<Command>();
         private List<IManager> Managers { get; set; }
         public FleetManager FleetManager { get; private set; }
@@ -19,19 +23,20 @@ namespace Alpha.Core
         public ProvinceManager ProvinceManager { get; private set; }
         public Calendar Calendar { get; private set; }
 
-        internal World()
+        internal World(List<Notification> dailyNotifications, List<Notification> liveNotifications)
         {
+            _dailyNotifications = dailyNotifications;
+            _liveNotifications = liveNotifications;
             RealmManager = new RealmManager();
             FleetManager = new FleetManager();
             ProvinceManager = new ProvinceManager();
             Calendar = new Calendar();
             Managers = new List<IManager> { Calendar, FleetManager, RealmManager, ProvinceManager };
-            foreach (IManager manager in Managers)
-                manager.Setup();
         }
 
         public void RegisterCommand(Command command)
         {
+            Console.WriteLine(command);
             _commands.Enqueue(command);
         }
 
@@ -41,26 +46,26 @@ namespace Alpha.Core
                 RegisterCommand(command);
         }
 
-        private void DayUpdate(Object datalock)
+        private void DayUpdate(DataLock datalock)
         {
             Managers.ForEach(u => u.DayUpdate(datalock));
         }
 
-        private void ProcessCommands(Object datalock)
+        private void ProcessCommands(DataLock datalock)
         {
             while (true)
             {
                 Command command;
                 if (!_commands.TryDequeue(out command)) return;
-                lock (datalock)
+                datalock.Write(() =>
                 {
-                    if(command.IsValid())
+                    if (command.IsValid())
                         command.Execute();
-                }
+                });
             }
         }
 
-        void IProcessableWorld.Process(Object dataLock)
+        void IProcessableWorld.Process(DataLock dataLock)
         {
             ProcessCommands(dataLock);
             DayUpdate(dataLock);
