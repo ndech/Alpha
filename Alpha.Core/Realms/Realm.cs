@@ -12,6 +12,7 @@ namespace Alpha.Core.Realms
         {
             Economy = new RealmEconomy();
             Name = name;
+            Id = IdSequence;
         }
 
         public RealmEconomy Economy { get; private set; }
@@ -46,7 +47,43 @@ namespace Alpha.Core.Realms
             _demesne.Add(province);
             province.Owner = this;
         }
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj is RealmToken)
+                return Id == ((RealmToken) obj).Realm.Id;
+            if (obj is Realm)
+                return Id == ((Realm) obj).Id;
+            return false;
+        }
 
+        public override int GetHashCode()
+        {
+            return (Name != null ? Id.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(Realm one, Realm other)
+        {
+            return !ReferenceEquals(null, one) && one.Equals(other);
+        }
+
+        public static bool operator !=(Realm one, Realm other)
+        {
+            return !(one == other);
+        }
+        public static bool operator ==(Realm one, RealmToken other)
+        {
+            return !ReferenceEquals(one, null) && !ReferenceEquals(other, null) && one.Equals(other.Realm);
+        }
+
+        public static bool operator !=(Realm one, RealmToken other)
+        {
+            return !(one == other);
+        }
+        private static int _idSequence;
+        protected static int IdSequence { get { return ++_idSequence; } }
+        public int Id { get; private set; }
         public override string ToString()
         {
             return Name;

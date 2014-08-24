@@ -1,4 +1,6 @@
-﻿using Alpha.DirectX.UI.Controls;
+﻿using System.Linq;
+using Alpha.Core.Commands;
+using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
@@ -25,6 +27,12 @@ namespace Alpha.DirectX.UI.Screens
                 () => context.World.Calendar.CurrentDate.ToString()));
             Register(new DynamicLabel(context, "fps", new UniRectangle(100, 0, 100, 50),
                 () => _counter.Value + "FPS"));
+            Register(new DynamicLabel(context, "treasury", new UniRectangle(new UniScalar(0.5f, -50), 0, 100, 50),
+                () => context.Realm.Economy.Treasury.ToString()));
+            Button button;
+            Register(button = new Button(context, "boost_treasury", new UniRectangle(new UniScalar(0.5f, -50), 50, 100, 50),
+                "Click"));
+            button.Clicked += (b) => context.RegisterCommand(new ChangeTreasuryCommand(context.Realm, 10));
         }
 
         protected override void Update(double delta)

@@ -8,5 +8,12 @@
             get { return _world; }
             set { _world = value; }
         }
+
+        private volatile RealmToken _playerRealm;
+        public RealmToken PlayerRealm
+        {
+            get { return _playerRealm; }
+            set { _playerRealm = value; }
+        }
     }
 }

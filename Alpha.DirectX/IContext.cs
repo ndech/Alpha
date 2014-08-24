@@ -1,5 +1,7 @@
 ﻿using Alpha.Common;
 using Alpha.Core;
+using Alpha.Core.Commands;
+using Alpha.Core.Realms;
 using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
@@ -22,5 +24,8 @@ namespace Alpha.DirectX
         IGame Game { get; }
         ICamera Camera { get; }
         World World { get; }
+        Realm Realm { get; }
+        RealmToken RealmToken { get; }
+        void RegisterCommand(Command command);
     }
 }

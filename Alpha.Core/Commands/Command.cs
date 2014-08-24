@@ -2,6 +2,8 @@
 {
     public abstract class Command
     {
+        public RealmToken Source { get; set; }
+
         internal abstract void Execute();
 
         internal bool IsValid()

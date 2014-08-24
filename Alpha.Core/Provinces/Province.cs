@@ -17,6 +17,7 @@ namespace Alpha.Core.Provinces
 
         private static int _idSequence;
         protected static int IdSequence { get { return ++_idSequence; } }
+        public String Id { get; private set; }
 
         private readonly List<Zone> _zones = new List<Zone>();
         public IEnumerable<Zone> Zones { get { return _zones; } }
@@ -24,7 +25,6 @@ namespace Alpha.Core.Provinces
         private readonly List<ProvinceAdjacency> _adjacencies = new List<ProvinceAdjacency>();
         public IEnumerable<ProvinceAdjacency> Adjacencies { get { return _adjacencies; } }
         public Vector3D Center { get; private set; }
-        public String Id { get; private set; }
 
         public bool Equals(Province other)
         {

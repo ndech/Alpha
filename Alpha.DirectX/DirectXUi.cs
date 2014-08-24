@@ -61,8 +61,7 @@ namespace Alpha.DirectX
             Initialize();
             RenderLoop.Run(_form, () =>
             {
-                dataLock.Read(()=> Update(_timer.Tick()));
-                Console.WriteLine("Update done");
+                dataLock.UiRead(()=> Update(_timer.Tick()));
                 Draw();
             });
             _game.Exit();

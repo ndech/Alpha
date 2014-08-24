@@ -16,17 +16,19 @@ namespace Alpha.Core
     {
         private readonly List<Notification> _dailyNotifications;
         private readonly List<Notification> _liveNotifications;
+        private readonly DataLock _dataLock;
 
-        public WorldGenerator(List<Notification> dailyNotifications, List<Notification> liveNotifications)
+        public WorldGenerator(List<Notification> dailyNotifications, List<Notification> liveNotifications, DataLock dataLock)
         {
             _dailyNotifications = dailyNotifications;
             _liveNotifications = liveNotifications;
+            _dataLock = dataLock;
         }
 
         IProcessableWorld IWorldGenerator.Generate(Action<String> feedback)
         {
             feedback("Generating base shapes");
-            World world = new World(_dailyNotifications, _liveNotifications);
+            World world = new World(_dailyNotifications, _liveNotifications, _dataLock);
             List<VoronoiSite> sites = Generator.Create(2000, 1000, 1000, 1, 1256);
             feedback("Creating provinces");
             foreach (VoronoiSite site in sites)

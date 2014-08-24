@@ -1,5 +1,7 @@
 ﻿using Alpha.Common;
 using Alpha.Core;
+using Alpha.Core.Commands;
+using Alpha.Core.Realms;
 using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
@@ -23,8 +25,14 @@ namespace Alpha.DirectX
         public ICamera Camera { get; private set; }
         public IGame Game { get; private set; }
         public World World { get { return _worldContainer.World; } }
+        public Realm Realm { get { return _worldContainer.PlayerRealm; } }
+        public RealmToken RealmToken { get { return _worldContainer.PlayerRealm; } }
+        public void RegisterCommand(Command command)
+        {
+            World.RegisterCommand(RealmToken, command);
+        }
 
-        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, UiManager uiManager, Input.Input input)
+        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input)
         {
             _worldContainer = worldContainer;
             Form = form;

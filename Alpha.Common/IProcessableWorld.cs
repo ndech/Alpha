@@ -1,9 +1,7 @@
-﻿using Alpha.Toolkit;
-
-namespace Alpha.Common
+﻿namespace Alpha.Common
 {
     public interface IProcessableWorld
     {
-        void Process(DataLock dataLock);
+        void Process();
     }
 }

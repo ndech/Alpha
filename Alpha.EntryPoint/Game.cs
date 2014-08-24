@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Alpha.AI;
 using Alpha.Common;
 using Alpha.Core;
 using Alpha.Core.Notifications;
-using Alpha.Core.Realms;
 using Alpha.DirectX;
 using Alpha.Toolkit;
 
@@ -16,6 +16,7 @@ namespace Alpha.EntryPoint
     {
         private readonly IUi _ui;
         private readonly IList<IAi> _ais;
+        private readonly List<RealmToken> _tokens = new List<RealmToken>();
         private World _world;
         private readonly DayTimer _dayTimer;
         private readonly ContinueFlag _continue = new ContinueFlag();
@@ -54,25 +55,34 @@ namespace Alpha.EntryPoint
             if(!_continue) return;
             //Generate the world
             Console.WriteLine("Generation begin");
-            _world = (World)((IWorldGenerator)(new WorldGenerator(_dailyNotifications, _liveNotifications)))
+            _world = (World)((IWorldGenerator)(new WorldGenerator(_dailyNotifications, _liveNotifications, dataLock)))
                 .Generate(s => _loadingMessage = s);
             Console.WriteLine("Generation is done");
-            foreach (Realm realm in _world.RealmManager.Realms)
-                _ais.Add(new Ai(realm, _world));
+            _world.SetNewRealmHandler(NewRealm);
+            //Choose one of the realms as the UI realm
+            _worldContainer.PlayerRealm = _tokens.First();
+            _ais.Remove(_ais.Single(ai => ai.Realm == _tokens.First().Realm));
+            _world.RegisterInteractiveRealm(_tokens.First());
             _worldContainer.World = _world;
             _isWorldGenerationDone = true;
             _dayTimer.Start();
             while (_continue)
             {
                 _dailyNotifications.Clear();
-                ((IProcessableWorld)_world).Process(dataLock);
+                ((IProcessableWorld)_world).Process();
                 Parallel.ForEach(_ais, 
                     new ParallelOptions { MaxDegreeOfParallelism = 4 },
-                    ai => _world.RegisterCommands(ai.Process(dataLock, _dailyNotifications)));
+                    ai => _world.RegisterCommands(ai.RealmToken, ai.Process(dataLock, _dailyNotifications)));
                 Console.WriteLine("Computations done");
                 _dayTimer.WaitForNextDay(_continue);
                 Console.WriteLine("Day end");
             }
+        }
+
+        private void NewRealm(RealmToken token)
+        {
+            _tokens.Add(token);
+            _ais.Add(new Ai(token, _world));
         }
 
         public void Exit()

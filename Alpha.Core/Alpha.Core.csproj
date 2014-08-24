@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="Calendars\Calendar.cs" />
     <Compile Include="Calendars\Date.cs" />
+    <Compile Include="Commands\ChangeTreasuryCommand.cs" />
+    <Compile Include="Commands\EventOnlyCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\DestroyFleetCommand.cs" />
     <Compile Include="Commands\RenameFleetCommand.cs" />

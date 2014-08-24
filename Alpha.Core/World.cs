@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using Alpha.Common;
 using Alpha.Core.Calendars;
 using Alpha.Core.Commands;
@@ -17,16 +18,34 @@ namespace Alpha.Core
         private readonly List<Notification> _dailyNotifications;
         private readonly List<Notification> _liveNotifications;
         private readonly ConcurrentQueue<Command> _commands = new ConcurrentQueue<Command>();
+        private HashSet<RealmToken> _interactiveModeRealms = new HashSet<RealmToken>();
         private List<IManager> Managers { get; set; }
         public FleetManager FleetManager { get; private set; }
         public RealmManager RealmManager { get; private set; }
         public ProvinceManager ProvinceManager { get; private set; }
         public Calendar Calendar { get; private set; }
+        private event CustomEventHandler<RealmToken> NewRealm;
+        private bool _tokenAcquired = false;
+        private DataLock _datalock;
 
-        internal World(List<Notification> dailyNotifications, List<Notification> liveNotifications)
+        public void SetNewRealmHandler(CustomEventHandler<RealmToken> function )
+        {
+            if (!_tokenAcquired)
+            {
+                NewRealm += function;
+                _tokenAcquired = true;
+            }
+            else
+                throw new InvalidOperationException("The NewRealm handler has already been acquired.");
+            foreach (Realm realm in RealmManager.Realms)
+                NewRealm.Invoke(new RealmToken(realm));
+        }
+
+        internal World(List<Notification> dailyNotifications, List<Notification> liveNotifications, DataLock dataLock)
         {
             _dailyNotifications = dailyNotifications;
             _liveNotifications = liveNotifications;
+            _datalock = dataLock;
             RealmManager = new RealmManager();
             FleetManager = new FleetManager();
             ProvinceManager = new ProvinceManager();
@@ -34,41 +53,57 @@ namespace Alpha.Core
             Managers = new List<IManager> { Calendar, FleetManager, RealmManager, ProvinceManager };
         }
 
-        public void RegisterCommand(Command command)
+        public void RegisterCommand(RealmToken source, Command command)
         {
-            Console.WriteLine(command);
+            command.Source = source;
+            if (_interactiveModeRealms.Contains(source))
+            {
+                Console.WriteLine("Interactive command : " + command);
+                new Thread(()=>_datalock.ImmediateWrite(() =>ExecuteCommand(command))).Start();
+                Console.WriteLine("Interactive command done : " + command);
+                return;
+            }
+            Console.WriteLine("Defered command : "+command);
             _commands.Enqueue(command);
         }
 
-        public void RegisterCommands(IEnumerable<Command> commands)
+        public void RegisterCommands(RealmToken source, IEnumerable<Command> commands)
         {
             foreach (Command command in commands)
-                RegisterCommand(command);
+                RegisterCommand(source, command);
         }
 
-        private void DayUpdate(DataLock datalock)
+        private void DayUpdate()
         {
-            Managers.ForEach(u => u.DayUpdate(datalock));
+            Managers.ForEach(u => u.DayUpdate(_datalock));
         }
 
-        private void ProcessCommands(DataLock datalock)
+        private void ProcessCommands()
         {
             while (true)
             {
                 Command command;
                 if (!_commands.TryDequeue(out command)) return;
-                datalock.Write(() =>
-                {
-                    if (command.IsValid())
-                        command.Execute();
-                });
+                _datalock.Write(() =>ExecuteCommand(command));
             }
         }
 
-        void IProcessableWorld.Process(DataLock dataLock)
+        private void ExecuteCommand(Command command)
         {
-            ProcessCommands(dataLock);
-            DayUpdate(dataLock);
+            if (command.IsValid())
+                command.Execute();
+        }
+
+
+        void IProcessableWorld.Process()
+        {
+            ProcessCommands();
+            DayUpdate();
+        }
+
+        public void RegisterInteractiveRealm(RealmToken token)
+        {
+            _interactiveModeRealms.Add(token);
         }
     }
 }

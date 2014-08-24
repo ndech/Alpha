@@ -13,29 +13,40 @@ namespace Alpha.AI
 {
     public class Ai : IAi
     {
-        private readonly Realm _realm;
+        private readonly RealmToken _realm;
         private readonly IWorld _world;
 
-        public Ai(Realm realm, IWorld world)
+        public Ai(RealmToken realm, IWorld world)
         {
             _realm = realm;
             _world = world;
         }
 
-        public IList<Command> Process(DataLock dataLock, IEnumerable<Notification> notifications)
+        public IEnumerable<Command> Process(DataLock dataLock, IEnumerable<Notification> notifications)
         {
             List<Command> commands = new List<Command>();
-            Thread.Sleep(RandomGenerator.Get(100, 1000));
-
+            for (int i = 0; i < 100; i++)
+            {
+                dataLock.AiRead(() => Thread.Sleep(RandomGenerator.Get(10, 50)));
+            }
+            commands.AddRange(dataLock.AiRead<List<Command>>(ProcessFleets));
             Console.WriteLine("IA calculations done for " + _realm);
+            return commands;
+        }
+
+        private List<Command> ProcessFleets()
+        {
+            List<Command> commands = new List<Command>();
             IEnumerable<Fleet> myFleets = _world.FleetManager.Fleets.Where(f => f.Owner == _realm);
             foreach (Fleet fleet in myFleets)
             {
-                if(!fleet.HasMoveOrder)
+                if (!fleet.HasMoveOrder)
                     commands.Add(new MoveFleetCommand(fleet, _world.ProvinceManager.CalculatePath(fleet, _world.ProvinceManager.SeaProvinces.RandomItem())));
             }
             return commands;
         }
 
+        public Realm Realm { get { return _realm; } }
+        public RealmToken RealmToken { get { return _realm; } }
     }
 }
