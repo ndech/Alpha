@@ -26,6 +26,7 @@ namespace Alpha.DirectX
         World World { get; }
         Realm Realm { get; }
         RealmToken RealmToken { get; }
+        NotificationResolver NotificationResolver { get; }
         void RegisterCommand(Command command);
     }
 }

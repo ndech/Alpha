@@ -18,6 +18,7 @@ namespace Alpha.DirectX.UI.World
             _model = new ObjModel(context.DirectX.Device, "BasicBoat.obj", context.TextureManager.Create("Metal.png"));
             foreach (Fleet fleet in context.World.FleetManager.Fleets)
                 OnNewFleet(fleet);
+            context.NotificationResolver.FleetMoved += OnFleetUpdate;
         }
 
         private void OnNewFleet(Fleet fleet)

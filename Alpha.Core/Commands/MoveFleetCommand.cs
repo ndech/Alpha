@@ -22,7 +22,7 @@ namespace Alpha.Core.Commands
 
         public override string ToString()
         {
-            return "Move fleet " + _fleet + " to " + _steps.Last().Destination + " (" + _steps.Sum(s => s.Duration) + "d)";
+            return "Move fleet " + _fleet + " to " + _steps.Last().Destination + " (" + _steps.Sum(s => s.Duration(_fleet.Speed)) + "d)";
         }
     }
 }

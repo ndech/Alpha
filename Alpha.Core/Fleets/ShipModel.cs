@@ -4,7 +4,7 @@
     {
         internal ShipModel()
         {
-            MaxSpeed = 2;
+            MaxSpeed = 10;
         }
         public float MaxSpeed { get; internal set; }
     }

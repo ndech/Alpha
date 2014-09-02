@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Alpha.Common;
 using Alpha.Core.Calendars;
@@ -26,7 +27,14 @@ namespace Alpha.Core
         public Calendar Calendar { get; private set; }
         private event CustomEventHandler<RealmToken> NewRealm;
         private bool _tokenAcquired = false;
-        private DataLock _datalock;
+        private readonly DataLock _datalock;
+
+        public IEnumerable<Notification> GetLiveNotifications(RealmToken realm)
+        {
+            List<Notification> notification = _liveNotifications.Where(n=>n.ValidForRealm(realm)).ToList();
+            _liveNotifications.Clear();
+            return notification;
+        }
 
         public void SetNewRealmHandler(CustomEventHandler<RealmToken> function )
         {
@@ -46,10 +54,10 @@ namespace Alpha.Core
             _dailyNotifications = dailyNotifications;
             _liveNotifications = liveNotifications;
             _datalock = dataLock;
-            RealmManager = new RealmManager();
-            FleetManager = new FleetManager();
-            ProvinceManager = new ProvinceManager();
-            Calendar = new Calendar();
+            RealmManager = new RealmManager(this);
+            FleetManager = new FleetManager(this);
+            ProvinceManager = new ProvinceManager(this);
+            Calendar = new Calendar(this);
             Managers = new List<IManager> { Calendar, FleetManager, RealmManager, ProvinceManager };
         }
 
@@ -104,6 +112,12 @@ namespace Alpha.Core
         public void RegisterInteractiveRealm(RealmToken token)
         {
             _interactiveModeRealms.Add(token);
+        }
+
+        internal void Notify(Notification notification)
+        {
+            _liveNotifications.Add(notification);
+            _dailyNotifications.Add(notification);
         }
     }
 }

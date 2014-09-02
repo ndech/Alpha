@@ -2,11 +2,11 @@
 
 namespace Alpha.Core.Calendars
 {
-    public class Calendar : IManager, IDailyUpdatable
+    public class Calendar : Component, IManager, IDailyUpdatable
     {
         public Date CurrentDate { get; private set; }
 
-        internal Calendar()
+        internal Calendar(World world) : base(world)
         {
             CurrentDate = new Date(1,1,1900);
         }

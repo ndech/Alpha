@@ -58,7 +58,7 @@ namespace Alpha.DirectX.Shaders
             SamplerState = new SamplerState(device, WrapSamplerStateDescription);
         }
 
-        public void Render(DeviceContext deviceContext, int vertexCount, int vertexOffset, Matrix viewMatrix, Matrix projectionMatrix, int positionIndex, ShaderResourceView pathTexture, float translation, Vector4 mainColor, Vector4 backgroundColor)
+        public void Render(DeviceContext deviceContext, int vertexCount, int vertexOffset, Matrix viewMatrix, Matrix projectionMatrix, int positionIndex, ShaderResourceView pathTexture, double translation, Vector4 mainColor, Vector4 backgroundColor)
         {
             DataStream mappedResource;
             UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, Matrix.Identity, viewMatrix, projectionMatrix);
@@ -66,7 +66,7 @@ namespace Alpha.DirectX.Shaders
             deviceContext.MapSubresource(ConstantPathDataBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
             mappedResource.Write(new PathData
             {
-                Translation = translation,
+                Translation = (float)translation,
                 PositionIndex = positionIndex,
                 MainColor = mainColor,
                 BackgroundColor = backgroundColor

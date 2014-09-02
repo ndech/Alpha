@@ -4,11 +4,10 @@ using System.Linq;
 using Alpha.Core.Fleets;
 using Alpha.Core.Movement;
 using Alpha.Toolkit;
-using Alpha.Toolkit.Math;
 
 namespace Alpha.Core.Provinces
 {
-    public class ProvinceManager : IManager
+    public class ProvinceManager : Component, IManager
     {
 
         private readonly List<Province> _provinces = new List<Province>();
@@ -20,7 +19,8 @@ namespace Alpha.Core.Provinces
         {
             return _provinces.Single(p => p.Id.Equals(id));
         }
-        internal ProvinceManager()
+
+        internal ProvinceManager(World world) : base(world)
         {
             
         }
@@ -49,7 +49,7 @@ namespace Alpha.Core.Provinces
             SortedSet<PathfindingNode> openList = new SortedSet<PathfindingNode>(
                 Comparer<PathfindingNode>.Create((a, b) => a.CompareTo(b)));
             HashSet<Province> closedList = new HashSet<Province>();
-            openList.Add(new PathfindingNode(movable.Location, Vector3D.Distance(destination.Center, movable.Location.Center)));
+            openList.Add(new PathfindingNode(movable.Location, destination.DistanceWith(movable.Location)));
             bool pathFound = destination == movable.Location;
             while (!pathFound)
             {
@@ -60,14 +60,14 @@ namespace Alpha.Core.Provinces
                 {
                     if (closedList.Contains(neighbourg) || openList.Any(n => n.Province == neighbourg))
                         continue;
-                    openList.Add(new PathfindingNode(neighbourg, Vector3D.Distance(destination.Center, neighbourg.Center), currentNode));
+                    openList.Add(new PathfindingNode(neighbourg, destination.DistanceWith(neighbourg), currentNode));
                     if (neighbourg == destination) // Path found !
                     {
                         pathFound = true;
-                        steps.Add(new Step(destination, (int)(Vector3D.Distance(currentNode.Province.Center, destination.Center) / movable.Speed)));
+                        steps.Add(new Step(currentNode.Province, destination));
                         while (currentNode.Parent != null)
                         {
-                            steps.Add(new Step(currentNode.Province, (int)(Vector3D.Distance(currentNode.Province.Center, currentNode.Parent.Province.Center) / movable.Speed)));
+                            steps.Add(new Step(currentNode.Parent.Province, currentNode.Province));
                             currentNode = currentNode.Parent;
                         }
                         steps.Reverse();

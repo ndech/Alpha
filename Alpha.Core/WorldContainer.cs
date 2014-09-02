@@ -15,5 +15,7 @@
             get { return _playerRealm; }
             set { _playerRealm = value; }
         }
+
+        public bool Ready { get { return _playerRealm != null && _world != null; } }
     }
 }

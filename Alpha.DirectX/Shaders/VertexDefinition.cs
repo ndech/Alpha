@@ -254,7 +254,7 @@ namespace Alpha.DirectX.Shaders
         {
             public Vector3 position;
             public Vector2 pathLength; //1 : total path length up to the current segment, 2 : current segment length
-            public readonly uint fillingIndex;
+            public uint fillingIndex;
 
             public static InputLayout GetInputLayout(Device device, CompilationResult vertexShaderByteCode)
             {

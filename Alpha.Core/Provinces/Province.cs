@@ -46,5 +46,10 @@ namespace Alpha.Core.Provinces
         {
             return Name;
         }
+
+        public double DistanceWith(Province other)
+        {
+            return Vector3D.Distance(Center, other.Center);
+        }
     }
 }

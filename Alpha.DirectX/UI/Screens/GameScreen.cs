@@ -15,6 +15,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly Water _water;
         private readonly Sky _sky;
         private readonly FleetRenderer _fleetRenderer;
+        private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
         private readonly FpsCounter _counter;
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
@@ -22,6 +23,7 @@ namespace Alpha.DirectX.UI.Screens
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
             _sky = new Sky(context);
             _fleetRenderer = new FleetRenderer(context);
+            _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);
             _counter = new FpsCounter();
             Register(new DynamicLabel(context, "calendar", new UniRectangle(new UniScalar(1.0f, -100), 0, 100, 50),
                 () => context.World.Calendar.CurrentDate.ToString()));
@@ -39,6 +41,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             _water.Update(delta);
             _counter.Update(delta);
+            _fleetMoveOrderRenderer.Update(delta);
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
@@ -47,6 +50,7 @@ namespace Alpha.DirectX.UI.Screens
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
             _fleetRenderer.Render(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
+            _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
         }
     }
 }

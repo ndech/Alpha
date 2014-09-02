@@ -21,12 +21,14 @@ namespace Alpha.DirectX
         private Context _context;
         private readonly IGame _game;
         private readonly WorldContainer _worldContainer;
+        private readonly NotificationResolver _notificationResolver;
 
         public DirectXUi(IGame game, WorldContainer worldContainer)
         {
             _game = game;
             _worldContainer = worldContainer;
             _timer = new Toolkit.Timer();
+            _notificationResolver = new NotificationResolver();
         }
 
         private void Initialize()
@@ -35,7 +37,7 @@ namespace Alpha.DirectX
             _directX = new Dx11(_form);
             _uiManager = new UiManager();
             _input = new Input.Input();
-            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input);
+            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _notificationResolver);
             _input.Initialize(_context);
             _uiManager.Initialize(_context);
             _uiManager.AddScreen(new WorldParametersScreen(_context));
@@ -43,6 +45,8 @@ namespace Alpha.DirectX
 
         private void Update(double delta)
         {
+            if(_worldContainer.Ready)
+                _notificationResolver.Process(_worldContainer.World.GetLiveNotifications(_worldContainer.PlayerRealm));
             _input.Update(delta);
             _uiManager.Update(delta);
         }

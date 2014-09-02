@@ -27,14 +27,17 @@ namespace Alpha.DirectX
         public World World { get { return _worldContainer.World; } }
         public Realm Realm { get { return _worldContainer.PlayerRealm; } }
         public RealmToken RealmToken { get { return _worldContainer.PlayerRealm; } }
+        public NotificationResolver NotificationResolver { get; private set; }
+
         public void RegisterCommand(Command command)
         {
             World.RegisterCommand(RealmToken, command);
         }
 
-        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input)
+        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input, NotificationResolver notificationResolver)
         {
             _worldContainer = worldContainer;
+            NotificationResolver = notificationResolver;
             Form = form;
             DirectX = directX;
             Game = game;

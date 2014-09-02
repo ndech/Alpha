@@ -39,6 +39,7 @@ namespace Alpha.EntryPoint
 
         public void Run()
         {
+            Thread.CurrentThread.Name = "Main thread";
             //Create ReadWrite lock for world data access
             DataLock dataLock = new DataLock();
             //Create UI Thread

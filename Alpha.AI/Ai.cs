@@ -25,7 +25,7 @@ namespace Alpha.AI
         public IEnumerable<Command> Process(DataLock dataLock, IEnumerable<Notification> notifications)
         {
             List<Command> commands = new List<Command>();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
                 dataLock.AiRead(() => Thread.Sleep(RandomGenerator.Get(10, 50)));
             }
@@ -40,8 +40,11 @@ namespace Alpha.AI
             IEnumerable<Fleet> myFleets = _world.FleetManager.Fleets.Where(f => f.Owner == _realm);
             foreach (Fleet fleet in myFleets)
             {
-                if (!fleet.HasMoveOrder)
-                    commands.Add(new MoveFleetCommand(fleet, _world.ProvinceManager.CalculatePath(fleet, _world.ProvinceManager.SeaProvinces.RandomItem())));
+                if (!fleet.HasMoveOrder || RandomGenerator.Get(0,10)== 0)
+                    commands.Add(
+                        new MoveFleetCommand(fleet, 
+                            _world.ProvinceManager.CalculatePath(fleet, 
+                            _world.ProvinceManager.SeaProvinces.Where(p=>p!=fleet.Location).RandomItem())));
             }
             return commands;
         }

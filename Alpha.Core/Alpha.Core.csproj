@@ -47,6 +47,7 @@
     <Compile Include="Commands\DestroyFleetCommand.cs" />
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Fleets\Fleet.cs" />
     <Compile Include="Fleets\FleetManager.cs" />
     <Compile Include="Fleets\Ship.cs" />

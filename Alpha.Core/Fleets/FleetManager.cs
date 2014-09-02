@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
-using Alpha.Core.Notifications;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Fleets
 {
-    public class FleetManager : IManager
+    public class FleetManager : Component, IManager
     {
         private readonly List<Fleet> _fleets = new List<Fleet>();
-        public IEnumerable<Fleet> Fleets { get { return _fleets; } } 
+        public IEnumerable<Fleet> Fleets { get { return _fleets; } }
 
-        internal FleetManager()
-        {
-
-        }
+        internal FleetManager(World world) : base(world)
+        { }
 
         void IDailyUpdatable.DayUpdate(DataLock dataLock)
         {
@@ -22,7 +19,6 @@ namespace Alpha.Core.Fleets
         public void CreateFleet(Fleet fleet)
         {
             _fleets.Add(fleet);
-            new NewFleetNotification(fleet);
         }
     }
 }
