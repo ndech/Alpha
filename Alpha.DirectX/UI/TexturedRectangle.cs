@@ -17,7 +17,10 @@ namespace Alpha.DirectX.UI
         private readonly Texture _texture;
         private readonly DeviceContext _deviceContext;
 
-        public TexturedRectangle(IContext context, Vector2I size, Texture texture)
+        public TexturedRectangle(IContext context, Texture texture) : this(context, texture, texture.Size)
+        { }
+
+        public TexturedRectangle(IContext context, Texture texture, Vector2I size)
         {
             _shader = context.Shaders.TextureShader;
             _texture = texture;

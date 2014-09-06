@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows.Input;
 using Alpha.Core.Commands;
 using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Coordinates;
@@ -42,15 +43,39 @@ namespace Alpha.DirectX.UI.Screens
             _water.Update(delta);
             _counter.Update(delta);
             _fleetMoveOrderRenderer.Update(delta);
+            UpdateCameraFromInput();
+        }
+
+        private void UpdateCameraFromInput()
+        {
+            if (Context.UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+            {
+                if (Context.UiManager.IsKeyPressed(Key.Left))
+                    Context.Camera.Rotate(1);
+                if (Context.UiManager.IsKeyPressed(Key.Right))
+                    Context.Camera.Rotate(-1);
+            }
+            else
+            {
+                if (Context.UiManager.IsKeyPressed(Key.Left))
+                    Context.Camera.Move(-1, 0);
+                if (Context.UiManager.IsKeyPressed(Key.Right))
+                    Context.Camera.Move(1, 0);
+                if (Context.UiManager.IsKeyPressed(Key.Up))
+                    Context.Camera.Move(0, 1);
+                if (Context.UiManager.IsKeyPressed(Key.Down))
+                    Context.Camera.Move(0, -1);
+            }
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
-            _fleetRenderer.Render(deviceContext, Context.Camera.ViewMatrix,
+            _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _fleetRenderer.RenderOverlay(deviceContext, viewMatrix, projectionMatrix);
         }
     }
 }

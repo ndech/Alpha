@@ -92,8 +92,8 @@ namespace Alpha.DirectX.UI.Text
                             color = defaultColor;
                         else if (token == "gold")
                         {
-                            icons.Add(new TexturedRectangle(_context, new Vector2I(height, height),
-                                _context.TextureManager.Create("gold.png", "Data/UI/Icons/")));
+                            icons.Add(new TexturedRectangle(_context,
+                                _context.TextureManager.Create("gold.png", "Data/UI/Icons/"), new Vector2I(height, height)));
                             positionX += height + 1;
                             width += height + 1;
                         }

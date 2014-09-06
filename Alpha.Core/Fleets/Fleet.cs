@@ -56,7 +56,6 @@ namespace Alpha.Core.Fleets
         void IDailyUpdatableItem.DayUpdate()
         {
             Console.WriteLine("Update fleet "+Name);
-            Thread.Sleep(10);
             if(HasMoveOrder)
                 ((IDailyUpdatableItem)MoveOrder).DayUpdate();
         }

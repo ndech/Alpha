@@ -26,11 +26,11 @@ namespace Alpha.Toolkit
 
     public static class RandomIEnumerableExtensions
     {
-        public static T RandomItem<T>(this IEnumerable<T> source) where T : class
+        public static T RandomItem<T>(this IEnumerable<T> source)
         {
             int count = source.Count();
             int randomPosition = RandomGenerator.Get(0, count);
-            return count == 0 ? null : source.ElementAt(randomPosition);
+            return count == 0 ? default(T) : source.ElementAt(randomPosition);
         }
     }
 }

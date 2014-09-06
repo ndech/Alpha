@@ -77,6 +77,8 @@ namespace Alpha.Core.Provinces
                 openList.Remove(currentNode);
                 closedList.Add(currentNode.Province);
             }
+            if (steps.Count == 0)
+                return steps;
             return steps;
         }
     }
