@@ -31,10 +31,6 @@ namespace Alpha.EntryPoint
 
         public Game()
         {
-            float a = 64/0.8f;
-            int b = (int) a;
-            int c = Convert.ToInt32(a);
-
             _ui = new DirectXUi(this, _worldContainer);
             GenerateWorldEvent = new AutoResetEvent(false);
             _dayTimer = new DayTimer();
