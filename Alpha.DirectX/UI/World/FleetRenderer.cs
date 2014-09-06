@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Alpha.Core.Fleets;
 using Alpha.Core.Provinces;
@@ -16,12 +17,14 @@ namespace Alpha.DirectX.UI.World
     {
         class FleetRenderingInfo
         {
-            public readonly Matrix Position;
+            public readonly Matrix WorldMatrix;
             public readonly Vector3 WorldPosition;
             public Int32 ShipCount;
             public readonly Text.Text Text;
-            public List<Fleet> Fleets;
+            public readonly List<Fleet> Fleets;
             public Status CurrentStatus;
+
+            public Int32 FleetCount { get { return Fleets.Count; } }
 
             public enum Status
             {
@@ -31,15 +34,18 @@ namespace Alpha.DirectX.UI.World
                 Enemy
             }
 
-            public FleetRenderingInfo(IContext context, Vector2I size, Matrix position, Vector3 worldPosition, Int32 shipCount)
+            public FleetRenderingInfo(IContext context, Fleet fleet, Vector2I size)
             {
-                Position = position;
-                WorldPosition = worldPosition;
-                ShipCount = shipCount;
-                Fleets = new List<Fleet>();
-                CurrentStatus = Enum.GetValues(typeof (Status)).OfType<Status>().ToArray().RandomItem();
-                Text = context.TextManager.Create("Courrier", 14, RandomGenerator.Get(1,2000).ToString(), new Vector2I(size.X-8, size.Y), Color.Wheat,
-                    HorizontalAlignment.Center, VerticalAlignment.Middle, new Padding(2));
+                WorldPosition = (Vector3)fleet.Location.Center;
+                WorldMatrix = Matrix.RotationY(-(float) (Math.PI/2))*Matrix.Translation(WorldPosition);
+                ShipCount = fleet.ShipCount;
+                Fleets = new List<Fleet> { fleet };
+                if(fleet.Owner.Equals(context.Realm))
+                    CurrentStatus = Status.Mine;
+                else
+                    CurrentStatus = new List<Status> {Status.Ally, Status.Enemy, Status.Neutral}.RandomItem();
+                Text = context.TextManager.Create("Courrier", 14, RandomGenerator.Get(1,2000).ToString(CultureInfo.InvariantCulture), 
+                    new Vector2I(size.X-8, size.Y), Color.Wheat, HorizontalAlignment.Center, VerticalAlignment.Middle, new Padding(2));
             }
 
             public Matrix ProjectedPosition(IContext context, Vector3 offset3D, Vector3 offset2D = new Vector3())
@@ -78,10 +84,7 @@ namespace Alpha.DirectX.UI.World
 
         private void OnNewFleet(IContext context, Fleet fleet)
         {
-            _fleetRenderingInfos[fleet.Location] = new FleetRenderingInfo(context, _baseOverlay.Size,
-                Matrix.RotationY(-(float) (Math.PI/2))*Matrix.Translation((Vector3) fleet.Location.Center),
-                (Vector3)fleet.Location.Center, 
-                fleet.ShipCount);
+            _fleetRenderingInfos[fleet.Location] = new FleetRenderingInfo(context, fleet, _baseOverlay.Size);
         }
 
         private void OnFleetUpdate(IContext context, Fleet fleet)
@@ -101,7 +104,7 @@ namespace Alpha.DirectX.UI.World
                 _model.Render(deviceContext);
                 _shader.Render(deviceContext, 
                     _model.IndexCount, 
-                    info.Position, 
+                    info.WorldMatrix, 
                     viewMatrix, 
                     projectionMatrix, 
                     _model.Texture, 
