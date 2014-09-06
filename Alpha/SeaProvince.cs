@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Alpha
 {
@@ -9,5 +10,7 @@ namespace Alpha
         {
             Name = "Sea";
         }
+
+        public override bool IsCoastalProvince { get { return Adjacencies.Any(a => a.Neighbourg is LandProvince); } }
     }
 }

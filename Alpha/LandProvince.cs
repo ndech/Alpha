@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Alpha
 {
-    class LandProvince : Province, IDailyUpdatable
+    class LandProvince : Province
     {
         private float _population = 1000;
 
@@ -24,6 +25,9 @@ namespace Alpha
         {
             _population += _population * (YearlyGrowth / 365);
         }
+
+
+        public override bool IsCoastalProvince { get { return Adjacencies.Any(a => a.Neighbourg is SeaProvince); } }
 
         public override sealed string Name { get; set; }
     }

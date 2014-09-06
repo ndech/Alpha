@@ -29,5 +29,7 @@ namespace Alpha
 
         public virtual void DayUpdate()
         { }
+
+        public abstract bool IsCoastalProvince { get; }
     }
 }

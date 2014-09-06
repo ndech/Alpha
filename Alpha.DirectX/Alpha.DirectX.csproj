@@ -11,6 +11,7 @@
     <AssemblyName>Alpha.DirectX</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>256b5d49</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,18 +32,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
-    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX">
+      <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11_2-net40\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.D3DCompiler">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.D3DCompiler.dll</HintPath>
+      <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11_2-net40\SharpDX.D3DCompiler.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11_2-net40\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SharpDX\Bin\DirectX11-net40\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\packages\SharpDX.2.6.2\Bin\DirectX11_2-net40\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -150,6 +150,7 @@
     <None Include="Data\Models\skydome.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Fonts\Arial-20px.png">
@@ -227,6 +228,13 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpDX.2.6.2\build\SharpDX.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
