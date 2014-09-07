@@ -1,4 +1,4 @@
-﻿Texture2D shaderTexture;
+Texture2D shaderTexture;
 SamplerState SampleType;
 
 cbuffer MatrixBuffer
