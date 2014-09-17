@@ -27,7 +27,7 @@ namespace Alpha.AI
             List<Command> commands = new List<Command>();
             for (int i = 0; i < 10; i++)
             {
-                dataLock.AiRead(() => Thread.Sleep(RandomGenerator.Get(10, 50)));
+                //dataLock.AiRead(() => Thread.Sleep(RandomGenerator.Get(10, 50)));
             }
             commands.AddRange(dataLock.AiRead<List<Command>>(ProcessFleets));
             Console.WriteLine("IA calculations done for " + _realm);

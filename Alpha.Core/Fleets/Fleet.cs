@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using Alpha.Core.Events;
 using Alpha.Core.Movement;
 using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
@@ -9,7 +9,7 @@ using Alpha.Core.Realms;
 
 namespace Alpha.Core.Fleets
 {
-    public class Fleet : Component, IDailyUpdatableItem, IMovable
+    public class Fleet : Component, IDailyUpdatableItem, IMovable, IEventable
     {
         internal Fleet(World world, String name, Realm owner, Province location, List<Ship> ships) : base(world)
         {
@@ -65,9 +65,6 @@ namespace Alpha.Core.Fleets
             return Name;
         }
 
-        public void Destroy()
-        {
-            throw new NotImplementedException();
-        }
+        public Realm ResponsibleRealm { get { return Owner; } }
     }
 }

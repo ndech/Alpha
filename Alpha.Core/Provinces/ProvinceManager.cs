@@ -7,7 +7,7 @@ using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
 {
-    public class ProvinceManager : Component, IManager
+    public class ProvinceManager : Manager
     {
 
         private readonly List<Province> _provinces = new List<Province>();
@@ -25,7 +25,7 @@ namespace Alpha.Core.Provinces
             
         }
 
-        void IDailyUpdatable.DayUpdate(DataLock dataLock)
+        internal override void DayUpdate(DataLock dataLock)
         {
             _provinces.ForEach(province => dataLock.Write(() => ((IDailyUpdatableItem)province).DayUpdate()));
         }
@@ -81,5 +81,8 @@ namespace Alpha.Core.Provinces
                 return steps;
             return steps;
         }
+
+        internal override void Initialize()
+        { }
     }
 }

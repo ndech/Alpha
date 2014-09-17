@@ -2,7 +2,7 @@
 
 namespace Alpha.Core.Calendars
 {
-    public class Calendar : Component, IManager, IDailyUpdatable
+    public class Calendar : Manager
     {
         public Date CurrentDate { get; private set; }
 
@@ -11,9 +11,12 @@ namespace Alpha.Core.Calendars
             CurrentDate = new Date(1,1,1900);
         }
 
-        void IDailyUpdatable.DayUpdate(DataLock dataLock)
+        internal override void DayUpdate(DataLock dataLock)
         {
             dataLock.Write(() => CurrentDate = CurrentDate.NextDay());
         }
+
+        internal override void Initialize()
+        { }
     }
 }

@@ -1,0 +1,28 @@
+﻿<events>
+	<event id="fleet_treasure_1" type="fleet" triggered-only="false">
+		<label>The captain of the {Fleet.Name} navigating in {Fleet.Location} has noticed a strange looking island.</label>
+		<conditions>
+			<condition>Fleet.ShipCount &gt; 10</condition>
+		</conditions>
+		<meanTimeToHappen>
+			<base>1y2m10d</base>
+			<modifiers>
+				<multiplier factor ="5">Fleet.ShipCount &gt; 100</multiplier>
+				<multiplier factor ="20">Fleet.Location.IsCoastalProvince</multiplier>
+			</modifiers>
+		</meanTimeToHappen>
+		<outcomes>
+			<variables>
+			</variables>
+			<outcome>
+				<iaAffinity>
+					<base>10</base>
+				</iaAffinity>
+				<label>Go seek if the island contains hidden treasures !</label>
+				<effects>
+					<effect>Realm.Treasury+=Realm.Income("2m")</effect>
+				</effects>
+			</outcome>
+		</outcomes>
+	</event>
+</events>

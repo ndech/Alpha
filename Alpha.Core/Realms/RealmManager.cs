@@ -3,12 +3,12 @@ using Alpha.Toolkit;
 
 namespace Alpha.Core.Realms
 {
-    public class RealmManager : Component, IManager
+    public class RealmManager : Manager
     {
         private readonly List<Realm> _realms = new List<Realm>();
         public IEnumerable<Realm> Realms { get { return _realms; } } 
 
-        void IDailyUpdatable.DayUpdate(DataLock dataLock)
+        internal override void DayUpdate(DataLock dataLock)
         {
             _realms.ForEach(realm=>dataLock.Write(()=>((IDailyUpdatableItem)realm).DayUpdate()));
         }
@@ -20,5 +20,8 @@ namespace Alpha.Core.Realms
         {
             _realms.Add(realm);
         }
+
+        internal override void Initialize()
+        { }
     }
 }

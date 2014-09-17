@@ -12,7 +12,7 @@ namespace Alpha.Core.Commands
 
         internal override void Execute()
         {
-            _fleet.Destroy();
+            //_fleet.Destroy();
         }
 
         public override string ToString()

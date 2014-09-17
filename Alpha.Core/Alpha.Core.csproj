@@ -48,13 +48,24 @@
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Events\DelayedEvent.cs" />
+    <Compile Include="Events\DynamicModifier.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\EventManager.cs" />
+    <Compile Include="Events\IEvent.cs" />
+    <Compile Include="Events\IEventable.cs" />
+    <Compile Include="Events\IModifier.cs" />
+    <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
+    <Compile Include="Events\Outcome.cs" />
+    <Compile Include="Events\StaticModifier.cs" />
+    <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Fleets\Fleet.cs" />
     <Compile Include="Fleets\FleetManager.cs" />
     <Compile Include="Fleets\Ship.cs" />
     <Compile Include="Fleets\ShipModel.cs" />
     <Compile Include="IDailyUpdatable.cs" />
     <Compile Include="IDailyUpdatableItem.cs" />
-    <Compile Include="IManager.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="IWorld.cs" />
     <Compile Include="Movement\IMovable.cs" />
     <Compile Include="Movement\MoveOrder.cs" />
@@ -92,9 +103,9 @@
       <Name>Alpha.WorldGeneration</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Events\" />
+    <Content Include="Data\FleetEvents.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

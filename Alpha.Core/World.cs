@@ -6,6 +6,7 @@ using System.Threading;
 using Alpha.Common;
 using Alpha.Core.Calendars;
 using Alpha.Core.Commands;
+using Alpha.Core.Events;
 using Alpha.Core.Fleets;
 using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
@@ -20,15 +21,16 @@ namespace Alpha.Core
         private readonly List<Notification> _liveNotifications;
         private readonly ConcurrentQueue<Command> _commands = new ConcurrentQueue<Command>();
         private HashSet<RealmToken> _interactiveModeRealms = new HashSet<RealmToken>();
-        private List<IManager> Managers { get; set; }
+        private List<Manager> Managers { get; set; }
         public FleetManager FleetManager { get; private set; }
         public RealmManager RealmManager { get; private set; }
+        internal EventManager EventManager { get; private set; }
         public ProvinceManager ProvinceManager { get; private set; }
         public Calendar Calendar { get; private set; }
         private event CustomEventHandler<RealmToken> NewRealm;
         private bool _tokenAcquired = false;
         private readonly DataLock _datalock;
-
+        
         public IEnumerable<Notification> GetLiveNotifications(RealmToken realm)
         {
             List<Notification> notification = _liveNotifications.Where(n=>n.ValidForRealm(realm)).ToList();
@@ -54,11 +56,13 @@ namespace Alpha.Core
             _dailyNotifications = dailyNotifications;
             _liveNotifications = liveNotifications;
             _datalock = dataLock;
+            EventManager = new EventManager(this);
             RealmManager = new RealmManager(this);
             FleetManager = new FleetManager(this);
             ProvinceManager = new ProvinceManager(this);
             Calendar = new Calendar(this);
-            Managers = new List<IManager> { Calendar, FleetManager, RealmManager, ProvinceManager };
+            Managers = new List<Manager> { Calendar, FleetManager, RealmManager, ProvinceManager };
+            Managers.ForEach(m=>m.Initialize());
         }
 
         public void RegisterCommand(RealmToken source, Command command)
