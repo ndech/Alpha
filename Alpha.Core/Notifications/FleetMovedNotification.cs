@@ -2,10 +2,10 @@
 
 namespace Alpha.Core.Notifications
 {
-    public class MoveFleetNotification : Notification
+    public class FleetMovedNotification : Notification
     {
         public Fleet Fleet { get; private set; }
-        internal MoveFleetNotification(Fleet fleet)
+        internal FleetMovedNotification(Fleet fleet)
         {
             Fleet = fleet;
         }

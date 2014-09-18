@@ -12,10 +12,10 @@ namespace Alpha.DirectX.UI
         {
             foreach (Notification notification in notifications)
             {
-                if(notification is MoveFleetNotification)
-                    NewFleetMoveOrder.Raise(((MoveFleetNotification)notification).Fleet);
-                if(notification is MoveFleetNotification)
-                    FleetMoved.Raise(((MoveFleetNotification)notification).Fleet);
+                if(notification is NewFleetMoveOrderNotification)
+                    NewFleetMoveOrder.Raise(((NewFleetMoveOrderNotification)notification).Fleet);
+                if(notification is FleetMovedNotification)
+                    FleetMoved.Raise(((FleetMovedNotification)notification).Fleet);
             }
         }
     }

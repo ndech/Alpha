@@ -56,10 +56,10 @@ namespace Alpha.EntryPoint
             } while (_continue && ! ready);
             if(!_continue) return;
             //Generate the world
-            Console.WriteLine("Generation begin");
+            DebugConsole.WriteLine("Generation begin");
             _world = (World)((IWorldGenerator)(new WorldGenerator(_dailyNotifications, _liveNotifications, dataLock)))
                 .Generate(s => _loadingMessage = s);
-            Console.WriteLine("Generation is done");
+            DebugConsole.WriteLine("Generation is done");
             _world.SetNewRealmHandler(NewRealm);
             //Choose one of the realms as the UI realm
             _worldContainer.PlayerRealm = _tokens.First();
@@ -75,9 +75,9 @@ namespace Alpha.EntryPoint
                 Parallel.ForEach(_ais, 
                     new ParallelOptions { MaxDegreeOfParallelism = 4 },
                     ai => _world.RegisterCommands(ai.RealmToken, ai.Process(dataLock, _dailyNotifications)));
-                Console.WriteLine("Computations done");
-                _dayTimer.WaitForNextDay(_continue);
-                Console.WriteLine("Day end");
+                DebugConsole.WriteLine("Computations done");
+                //_dayTimer.WaitForNextDay(_continue);
+                DebugConsole.WriteLine("Day end");
             }
         }
 

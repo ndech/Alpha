@@ -84,17 +84,24 @@ namespace Alpha.DirectX.UI.World
 
         private void OnNewFleet(IContext context, Fleet fleet)
         {
-            _fleetRenderingInfos[fleet.Location] = new FleetRenderingInfo(context, fleet, _baseOverlay.Size);
+            if(_fleetRenderingInfos.ContainsKey(fleet.Location))
+                _fleetRenderingInfos[fleet.Location].Fleets.Add(fleet);
+            else
+                _fleetRenderingInfos[fleet.Location] = new FleetRenderingInfo(context, fleet, _baseOverlay.Size);
         }
 
         private void OnFleetUpdate(IContext context, Fleet fleet)
         {
-            //_matrices[fleet.Id] = Matrix.RotationY(-(float)(Math.PI / 2)) * Matrix.Translation((Vector3)fleet.Location.Center);
+            OnFleetDelete(fleet);
+            OnNewFleet(context, fleet);
         }
 
         private void OnFleetDelete(Fleet fleet)
         {
-            //_matrices.Remove(fleet.Id);
+            var info = _fleetRenderingInfos.Single(kvp => kvp.Value.Fleets.Contains(fleet));
+            if (info.Value.FleetCount == 1)
+                _fleetRenderingInfos.Remove(info.Key);
+            else info.Value.Fleets.Remove(fleet);
         }
         
         public void Render3D(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix, Light light, ICamera camera)

@@ -70,7 +70,8 @@
     <Compile Include="Movement\IMovable.cs" />
     <Compile Include="Movement\MoveOrder.cs" />
     <Compile Include="Movement\Step.cs" />
-    <Compile Include="Notifications\MoveFleetNotification.cs" />
+    <Compile Include="Notifications\FleetMovedNotification.cs" />
+    <Compile Include="Notifications\NewFleetMoveOrderNotification.cs" />
     <Compile Include="Notifications\NewFleetNotification.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="RealmToken.cs" />

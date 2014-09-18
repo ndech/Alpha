@@ -70,12 +70,12 @@ namespace Alpha.Core
             command.Source = source;
             if (_interactiveModeRealms.Contains(source))
             {
-                Console.WriteLine("Interactive command : " + command);
+                DebugConsole.WriteLine("Interactive command : " + command);
                 new Thread(()=>_datalock.ImmediateWrite(() =>ExecuteCommand(command))).Start();
-                Console.WriteLine("Interactive command done : " + command);
+                DebugConsole.WriteLine("Interactive command done : " + command);
                 return;
             }
-            Console.WriteLine("Defered command : "+command);
+            DebugConsole.WriteLine("Defered command : "+command);
             _commands.Enqueue(command);
         }
 

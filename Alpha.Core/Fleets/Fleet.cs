@@ -6,6 +6,7 @@ using Alpha.Core.Movement;
 using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
+using Alpha.Toolkit;
 
 namespace Alpha.Core.Fleets
 {
@@ -24,13 +25,30 @@ namespace Alpha.Core.Fleets
         public IEnumerable<Ship> Ships { get { return _ships; } }
         public int ShipCount { get { return _ships.Count; } }
         public Realm Owner { get; internal set; }
-        public Province Location { get; private set; }
+        private Province _location;
+        public Province Location
+        {
+            get
+            {
+                return _location;
+            }
+            internal set
+            {
+                World.Notify(new FleetMovedNotification(this));
+                _location = value;
+            }
+        }
         public Func<Province, bool> CanCross { get { return province => province is SeaProvince; } }
         public float Speed { get { return _ships.Min(s => s.Speed); } }
         void IMovable.SetLocation(Province location)
         {
             Location = location;
-            World.Notify(new MoveFleetNotification(this));
+            World.Notify(new FleetMovedNotification(this));
+        }
+
+        public void EndMovement()
+        {
+            MoveOrder = null;
         }
 
         private IMoveOrder _moveOrder;
@@ -43,7 +61,7 @@ namespace Alpha.Core.Fleets
             }
             internal set
             {
-                World.Notify(new MoveFleetNotification(this));
+                World.Notify(new NewFleetMoveOrderNotification(this));
                 _moveOrder = value;
             }
         }
@@ -55,7 +73,7 @@ namespace Alpha.Core.Fleets
         public int Id { get; private set; }
         void IDailyUpdatableItem.DayUpdate()
         {
-            Console.WriteLine("Update fleet "+Name);
+            DebugConsole.WriteLine("Update fleet "+Name);
             if(HasMoveOrder)
                 ((IDailyUpdatableItem)MoveOrder).DayUpdate();
         }

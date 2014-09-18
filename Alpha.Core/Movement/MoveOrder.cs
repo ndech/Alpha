@@ -30,6 +30,8 @@ namespace Alpha.Core.Movement
             if (ProgressToNextStep >= 1.0f)
             {
                 Movable.SetLocation(_steps[CurrentStepIndex].Destination);
+                if (CurrentStepIndex == _steps.Count - 1)
+                    Movable.EndMovement();
                 CurrentStepIndex += 1;
                 ProgressToNextStep %= 1;
             }

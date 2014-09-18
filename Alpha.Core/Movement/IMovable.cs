@@ -10,5 +10,6 @@ namespace Alpha.Core.Movement
         Func<Province, bool> CanCross { get; }
         float Speed { get; }
         void SetLocation(Province location);
+        void EndMovement();
     }
 }

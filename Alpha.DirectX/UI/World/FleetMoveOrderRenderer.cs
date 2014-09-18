@@ -48,6 +48,11 @@ namespace Alpha.DirectX.UI.World
 
         private void NewMoveOrder(IContext context, Fleet fleet)
         {
+            if (fleet.MoveOrder == null)
+            {
+                _items.Remove(fleet);
+                return;
+            }
             List<Step> steps = fleet.MoveOrder.Steps.ToList();
             List<VertexDefinition.Path> vertices = new List<VertexDefinition.Path>();
             int index = 0;
