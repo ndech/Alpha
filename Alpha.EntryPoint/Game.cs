@@ -76,7 +76,7 @@ namespace Alpha.EntryPoint
                     new ParallelOptions { MaxDegreeOfParallelism = 4 },
                     ai => _world.RegisterCommands(ai.RealmToken, ai.Process(dataLock, _dailyNotifications)));
                 DebugConsole.WriteLine("Computations done");
-                //_dayTimer.WaitForNextDay(_continue);
+                _dayTimer.WaitForNextDay(_continue);
                 DebugConsole.WriteLine("Day end");
             }
         }
