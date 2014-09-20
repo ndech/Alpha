@@ -48,6 +48,7 @@
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Events\BaseEvent.cs" />
     <Compile Include="Events\DelayedEvent.cs" />
     <Compile Include="Events\DynamicModifier.cs" />
     <Compile Include="Events\Event.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
     <Compile Include="Events\Outcome.cs" />
     <Compile Include="Events\StaticModifier.cs" />
+    <Compile Include="Events\TriggeredEvent.cs" />
     <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Fleets\Fleet.cs" />
     <Compile Include="Fleets\FleetManager.cs" />
@@ -106,7 +108,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Data\FleetEvents.xml" />
+    <Content Include="Data\Events\FleetEvents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

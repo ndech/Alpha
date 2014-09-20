@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Events
@@ -198,8 +202,29 @@ namespace Alpha.Core.Events
 
         public List<IEvent<T>> LoadEvents<T>() where T : IEventable
         {
-            return new List<IEvent<T>>();
+            String identifier = typeof (T).Name.ToLower();
+            List<IEvent<T>> events = new List<IEvent<T>>();
+            foreach (String fileName in Directory.GetFiles("Data/Events/"))
+            {
+                XDocument document = XDocument.Load(fileName);
+                foreach (XElement xmlEvent in document.Descendants("event").Where(e=>e.Attribute("type").Value.Equals(identifier)))
+                {
+                    IEvent<T> newEvent;
+                    String eventId = (String)xmlEvent.Attribute("id").Mandatory("An event without id is defined in file " + fileName);
+                    bool isTriggeredOnly = xmlEvent.Attribute("triggered-only") != null &&
+                                      xmlEvent.Attribute("triggered-only").Value.Equals("true");
+                    if (isTriggeredOnly)
+                    {
+                        newEvent = new TriggeredEvent<T>(eventId);
+                    }
+                    else
+                    {
+                        newEvent = new Event<T>(eventId);   
+                    }
+                    events.Add(newEvent);
+                }
+            }
+            return events;
         }
     }
-
 }
