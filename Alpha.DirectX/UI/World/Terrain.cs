@@ -1,7 +1,5 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.Shaders;
@@ -20,17 +18,26 @@ namespace Alpha.DirectX.UI.World
         private int _indexCount;
         private readonly ShaderResourceView _borderTexture;
         private ShaderResourceView _provinceColorTexture;
+        private ShaderResourceView _realmColorTexture;
         private readonly TerrainShader _shader;
+        public RenderingMode CurrentRenderingMode { get; set; }
+
+        public enum RenderingMode
+        {
+            Province,
+            Realm
+        }
 
         public Terrain(IContext context, IEnumerable<LandProvince> provinces)
         {
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
             _shader = context.Shaders.TerrainShader;
             BuildBuffers(context, provinces);
-            GenerateTexture(context, provinces);
+            GenerateProvinceTexture(context, provinces);
+            GenerateRealmTexture(context, provinces);
         }
 
-        private void GenerateTexture(IContext context, IEnumerable<LandProvince> provinces)
+        private void GenerateProvinceTexture(IContext context, IEnumerable<LandProvince> provinces)
         {
             int maxId = provinces.Max(p => p.NumericId);
             Texture1D provinceTexture = new Texture1D(context.DirectX.Device, new Texture1DDescription
@@ -49,7 +56,7 @@ namespace Alpha.DirectX.UI.World
                 Array.Copy(BitConverter.GetBytes(province.Color.Item2), 0, byteArray, province.NumericId * 16 + 4, 4);
                 Array.Copy(BitConverter.GetBytes(province.Color.Item3), 0, byteArray, province.NumericId * 16 + 8, 4);
                 Array.Copy(BitConverter.GetBytes(1.0f), 0, byteArray, province.NumericId * 16 + 12, 4);
-            };
+            }
             DataStream dataStream = new DataStream(rowPitch,true, true);
             dataStream.Write(byteArray,0,rowPitch);
             DataBox data = new DataBox(dataStream.DataPointer, rowPitch, rowPitch);
@@ -58,12 +65,41 @@ namespace Alpha.DirectX.UI.World
             _provinceColorTexture = new ShaderResourceView(context.DirectX.Device, provinceTexture);
         }
 
+        private void GenerateRealmTexture(IContext context, IEnumerable<LandProvince> provinces)
+        {
+            int maxId = provinces.Max(p => p.NumericId);
+            Texture1D provinceTexture = new Texture1D(context.DirectX.Device, new Texture1DDescription
+            {
+                Width = maxId + 1,
+                Format = Format.R32G32B32A32_Float,
+                BindFlags = BindFlags.ShaderResource,
+                ArraySize = 1,
+                MipLevels = 1
+            });
+            int rowPitch = 16 * provinceTexture.Description.Width;
+            var byteArray = new byte[rowPitch];
+            foreach (LandProvince province in provinces)
+            {
+                Array.Copy(BitConverter.GetBytes(province.Owner.Color.Item1), 0, byteArray, province.NumericId * 16, 4);
+                Array.Copy(BitConverter.GetBytes(province.Owner.Color.Item2), 0, byteArray, province.NumericId * 16 + 4, 4);
+                Array.Copy(BitConverter.GetBytes(province.Owner.Color.Item3), 0, byteArray, province.NumericId * 16 + 8, 4);
+                Array.Copy(BitConverter.GetBytes(1.0f), 0, byteArray, province.NumericId * 16 + 12, 4);
+            }
+            DataStream dataStream = new DataStream(rowPitch, true, true);
+            dataStream.Write(byteArray, 0, rowPitch);
+            DataBox data = new DataBox(dataStream.DataPointer, rowPitch, rowPitch);
+            //ResourceRegion region = new ResourceRegion();
+            context.DirectX.DeviceContext.UpdateSubresource(data, provinceTexture);
+            _realmColorTexture = new ShaderResourceView(context.DirectX.Device, provinceTexture);
+        }
+
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.WaterVertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, _provinceColorTexture);
+            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture,
+                CurrentRenderingMode == RenderingMode.Realm ? _realmColorTexture : _provinceColorTexture);
         }
 
         public void Update(double delta)

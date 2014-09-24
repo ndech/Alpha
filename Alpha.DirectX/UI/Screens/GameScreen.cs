@@ -38,6 +38,14 @@ namespace Alpha.DirectX.UI.Screens
             Register(button = new Button(context, "boost_treasury", new UniRectangle(new UniScalar(0.5f, -50), 50, 100, 50),
                 "Click"));
             button.Clicked += b => context.RegisterCommand(new ChangeTreasuryCommand(context.Realm, 10));
+
+            Register(button = new Button(context, "render_province_mode", new UniRectangle(new UniScalar(0.5f, 70), 50, 150, 50),
+                "Province"));
+            button.Clicked += b => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Province;
+
+            Register(button = new Button(context, "render_realm_mode", new UniRectangle(new UniScalar(0.5f, 240), 50, 150, 50),
+                "Realm"));
+            button.Clicked += b => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
         }
 
         protected override void Update(double delta)

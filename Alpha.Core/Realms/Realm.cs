@@ -13,8 +13,12 @@ namespace Alpha.Core.Realms
             Economy = new RealmEconomy();
             Name = name;
             Id = IdSequence;
+            Color = new Tuple<float, float, float>(
+                (float)RandomGenerator.GetDouble(0, 1),
+                (float)RandomGenerator.GetDouble(0, 1),
+                (float)RandomGenerator.GetDouble(0, 1));
         }
-
+        
         public RealmEconomy Economy { get; private set; }
         public Realm Liege { get; internal set; }
         private readonly List<Realm> _vassals = new List<Realm>();
@@ -84,6 +88,7 @@ namespace Alpha.Core.Realms
         private static int _idSequence;
         protected static int IdSequence { get { return ++_idSequence; } }
         public int Id { get; private set; }
+        public Tuple<float, float, float> Color { get; internal set; }
         public override string ToString()
         {
             return Name;

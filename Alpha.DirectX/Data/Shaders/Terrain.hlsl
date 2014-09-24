@@ -40,6 +40,7 @@ PixelInputType TerrainVertexShader(VertexInputType input)
 }
 
 SamplerState SampleBorder : register (s0);
+SamplerState SampleColor : register (s1);
 
 Texture2D borderTexture   : register(t0);
 Texture2D provinceColorTexture   : register(t1);
@@ -47,5 +48,5 @@ Texture2D provinceColorTexture   : register(t1);
 float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 {
 	float4 border = borderTexture.Sample(SampleBorder, input.borderTex);
-	return lerp(provinceColorTexture.Sample(SampleBorder, input.provinceInfo), float4(0.0f, 0.0f, 0.0f, 1), border.w * 2);
+	return lerp(provinceColorTexture.Sample(SampleColor, input.provinceInfo), float4(0.0f, 0.0f, 0.0f, 1), border.w * 2);
 }

@@ -13,6 +13,7 @@ namespace Alpha.DirectX.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         SamplerState SamplerStateBorder { get; set; }
+        SamplerState SamplerStateColor { get; set; }
 
         public TerrainShader(Device device)
         {
@@ -45,6 +46,23 @@ namespace Alpha.DirectX.Shaders
 
             // Create the texture sampler state.
             SamplerStateBorder = new SamplerState(device, samplerDescBorder);
+
+            var samplerDescColor = new SamplerStateDescription
+            {
+                Filter = Filter.MinMagMipPoint,
+                AddressU = TextureAddressMode.Clamp,
+                AddressV = TextureAddressMode.Clamp,
+                AddressW = TextureAddressMode.Clamp,
+                MipLodBias = 0,
+                MaximumAnisotropy = 1,
+                ComparisonFunction = Comparison.Always,
+                BorderColor = Color.Transparent,
+                MinimumLod = 0,
+                MaximumLod = float.MaxValue
+            };
+
+            // Create the texture sampler state.
+            SamplerStateColor = new SamplerState(device, samplerDescColor);
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView borderTexture, ShaderResourceView provinceColorTexture)
@@ -57,6 +75,7 @@ namespace Alpha.DirectX.Shaders
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetSampler(0, SamplerStateBorder);
+            deviceContext.PixelShader.SetSampler(1, SamplerStateColor);
             deviceContext.PixelShader.SetShaderResource(0, borderTexture);
             deviceContext.PixelShader.SetShaderResource(1, provinceColorTexture);
 
