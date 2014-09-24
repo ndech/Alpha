@@ -376,5 +376,51 @@ namespace Alpha.DirectX.Shaders
                 return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
             }
         }
+        public struct TerrainVertex
+        {
+            private static readonly int AppendAlignedElement1 = 12;
+            private static readonly int AppendAlignedElement2 = 20;
+            public Vector3 position;
+            public Vector2 borderTexture;
+            public Vector2 provinceIds;
+
+            public static InputLayout GetInputLayout(Device device, CompilationResult vertexShaderByteCode)
+            {
+                var inputElements = new[]
+                {
+                    new InputElement
+                    {
+                        SemanticName = "POSITION",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32B32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = 0,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 0,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = AppendAlignedElement1,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    },
+                    new InputElement
+                    {
+                        SemanticName = "TEXCOORD",
+                        SemanticIndex = 1,
+                        Format = Format.R32G32_Float,
+                        Slot = 0,
+                        AlignedByteOffset = AppendAlignedElement2,
+                        Classification = InputClassification.PerVertexData,
+                        InstanceDataStepRate = 0
+                    }
+                };
+                return new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), inputElements);
+            }
+        }
     }
 }

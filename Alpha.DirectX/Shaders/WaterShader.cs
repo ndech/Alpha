@@ -46,8 +46,8 @@ namespace Alpha.DirectX.Shaders
 
         public WaterShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "WaterVertexShader", "vs_4_0", ShaderFlags.Debug);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "WaterPixelShader", "ps_4_0", ShaderFlags.Debug);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "WaterVertexShader", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "WaterPixelShader", "ps_4_0", ShaderFlags);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

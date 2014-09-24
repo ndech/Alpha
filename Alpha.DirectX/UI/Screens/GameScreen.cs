@@ -14,6 +14,7 @@ namespace Alpha.DirectX.UI.Screens
     {
         private readonly Sun _sun;
         private readonly Water _water;
+        private readonly Terrain _terrain;
         private readonly Sky _sky;
         private readonly FleetRenderer _fleetRenderer;
         private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
@@ -22,6 +23,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             _sun = new Sun();
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
+            _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces);
             _sky = new Sky(context);
             _fleetRenderer = new FleetRenderer(context);
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);
@@ -41,6 +43,7 @@ namespace Alpha.DirectX.UI.Screens
         protected override void Update(double delta)
         {
             _water.Update(delta);
+            _terrain.Update(delta);
             _counter.Update(delta);
             _fleetMoveOrderRenderer.Update(delta);
             UpdateCameraFromInput();
@@ -72,6 +75,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
+            _terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);

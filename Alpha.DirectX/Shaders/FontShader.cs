@@ -19,8 +19,8 @@ namespace Alpha.DirectX.Shaders
 
         public FontShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "FontVertexShader", "vs_4_0");
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "FontPixelShader", "ps_4_0");
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "FontVertexShader", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "FontPixelShader", "ps_4_0", ShaderFlags);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

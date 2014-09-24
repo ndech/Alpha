@@ -17,8 +17,8 @@ namespace Alpha.DirectX.Shaders
 
         public ColorShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "ColorVertexShader", "vs_4_0");
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "ColorPixelShader", "ps_4_0");
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "ColorVertexShader", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "ColorPixelShader", "ps_4_0", ShaderFlags);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

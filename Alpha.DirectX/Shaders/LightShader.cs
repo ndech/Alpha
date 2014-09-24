@@ -38,8 +38,8 @@ namespace Alpha.DirectX.Shaders
 
         public LightShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "LightVertexShader", "vs_4_0");
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "LightPixelShader", "ps_4_0");
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "LightVertexShader", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "LightPixelShader", "ps_4_0", ShaderFlags);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

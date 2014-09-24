@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
+using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.Shaders
@@ -27,6 +28,20 @@ namespace Alpha.DirectX.Shaders
                     OptionFlags = ResourceOptionFlags.None,
                     StructureByteStride = 0
                 };
+            }
+        }
+
+        public ShaderFlags ShaderFlags
+        {
+            get
+            {
+#if GPU_DEBUG
+                return ShaderFlags.Debug;
+#elif DEBUG
+                return ShaderFlags.None;
+#else
+                return ShaderFlags.OptimizationLevel3;
+#endif
             }
         }
 

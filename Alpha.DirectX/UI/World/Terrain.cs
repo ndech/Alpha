@@ -1,99 +1,127 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using Alpha.Core.Provinces;
-//using Alpha.DirectX.Shaders;
-//using SharpDX;
-//using SharpDX.Direct3D;
-//using SharpDX.Direct3D11;
-//using SharpDX.DXGI;
-//using Buffer = SharpDX.Direct3D11.Buffer;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Alpha.Core.Provinces;
+using Alpha.DirectX.Shaders;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
+using Buffer = SharpDX.Direct3D11.Buffer;
 
-//namespace Alpha.DirectX.UI.World
-//{
-//    class Terrain
-//    {
-//        private Buffer _vertexBuffer;
-//        private Buffer _indexBuffer;
-//        private int _indexCount;
-//        private TerrainShader _shader;
+namespace Alpha.DirectX.UI.World
+{
+    class Terrain
+    {
+        private Buffer _vertexBuffer;
+        private Buffer _indexBuffer;
+        private int _indexCount;
+        private readonly ShaderResourceView _borderTexture;
+        private ShaderResourceView _provinceColorTexture;
+        private readonly TerrainShader _shader;
 
-//        private readonly ShaderResourceView[] _terrainTextures;
-//        private const int TextureRepeat = 5;
+        public Terrain(IContext context, IEnumerable<LandProvince> provinces)
+        {
+            _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
+            _shader = context.Shaders.TerrainShader;
+            BuildBuffers(context, provinces);
+            GenerateTexture(context, provinces);
+        }
 
-//        public Terrain(IContext context, IList<LandProvince> provinces)
-//        {
-//            _terrainTextures = new[]
-//            {
-//                context.TextureManager.Create("Sand.png").TextureResource,
-//                context.TextureManager.Create("Grass.png").TextureResource,
-//                context.TextureManager.Create("Ground.png").TextureResource,
-//                context.TextureManager.Create("Rock.png").TextureResource
-//            };
-//            BuildBuffers(context, provinces);
-//        }
-        
-//        private float TerrainHeight(Vector3 point, IList<LandProvince> provinces)
-//        {
-//            return 0.0f;
-//        }
+        private void GenerateTexture(IContext context, IEnumerable<LandProvince> provinces)
+        {
+            int maxId = provinces.Max(p => p.NumericId);
+            Texture1D provinceTexture = new Texture1D(context.DirectX.Device, new Texture1DDescription
+            {
+                Width = maxId + 1,
+                Format = Format.R32G32B32A32_Float,
+                BindFlags = BindFlags.ShaderResource,
+                ArraySize = 1,
+                MipLevels = 1
+            });
+            int rowPitch = 16 * provinceTexture.Description.Width;
+            var byteArray = new byte[rowPitch];
+            foreach (LandProvince province in provinces)
+            {
+                Array.Copy(BitConverter.GetBytes(province.Color.Item1), 0, byteArray, province.NumericId * 16, 4);
+                Array.Copy(BitConverter.GetBytes(province.Color.Item2), 0, byteArray, province.NumericId * 16 + 4, 4);
+                Array.Copy(BitConverter.GetBytes(province.Color.Item3), 0, byteArray, province.NumericId * 16 + 8, 4);
+                Array.Copy(BitConverter.GetBytes(1.0f), 0, byteArray, province.NumericId * 16 + 12, 4);
+            };
+            DataStream dataStream = new DataStream(rowPitch,true, true);
+            dataStream.Write(byteArray,0,rowPitch);
+            DataBox data = new DataBox(dataStream.DataPointer, rowPitch, rowPitch);
+            //ResourceRegion region = new ResourceRegion();
+            context.DirectX.DeviceContext.UpdateSubresource(data, provinceTexture);
+            _provinceColorTexture = new ShaderResourceView(context.DirectX.Device, provinceTexture);
+        }
 
-//        private void BuildBuffers(IContext renderer, IList<LandProvince> provinces)
-//        {
-//            List<Vector3> points = (provinces.SelectMany(p=>p.Zones).SelectMany(s => s.Points.Union(new[]{s.Center}))).Distinct().ToList();
-//            VertexDefinition.PositionTextureNormal4Weights[] terrainVertices = new VertexDefinition.PositionTextureNormal4Weights[points.Count];
-//            for (int i = 0; i < points.Count; i++)
-//            {
-//                float height = TerrainHeight(points[i], provinces);
-//                // Normal calculation (normal of each shared triangle averaged (todo : weighting by the surface of the triangle)
-//                Vector3 normal = new Vector3(1,0,0);
+        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.WaterVertex>(), 0));
+            deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
+            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, _provinceColorTexture);
+        }
 
-//                terrainVertices[i] = new VertexDefinition.PositionTextureNormal4Weights
-//                {
-//                    position = new Vector3(points[i].X, height, points[i].Z),
-//                    texture = new Vector2((points[i].X / TextureRepeat), (points[i].Z / TextureRepeat)),
-//                    normal = normal,
-//                    weights = GetWeights(height)
-//                };
-//            }
-//            _indexCount = provinces.SelectMany(p=>p.Zones).Sum(s => s.Points.Count) * 3;
-//            UInt32[] terrainIndices = new UInt32[_indexCount];
-//            int index = 0;
-//            foreach (Zone zone in provinces.SelectMany(p=>p.Zones))
-//            {
-//                for (int i = 0; i < zone.Points.Count; i++)
-//                {
-//                    terrainIndices[index] = (uint)points.FindIndex(p => p.Equals(zone.Center));
-//                    terrainIndices[index+2] = (uint)points.FindIndex(p => p.Equals(zone.Points[i]));
-//                    terrainIndices[index+1] = (uint)points.FindIndex(p => p.Equals(zone.Points[(i + 1) % zone.Points.Count]));
-//                    index += 3;
-//                }
-//            }
-//            _vertexBuffer = Buffer.Create(renderer.Device, BindFlags.VertexBuffer, terrainVertices);
-//            _indexBuffer = Buffer.Create(renderer.Device, BindFlags.IndexBuffer, terrainIndices);
-//        }
+        public void Update(double delta)
+        { }
 
-//        private Vector4 GetWeights(float altitude)
-//        {
-//            Vector4 weights = new Vector4(1)
-//            {
-//                X = MathUtil.Clamp((-altitude + 40)/20, 0, 1),
-//                Y = MathUtil.Clamp(Math.Abs(altitude - 75)/40, 0, 1),
-//                Z = MathUtil.Clamp(Math.Abs(altitude - 175)/80, 0, 1),
-//                W = MathUtil.Clamp((altitude - 350)/50, 0, 1)
-//            };
-//            weights.Normalize();
-//            return weights;
-//        }
-        
-//        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, Light light)
-//        {
-//            //Render terrain
-//            deviceContext.InputAssembler.SetVertexBuffers(0, 
-//                new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.PositionTextureNormal4Weights>(), 0));
-//            deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
-//            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-//            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, light, _terrainTextures);
-//        }
-//    }
-//}
+        private void BuildBuffers(IContext context, IEnumerable<LandProvince> provinces)
+        {
+            _indexCount = provinces.SelectMany(p => p.Zones).Sum(z => z.Points.Count) * 3;
+            UInt32[] terrainIndices = new UInt32[_indexCount];
+            VertexDefinition.TerrainVertex[] terrainVertices = new VertexDefinition.TerrainVertex[_indexCount];
+            int index = 0;
+            int maxId = provinces.Max(p => p.NumericId);
+            foreach (LandProvince province in provinces)
+            {
+                foreach (Zone zone in province.Zones)
+                {
+                    for (int i = 0; i < zone.Points.Count; i++)
+                    {
+                        Vector3 pointA = (Vector3)zone.Points[i];
+                        Vector3 pointB = (Vector3)zone.Points[(i + 1) % zone.Points.Count];
+                        Vector3 center = (Vector3)zone.Center;
+
+                        float x = Vector3.Dot(center - pointA, pointB - pointA);
+                        x /= Vector3.DistanceSquared(pointA, pointB);
+                        Vector3 intersection = new Vector3(pointA.X + (x * (pointB.X - pointA.X)), 0.0f, pointA.Z + (x * (pointB.Z - pointA.Z)));
+                        int oppositeId = province.Adjacencies.Single(
+                            a =>
+                                a.CommonPoints.Contains(zone.Points[i]) &&
+                                a.CommonPoints.Contains(zone.Points[(i + 1)%zone.Points.Count])).Province.NumericId;
+                        Vector2 provinceId = new Vector2((float)province.NumericId/maxId, (float)oppositeId/maxId);
+                        terrainVertices[index] = new VertexDefinition.TerrainVertex
+                        {
+                            position = center,
+                            borderTexture = new Vector2(Vector3.Distance(intersection, center) / 8, x),
+                            provinceIds = provinceId
+                        };
+                        terrainVertices[index + 1] = new VertexDefinition.TerrainVertex
+                        {
+                            position = pointB,
+                            borderTexture = new Vector2(0.0f, 0.0f),
+                            provinceIds = provinceId
+                        };
+                        terrainVertices[index + 2] = new VertexDefinition.TerrainVertex
+                        {
+                            position = pointA,
+                            borderTexture = new Vector2(0.0f, 1.0f),
+                            provinceIds = provinceId
+                        };
+
+                        terrainIndices[index] = (uint)index;
+                        terrainIndices[index + 1] = (uint)index + 1;
+                        terrainIndices[index + 2] = (uint)index + 2;
+                        index += 3;
+                    }
+                }
+            }
+            _vertexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.VertexBuffer, terrainVertices);
+            _indexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.IndexBuffer, terrainIndices);
+        }
+    }
+}

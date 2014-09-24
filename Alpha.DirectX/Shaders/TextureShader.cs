@@ -18,8 +18,8 @@ namespace Alpha.DirectX.Shaders
 
         public TextureShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TextureVertexShader", "vs_4_0");
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TexturePixelShader", "ps_4_0");
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TextureVertexShader", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TexturePixelShader", "ps_4_0", ShaderFlags);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

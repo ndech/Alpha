@@ -54,19 +54,13 @@ namespace Alpha.Core
                         Where(p => neighbourgProvince.Zones.SelectMany(z => z.Points).Contains(p)).ToList();
                     if (commonPoints.Count != 2)
                         continue;
-                    province.CreateAdjacency(new ProvinceAdjacency
-                    {
-                        Neighbourg = neighbourgProvince,
-                        PassingPoints = new List<Vector3D>
-                        { 
-                            commonPoints.Aggregate(new Vector3D(), (total, vector) => total + vector)/commonPoints.Count
-                        }
-                    });
+                    province.CreateAdjacency(new ProvinceAdjacency(province, neighbourgProvince, commonPoints));
                 }
             }
-            feedback("Dividing in realms");
+            feedback("Forging realms");
             for (int i = 0; i < 10; i++)
-                world.RealmManager.CreateRealm(new Realm("Realm "+i));
+                world.RealmManager.CreateRealm(new Realm("Realm " + i));
+            feedback("Spreading realms");
             List<Tuple<Vector3D, Realm>> realmPosition = 
                 world.ProvinceManager.LandProvinces.OrderBy(r => RandomGenerator.GetDouble(0, 1000))
                 .Take(world.RealmManager.Realms.Count())

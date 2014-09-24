@@ -31,9 +31,9 @@ namespace Alpha.DirectX.Shaders
 
         public PathShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "VS", "vs_4_0");
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "PS", "ps_4_0");
-            var geometryShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "GS", "gs_4_0");
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "VS", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "PS", "ps_4_0", ShaderFlags);
+            var geometryShaderByteCode = ShaderBytecode.CompileFromFile(FileName, "GS", "gs_4_0", ShaderFlags);
             
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

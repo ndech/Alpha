@@ -30,6 +30,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Native debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Native debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;GPU_DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="SharpDX">
@@ -74,6 +84,7 @@
     <Compile Include="Shaders\PathShader.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderManager.cs" />
+    <Compile Include="Shaders\TerrainShader.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
     <Compile Include="Shaders\WaterShader.cs" />
@@ -163,6 +174,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\MousePointers\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Shaders\Terrain.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Shaders\Color.hlsl">

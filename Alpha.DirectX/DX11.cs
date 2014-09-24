@@ -75,9 +75,13 @@ namespace Alpha.DirectX
 
         public void CreateDeviceAndSwapChain(RenderForm form)
         {
-            FeatureLevel[] featureLevels = { FeatureLevel.Level_11_0, FeatureLevel.Level_10_0 };
+            FeatureLevel[] featureLevels = { FeatureLevel.Level_11_0, 
+                                               FeatureLevel.Level_10_0 };
+#if GPU_DEBUG
+            Device = new Device(DriverType.Hardware, DeviceCreationFlags.Debug, featureLevels);
+#else
             Device = new Device(DriverType.Hardware, DeviceCreationFlags.None, featureLevels);
-
+#endif
             if(ConfigurationManager.Config.AntiAliasing)
                 _maxQualityLevel = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);
 
