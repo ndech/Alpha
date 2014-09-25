@@ -128,7 +128,7 @@ namespace Alpha.DirectX.UI.World
                         int oppositeId = province.Adjacencies.Single(
                             a =>
                                 a.CommonPoints.Contains(zone.Points[i]) &&
-                                a.CommonPoints.Contains(zone.Points[(i + 1)%zone.Points.Count])).Province.NumericId;
+                                a.CommonPoints.Contains(zone.Points[(i + 1)%zone.Points.Count])).Neighbourg.NumericId;
                         Vector2 provinceId = new Vector2((float)province.NumericId/maxId, (float)oppositeId/maxId);
                         terrainVertices[index] = new VertexDefinition.TerrainVertex
                         {

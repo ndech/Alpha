@@ -47,6 +47,9 @@ Texture2D provinceColorTexture   : register(t1);
 
 float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 {
-	float4 border = borderTexture.Sample(SampleBorder, input.borderTex);
-	return lerp(provinceColorTexture.Sample(SampleColor, input.provinceInfo), float4(0.0f, 0.0f, 0.0f, 1), border.w * 2);
+	float4 color = provinceColorTexture.Sample(SampleColor, float2(input.provinceInfo.x, 0.5f));
+	float4 oppositeColor = provinceColorTexture.Sample(SampleColor, float2(input.provinceInfo.y, 0.5f));
+	float4 border = borderTexture.Sample(SampleBorder, float2((all(color == oppositeColor) ? 1.5f*input.borderTex.x : 0.4f*input.borderTex.x), input.borderTex.y));
+
+	return lerp(color, float4(0.0f, 0.0f, 0.0f, 1), border.w * 2);
 }

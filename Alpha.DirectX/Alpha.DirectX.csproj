@@ -176,42 +176,42 @@
     <Content Include="Data\MousePointers\default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Shaders\Terrain.hlsl">
+    <EmbeddedResource Include="Data\Shaders\Terrain.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Shaders\Color.hlsl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Color.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Shaders\Font.hlsl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Font.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Shaders\Light.hlsl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Light.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Shaders\Path.hlsl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Path.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Shaders\Texture.hlsl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Texture.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Shaders\Water.hlsl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Water.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Textures\border.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Textures\border.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Textures\Metal.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Textures\Metal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Textures\OceanWater.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Textures\OceanWater.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Textures\Path.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Textures\Path.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Textures\Sky.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Textures\Sky.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Data\UI\fleet_overlay_relation_ally.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
