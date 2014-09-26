@@ -121,6 +121,7 @@ namespace Alpha.DirectX.UI.World
                         Vector3 pointA = (Vector3)zone.Points[i];
                         Vector3 pointB = (Vector3)zone.Points[(i + 1) % zone.Points.Count];
                         Vector3 center = (Vector3)zone.Center;
+                        float length = Vector3.Distance(pointA, pointB);
 
                         float x = Vector3.Dot(center - pointA, pointB - pointA);
                         x /= Vector3.DistanceSquared(pointA, pointB);
@@ -133,7 +134,7 @@ namespace Alpha.DirectX.UI.World
                         terrainVertices[index] = new VertexDefinition.TerrainVertex
                         {
                             position = center,
-                            borderTexture = new Vector2(Vector3.Distance(intersection, center) / 8, x),
+                            borderTexture = new Vector2(Vector3.Distance(intersection, center) / 8, x*(length/100)),
                             provinceIds = provinceId
                         };
                         terrainVertices[index + 1] = new VertexDefinition.TerrainVertex
@@ -145,7 +146,7 @@ namespace Alpha.DirectX.UI.World
                         terrainVertices[index + 2] = new VertexDefinition.TerrainVertex
                         {
                             position = pointA,
-                            borderTexture = new Vector2(0.0f, 1.0f),
+                            borderTexture = new Vector2(0.0f, length/100),
                             provinceIds = provinceId
                         };
 
