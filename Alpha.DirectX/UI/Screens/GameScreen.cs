@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Alpha.Core.Commands;
 using Alpha.DirectX.UI.Controls;
+using Alpha.DirectX.UI.Controls.Custom;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
@@ -46,6 +47,9 @@ namespace Alpha.DirectX.UI.Screens
             Register(button = new Button(context, "render_realm_mode", new UniRectangle(new UniScalar(0.5f, 240), 50, 150, 50),
                 "Realm"));
             button.Clicked += b => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
+
+            Register(new Minimap(context,
+                new UniRectangle(new UniScalar(1.0f, -300), new UniScalar(1.0f, -150), 300, 150)));
         }
 
         protected override void Update(double delta)
@@ -77,6 +81,12 @@ namespace Alpha.DirectX.UI.Screens
                 if (Context.UiManager.IsKeyPressed(Key.Down))
                     Context.Camera.Move(0, -1);
             }
+        }
+
+        protected override bool OnMouseScrolled(int delta)
+        {
+            Context.Camera.Zoom(-2*delta);
+            return true;
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)

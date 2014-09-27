@@ -31,6 +31,7 @@ namespace Alpha.Core
             World world = new World(_dailyNotifications, _liveNotifications, _dataLock);
             Int32 width = 2000;
             Int32 height = 1000;
+            world.Size = new Vector2I(width, height);
             List<VoronoiSite> sites = Generator.Create(width, height, 1000, 1, 1256);
             feedback("Creating provinces");
             foreach (VoronoiSite site in sites)
@@ -67,7 +68,7 @@ namespace Alpha.Core
                 .Select(p => p.Center)
                 .Zip(world.RealmManager.Realms, (v, r) => new Tuple<Vector3D, Realm>(v, r)).ToList();
             foreach (LandProvince province in world.ProvinceManager.LandProvinces)
-                realmPosition.OrderBy(t=> Vector3D.Distance(province.Center, t.Item1)).First().Item2.AddProvince(province);
+                realmPosition.MinBy(t=> Vector3D.Distance(province.Center, t.Item1)).Item2.AddProvince(province);
             feedback("Launching the fleets");
             foreach (Realm realm in world.RealmManager.Realms)
                 world.FleetManager.CreateFleet(new Fleet(world, "Royal fleet of "+realm.Name, realm, world.ProvinceManager.SeaProvinces.RandomItem(), new List<Ship>{new Ship()}));

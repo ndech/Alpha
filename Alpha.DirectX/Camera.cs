@@ -33,12 +33,20 @@ namespace Alpha.DirectX
             Calculate();
         }
 
-        public Vector3 Position { get { return _position; } }
+        public Vector3 Position
+        {
+            get { return _position; }
+            set
+            {
+                _position = value;
+                Calculate();
+            }
+        }
 
         public Camera()
         {
             _position = new Vector3(1000, 200, 0);
-            _orientation = new Vector3(0, 0.5f, 0);
+            _orientation = new Vector3(0, 0.7f, 0);
             Calculate();
         }
 

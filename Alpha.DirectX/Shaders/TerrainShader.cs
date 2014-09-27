@@ -34,8 +34,8 @@ namespace Alpha.DirectX.Shaders
             {
                 Filter = Filter.Anisotropic,
                 AddressU = TextureAddressMode.MirrorOnce,
-                AddressV = TextureAddressMode.Border,
-                AddressW = TextureAddressMode.Border,
+                AddressV = TextureAddressMode.Clamp,
+                AddressW = TextureAddressMode.Clamp,
                 MipLodBias = 0,
                 MaximumAnisotropy = 16,
                 ComparisonFunction = Comparison.Always,

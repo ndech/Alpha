@@ -40,6 +40,15 @@ namespace Alpha.DirectX.Shaders
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.DrawIndexed(indexCount, 0, 0);
         }
+        public void RenderNotIndexed(DeviceContext deviceContext, int vertexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, worldMatrix, viewMatrix, projectionMatrix);
+            deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
+            deviceContext.InputAssembler.InputLayout = Layout;
+            deviceContext.VertexShader.Set(VertexShader);
+            deviceContext.PixelShader.Set(PixelShader);
+            deviceContext.Draw(vertexCount,0);
+        }
 
         public void Dispose()
         {

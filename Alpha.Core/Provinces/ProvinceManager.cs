@@ -4,6 +4,7 @@ using System.Linq;
 using Alpha.Core.Fleets;
 using Alpha.Core.Movement;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 
 namespace Alpha.Core.Provinces
 {
@@ -80,6 +81,24 @@ namespace Alpha.Core.Provinces
             if (steps.Count == 0)
                 return steps;
             return steps;
+        }
+
+        private Province _currentSearchProvince;
+        public Province ClosestProvince(Vector3D position)
+        {
+            if (_currentSearchProvince == null)
+                _currentSearchProvince = _provinces.First();
+            while (true)
+            {
+                Province closestNeighbourgOrSelf =
+                    _currentSearchProvince.Adjacencies.Select(a => a.Neighbourg)
+                        .Union(_currentSearchProvince)
+                        .MinBy(p => Vector3D.Distance(p.Center, position));
+                if (closestNeighbourgOrSelf == _currentSearchProvince)
+                    return _currentSearchProvince;
+                else
+                    _currentSearchProvince = closestNeighbourgOrSelf;
+            }
         }
 
         internal override void Initialize()

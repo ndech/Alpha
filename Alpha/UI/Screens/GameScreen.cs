@@ -121,7 +121,7 @@ namespace Alpha.UI.Screens
 
         protected override bool OnMouseScrolled(int delta)
         {
-            Game.Services.Get<ICamera>().Zoom(delta);
+            Game.Services.Get<ICamera>().Zoom(3*delta);
             return true;
         }
 

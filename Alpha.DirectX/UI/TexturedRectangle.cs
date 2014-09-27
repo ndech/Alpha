@@ -14,13 +14,16 @@ namespace Alpha.DirectX.UI
     {
         private readonly TextureShader _shader;
         private readonly VertexDefinition.PositionTexture[] _vertices;
-        private readonly Texture _texture;
+        private readonly ShaderResourceView _texture;
         private readonly DeviceContext _deviceContext;
 
-        public TexturedRectangle(IContext context, Texture texture) : this(context, texture, texture.Size)
+        public TexturedRectangle(IContext context, Texture texture) : this(context, texture.TextureResource, texture.Size)
+        { }
+        public TexturedRectangle(IContext context, Texture texture, Vector2I size)
+            : this(context, texture.TextureResource, size)
         { }
 
-        public TexturedRectangle(IContext context, Texture texture, Vector2I size)
+        public TexturedRectangle(IContext context, ShaderResourceView texture, Vector2I size)
         {
             _shader = context.Shaders.TextureShader;
             _texture = texture;
@@ -51,7 +54,7 @@ namespace Alpha.DirectX.UI
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, 0));
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            _shader.Render(deviceContext, IndexCount, worldMatrix, viewMatrix, projectionMatrix, _texture.TextureResource);
+            _shader.Render(deviceContext, IndexCount, worldMatrix, viewMatrix, projectionMatrix, _texture);
         }
 
         public override void Update()

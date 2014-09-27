@@ -12,6 +12,7 @@ using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 
 namespace Alpha.Core
 {
@@ -27,6 +28,8 @@ namespace Alpha.Core
         internal EventManager EventManager { get; private set; }
         public ProvinceManager ProvinceManager { get; private set; }
         public Calendar Calendar { get; private set; }
+        public Vector2I Size { get; set; }
+
         private event CustomEventHandler<RealmToken> NewRealm;
         private bool _tokenAcquired = false;
         private readonly DataLock _datalock;

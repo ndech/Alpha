@@ -62,6 +62,7 @@
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="FpsCounter.cs" />
     <Compile Include="ICounter.cs" />
+    <Compile Include="LinqExtension.cs" />
     <Compile Include="Math\Conversion.cs" />
     <Compile Include="Math\EulerIntegrator.cs" />
     <Compile Include="Math\IIntegrable.cs" />

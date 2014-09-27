@@ -20,7 +20,7 @@ namespace Alpha.DirectX
         {
             _context = context;
             Texture texture = context.TextureManager.Create("default.png", @"Data/MousePointers/");
-            _rectangle = new TexturedRectangle(context, texture, texture.Size);
+            _rectangle = new TexturedRectangle(context, texture);
         }
         
         public void Dispose()

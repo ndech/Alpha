@@ -35,6 +35,7 @@ namespace Alpha.DirectX.UI.World
             BuildBuffers(context, provinces);
             GenerateProvinceTexture(context, provinces);
             GenerateRealmTexture(context, provinces);
+            CurrentRenderingMode = RenderingMode.Realm;
         }
 
         private void GenerateProvinceTexture(IContext context, IEnumerable<LandProvince> provinces)
@@ -101,7 +102,7 @@ namespace Alpha.DirectX.UI.World
             _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture,
                 CurrentRenderingMode == RenderingMode.Realm ? _realmColorTexture : _provinceColorTexture);
         }
-
+        
         public void Update(double delta)
         { }
 
@@ -134,7 +135,7 @@ namespace Alpha.DirectX.UI.World
                         terrainVertices[index] = new VertexDefinition.TerrainVertex
                         {
                             position = center,
-                            borderTexture = new Vector2(Vector3.Distance(intersection, center) / 8, x*(length/100)),
+                            borderTexture = new Vector2(Vector3.Distance(intersection, center) / 8, x*(length/20)),
                             provinceIds = provinceId
                         };
                         terrainVertices[index + 1] = new VertexDefinition.TerrainVertex
@@ -146,7 +147,7 @@ namespace Alpha.DirectX.UI.World
                         terrainVertices[index + 2] = new VertexDefinition.TerrainVertex
                         {
                             position = pointA,
-                            borderTexture = new Vector2(0.0f, length/100),
+                            borderTexture = new Vector2(0.0f, length/20),
                             provinceIds = provinceId
                         };
 
