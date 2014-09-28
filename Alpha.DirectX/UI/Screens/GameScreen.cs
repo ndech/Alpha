@@ -49,7 +49,7 @@ namespace Alpha.DirectX.UI.Screens
             button.Clicked += b => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
 
             Register(new Minimap(context,
-                new UniRectangle(new UniScalar(1.0f, -300), new UniScalar(1.0f, -150), 300, 150)));
+                new UniRectangle(new UniScalar(1.0f, -350), new UniScalar(1.0f, -200), 300, 150)));
         }
 
         protected override void Update(double delta)

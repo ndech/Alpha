@@ -47,6 +47,8 @@ namespace Alpha.DirectX.Shaders
             deviceContext.InputAssembler.InputLayout = Layout;
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.PixelShader.Set(PixelShader);
+
+            var test = deviceContext.Rasterizer.GetScissorRectangles();
             deviceContext.Draw(vertexCount,0);
         }
 

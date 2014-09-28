@@ -16,7 +16,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 {
     class Minimap : Control
     {
-        private TexturedRectangle _rectangle;
+        private TexturedRectangle _mapTexture;
         private Buffer _overlayVertexBuffer;
         public Minimap(IContext context, UniRectangle coordinates) : base(context, "minimap", coordinates)
         {
@@ -74,7 +74,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             DataBox data = new DataBox(dataStream.DataPointer, rowPitch, byteCount);
             Context.DirectX.DeviceContext.UpdateSubresource(data, minimapTexture);
 
-            _rectangle = new TexturedRectangle(Context, new ShaderResourceView(Context.DirectX.Device, minimapTexture), Size);
+            _mapTexture = new TexturedRectangle(Context, new ShaderResourceView(Context.DirectX.Device, minimapTexture), Size);
         }
 
         public override void OnControlDragged()
@@ -144,11 +144,13 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _rectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+            _mapTexture.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
             deviceContext.InputAssembler.SetVertexBuffers(0, 
                 new VertexBufferBinding(_overlayVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionColor>(), 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStrip;
+            deviceContext.Rasterizer.SetScissorRectangle(Position.X, Position.Y, Position.X + Size.X, Position.Y + Size.Y);
             Context.Shaders.ColorShader.RenderNotIndexed(deviceContext, 5, worldMatrix, viewMatrix, projectionMatrix);
+            deviceContext.Rasterizer.SetScissorRectangle(0, 0, Context.ScreenSize.X, Context.ScreenSize.Y);
         }
     }
 }

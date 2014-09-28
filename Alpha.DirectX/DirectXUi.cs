@@ -40,6 +40,7 @@ namespace Alpha.DirectX
             _input = new Input.Input();
             _camera = new Camera();
             _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _camera, _notificationResolver);
+            _camera.Initialize(_context);
             _input.Initialize(_context);
             _uiManager.Initialize(_context);
             _uiManager.AddScreen(new WorldParametersScreen(_context));

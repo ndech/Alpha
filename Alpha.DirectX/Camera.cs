@@ -1,9 +1,11 @@
-﻿using SharpDX;
+﻿using Alpha.Toolkit.Math;
+using SharpDX;
 
 namespace Alpha.DirectX
 {
     class Camera : ICamera
     {
+        private Vector2I _worldSize;
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
         private Matrix _reflectionMatrix;
@@ -16,18 +18,17 @@ namespace Alpha.DirectX
         public Matrix UiMatrix { get { return _uiMatrix; } }
 
         public Matrix ReflectionMatrix { get { return _reflectionMatrix; } }
+
         public void Move(int x, int y)
         {
-            Vector3 move = new Vector3(5*x, 0, 5*y);
-            _targetPosition += Vector3.TransformCoordinate(move,Matrix.RotationY(_orientation.X));
-            Calculate();
+            _targetPosition += Vector3.TransformCoordinate(new Vector3(5*x, 0, 5*y), Matrix.RotationY(_orientation.X));
         }
 
         public void Zoom(int tick)
         {
             _targetPosition.Y += 10*tick;
-            Calculate();
         }
+
         public void Rotate(int tick)
         {
             _orientation.X += tick*-0.02f;
@@ -37,11 +38,7 @@ namespace Alpha.DirectX
         public Vector3 Position
         {
             get { return _targetPosition; }
-            set
-            {
-                _targetPosition = value;
-                Calculate();
-            }
+            set { _targetPosition = value; }
         }
 
         public Camera()
@@ -75,6 +72,11 @@ namespace Alpha.DirectX
 
             _reflectionMatrix = Matrix.LookAtLH(new Vector3(_currentPosition.X, -_currentPosition.Y, _currentPosition.Z),
                 new Vector3(_currentPosition.X + lookAt.X, -_currentPosition.Y /*- lookAt.Y*/, _currentPosition.Z + lookAt.Z), up);
+        }
+
+        public void Initialize(IContext context)
+        {
+            //_worldSize = context.World.Size;
         }
     }
 }

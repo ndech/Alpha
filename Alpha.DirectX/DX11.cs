@@ -241,7 +241,7 @@ namespace Alpha.DirectX
                 FillMode = FillMode.Solid,
                 IsFrontCounterClockwise = false,
                 IsMultisampleEnabled = false,
-                IsScissorEnabled = false,
+                IsScissorEnabled = true,
                 SlopeScaledDepthBias = .0f
             };
 
@@ -254,6 +254,7 @@ namespace Alpha.DirectX
 
             // Now set the rasterizer state.
             DeviceContext.Rasterizer.State = _rasterStateSolid;
+            DeviceContext.Rasterizer.SetScissorRectangle(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
 
             // Setup and create the viewport for rendering.
             DeviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);

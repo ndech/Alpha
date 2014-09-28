@@ -12,7 +12,7 @@ namespace Alpha.DirectX
         };
         private ConfigurationManager()
         {
-            SetValues(Modes.Windowed);
+            SetValues(Modes.Large);
             AntiAliasing = true;
             FarLimit = 50000.0f;
             NearLimit = 10f;
