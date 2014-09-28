@@ -40,13 +40,18 @@ namespace Alpha.DirectX.UI.Screens
                 "Click"));
             button.Clicked += b => context.RegisterCommand(new ChangeTreasuryCommand(context.Realm, 10));
 
-            Register(button = new Button(context, "render_province_mode", new UniRectangle(new UniScalar(0.5f, 70), 50, 150, 50),
-                "Province"));
-            button.Clicked += b => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Province;
+            TogglableButton togglableButton;
+            Register(togglableButton = new TogglableButton(context, "minimap_policial_mode",
+                new UniRectangle(new UniScalar(1.0f, -350), new UniScalar(1.0f, -235), 40, 31),
+                "Data/UI/MinimapIcons/political_map.dds",
+                "Data/UI/MinimapIcons/political_map_toggled.dds"));
+            togglableButton.Toggled += () =>_terrain.CurrentRenderingMode = Terrain.RenderingMode.Province;
 
-            Register(button = new Button(context, "render_realm_mode", new UniRectangle(new UniScalar(0.5f, 240), 50, 150, 50),
-                "Realm"));
-            button.Clicked += b => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
+            Register(togglableButton = new TogglableButton(context, "minimap_policial_mode",
+                new UniRectangle(new UniScalar(1.0f, -310), new UniScalar(1.0f, -235), 40, 31),
+                "Data/UI/MinimapIcons/realm_map.dds",
+                "Data/UI/MinimapIcons/realm_map_toggled.dds"));
+            togglableButton.Toggled += () => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
 
             Register(new Minimap(context,
                 new UniRectangle(new UniScalar(1.0f, -350), new UniScalar(1.0f, -200), 300, 150)));

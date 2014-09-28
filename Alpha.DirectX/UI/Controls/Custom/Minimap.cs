@@ -55,16 +55,16 @@ namespace Alpha.DirectX.UI.Controls.Custom
                     if (Context.World.ProvinceManager.ClosestProvince(new Vector3D((
                         (float)i * Context.World.Size.X) / Size.X, 0, ((float)(Size.Y-j) * Context.World.Size.Y) / Size.Y)) is LandProvince)
                     {
-                        byteArray[4 * (j * minimapTexture.Description.Width + i)] = 90;
-                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 1] = 184;
-                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 2] = 128;
+                        byteArray[4 * (j * minimapTexture.Description.Width + i)] = 106;
+                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 1] = 98;
+                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 2] = 85;
                         byteArray[4 * (j * minimapTexture.Description.Width + i) + 3] = 255;
                     }
                     else
                     {
-                        byteArray[4 * (j * minimapTexture.Description.Width + i)] = 80;
-                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 1] = 105;
-                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 2] = 199;
+                        byteArray[4 * (j * minimapTexture.Description.Width + i)] = 197;
+                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 1] = 183;
+                        byteArray[4 * (j * minimapTexture.Description.Width + i) + 2] = 164;
                         byteArray[4 * (j * minimapTexture.Description.Width + i) + 3] = 255;
                     }
                 }

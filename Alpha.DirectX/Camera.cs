@@ -1,11 +1,12 @@
-﻿using Alpha.Toolkit.Math;
+﻿using Alpha.DirectX.UI;
+using Alpha.Toolkit.Math;
 using SharpDX;
 
 namespace Alpha.DirectX
 {
     class Camera : ICamera
     {
-        private Vector2I _worldSize;
+        private IContext _context;
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
         private Matrix _reflectionMatrix;
@@ -76,7 +77,7 @@ namespace Alpha.DirectX
 
         public void Initialize(IContext context)
         {
-            //_worldSize = context.World.Size;
+            _context = context;
         }
     }
 }

@@ -92,6 +92,7 @@
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Controls\TogglableButton.cs" />
     <Compile Include="UI\NotificationResolver.cs" />
     <Compile Include="UI\Picker.cs" />
     <Compile Include="UI\PlainRectangle.cs" />
@@ -227,6 +228,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\fleet_overlay_relation_neutral.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\political_map.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\political_map_toggled.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\realm_map.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\realm_map_toggled.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Styles\Button.xml">
