@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using Alpha.Voronoi;
 
@@ -71,7 +72,7 @@ namespace Alpha.WorldGeneration
                         intersections.Add(new Vector(0, pointIn[1] - pointIn[0] * slope));
                         //Test collision with (width,0) => (width,height) edge :
                         intersections.Add(new Vector(width, pointIn[1] + (width - pointIn[0]) * slope));
-                        Vector intersection = intersections.OrderBy(p => Vector.Dist(p, pointIn)).First();
+                        Vector intersection = intersections.MinBy(p => Vector.Dist(p, pointIn));
                         Edges.RemoveAt(i);
                         Edges.Add(new VoronoiEdge {VVertexA = intersection, VVertexB = pointIn});
                         if (previousIntersection == null)

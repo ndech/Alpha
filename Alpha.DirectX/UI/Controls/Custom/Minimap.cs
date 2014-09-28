@@ -90,6 +90,16 @@ namespace Alpha.DirectX.UI.Controls.Custom
             }
         }
 
+        public override void OnMouseClicked()
+        {
+            Context.UiManager.SetMousePointer(MousePointer.CursorType.Drag);
+        }
+
+        public override void OnMouseReleased()
+        {
+            Context.UiManager.SetMousePointer(MousePointer.CursorType.Default);
+        }
+
         protected override void Update(double delta)
         {
             List<Vector2I> corners = new List<Vector2I>

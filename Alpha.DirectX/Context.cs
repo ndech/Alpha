@@ -34,7 +34,7 @@ namespace Alpha.DirectX
             World.RegisterCommand(RealmToken, command);
         }
 
-        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input, NotificationResolver notificationResolver)
+        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input, Camera camera, NotificationResolver notificationResolver)
         {
             _worldContainer = worldContainer;
             NotificationResolver = notificationResolver;
@@ -44,7 +44,7 @@ namespace Alpha.DirectX
             TextureManager = new TextureManager(DirectX.Device);
             TextManager = new TextManager(this);
             Shaders = new ShaderManager(DirectX.Device);
-            Camera = new Camera();
+            Camera = camera;
             UiManager = uiManager;
             Input = input;
         }

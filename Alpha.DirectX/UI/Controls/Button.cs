@@ -57,13 +57,13 @@ namespace Alpha.DirectX.UI.Controls
             _plainRectangle.Color = Color.SaddleBrown.ToVector4();
         }
 
-        public override void OnMouseReleased()
+        public override void OnMouseReleasedInBounds()
         {
             _plainRectangle.Color = Color.Khaki.ToVector4();
             Clicked.Raise(this);
         }
 
-        public override void OnMouseClickCanceled()
+        public override void OnMouseReleasedOutOfBounds()
         {
             OnMouseLeft();
         }

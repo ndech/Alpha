@@ -7,7 +7,8 @@ namespace Alpha.DirectX
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
         private Matrix _reflectionMatrix;
-        private Vector3 _position;
+        private Vector3 _targetPosition;
+        private Vector3 _currentPosition;
         private Vector3 _orientation;
 
         public Matrix ViewMatrix { get { return _viewMatrix; } }
@@ -18,13 +19,13 @@ namespace Alpha.DirectX
         public void Move(int x, int y)
         {
             Vector3 move = new Vector3(5*x, 0, 5*y);
-            _position += Vector3.TransformCoordinate(move,Matrix.RotationY(_orientation.X));
+            _targetPosition += Vector3.TransformCoordinate(move,Matrix.RotationY(_orientation.X));
             Calculate();
         }
 
         public void Zoom(int tick)
         {
-            _position.Y += 10*tick;
+            _targetPosition.Y += 10*tick;
             Calculate();
         }
         public void Rotate(int tick)
@@ -35,20 +36,28 @@ namespace Alpha.DirectX
 
         public Vector3 Position
         {
-            get { return _position; }
+            get { return _targetPosition; }
             set
             {
-                _position = value;
+                _targetPosition = value;
                 Calculate();
             }
         }
 
         public Camera()
         {
-            _position = new Vector3(1000, 200, 0);
+            _targetPosition = new Vector3(1000, 200, 0);
+            _currentPosition = new Vector3(1000, 200, 0);
             _orientation = new Vector3(0, 0.7f, 0);
             Calculate();
         }
+
+        public void Update(double delta)
+        {
+            _currentPosition += (_targetPosition - _currentPosition)*0.08f;
+            Calculate();
+        }
+        
 
         private void Calculate()
         {
@@ -60,12 +69,12 @@ namespace Alpha.DirectX
             Vector3 up = Vector3.TransformCoordinate(Vector3.UnitY, rotationMatrix);
             
             // Finally create the view matrix from the three updated vectors.
-            _viewMatrix = Matrix.LookAtLH(_position, _position + lookAt, up);
+            _viewMatrix = Matrix.LookAtLH(_currentPosition, _currentPosition + lookAt, up);
 
             _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), Vector3.UnitZ, Vector3.UnitY) * Matrix.Scaling(1, -1, 1);
 
-            _reflectionMatrix = Matrix.LookAtLH(new Vector3(_position.X, -_position.Y, _position.Z),
-                new Vector3(_position.X + lookAt.X, -_position.Y /*- lookAt.Y*/, _position.Z + lookAt.Z), up);
+            _reflectionMatrix = Matrix.LookAtLH(new Vector3(_currentPosition.X, -_currentPosition.Y, _currentPosition.Z),
+                new Vector3(_currentPosition.X + lookAt.X, -_currentPosition.Y /*- lookAt.Y*/, _currentPosition.Z + lookAt.Z), up);
         }
     }
 }

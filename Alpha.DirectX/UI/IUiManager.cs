@@ -16,5 +16,6 @@ namespace Alpha.DirectX.UI
         void RecalculateActiveComponents();
         bool IsAnyKeyPressed(params Key[] keys);
         void SetScreen(Screen screen);
+        void SetMousePointer(MousePointer.CursorType type);
     }
 }

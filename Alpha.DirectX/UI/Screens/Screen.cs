@@ -139,9 +139,16 @@ namespace Alpha.DirectX.UI.Screens
         {
             if(ClickedControl == null) return;
             if (ClickedControl.InBounds(position))
+            {
+                ClickedControl.OnMouseReleasedInBounds();
                 ClickedControl.OnMouseReleased();
+            }
             else
-                ClickedControl.OnMouseClickCanceled();
+            {
+                ClickedControl.OnMouseReleasedOutOfBounds();
+                ClickedControl.OnMouseReleased();
+                
+            }
             ClickedControl = null;
         }
 

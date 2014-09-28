@@ -50,7 +50,7 @@ namespace Alpha.DirectX.UI.Controls
             _text.Content = _textValue;
         }
 
-        public override void OnMouseClickCanceled()
+        public override void OnMouseReleasedOutOfBounds()
         {
             OnMouseLeft();
         }

@@ -18,6 +18,7 @@ namespace Alpha.DirectX
         private Dx11 _directX;
         private UiManager _uiManager;
         private Input.Input _input;
+        private Camera _camera;
         private Context _context;
         private readonly IGame _game;
         private readonly WorldContainer _worldContainer;
@@ -37,7 +38,8 @@ namespace Alpha.DirectX
             _directX = new Dx11(_form);
             _uiManager = new UiManager();
             _input = new Input.Input();
-            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _notificationResolver);
+            _camera = new Camera();
+            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _camera, _notificationResolver);
             _input.Initialize(_context);
             _uiManager.Initialize(_context);
             _uiManager.AddScreen(new WorldParametersScreen(_context));
@@ -47,6 +49,7 @@ namespace Alpha.DirectX
         {
             if(_worldContainer.Ready)
                 _notificationResolver.Process(_worldContainer.World.GetLiveNotifications(_worldContainer.PlayerRealm));
+            _camera.Update(delta);
             _input.Update(delta);
             _uiManager.Update(delta);
         }

@@ -23,6 +23,11 @@ namespace Alpha.DirectX.UI
             return _input.IsKeyPressed(key);
         }
 
+        public void SetMousePointer(MousePointer.CursorType type)
+        {
+            _mousePointer.Type = type;
+        }
+
         public Vector2I ScreenSize { get; private set; }
         public UiManager()
         {

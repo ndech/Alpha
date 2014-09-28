@@ -214,6 +214,9 @@
     <EmbeddedResource Include="Data\Textures\Sky.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Data\MousePointers\move.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\fleet_overlay_relation_ally.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

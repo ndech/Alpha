@@ -43,9 +43,9 @@ namespace Alpha.DirectX.UI.Controls
         public virtual void OnMouseClicked()
         { }
 
-        public virtual void OnMouseReleased()
+        public virtual void OnMouseReleasedInBounds()
         { }
-        public virtual void OnMouseClickCanceled()
+        public virtual void OnMouseReleasedOutOfBounds()
         { }
 
         public override Vector2I Position
@@ -75,6 +75,11 @@ namespace Alpha.DirectX.UI.Controls
         }
         
         public virtual void OnControlDragged()
+        {
+
+        }
+
+        public virtual void OnMouseReleased()
         {
 
         }
