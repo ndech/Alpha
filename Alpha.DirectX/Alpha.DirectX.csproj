@@ -242,6 +242,12 @@
     <Content Include="Data\UI\MinimapIcons\realm_map_toggled.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\MinimapIcons\terrain_map.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\terrain_map_toggled.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\Styles\Button.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
