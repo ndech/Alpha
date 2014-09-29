@@ -12,9 +12,9 @@ namespace Alpha.DirectX.UI.Controls
         private readonly string _toggledTexturePath;
         private TexturedRectangle _iconToggled;
         private TexturedRectangle _iconNormal;
-        public event CustomEventHandler<Button> Clicked;
-        private State _currentState;
+        public State CurrentState { get; private set; }
         public Key? Shortcut { get; set; }
+        public TogglableButtonGroup Group { get; set; }
         public CustomEventHandler Toggled;
 
         public enum State
@@ -28,7 +28,7 @@ namespace Alpha.DirectX.UI.Controls
         {
             _normalTexturePath = normalTexturePath;
             _toggledTexturePath = toggledTexturePath;
-            _currentState = State.Normal;
+            CurrentState = State.Normal;
         }
 
         public override void Initialize()
@@ -39,13 +39,14 @@ namespace Alpha.DirectX.UI.Controls
         
         public override void OnMouseClicked()
         {
-            if (_currentState == State.Normal)
+            if (CurrentState == State.Normal)
             {
-                _currentState = State.Toggled;
-                Toggled.Raise();
+                Toggle();
+                if (Group != null)
+                    Group.SetActiveButton(this);
             }
             else
-                _currentState = State.Normal;
+                CurrentState = State.Normal;
         }
 
         public override string ComponentType
@@ -69,10 +70,21 @@ namespace Alpha.DirectX.UI.Controls
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            if(_currentState == State.Normal)
+            if(CurrentState == State.Normal)
                 _iconNormal.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
             else
                 _iconToggled.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+        }
+
+        public void Untoggle()
+        {
+            CurrentState = State.Normal;
+        }
+
+        public void Toggle()
+        {
+            CurrentState = State.Toggled;
+            Toggled.Raise();
         }
     }
 }

@@ -47,16 +47,21 @@ namespace Alpha.DirectX.UI.Screens
                 "Data/UI/MinimapIcons/political_map_toggled.dds"));
             togglableButton.Toggled += () =>_terrain.CurrentRenderingMode = Terrain.RenderingMode.Province;
 
+            TogglableButtonGroup mapButtonGroup = new TogglableButtonGroup(togglableButton);
+            togglableButton.Group = mapButtonGroup;
+
             Register(togglableButton = new TogglableButton(context, "minimap_realm_mode",
                 new UniRectangle(new UniScalar(1.0f, -310), new UniScalar(1.0f, -235), 40, 31),
                 "Data/UI/MinimapIcons/realm_map.dds",
                 "Data/UI/MinimapIcons/realm_map_toggled.dds"));
             togglableButton.Toggled += () => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
+            togglableButton.Group = mapButtonGroup;
 
             Register(togglableButton = new TogglableButton(context, "minimap_terrain_mode",
                 new UniRectangle(new UniScalar(1.0f, -270), new UniScalar(1.0f, -235), 40, 31),
                 "Data/UI/MinimapIcons/terrain_map.dds",
                 "Data/UI/MinimapIcons/terrain_map_toggled.dds"));
+            togglableButton.Group = mapButtonGroup;
 
             Register(new Minimap(context,
                 new UniRectangle(new UniScalar(1.0f, -350), new UniScalar(1.0f, -200), 300, 150)));

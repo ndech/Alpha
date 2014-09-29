@@ -93,6 +93,7 @@
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\Controls\TogglableButton.cs" />
+    <Compile Include="UI\Controls\TogglableButtonGroup.cs" />
     <Compile Include="UI\NotificationResolver.cs" />
     <Compile Include="UI\Picker.cs" />
     <Compile Include="UI\PlainRectangle.cs" />
