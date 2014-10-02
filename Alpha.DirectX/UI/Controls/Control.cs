@@ -8,14 +8,12 @@ namespace Alpha.DirectX.UI.Controls
     {
         public UniRectangle Coordinates { get; set; }
         public bool Hovered { get; protected set; }
-        public override sealed bool Visible { get; set; }
         public bool Overlay { get; set; }
         protected Control(IContext context, String id, UniRectangle coordinates)
             : base(context, id)
         {
             Coordinates = coordinates;
             Overlay = false;
-            Visible = true;
             Hovered = false;
         }
 
@@ -27,13 +25,13 @@ namespace Alpha.DirectX.UI.Controls
 
         public override bool InBounds(Vector2I position)
         {
-            if (Overlay || !Visible) return false;
+            if (Overlay || !IsVisible()) return false;
             return    position.X >= Position.X
                    && position.X < Position.X + Size.X
                    && position.Y >= Position.Y
                    && position.Y < Position.Y + Size.Y;
         }
-
+        
         public virtual void OnMouseLeft()
         { }
         
@@ -82,6 +80,11 @@ namespace Alpha.DirectX.UI.Controls
         public virtual void OnMouseReleased()
         {
 
+        }
+
+        public override bool IsVisible()
+        {
+            return true;
         }
     }
 }

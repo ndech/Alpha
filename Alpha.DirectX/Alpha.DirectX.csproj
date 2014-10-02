@@ -88,12 +88,18 @@
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
     <Compile Include="Shaders\WaterShader.cs" />
+    <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
+    <Compile Include="UI\Controls\Custom\MinimapPanel.cs" />
+    <Compile Include="UI\Controls\Custom\NotificationPanel.cs" />
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\Controls\TogglableButton.cs" />
     <Compile Include="UI\Controls\TogglableButtonGroup.cs" />
+    <Compile Include="UI\Layouts\HorizontalLayout.cs" />
+    <Compile Include="UI\Layouts\Layout.cs" />
+    <Compile Include="UI\Layouts\PositionLayout.cs" />
     <Compile Include="UI\NotificationResolver.cs" />
     <Compile Include="UI\Picker.cs" />
     <Compile Include="UI\PlainRectangle.cs" />
@@ -229,6 +235,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\fleet_overlay_relation_neutral.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\extra_button_minus.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\extra_button_plus.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\MinimapIcons\political_map.dds">

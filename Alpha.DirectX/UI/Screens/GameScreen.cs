@@ -4,6 +4,8 @@ using Alpha.Core.Commands;
 using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Controls.Custom;
 using Alpha.DirectX.UI.Coordinates;
+using Alpha.DirectX.UI.Layouts;
+using Alpha.DirectX.UI.Styles;
 using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
 using SharpDX;
@@ -39,32 +41,10 @@ namespace Alpha.DirectX.UI.Screens
             Register(button = new Button(context, "boost_treasury", new UniRectangle(new UniScalar(0.5f, -50), 50, 100, 50),
                 "Click"));
             button.Clicked += b => context.RegisterCommand(new ChangeTreasuryCommand(context.Realm, 10));
-
-            TogglableButton togglableButton;
-            Register(togglableButton = new TogglableButton(context, "minimap_policial_mode",
-                new UniRectangle(new UniScalar(1.0f, -350), new UniScalar(1.0f, -235), 40, 31),
-                "Data/UI/MinimapIcons/political_map.dds",
-                "Data/UI/MinimapIcons/political_map_toggled.dds"));
-            togglableButton.Toggled += () =>_terrain.CurrentRenderingMode = Terrain.RenderingMode.Province;
-
-            TogglableButtonGroup mapButtonGroup = new TogglableButtonGroup(togglableButton);
-            togglableButton.Group = mapButtonGroup;
-
-            Register(togglableButton = new TogglableButton(context, "minimap_realm_mode",
-                new UniRectangle(new UniScalar(1.0f, -310), new UniScalar(1.0f, -235), 40, 31),
-                "Data/UI/MinimapIcons/realm_map.dds",
-                "Data/UI/MinimapIcons/realm_map_toggled.dds"));
-            togglableButton.Toggled += () => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
-            togglableButton.Group = mapButtonGroup;
-
-            Register(togglableButton = new TogglableButton(context, "minimap_terrain_mode",
-                new UniRectangle(new UniScalar(1.0f, -270), new UniScalar(1.0f, -235), 40, 31),
-                "Data/UI/MinimapIcons/terrain_map.dds",
-                "Data/UI/MinimapIcons/terrain_map_toggled.dds"));
-            togglableButton.Group = mapButtonGroup;
-
-            Register(new Minimap(context,
-                new UniRectangle(new UniScalar(1.0f, -350), new UniScalar(1.0f, -200), 300, 150)));
+            MinimapPanel minimapPanel = new MinimapPanel(context, _terrain);
+            new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
+            ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);
+            new PositionLayout(this, 300, 200, HorizontalAlignment.Center, VerticalAlignment.Bottom).Create(extraMinimapButtonPanel);
         }
 
         protected override void Update(double delta)

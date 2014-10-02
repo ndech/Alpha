@@ -53,7 +53,7 @@ namespace Alpha.DirectX.UI.Controls
         {
             get { return "button"; }
         }
-
+        
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)
         {
             if (Shortcut == null || repeat || Shortcut != key)

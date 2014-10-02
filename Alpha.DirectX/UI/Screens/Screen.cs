@@ -11,12 +11,6 @@ namespace Alpha.DirectX.UI.Screens
             get { return "screen"; }
         }
 
-        public override bool Visible
-        {
-            get { return true; }
-            set { }
-        }
-
         public override Vector2I Size
         {
             get { return Context.ScreenSize; }

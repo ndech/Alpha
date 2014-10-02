@@ -53,6 +53,11 @@ namespace Alpha.DirectX.UI.Coordinates
             return first.Equals(second);
         }
 
+        public static UniScalar operator /(UniScalar first, int divisor)
+        {
+            return new UniScalar(first.Fraction/divisor, first.Offset/divisor);
+        }
+
         public override bool Equals(object other)
         {
             if (ReferenceEquals(null, other)) return false;

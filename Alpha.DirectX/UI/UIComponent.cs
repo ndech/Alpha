@@ -13,7 +13,6 @@ namespace Alpha.DirectX.UI
         protected readonly IContext Context;
         protected readonly List<Control> Controls;
         public UiComponent Parent { get; set; }
-        public abstract bool Visible { get; set; }
         public abstract String ComponentType { get; }
         public String Id { get; private set; }
         
@@ -27,7 +26,7 @@ namespace Alpha.DirectX.UI
         
         public void UpdateTree(double delta)
         {
-            if (!Visible) return;
+            if (!IsVisible()) return;
             Update(delta);
             foreach (Control control in Controls)
                 control.UpdateTree(delta);
@@ -35,7 +34,7 @@ namespace Alpha.DirectX.UI
 
         public void RenderTree(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            if (!Visible) return;
+            if (!IsVisible()) return;
             Render(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);
             foreach (Control control in Controls)
                 control.RenderTree(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);
@@ -91,7 +90,7 @@ namespace Alpha.DirectX.UI
         {
             if (OnKeyPressed(key, character, repeat))
                 return true;
-            if (!Visible) return false;
+            if (!IsVisible()) return false;
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
                 Control control = Controls[i];
@@ -134,6 +133,10 @@ namespace Alpha.DirectX.UI
         protected virtual bool OnKeyReleased(Key key)
         {
             return false;
+        }
+        public virtual bool IsVisible()
+        {
+            return true;
         }
 
         public virtual Matrix DisplacementMatrix { get { return Matrix.Translation(RelativePosition.X, RelativePosition.Y, 0); } }
