@@ -23,6 +23,9 @@
 		<horizontalAlignment>Right</horizontalAlignment>
 		<textColor>Red</textColor>
 	</style>
+	<style in="position">
+		<textColor>Red</textColor>
+	</style>
 	<style in="account_value_revenue">
 		<horizontalAlignment>Right</horizontalAlignment>
 	</style>

@@ -90,6 +90,7 @@
     <Compile Include="Shaders\WaterShader.cs" />
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
+    <Compile Include="UI\Controls\Custom\MapTooltip.cs" />
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
     <Compile Include="UI\Controls\Custom\MinimapPanel.cs" />
     <Compile Include="UI\Controls\Custom\NotificationPanel.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\Controls\TogglableButton.cs" />
     <Compile Include="UI\Controls\TogglableButtonGroup.cs" />
+    <Compile Include="UI\Controls\Tooltip.cs" />
     <Compile Include="UI\Layouts\HorizontalLayout.cs" />
     <Compile Include="UI\Layouts\Layout.cs" />
     <Compile Include="UI\Layouts\PositionLayout.cs" />
@@ -261,18 +263,18 @@
     <Content Include="Data\UI\MinimapIcons\terrain_map_toggled.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\UI\Styles\Button.xml">
+    <EmbeddedResource Include="Data\UI\Styles\Button.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\UI\Styles\Label.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\UI\Styles\Label.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\UI\Styles\TextInput.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\UI\Styles\TextInput.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Data\UI\fleet_overlay.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

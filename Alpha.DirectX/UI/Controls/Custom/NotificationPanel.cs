@@ -5,9 +5,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 {
     class NotificationPanel : Panel
     {
-        public NotificationPanel(IContext context, UniRectangle coordinates) : base(context, "notification_panel", coordinates, SharpDX.Color.WhiteSmoke)
-        {
-
-        }
+        public NotificationPanel(IContext context) : base(context, "notification_panel", new UniRectangle(), Color.WhiteSmoke)
+        { }
     }
 }

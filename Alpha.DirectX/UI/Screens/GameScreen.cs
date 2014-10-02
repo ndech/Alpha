@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Input;
 using Alpha.Core.Commands;
+using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Controls.Custom;
 using Alpha.DirectX.UI.Coordinates;
@@ -8,6 +9,7 @@ using Alpha.DirectX.UI.Layouts;
 using Alpha.DirectX.UI.Styles;
 using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -35,12 +37,12 @@ namespace Alpha.DirectX.UI.Screens
                 () => context.World.Calendar.CurrentDate.ToString()));
             Register(new DynamicLabel(context, "fps", new UniRectangle(100, 0, 100, 50),
                 () => _counter.Value + "FPS"));
-            Register(new DynamicLabel(context, "treasury", new UniRectangle(new UniScalar(0.5f, -50), 0, 100, 50),
-                () => context.Realm.Economy.Treasury.ToString(CultureInfo.InvariantCulture)));
-            Button button;
-            Register(button = new Button(context, "boost_treasury", new UniRectangle(new UniScalar(0.5f, -50), 50, 100, 50),
-                "Click"));
-            button.Clicked += b => context.RegisterCommand(new ChangeTreasuryCommand(context.Realm, 10));
+            Register(new DynamicLabel(context, "position", new UniRectangle(new UniScalar(0.5f, -50), 0, 100, 50),
+                () =>
+                {
+                    var province = HoveredProvince();
+                    return province == null ? "None" : province.Id;
+                }));
             MinimapPanel minimapPanel = new MinimapPanel(context, _terrain);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);
@@ -54,6 +56,7 @@ namespace Alpha.DirectX.UI.Screens
             _counter.Update(delta);
             _fleetMoveOrderRenderer.Update(delta);
             UpdateCameraFromInput();
+            
         }
 
         private void UpdateCameraFromInput()
@@ -93,6 +96,14 @@ namespace Alpha.DirectX.UI.Screens
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             _fleetRenderer.RenderOverlay(deviceContext, viewMatrix, projectionMatrix);
+        }
+
+        public Province HoveredProvince()
+        {
+            if (HoveredControl != null)
+                return null;
+            return Context.World.ProvinceManager.ClosestProvince(
+                     (Vector3D)new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
         }
     }
 }

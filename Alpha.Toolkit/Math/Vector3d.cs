@@ -226,9 +226,14 @@ namespace Alpha.Toolkit.Math
             return ReferenceEquals(value.GetType(), typeof (Vector3D)) && Equals((Vector3D) value);
         }
 
-        public static explicit operator SharpDX.Vector3(Vector3D vector)
+        public static explicit operator Vector3(Vector3D vector)
         {
             return new Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
+        }
+
+        public static explicit operator Vector3D(Vector3 vector)
+        {
+            return new Vector3D(vector.X, vector.Y, vector.Z);
         }
 
         public static double Distance(Vector3D value1, Vector3D value2)

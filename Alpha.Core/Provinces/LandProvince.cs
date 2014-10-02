@@ -36,7 +36,7 @@ namespace Alpha.Core.Provinces
         public override sealed string Name { get; internal set; }
         protected override string GenerateStringId(int id)
         {
-            return "land_province" + id;
+            return "land_province_" + id;
         }
 
         public Realm Owner { get; internal set; }
