@@ -82,7 +82,6 @@ namespace Alpha.WorldGeneration
             }
             DebugConsole.WriteLine("Land tiles  : " + sites.Count(s => !s.IsWater) +" ("+ String.Format("{0:P}", (float)sites.Count(s => !s.IsWater) / sites.Count)+")");
             DebugConsole.WriteLine("Water tiles : " + sites.Count(s => s.IsWater) + " (" + String.Format("{0:P}", (float)sites.Count(s => s.IsWater) / sites.Count)+")");
-            //Console.ReadKey();
             return sites;
         }
 
@@ -133,7 +132,6 @@ namespace Alpha.WorldGeneration
                 }
                 graphics.DrawPolygon(new Pen(Color.Black), list);
             }
-            bitmap.Save("C:\\Users\\Nicolas\\Desktop\\Voronoi\\"+fileName+".png");
         }
     }
 }

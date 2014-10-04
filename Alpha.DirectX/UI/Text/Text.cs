@@ -239,5 +239,23 @@ namespace Alpha.DirectX.UI.Text
         }
 
         public Vector2I UsedSize { get; private set; }
+
+        public static string Enphasize(int value)
+        {
+            if (value > 0)
+                return "[green]+" + value + "[-]";
+            if (value < 0)
+                return "[red]" + value + "[-]";
+            return "[yellow]" + value + "[-]";
+        }
+
+        public static string EnphasizeAsPercentage(double value)
+        {
+            if (value > 0)
+                return "[green]+" + value.ToString("P") + "[-]";
+            if (value < 0)
+                return "[red]" + value.ToString("P") + "[-]";
+            return "[yellow]" + value.ToString("P") + "[-]";
+        }
     }
 }

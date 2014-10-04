@@ -37,12 +37,7 @@ namespace Alpha.DirectX.UI.Screens
                 () => context.World.Calendar.CurrentDate.ToString()));
             Register(new DynamicLabel(context, "fps", new UniRectangle(100, 0, 100, 50),
                 () => _counter.Value + "FPS"));
-            Register(new DynamicLabel(context, "position", new UniRectangle(new UniScalar(0.5f, -50), 0, 100, 50),
-                () =>
-                {
-                    var province = HoveredProvince();
-                    return province == null ? "None" : province.Id;
-                }));
+
             MinimapPanel minimapPanel = new MinimapPanel(context, _terrain);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);

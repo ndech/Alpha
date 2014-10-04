@@ -129,6 +129,7 @@
     <Compile Include="UI\Styles\StyleItem.cs" />
     <Compile Include="UI\Styles\StyleManager.cs" />
     <Compile Include="UI\Styles\TextInputStyle.cs" />
+    <Compile Include="UI\TexturedExtensibleRectangle.cs" />
     <Compile Include="UI\TexturedRectangle.cs" />
     <Compile Include="UI\Text\Font.cs" />
     <Compile Include="UI\Text\SimpleText.cs" />
@@ -186,6 +187,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\MousePointers\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Data\Shaders\Terrain.hlsl">
