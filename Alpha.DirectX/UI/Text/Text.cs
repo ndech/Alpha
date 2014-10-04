@@ -145,6 +145,8 @@ namespace Alpha.DirectX.UI.Text
             if(_vertexBuffer != null)
                 _vertexBuffer.Dispose();
             _vertexBuffer = Buffer.Create(device, BindFlags.VertexBuffer, _vertices);
+            UsedSize = new Vector2I(Lines.Max(l=>l.Width) + Padding.Left + Padding.Right,
+                (lineHeight * Lines.Count + LineSpacing * (Lines.Count - 1)) + Padding.Bottom + Padding.Top);
         }
 
         private void CreateIndexBuffer(Device device)
@@ -169,24 +171,26 @@ namespace Alpha.DirectX.UI.Text
         {
             _numberOfLetters = 0;
             List<TextLine> lines = new List<TextLine>();
-            String[] words = Content.Split(new[] {' '});
-
-            TextLine tempLine = new TextLine();
-            foreach (string word in words)
+            foreach (var stringLine in Content.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
             {
-                int wordSize;
-                _numberOfLetters += CalculateWordSize(word, out wordSize);
-                if (tempLine.WordCount != 0 && tempLine.Width + wordSize > (Size.X-Padding.Left-Padding.Right))
+                String[] words = stringLine.Split(new[] { ' ' });
+                TextLine tempLine = new TextLine();
+                foreach (string word in words)
                 {
-                    lines.Add(tempLine);
-                    tempLine = new TextLine();
+                    int wordSize;
+                    _numberOfLetters += CalculateWordSize(word, out wordSize);
+                    if (tempLine.WordCount != 0 && tempLine.Width + wordSize > (Size.X - Padding.Left - Padding.Right))
+                    {
+                        lines.Add(tempLine);
+                        tempLine = new TextLine();
+                    }
+                    tempLine.Words.Add(word);
+                    tempLine.WordCount++;
+                    tempLine.Width += wordSize + SpaceSize; // 5 pixel default spacing between words TODO
                 }
-                tempLine.Words.Add(word);
-                tempLine.WordCount ++;
-                tempLine.Width += wordSize + SpaceSize; // 5 pixel default spacing between words TODO
+                tempLine.WordWrapped = false;
+                lines.Add(tempLine);
             }
-            tempLine.WordWrapped = false;
-            lines.Add(tempLine);
             return lines;
         }
 
@@ -233,5 +237,7 @@ namespace Alpha.DirectX.UI.Text
             if(_indexBuffer != null) _indexBuffer.Dispose();
             if(_vertexBuffer != null) _vertexBuffer.Dispose();
         }
+
+        public Vector2I UsedSize { get; private set; }
     }
 }

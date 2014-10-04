@@ -26,7 +26,7 @@ namespace Alpha.DirectX.UI
         
         public void UpdateTree(double delta)
         {
-            if (!IsVisible()) return;
+            //if (!IsVisible()) return;
             Update(delta);
             foreach (Control control in Controls)
                 control.UpdateTree(delta);
