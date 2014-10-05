@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Windows.Input;
-using Alpha.Core.Commands;
+﻿using System.Windows.Input;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Controls.Custom;
@@ -24,6 +22,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly FleetRenderer _fleetRenderer;
         private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
         private readonly FpsCounter _counter;
+        private readonly ProvinceDetailPanel _provinceDetailPanel;
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
@@ -42,7 +41,10 @@ namespace Alpha.DirectX.UI.Screens
             new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Center, VerticalAlignment.Bottom).Create(extraMinimapButtonPanel);
+            new PositionLayout(this, 400, 500, HorizontalAlignment.Left, VerticalAlignment.Bottom)
+                .Create(_provinceDetailPanel = new ProvinceDetailPanel(context));
             Register(new MapTooltip(context, this));
+            new PositionLayout(this, 100, 25, HorizontalAlignment.Left, VerticalAlignment.Top).Create(new RealmInfo(context));
         }
 
         protected override void Update(double delta)
@@ -100,6 +102,17 @@ namespace Alpha.DirectX.UI.Screens
                 return null;
             return Context.World.ProvinceManager.ClosestProvince(
                      (Vector3D)new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
+        }
+
+        protected override void OnMouseClicked(Vector2I position, int button)
+        {
+            if (button == 0)
+            {
+                Province province = Context.World.ProvinceManager.ClosestProvince(
+                    (Vector3D) new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
+                if (province is LandProvince && (province as LandProvince).Owner == Context.Realm)
+                    _provinceDetailPanel.ShowProvince(province as LandProvince);
+            }
         }
     }
 }

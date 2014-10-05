@@ -51,7 +51,8 @@ namespace Alpha.DirectX
             if(_worldContainer.Ready)
                 _notificationResolver.Process(_worldContainer.World.GetLiveNotifications(_worldContainer.PlayerRealm));
             _camera.Update(delta);
-            _input.Update(delta);
+            if(_form.Focused)
+                _input.Update(delta);
             _uiManager.Update(delta);
         }
 

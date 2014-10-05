@@ -21,6 +21,12 @@ namespace Alpha.DirectX.UI.Styles
                 return new FontSizeStyleItem(styleItem.Value);
             if (styleItem.Name.LocalName.Equals("padding"))
                 return new PaddingStyleItem(styleItem.Value);
+            if (styleItem.Name.LocalName.Equals("baseTexture"))
+                return new TextureStyleItem(TextureStyleItem.Type.Base, styleItem.Value);
+            if (styleItem.Name.LocalName.Equals("hoveredTexture"))
+                return new TextureStyleItem(TextureStyleItem.Type.Hovered, styleItem.Value);
+            if (styleItem.Name.LocalName.Equals("clickedTexture"))
+                return new TextureStyleItem(TextureStyleItem.Type.Clicked, styleItem.Value);
             throw new InvalidOperationException();
         }
     }
@@ -79,6 +85,24 @@ namespace Alpha.DirectX.UI.Styles
         public PaddingStyleItem(string name)
         {
             Padding = new Padding(Int32.Parse(name));
+        }
+    }
+
+    class TextureStyleItem : StyleItem
+    {
+        public enum Type
+        {
+            Base,
+            Hovered,
+            Clicked
+        }
+        public Type TextureType { get; private set; }
+        public String Path { get; private set; }
+
+        public TextureStyleItem(Type type, String path)
+        {
+            TextureType = type;
+            Path = path;
         }
     }
 }

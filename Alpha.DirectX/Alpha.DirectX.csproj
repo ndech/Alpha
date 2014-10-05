@@ -94,7 +94,10 @@
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
     <Compile Include="UI\Controls\Custom\MinimapPanel.cs" />
     <Compile Include="UI\Controls\Custom\NotificationPanel.cs" />
+    <Compile Include="UI\Controls\Custom\ProvinceDetailPanel.cs" />
+    <Compile Include="UI\Controls\Custom\RealmInfo.cs" />
     <Compile Include="UI\Controls\DynamicLabel.cs" />
+    <Compile Include="UI\Controls\IconButton.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
     <Compile Include="UI\Controls\TogglableButton.cs" />
     <Compile Include="UI\Controls\TogglableButtonGroup.cs" />
@@ -124,8 +127,11 @@
     <Compile Include="UI\Screens\WorldParametersScreen.cs" />
     <Compile Include="UI\Styles\Alignments.cs" />
     <Compile Include="UI\Styles\ButtonStyle.cs" />
+    <Compile Include="UI\Styles\IconStyle.cs" />
     <Compile Include="UI\Styles\LabelStyle.cs" />
     <Compile Include="UI\Styles\Padding.cs" />
+    <Compile Include="UI\Styles\Stylable.cs" />
+    <Compile Include="UI\Styles\Style.cs" />
     <Compile Include="UI\Styles\StyleItem.cs" />
     <Compile Include="UI\Styles\StyleManager.cs" />
     <Compile Include="UI\Styles\TextInputStyle.cs" />
@@ -187,6 +193,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\MousePointers\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Data\UI\Styles\Icon.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Data\UI\square_close.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\square_close_clicked.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\square_close_hovered.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\tooltip.png">

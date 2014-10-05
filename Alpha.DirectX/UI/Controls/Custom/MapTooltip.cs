@@ -47,7 +47,15 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         protected override void Update(double delta)
         {
-            Province currentProvince = _gameScreen.HoveredProvince();
+            Province currentProvince;
+            Vector2I mousePosition = Context.UiManager.MousePosition;
+            if (mousePosition.X >= 0
+                   && mousePosition.X < _gameScreen.Size.X
+                   && mousePosition.Y >= 0
+                   && mousePosition.Y < 0 + _gameScreen.Size.Y)
+                currentProvince = _gameScreen.HoveredProvince();
+            else
+                currentProvince = null;
             if (currentProvince != _hoveredProvince) //User has left the previous province
             {
                 _hoveredProvince = currentProvince;

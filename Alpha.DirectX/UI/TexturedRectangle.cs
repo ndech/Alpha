@@ -48,13 +48,14 @@ namespace Alpha.DirectX.UI
             Size = size;
         }
 
-        public override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture = null)
         {
+
             int stride = Utilities.SizeOf<VertexDefinition.PositionTexture>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, 0));
             deviceContext.InputAssembler.SetIndexBuffer(IndexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            _shader.Render(deviceContext, IndexCount, worldMatrix, viewMatrix, projectionMatrix, _texture);
+            _shader.Render(deviceContext, IndexCount, worldMatrix, viewMatrix, projectionMatrix, texture ?? _texture);
         }
 
         public override void Update()

@@ -7,7 +7,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.Controls
 {
-    class TextInput : Control
+    class TextInput : Control, IStylable<TextInput, TextInputStyle>
     {
 
         private String _textValue;
@@ -40,6 +40,8 @@ namespace Alpha.DirectX.UI.Controls
         {
             get { return "textInput"; }
         }
+
+        public UiComponent Component { get { return this; } }
 
         public override void Initialize()
         {

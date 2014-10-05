@@ -21,9 +21,7 @@ namespace Alpha.DirectX.UI.Styles
                     if (item.Parent == null) continue;
                     String targetTypeKey = item.Parent.Attribute("for").Value;
                     String styleKey = item.Attribute("in") != null ? item.Attribute("in").Value : "default";
-                    List<StyleItem> styleItems = new List<StyleItem>();
-                    foreach (XElement styleItem in item.Elements())
-                        styleItems.Add(StyleItem.Create(styleItem));
+                    List<StyleItem> styleItems = item.Elements().Select(StyleItem.Create).ToList();
                     if(!_styles.ContainsKey(targetTypeKey))
                         _styles[targetTypeKey] = new Dictionary<string, List<StyleItem>>();
                     _styles[targetTypeKey][styleKey] = styleItems;
@@ -31,53 +29,23 @@ namespace Alpha.DirectX.UI.Styles
             }
         }
 
-        public ButtonStyle GetStyle(Button button)
+        public T1 GetStyle<T, T1>(IStylable<T, T1> stylable) 
+            where T1 : Style<T>, new() 
+            where T : Control
         {
-            ButtonStyle style = new ButtonStyle();
-            style.Apply(_styles[button.ComponentType]["default"]);
-            ApplyStyle(style, button, button.ComponentType);
+            T1 style = new T1();
+            style.Apply(_styles[stylable.ComponentType]["default"]);
+            ApplyStyle(style, stylable.Component, stylable.ComponentType);
             return style;
         }
 
-        public LabelStyle GetStyle(Label label)
+        private void ApplyStyle<T>(Style<T> style, UiComponent component, String type)
+            where T : Control
         {
-            LabelStyle style = new LabelStyle();
-            style.Apply(_styles[label.ComponentType]["default"]);
-            ApplyStyle(style, label, label.ComponentType);
-            return style;
-        }
-
-        public TextInputStyle GetStyle(TextInput label)
-        {
-            TextInputStyle style = new TextInputStyle();
-            style.Apply(_styles[label.ComponentType]["default"]);
-            ApplyStyle(style, label, label.ComponentType);
-            return style;
-        }
-
-        private void ApplyStyle(ButtonStyle style, UiComponent control, String type)
-        {
-            if(control.Parent != null)
-                ApplyStyle(style, control.Parent, type);
-            if(_styles[type].ContainsKey(control.Id))
-                style.Apply(_styles[type][control.Id]);
-        }
-
-
-        private void ApplyStyle(LabelStyle style, UiComponent control, String type)
-        {
-            if (control.Parent != null)
-                ApplyStyle(style, control.Parent, type);
-            if (_styles[type].ContainsKey(control.Id))
-                style.Apply(_styles[type][control.Id]);
-        }
-
-        private void ApplyStyle(TextInputStyle style, UiComponent control, String type)
-        {
-            if (control.Parent != null)
-                ApplyStyle(style, control.Parent, type);
-            if (_styles[type].ContainsKey(control.Id))
-                style.Apply(_styles[type][control.Id]);
+            if (component.Parent != null)
+                ApplyStyle(style, component.Parent, type);
+            if (_styles[type].ContainsKey(component.Id))
+                style.Apply(_styles[type][component.Id]);
         }
 
         public T GetStyleItem<T>(string componentType, string value) where T : StyleItem

@@ -6,7 +6,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.Controls
 {
-    class Label : Control
+    class Label : Control, IStylable<Label, LabelStyle>
     {
         private LabelStyle _style;
         private Text.Text _text;
@@ -33,6 +33,8 @@ namespace Alpha.DirectX.UI.Controls
         {
             get { return "label"; }
         }
+
+        public UiComponent Component { get { return this; } }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {

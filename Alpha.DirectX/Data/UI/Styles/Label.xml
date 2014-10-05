@@ -23,6 +23,11 @@
 		<horizontalAlignment>Right</horizontalAlignment>
 		<textColor>Red</textColor>
 	</style>
+	<style in="realm_info_label">
+		<padding>3</padding>
+		<horizontalAlignment>Left</horizontalAlignment>
+		<textColor>DarkGray</textColor>
+	</style>
 	<style in="position">
 		<textColor>Red</textColor>
 	</style>

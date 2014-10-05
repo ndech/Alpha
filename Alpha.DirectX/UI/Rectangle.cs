@@ -26,8 +26,5 @@ namespace Alpha.DirectX.UI
         }
 
         public abstract void Update();
-
-        public abstract void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix,
-            Matrix projectionMatrix);
     }
 }

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<styles for="icon">
+	<style>
+	</style>
+	<style in="close_button">
+		<baseTexture>Data/UI/square_close.dds</baseTexture>
+		<clickedTexture>Data/UI/square_close_clicked.dds</clickedTexture>
+		<hoveredTexture>Data/UI/square_close_hovered.dds</hoveredTexture>
+	</style>
+</styles>

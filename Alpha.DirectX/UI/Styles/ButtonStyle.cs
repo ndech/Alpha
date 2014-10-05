@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Alpha.DirectX.UI.Controls;
 using SharpDX;
 
 namespace Alpha.DirectX.UI.Styles
 {
-    class ButtonStyle
+    class ButtonStyle : Style<Button>
     {
         public VerticalAlignment VerticalAlignment { get; private set; }
         public HorizontalAlignment HorizontalAlignment { get; private set; }
@@ -13,7 +14,7 @@ namespace Alpha.DirectX.UI.Styles
         public Int32 FontSize { get; private set; }
         public Padding Padding { get; private set; }
 
-        public void Apply(IEnumerable<StyleItem> stylePartials)
+        internal override void Apply(IEnumerable<StyleItem> stylePartials)
         {
             foreach (StyleItem styleItem in stylePartials)
             {

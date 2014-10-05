@@ -7,7 +7,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.Controls
 {
-    class Button : Control
+    class Button : Control, IStylable<Button, ButtonStyle>
     {
         private String _textValue;
         public String Text
@@ -72,6 +72,8 @@ namespace Alpha.DirectX.UI.Controls
         {
             get { return "button"; }
         }
+
+        public UiComponent Component { get { return this; } }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)
         {
