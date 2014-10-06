@@ -114,18 +114,8 @@ namespace Alpha.DirectX.UI
                     return true;
             return false;
         }
-
-        public bool MouseScrolled(int delta)
-        {
-            if (OnMouseScrolled(delta))
-                return true;
-            foreach (Control control in Controls)
-                if (control.MouseScrolled(delta))
-                    return true;
-            return false;
-        }
-
-        protected virtual bool OnMouseScrolled(int delta)
+        
+        public virtual bool OnMouseScrolled(int delta)
         {
             return false;
         }

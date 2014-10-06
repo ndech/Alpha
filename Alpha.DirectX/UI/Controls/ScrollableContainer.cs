@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.DirectX.UI.Coordinates;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -33,7 +34,7 @@ namespace Alpha.DirectX.UI.Controls
             for (int i = 0; i < _numberOfVisibleItems; i ++)
             {
                 _items[i] = generator(Context);
-                _items[i].Coordinates = new UniRectangle(0, i * _items[i].ItemSize().Y, _items[i].ItemSize().X, _items[i].ItemSize().Y);
+                _items[i].Coordinates = new UniRectangle(0, i * _items[i].Size.Y, _items[i].Size.X, _items[i].Size.Y);
             }
         }
 
@@ -42,8 +43,6 @@ namespace Alpha.DirectX.UI.Controls
             base.Initialize();
             foreach (T item in _items)
                 Register(item);
-            Coordinates = new UniRectangle(Coordinates.Position.X, Coordinates.Position.Y,
-                _items[0].ItemSize().X + ScrollBar.Width, _numberOfVisibleItems * _items[0].ItemSize().Y);
             Register(_scrollBar = new ScrollBar(Context));
             _scrollBar.Moved += (pos) =>
             {
@@ -71,6 +70,11 @@ namespace Alpha.DirectX.UI.Controls
         {
             FirstVisibleItem -= delta;
             return true;
+        }
+
+        public override Vector2I Size
+        {
+            get { return new Vector2I(_items[0].Size.X + ScrollBar.Width, _numberOfVisibleItems*_items[0].Size.Y); }
         }
     }
 }

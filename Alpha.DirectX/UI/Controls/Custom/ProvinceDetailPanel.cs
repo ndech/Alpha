@@ -32,9 +32,11 @@ namespace Alpha.DirectX.UI.Controls.Custom
             new PositionLayout(this, 20,20, HorizontalAlignment.Right, VerticalAlignment.Top)
                 .Create(closeButton = new IconButton(Context, "close_button"));
             closeButton.Clicked += () => Visible = false;
-            new PositionLayout(this, 0.8f, 0.5f, HorizontalAlignment.Center, VerticalAlignment.Middle)
-                .Create(_settlementScrollableContainer = 
-                    new ScrollableContainer<SettlementScrollableItem, Settlement>(Context, "settlements", 3, c=>new SettlementScrollableItem(c)));
+            _settlementScrollableContainer =
+                new ScrollableContainer<SettlementScrollableItem, Settlement>(Context, "settlements", 3,
+                    c => new SettlementScrollableItem(c));
+            new PositionLayout(this, _settlementScrollableContainer.Size.X, _settlementScrollableContainer.Size.Y, HorizontalAlignment.Center, VerticalAlignment.Middle)
+                .Create(_settlementScrollableContainer);
         }
 
         public void ShowProvince(LandProvince province)

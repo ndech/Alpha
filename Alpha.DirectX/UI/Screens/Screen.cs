@@ -146,6 +146,19 @@ namespace Alpha.DirectX.UI.Screens
             ClickedControl = null;
         }
 
+
+        public virtual bool MouseScrolled(int delta)
+        {
+            UiComponent currentComponent = HoveredControl;
+            while (currentComponent != null && currentComponent != this )
+            {
+                if (currentComponent.OnMouseScrolled(delta))
+                    return true;
+                currentComponent = currentComponent.Parent;
+            }
+            return OnMouseScrolled(delta);
+        }
+
         protected override void DisposeItem()
         { }
     }

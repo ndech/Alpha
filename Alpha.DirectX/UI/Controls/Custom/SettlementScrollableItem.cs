@@ -26,9 +26,9 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _name.Text = item == null ? "" : item.Name;
         }
 
-        public Vector2I ItemSize()
+        public override Vector2I Size
         {
-            return new Vector2I(350, 50);
+            get { return new Vector2I(350, 50); }
         }
     }
 }
