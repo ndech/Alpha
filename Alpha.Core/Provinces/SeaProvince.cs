@@ -13,7 +13,7 @@ namespace Alpha.Core.Provinces
         protected override void DayUpdate()
         { }
 
-        public SeaProvince(List<Zone> zones) : base(zones)
+        public SeaProvince(World world, List<Zone> zones) : base(world, zones)
         {
             Name = "Sea";
         }

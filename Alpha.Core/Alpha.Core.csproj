@@ -55,6 +55,7 @@
     <Compile Include="Commands\EventOnlyCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\DestroyFleetCommand.cs" />
+    <Compile Include="Commands\FoundSettlementCommand.cs" />
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Component.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Notifications\FleetMovedNotification.cs" />
     <Compile Include="Notifications\NewFleetMoveOrderNotification.cs" />
     <Compile Include="Notifications\NewFleetNotification.cs" />
+    <Compile Include="Notifications\NewSettlementNotification.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Provinces\Settlement.cs" />
     <Compile Include="RealmToken.cs" />

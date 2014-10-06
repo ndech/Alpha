@@ -5,9 +5,9 @@ using Alpha.Toolkit.Math;
 
 namespace Alpha.Core.Provinces
 {
-    public abstract class Province : IDailyUpdatableItem, IEquatable<Province>
+    public abstract class Province : Component, IDailyUpdatableItem, IEquatable<Province>
     {
-        protected Province(List<Zone> zones)
+        protected Province(World world, List<Zone> zones) : base(world)
         {
             _zones = zones;
             Center = zones.RandomItem().Center;

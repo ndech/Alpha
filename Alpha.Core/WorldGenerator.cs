@@ -38,9 +38,9 @@ namespace Alpha.Core
             {
                 Province province;
                 if (site.IsWater)
-                    province = new SeaProvince(new List<Zone>(new[] { (Zone)site }));
+                    province = new SeaProvince(world, new List<Zone>(new[] { (Zone)site }));
                 else
-                    province = new LandProvince(new List<Zone>(new[] { (Zone)site }));
+                    province = new LandProvince(world, new List<Zone>(new[] { (Zone)site }));
                 world.ProvinceManager.CreateProvince(province);
                 site.ProvinceId = province.Id;
             }

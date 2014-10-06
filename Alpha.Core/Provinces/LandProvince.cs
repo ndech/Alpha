@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Alpha.Core.Notifications;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
 
@@ -10,7 +11,7 @@ namespace Alpha.Core.Provinces
         private double _population = 1000;
         public int PopulationLastDayVariation { get; private set; }
 
-        public LandProvince(List<Zone> zones) : base(zones)
+        public LandProvince(World world, List<Zone> zones) : base(world, zones)
         {
             _population = RandomGenerator.Get(1000, 100000);
             YearlyGrowth = RandomGenerator.GetDouble(-0.3, 0.9);
@@ -20,7 +21,7 @@ namespace Alpha.Core.Provinces
                 (float)RandomGenerator.GetDouble(0, 1),
                 (float)RandomGenerator.GetDouble(0, 1));
             for (int i = 0; i < RandomGenerator.Get(1, 8); i++)
-                _settlements.Add(new Settlement(this));
+                FoundSettlement();
         }
 
         public Int32 Population
@@ -48,6 +49,13 @@ namespace Alpha.Core.Provinces
         public Tuple<float, float, float> Color { get; internal set; }
 
         private readonly List<Settlement> _settlements = new List<Settlement>();
-        public IEnumerable<Settlement> Settlements { get { return _settlements; } } 
+        public IEnumerable<Settlement> Settlements { get { return _settlements; } }
+
+        public void FoundSettlement()
+        {
+            Settlement settlement = new Settlement(this);
+            _settlements.Add(settlement);
+            World.Notify(new NewSettlementNotification(settlement));
+        }
     }
 }

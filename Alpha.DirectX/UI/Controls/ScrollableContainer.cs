@@ -76,5 +76,10 @@ namespace Alpha.DirectX.UI.Controls
         {
             get { return new Vector2I(_items[0].Size.X + ScrollBar.Width, _numberOfVisibleItems*_items[0].Size.Y); }
         }
+
+        public void ShowLast()
+        {
+            FirstVisibleItem = Int32.MaxValue;
+        }
     }
 }
