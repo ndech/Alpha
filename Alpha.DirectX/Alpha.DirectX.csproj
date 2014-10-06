@@ -96,9 +96,13 @@
     <Compile Include="UI\Controls\Custom\NotificationPanel.cs" />
     <Compile Include="UI\Controls\Custom\ProvinceDetailPanel.cs" />
     <Compile Include="UI\Controls\Custom\RealmInfo.cs" />
+    <Compile Include="UI\Controls\Custom\SettlementScrollableItem.cs" />
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\IconButton.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Controls\ScrollableContainer.cs" />
+    <Compile Include="UI\Controls\IScrollableItem.cs" />
+    <Compile Include="UI\Controls\Scrollbar.cs" />
     <Compile Include="UI\Controls\TogglableButton.cs" />
     <Compile Include="UI\Controls\TogglableButtonGroup.cs" />
     <Compile Include="UI\Controls\Tooltip.cs" />
@@ -199,6 +203,12 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Data\UI\scrollbar_fix.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\scrollbar_mobile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\square_close.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

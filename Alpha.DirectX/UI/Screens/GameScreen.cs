@@ -41,7 +41,7 @@ namespace Alpha.DirectX.UI.Screens
             new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Center, VerticalAlignment.Bottom).Create(extraMinimapButtonPanel);
-            new PositionLayout(this, 400, 500, HorizontalAlignment.Left, VerticalAlignment.Bottom)
+            new PositionLayout(this, 500, 600, HorizontalAlignment.Left, VerticalAlignment.Bottom)
                 .Create(_provinceDetailPanel = new ProvinceDetailPanel(context));
             Register(new MapTooltip(context, this));
             new PositionLayout(this, 100, 25, HorizontalAlignment.Left, VerticalAlignment.Top).Create(new RealmInfo(context));
@@ -79,7 +79,7 @@ namespace Alpha.DirectX.UI.Screens
             }
         }
 
-        protected override bool OnMouseScrolled(int delta)
+        public override bool OnMouseScrolled(int delta)
         {
             Context.Camera.Zoom(-2*delta);
             return true;

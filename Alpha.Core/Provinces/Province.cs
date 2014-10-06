@@ -14,6 +14,7 @@ namespace Alpha.Core.Provinces
             NumericId = IdSequence;
             Id = GenerateStringId(NumericId);
         }
+
         public abstract string Name { get; internal set; }
 
         protected abstract string GenerateStringId(int id);

@@ -19,6 +19,8 @@ namespace Alpha.Core.Provinces
                 (float)RandomGenerator.GetDouble(0, 1), 
                 (float)RandomGenerator.GetDouble(0, 1),
                 (float)RandomGenerator.GetDouble(0, 1));
+            for (int i = 0; i < RandomGenerator.Get(1, 8); i++)
+                _settlements.Add(new Settlement(this));
         }
 
         public Int32 Population
@@ -44,5 +46,8 @@ namespace Alpha.Core.Provinces
 
         public Realm Owner { get; internal set; }
         public Tuple<float, float, float> Color { get; internal set; }
+
+        private readonly List<Settlement> _settlements = new List<Settlement>();
+        public IEnumerable<Settlement> Settlements { get { return _settlements; } } 
     }
 }

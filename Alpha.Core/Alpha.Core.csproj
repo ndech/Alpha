@@ -86,6 +86,7 @@
     <Compile Include="Notifications\NewFleetMoveOrderNotification.cs" />
     <Compile Include="Notifications\NewFleetNotification.cs" />
     <Compile Include="Notifications\Notification.cs" />
+    <Compile Include="Provinces\Settlement.cs" />
     <Compile Include="RealmToken.cs" />
     <Compile Include="Provinces\LandProvince.cs" />
     <Compile Include="Provinces\PathfindingNode.cs" />

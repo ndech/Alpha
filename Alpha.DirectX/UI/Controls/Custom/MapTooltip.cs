@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Screens;
@@ -87,6 +88,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 text += Environment.NewLine + landProvince.Population + " pop ";
                 text += Text.Text.EnphasizeAsPercentage(landProvince.YearlyGrowth);
                 text += " ("+Text.Text.Enphasize(landProvince.PopulationLastDayVariation)+")";
+                text += Environment.NewLine + landProvince.Settlements.Count() + " settlements";
             }
             _text.Content = text;
             _rectangle.Size = _text.UsedSize;
