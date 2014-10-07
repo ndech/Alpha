@@ -1,5 +1,4 @@
-﻿using System;
-using Alpha.DirectX.UI.Controls;
+﻿using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Controls.Custom;
 using Alpha.DirectX.UI.Coordinates;
 using SharpDX;

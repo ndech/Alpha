@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Alpha.DirectX.UI.Controls;
+﻿using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Styles;
-using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.Layouts
 {

@@ -1,6 +1,4 @@
-﻿using Alpha.DirectX.UI;
-using Alpha.Toolkit.Math;
-using SharpDX;
+﻿using SharpDX;
 
 namespace Alpha.DirectX
 {

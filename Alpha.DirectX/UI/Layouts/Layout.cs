@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Alpha.DirectX.UI.Layouts
+﻿namespace Alpha.DirectX.UI.Layouts
 {
     abstract class Layout
     {

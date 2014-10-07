@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Alpha.DirectX.UI.Coordinates;
+﻿using Alpha.DirectX.UI.Coordinates;
 using SharpDX;
 
 namespace Alpha.DirectX.UI.Controls.Custom

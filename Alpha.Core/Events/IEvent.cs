@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Alpha.Core.Events
+﻿namespace Alpha.Core.Events
 {
     public interface IEvent<in T>
         where T : IEventable

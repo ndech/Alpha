@@ -1,5 +1,4 @@
-﻿using System;
-using Alpha.Toolkit.Math;
+﻿using Alpha.Toolkit.Math;
 
 namespace Alpha.DirectX.UI.Controls
 {
