@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Alpha.Toolkit
+{
+    public static class NameGenerator
+    {
+        private static List<String> provinceNames;
+        private static List<String> settlementNames;
+
+        public static String GetRandomProvinceName()
+        {
+            return provinceNames.RandomItem();
+        }
+        public static String GetSettlementName()
+        {
+            return provinceNames.RandomItem();
+        }
+
+        static NameGenerator()
+        {
+            provinceNames = ReadFromFile(@"Data\ProvinceNames.txt");
+            settlementNames = ReadFromFile(@"Data\SettlementNames.txt");
+        }
+
+        public static List<String> ReadFromFile(String filename)
+        {
+            List<String> result = new List<string>();
+            String line;
+            using (var file = new System.IO.StreamReader(filename))
+                while ((line = file.ReadLine()) != null)
+                    result.Add(line);
+            return result;
+        }
+    }
+}

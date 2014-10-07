@@ -8,40 +8,16 @@
 		<fontSize>20</fontSize>
 		<padding>0</padding>
 	</style>
-	<style in="calendar_multiplier_label">
-		<horizontalAlignment>Right</horizontalAlignment>
-	</style>
-	<style in="economy_panel">
-		<horizontalAlignment>Left</horizontalAlignment>
-		<textColor>White</textColor>
-	</style>
-	<style in="account_value_income">
-		<horizontalAlignment>Right</horizontalAlignment>
-		<textColor>Green</textColor>
-	</style>
-	<style in="account_value_spending">
-		<horizontalAlignment>Right</horizontalAlignment>
-		<textColor>Red</textColor>
-	</style>
-	<style in="realm_info_label">
-		<padding>3</padding>
-		<horizontalAlignment>Left</horizontalAlignment>
-		<textColor>DarkGray</textColor>
-	</style>
-	<style in="position">
-		<textColor>Red</textColor>
-	</style>
-	<style in="account_value_revenue">
-		<horizontalAlignment>Right</horizontalAlignment>
-	</style>
-	<style in="monitoring_header_label">
-		<textColor>#FF111111</textColor>
-	</style>
-	<style in="console_line">
+	<style in="settlement_item_name">
 		<horizontalAlignment>Left</horizontalAlignment>
 		<textColor>LightGray</textColor>
 		<font>Consolas</font>
 		<fontSize>22</fontSize>
-		<padding>15</padding>
+	</style>
+	<style in="settlement_item_population">
+		<horizontalAlignment>Right</horizontalAlignment>
+		<textColor>LightGray</textColor>
+		<font>Consolas</font>
+		<fontSize>22</fontSize>
 	</style>
 </styles>

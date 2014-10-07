@@ -1,4 +1,4 @@
-﻿namespace Alpha.DirectX.UI.Styles
+﻿namespace Alpha.DirectX.UI
 {
     public class Padding
     {
@@ -13,6 +13,14 @@
             Right = padding;
             Top = padding;
             Bottom = padding;
+        }
+
+        public Padding(int left, int right, int top, int bottom)
+        {
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
         }
     }
 }

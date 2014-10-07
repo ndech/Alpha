@@ -73,10 +73,19 @@
     <Compile Include="Math\RK4Integrator.cs" />
     <Compile Include="Math\Vector2I.cs" />
     <Compile Include="Math\Vector3d.cs" />
+    <Compile Include="NameGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimeSpanParser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\ProvinceNames.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\SettlementNames.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

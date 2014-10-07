@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
 {
@@ -7,11 +7,15 @@ namespace Alpha.Core.Provinces
     {
         public String Name { get; private set; }
         public LandProvince Province { get; private set; }
+        public int Population { get; private set; }
+        public double Income { get; private set; }
 
         public Settlement(LandProvince province)
         {
             Province = province;
-            Name = province.Id + "settlement_" + (province.Settlements.Count() + 1);
+            Name = NameGenerator.GetSettlementName();
+            Population = RandomGenerator.Get(20, 5000);
+            Income = RandomGenerator.GetDouble(-10, 10);
         }
     }
 }

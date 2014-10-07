@@ -80,7 +80,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         private void UpdateContent()
         {
-            string text = _hoveredProvince.Id;
+            string text = _hoveredProvince.Name;
             if (_hoveredProvince is LandProvince)
             {
                 LandProvince landProvince = (_hoveredProvince as LandProvince);

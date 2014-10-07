@@ -5,7 +5,7 @@ namespace Alpha.DirectX.UI.Controls
 {
     class DynamicLabel : Label
     {
-        public readonly Func<String> Expression; 
+        public Func<String> Expression { get; set; }
         public DynamicLabel(IContext context, string id, UniRectangle coordinates, Func<String> expression ) 
             : base(context, id, coordinates, "")
         {

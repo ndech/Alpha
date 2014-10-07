@@ -4,7 +4,7 @@ using Alpha.DirectX.UI.Controls;
 
 namespace Alpha.DirectX.UI.Styles
 {
-    class IconStyle : Style<IconButton>
+    class IconStyle : Style<Icon>
     {
         public String BaseTexture { get; private set; }
         public String HoveredTexture { get; private set; }

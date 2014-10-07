@@ -15,7 +15,7 @@ namespace Alpha.Core.Provinces
         {
             _population = RandomGenerator.Get(1000, 100000);
             YearlyGrowth = RandomGenerator.GetDouble(-0.3, 0.9);
-            Name = "Land";
+            Name = NameGenerator.GetRandomProvinceName();
             Color = new Tuple<float, float, float>(
                 (float)RandomGenerator.GetDouble(0, 1), 
                 (float)RandomGenerator.GetDouble(0, 1),

@@ -90,6 +90,8 @@
     <Compile Include="Shaders\WaterShader.cs" />
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
+    <Compile Include="UI\Controls\Icon.cs" />
+    <Compile Include="UI\Controls\IconWithTooltip.cs" />
     <Compile Include="UI\Controls\Custom\MapTooltip.cs" />
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
     <Compile Include="UI\Controls\Custom\MinimapPanel.cs" />
@@ -133,7 +135,7 @@
     <Compile Include="UI\Styles\ButtonStyle.cs" />
     <Compile Include="UI\Styles\IconStyle.cs" />
     <Compile Include="UI\Styles\LabelStyle.cs" />
-    <Compile Include="UI\Styles\Padding.cs" />
+    <Compile Include="UI\Padding.cs" />
     <Compile Include="UI\Styles\Stylable.cs" />
     <Compile Include="UI\Styles\Style.cs" />
     <Compile Include="UI\Styles\StyleItem.cs" />
@@ -203,10 +205,16 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Data\UI\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\scrollbar_fix.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\scrollbar_mobile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\settlement_item_background.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\square_close.dds">
