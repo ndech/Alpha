@@ -87,7 +87,7 @@ namespace Alpha.DirectX.UI.Screens
             //Todo : if activated control
             //If we are still hovering the same component, we search if we hover one of it's child
             UiComponent node;
-            if (HoveredControl != null && HoveredControl.InBounds(position))
+            if (HoveredControl != null && HoveredControl.InBoundsAndActive(position))
                 node = HoveredControl;
             else // If not, we search the full tree
                 node = this;
@@ -100,7 +100,7 @@ namespace Alpha.DirectX.UI.Screens
             HoveredControl = null;
         }
 
-        public override bool InBounds(Vector2I position)
+        public override bool InBoundsAndActive(Vector2I position)
         {
             return true;
         }
@@ -132,7 +132,7 @@ namespace Alpha.DirectX.UI.Screens
         public void MouseReleased(Vector2I position, int button)
         {
             if(ClickedControl == null) return;
-            if (ClickedControl.InBounds(position))
+            if (ClickedControl.InBoundsAndActive(position))
             {
                 ClickedControl.OnMouseReleasedInBounds();
                 ClickedControl.OnMouseReleased();

@@ -91,7 +91,6 @@
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
-    <Compile Include="UI\Controls\IconWithTooltip.cs" />
     <Compile Include="UI\Controls\Custom\MapTooltip.cs" />
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
     <Compile Include="UI\Controls\Custom\MinimapPanel.cs" />
@@ -205,7 +204,16 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Data\UI\castle.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\city.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\population.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\scrollbar_fix.png">

@@ -1,4 +1,6 @@
-﻿namespace Alpha.EntryPoint
+﻿using System.Linq;
+
+namespace Alpha.EntryPoint
 {
     public static class EntryPoint
     {

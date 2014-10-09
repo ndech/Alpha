@@ -70,11 +70,11 @@ namespace Alpha.DirectX.UI
             return component;
         }
 
-        public abstract bool InBounds(Vector2I position);
+        public abstract bool InBoundsAndActive(Vector2I position);
 
         internal Control GetHoveredControl(Vector2I position)
         {
-            if (!InBounds(position))
+            if (!InBoundsAndActive(position))
                 return null;
             for(int i = Controls.Count -1; i>=0; i--)
             {

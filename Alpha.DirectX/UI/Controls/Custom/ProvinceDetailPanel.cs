@@ -21,7 +21,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             return Visible;
         }
 
-        public ProvinceDetailPanel(IContext context) : base(context, "province_panel", new UniRectangle(), Color.OrangeRed)
+        public ProvinceDetailPanel(IContext context) : base(context, "province_panel", new UniRectangle(), Color.DarkSlateGray)
         {
             Visible = false;
         }
@@ -57,7 +57,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _province = province;
             _name.Text = province.Name;
-            _settlementScrollableContainer.Refresh(province.Settlements.ToList());
+            _settlementScrollableContainer.Refresh(province.Settlements.OrderByDescending(s=>s.Population).ToList());
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)

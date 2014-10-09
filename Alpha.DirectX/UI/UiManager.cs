@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Alpha.DirectX.Input;
+using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit.Math;
 using SharpDX;
@@ -15,6 +16,7 @@ namespace Alpha.DirectX.UI
     {
         private readonly List<Screen> _activeScreens;
         private readonly MousePointer _mousePointer;
+        public Tooltip VisibleTooltip { get; set; }
         public StyleManager StyleManager { get; private set; }
         public Vector2I MousePosition { get; private set; }
         private IInput _input;
@@ -27,7 +29,7 @@ namespace Alpha.DirectX.UI
         {
             _mousePointer.Type = type;
         }
-
+        
         public Vector2I ScreenSize { get; private set; }
         public UiManager()
         {
@@ -102,6 +104,9 @@ namespace Alpha.DirectX.UI
             for (int j = i; j >= 0; j--)
                 _activeScreens[j].RenderTree(deviceContext, Matrix.Identity, viewMatrix, projectionMatrix);
             _mousePointer.Render(deviceContext, viewMatrix, projectionMatrix);
+            if(VisibleTooltip!=null)
+                VisibleTooltip.RenderTooltip(deviceContext, viewMatrix, projectionMatrix);
+            VisibleTooltip = null;
         }
 
         public void Dispose()

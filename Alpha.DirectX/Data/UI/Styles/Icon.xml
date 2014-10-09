@@ -18,4 +18,7 @@
 	<style in="settlement_item_icon">
 		<baseTexture>Data/UI/default.png</baseTexture>
 	</style>
+	<style in="settlement_item_population">
+		<baseTexture>Data/UI/population.dds</baseTexture>
+	</style>
 </styles>

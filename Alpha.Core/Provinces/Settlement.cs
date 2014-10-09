@@ -9,6 +9,7 @@ namespace Alpha.Core.Provinces
         public LandProvince Province { get; private set; }
         public int Population { get; private set; }
         public double Income { get; private set; }
+        public String Type { get; private set; }
 
         public Settlement(LandProvince province)
         {
@@ -16,6 +17,7 @@ namespace Alpha.Core.Provinces
             Name = NameGenerator.GetSettlementName();
             Population = RandomGenerator.Get(20, 5000);
             Income = RandomGenerator.GetDouble(-10, 10);
+            Type = Population > 4000 ? "city" : "castle";
         }
     }
 }

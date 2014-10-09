@@ -81,7 +81,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             Vector2I mousePosition = Context.UiManager.MousePosition;
             
-            if (InBounds(mousePosition))
+            if (InBoundsAndActive(mousePosition))
             {
                 Vector3 currentLookAt = new Picker(Context, Context.ScreenSize/2).GroundIntersection;
                 Vector3 targetLookAt = new Vector3(((float)(mousePosition.X-Position.X)*Context.World.Size.X)/Size.X,0,

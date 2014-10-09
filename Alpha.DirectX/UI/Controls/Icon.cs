@@ -9,10 +9,21 @@ namespace Alpha.DirectX.UI.Controls
     internal class Icon : Control, IStylable<Icon, IconStyle>
     {
         private TexturedRectangle _texturedRectangle;
-        protected ShaderResourceView BaseTexture;
-        protected ShaderResourceView HoveredTexture;
-        protected ShaderResourceView CurrentTexture;
 
+        private ShaderResourceView _baseTexture;
+        public ShaderResourceView BaseTexture
+        {
+            get { return _baseTexture; }
+            set
+            {
+                if (CurrentTexture == _baseTexture)
+                    CurrentTexture = value;
+                _baseTexture = value;
+            }
+        }
+
+        public ShaderResourceView HoveredTexture;
+        protected ShaderResourceView CurrentTexture;
 
         public Icon(IContext context, String id)
             : base(context, id, new UniRectangle())

@@ -1,4 +1,6 @@
-﻿using Alpha.Core.Provinces;
+﻿using System;
+using System.Windows;
+using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
 using Alpha.DirectX.UI.Styles;
@@ -11,6 +13,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     {
         private Label _name;
         private Icon _icon;
+        private Tooltip _iconTooltip;
         private Settlement _settlement;
         private DynamicLabel _population;
 
@@ -22,12 +25,15 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             base.Initialize();
             var basePostion = new PositionLayout(this, 60,60, HorizontalAlignment.Left, VerticalAlignment.Middle, new Padding(5))
-                .Create(new Icon(Context, "settlement_item_icon"));
+                .Create(_icon = new Icon(Context, "settlement_item_icon"));
             basePostion.Right(28, VerticalAlignment.Top, new Padding(1))
                        .Create(_name = new Label(Context, "settlement_item_name", new UniRectangle(), ""));
             basePostion.Right(28, VerticalAlignment.Bottom, new Padding(5,0,0,8), 78)
                        .Create(_population = new DynamicLabel(Context, "settlement_item_population", new UniRectangle(), () => ""));
+            new PositionLayout(_population, 25, 25, HorizontalAlignment.Left, VerticalAlignment.Middle)
+                .Create(new Icon(Context, "population"));
             _name.Overlay = true;
+            _iconTooltip = Register(new Tooltip(Context, "tooltip", _icon, .5f, ""));
         }
 
         public void Set(Settlement item)
@@ -37,11 +43,14 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 _name.Text = "";
                 _population.Expression = () => "";
+                _iconTooltip.Text = "";
             }
             else
             {
                 _name.Text = item.Name;
                 _population.Expression = () => item.Population.ToString();
+                _icon.BaseTexture = Context.TextureManager.Create(item.Type + ".dds", "Data/UI/").TextureResource;
+                _iconTooltip.Text = item.Type;
             }
         }
 

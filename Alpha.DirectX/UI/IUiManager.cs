@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Screens;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit.Math;
@@ -17,5 +18,6 @@ namespace Alpha.DirectX.UI
         bool IsAnyKeyPressed(params Key[] keys);
         void SetScreen(Screen screen);
         void SetMousePointer(MousePointer.CursorType type);
+        Tooltip VisibleTooltip { set; }
     }
 }

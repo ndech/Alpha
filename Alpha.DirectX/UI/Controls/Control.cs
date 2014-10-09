@@ -23,10 +23,19 @@ namespace Alpha.DirectX.UI.Controls
         }
         public abstract void Initialize();
 
-        public override bool InBounds(Vector2I position)
+        public override bool InBoundsAndActive(Vector2I position)
         {
             if (Overlay || !IsVisible()) return false;
             return    position.X >= Position.X
+                   && position.X < Position.X + Size.X
+                   && position.Y >= Position.Y
+                   && position.Y < Position.Y + Size.Y;
+        }
+
+        public bool InBounds(Vector2I position)
+        {
+            return IsVisible()
+                   && position.X >= Position.X
                    && position.X < Position.X + Size.X
                    && position.Y >= Position.Y
                    && position.Y < Position.Y + Size.Y;
