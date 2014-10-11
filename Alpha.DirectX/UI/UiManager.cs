@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
-using Alpha.DirectX.Input;
+﻿using Alpha.DirectX.Input;
 using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using Screen = Alpha.DirectX.UI.Screens.Screen;
 
 namespace Alpha.DirectX.UI

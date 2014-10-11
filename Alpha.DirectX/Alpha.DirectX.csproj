@@ -90,6 +90,7 @@
     <Compile Include="Shaders\WaterShader.cs" />
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
+    <Compile Include="UI\Controls\Custom\SettlementDetailPanel.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
     <Compile Include="UI\Controls\Custom\MapTooltip.cs" />
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
@@ -211,6 +212,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\money.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\population.dds">

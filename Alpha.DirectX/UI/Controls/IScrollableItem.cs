@@ -1,4 +1,5 @@
-﻿using Alpha.Toolkit.Math;
+﻿using System;
+using Alpha.Toolkit.Math;
 
 namespace Alpha.DirectX.UI.Controls
 {
@@ -6,5 +7,6 @@ namespace Alpha.DirectX.UI.Controls
     {
         void Set(T item);
         Vector2I Size { get; }
+        Action<T> Action { get; }
     }
 }

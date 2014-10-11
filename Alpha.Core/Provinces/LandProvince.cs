@@ -37,6 +37,8 @@ namespace Alpha.Core.Provinces
             double population = _population * (1+(RandomGenerator.GetDouble(YearlyGrowth-0.5, YearlyGrowth+0.5) / 365));
             PopulationLastDayVariation = (int)population - (int)_population;
             _population = population;
+            foreach (Settlement settlement in Settlements)
+                settlement.DayUpdate();
         }
 
         public override sealed string Name { get; internal set; }
@@ -51,11 +53,12 @@ namespace Alpha.Core.Provinces
         private readonly List<Settlement> _settlements = new List<Settlement>();
         public IEnumerable<Settlement> Settlements { get { return _settlements; } }
 
-        public void FoundSettlement()
+        public Settlement FoundSettlement()
         {
             Settlement settlement = new Settlement(this);
             _settlements.Add(settlement);
             World.Notify(new NewSettlementNotification(settlement));
+            return settlement;
         }
     }
 }

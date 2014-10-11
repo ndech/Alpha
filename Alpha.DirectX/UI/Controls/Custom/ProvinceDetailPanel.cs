@@ -16,14 +16,17 @@ namespace Alpha.DirectX.UI.Controls.Custom
         private LandProvince _province;
         private Label _name;
         private ScrollableContainer<SettlementScrollableItem, Settlement> _settlementScrollableContainer;
+        private readonly SettlementDetailPanel _settlementDetailPanel;
         public override bool IsVisible()
         {
             return Visible;
         }
 
-        public ProvinceDetailPanel(IContext context) : base(context, "province_panel", new UniRectangle(), Color.DarkSlateGray)
+        public ProvinceDetailPanel(IContext context, SettlementDetailPanel settlementDetailPanel) 
+            : base(context, "province_panel", new UniRectangle(), Color.DarkSlateGray)
         {
             Visible = false;
+            _settlementDetailPanel = settlementDetailPanel;
         }
 
         public override void Initialize()
@@ -37,10 +40,13 @@ namespace Alpha.DirectX.UI.Controls.Custom
             closeButton.Clicked += () => Visible = false;
             _settlementScrollableContainer =
                 new ScrollableContainer<SettlementScrollableItem, Settlement>(Context, "settlements", 4,
-                    c => new SettlementScrollableItem(c));
-            new PositionLayout(this, _settlementScrollableContainer.Size.X, _settlementScrollableContainer.Size.Y, HorizontalAlignment.Center, VerticalAlignment.Middle)
-                .Create(_settlementScrollableContainer);
-            Button newSettlementButton = new Button(Context, "new_settlement", new UniRectangle(0.2f,_settlementScrollableContainer.Position.Y + 40, 0.6f, 40), "Create new settlement" );
+                    c => new SettlementScrollableItem(c, _settlementDetailPanel));
+            new PositionLayout(this, _settlementScrollableContainer.Size.X, _settlementScrollableContainer.Size.Y, 
+                               HorizontalAlignment.Center, VerticalAlignment.Middle)
+                              .Create(_settlementScrollableContainer);
+            Button newSettlementButton = new Button(Context, "new_settlement", 
+                new UniRectangle(0.2f,_settlementScrollableContainer.RelativePosition.Y + _settlementScrollableContainer.Size.Y + 40, 0.6f, 40), 
+                "Create new settlement" );
             Register(newSettlementButton);
             newSettlementButton.Clicked += b => Context.RegisterCommand(new FoundSettlementCommand(_province));
 
@@ -62,6 +68,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)
         {
+            if (!Visible) return false;
             if (key == Key.Delete)
             {
                 Visible = false;

@@ -21,4 +21,7 @@
 	<style in="settlement_item_population">
 		<baseTexture>Data/UI/population.dds</baseTexture>
 	</style>
+	<style in="settlement_item_income">
+		<baseTexture>Data/UI/money.dds</baseTexture>
+	</style>
 </styles>

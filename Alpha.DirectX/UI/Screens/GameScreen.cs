@@ -23,6 +23,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
         private readonly FpsCounter _counter;
         private readonly ProvinceDetailPanel _provinceDetailPanel;
+        private readonly SettlementDetailPanel _settlementDetailPanel;
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
@@ -41,8 +42,11 @@ namespace Alpha.DirectX.UI.Screens
             new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Center, VerticalAlignment.Bottom).Create(extraMinimapButtonPanel);
+            _settlementDetailPanel = new SettlementDetailPanel(context);
             new PositionLayout(this, 500, 600, HorizontalAlignment.Left, VerticalAlignment.Bottom)
-                .Create(_provinceDetailPanel = new ProvinceDetailPanel(context));
+                .Create(_provinceDetailPanel = new ProvinceDetailPanel(context, _settlementDetailPanel));
+            new PositionLayout(this, 500, 600, HorizontalAlignment.Center, VerticalAlignment.Middle)
+                .Create(_settlementDetailPanel);
             Register(new MapTooltip(context, this));
             new PositionLayout(this, 100, 25, HorizontalAlignment.Left, VerticalAlignment.Top).Create(new RealmInfo(context));
         }

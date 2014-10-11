@@ -13,8 +13,7 @@ namespace Alpha.Core.Commands
 
         internal override void Execute()
         {
-            _province.FoundSettlement();
+            _province.FoundSettlement().Population = 500;
         }
-
     }
 }

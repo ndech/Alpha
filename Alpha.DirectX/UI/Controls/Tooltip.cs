@@ -50,13 +50,14 @@ namespace Alpha.DirectX.UI.Controls
             _rectangle.Dispose();
         }
 
-        public Tooltip(IContext context, String id, Control associatedControl, double delay, string text)
+        public Tooltip(IContext context, String id, Control associatedControl, double delay, string text = null)
             : base(context, id, new UniRectangle())
         {
             _associatedControl = associatedControl;
             _text = context.TextManager.Create("Courrier", 14, "",
                 new Vector2I(300, 500), Color.Wheat, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(8));
-            _text.Content = text;
+            if(text != null)
+                _text.Content = text;
             Texture texture = Context.TextureManager.Create("tooltip.png", @"Data/UI/");
             _rectangle = new TexturedExtensibleRectangle(Context, new Vector2I(), texture, 8);
             _delay = delay;
