@@ -9,12 +9,14 @@ namespace Alpha.DirectX.UI.Controls
         public UniRectangle Coordinates { get; set; }
         public bool Hovered { get; protected set; }
         public bool Overlay { get; set; }
+        public bool Visible { get; set; }
         protected Control(IContext context, String id, UniRectangle coordinates)
             : base(context, id)
         {
             Coordinates = coordinates;
             Overlay = false;
             Hovered = false;
+            Visible = true;
         }
 
         public void LoadStyle()
@@ -93,7 +95,7 @@ namespace Alpha.DirectX.UI.Controls
 
         public override bool IsVisible()
         {
-            return true;
+            return Visible;
         }
     }
 }

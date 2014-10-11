@@ -12,15 +12,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
 {
     class ProvinceDetailPanel : Panel
     {
-        public bool Visible { get; set; }
         private LandProvince _province;
         private Label _name;
         private ScrollableContainer<SettlementScrollableItem, Settlement> _settlementScrollableContainer;
         private readonly SettlementDetailPanel _settlementDetailPanel;
-        public override bool IsVisible()
-        {
-            return Visible;
-        }
 
         public ProvinceDetailPanel(IContext context, SettlementDetailPanel settlementDetailPanel) 
             : base(context, "province_panel", new UniRectangle(), Color.DarkSlateGray)

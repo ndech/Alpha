@@ -57,6 +57,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _population.Expression = () => "";
                 _iconTooltip.Text = "";
                 _icon.Visible = false;
+                _population.Visible = false;
+                _income.Visible = false;
             }
             else
             {
@@ -67,6 +69,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _populationTooltip.Text = item.Population + " inhabitants" + Environment.NewLine +
                                           "Growing fast as fuck";
                 _icon.Visible = true;
+                _population.Visible = true;
+                _income.Visible = true;
             }
         }
 

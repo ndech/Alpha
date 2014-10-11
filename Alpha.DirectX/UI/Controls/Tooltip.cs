@@ -11,8 +11,6 @@ namespace Alpha.DirectX.UI.Controls
 {
     class Tooltip : Control
     {
-        private bool Visible { get; set; }
-
         private TexturedExtensibleRectangle _rectangle;
         private double _delay;
         private double _cooldown;

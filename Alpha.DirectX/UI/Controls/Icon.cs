@@ -29,6 +29,7 @@ namespace Alpha.DirectX.UI.Controls
             : base(context, id, new UniRectangle())
         {
             Overlay = true;
+            Visible = true;
         }
 
         public override void Initialize()

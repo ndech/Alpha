@@ -10,14 +10,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
 {
     class SettlementDetailPanel : Panel
     {
-        public bool Visible { get; set; }
         private Settlement _settlement;
         private Label _name;
-        public override bool IsVisible()
-        {
-            return Visible;
-        }
-
         public SettlementDetailPanel(IContext context)
             : base(context, "settlement_panel", new UniRectangle(), Color.LightSlateGray)
         {
@@ -37,6 +31,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         public void ShowSettlement(Settlement settlement)
         {
+            if(settlement == null) return;
             Visible = true;
             _settlement = settlement;
             _name.Text = settlement.Name;
