@@ -37,10 +37,12 @@ namespace Alpha.DirectX.UI.Controls.Custom
                        .Create(_population = new DynamicLabel(Context, "settlement_item_population", new UniRectangle(), () => ""));
             new PositionLayout(_population, 25, 25, HorizontalAlignment.Left, VerticalAlignment.Middle)
                 .Create(new Icon(Context, "population"));
+            _population.Overlay = true;
             basePostion.Right(28, VerticalAlignment.Bottom, new Padding(96, 0, 0, 8), 78)
                        .Create(_income = new DynamicLabel(Context, "settlement_item_income", new UniRectangle(), () => ""));
             new PositionLayout(_income, 25, 25, HorizontalAlignment.Left, VerticalAlignment.Middle)
                 .Create(new Icon(Context, "income"));
+            _income.Overlay = true;
             _name.Overlay = true;
             _iconTooltip = Register(new Tooltip(Context, "tooltip", _icon, .5f, ""));
             _populationTooltip = Register(new Tooltip(Context, "tooltip", _population, 0.5f, ""));
@@ -54,6 +56,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _name.Text = "";
                 _population.Expression = () => "";
                 _iconTooltip.Text = "";
+                _icon.Visible = false;
             }
             else
             {
@@ -63,6 +66,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _iconTooltip.Text = item.Type+ " of " +item.Name;
                 _populationTooltip.Text = item.Population + " inhabitants" + Environment.NewLine +
                                           "Growing fast as fuck";
+                _icon.Visible = true;
             }
         }
 

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Input;
-using Alpha.Core.Commands;
+﻿using System.Windows.Input;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
