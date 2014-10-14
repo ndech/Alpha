@@ -36,7 +36,7 @@ namespace Alpha.Core
             Int32 height = 1000;
             feedback("Generating base shapes");
             world.Size = new Vector2I(width, height);
-            List<VoronoiSite> sites = Generator.Create(width, height, 1000, 1, 1256);
+            List<VoronoiSite> sites = Generator.Create(width, height, 3000, 1, 1256);
             feedback("Creating provinces");
             foreach (VoronoiSite site in sites)
             {
@@ -90,7 +90,7 @@ namespace Alpha.Core
                 }
             }
             feedback("Forging realms");
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
                 world.RealmManager.CreateRealm(new Realm("Realm " + i));
             feedback("Spreading realms");
             List<Tuple<Vector3D, Realm>> realmPosition = 

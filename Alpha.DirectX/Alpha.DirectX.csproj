@@ -88,6 +88,7 @@
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
     <Compile Include="Shaders\WaterShader.cs" />
+    <Compile Include="UI\Controls\Custom\BuildingScrollableItem.cs" />
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
     <Compile Include="UI\Controls\Custom\SettlementDetailPanel.cs" />

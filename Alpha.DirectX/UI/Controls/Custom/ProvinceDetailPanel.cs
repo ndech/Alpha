@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using Alpha.Core.Commands;
 using Alpha.Core.Provinces;
@@ -16,6 +17,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
         private Label _name;
         private ScrollableContainer<SettlementScrollableItem, Settlement> _settlementScrollableContainer;
         private readonly SettlementDetailPanel _settlementDetailPanel;
+        private Label _resourceText;
 
         public ProvinceDetailPanel(IContext context, SettlementDetailPanel settlementDetailPanel) 
             : base(context, "province_panel", new UniRectangle(), Color.DarkSlateGray)
@@ -45,12 +47,18 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Register(newSettlementButton);
             newSettlementButton.Clicked += b => Context.RegisterCommand(new FoundSettlementCommand(_province, _province.AvailableSettlementTypes.First()));
 
+            _resourceText = new Label(Context, "new_settlement",
+                new UniRectangle(0.2f, _settlementScrollableContainer.RelativePosition.Y + _settlementScrollableContainer.Size.Y + 80, 0.6f, 40),
+                "");
+            Register(_resourceText);
+
             Context.NotificationResolver.NewSettlement +=
                 s =>
                 {
                     if (Visible && s.Province == _province) ShowProvince(_province);
                     _settlementScrollableContainer.ShowLast();
                 };
+
         }
 
         public void ShowProvince(LandProvince province)
@@ -59,6 +67,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _province = province;
             _name.Text = province.Name;
             _settlementScrollableContainer.Refresh(province.Settlements.OrderByDescending(s=>s.Population).ToList());
+            _resourceText.Text = String.Join(", ", province.Resources.Select(r => r.Type.Name));
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)
