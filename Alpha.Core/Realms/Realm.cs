@@ -31,7 +31,7 @@ namespace Alpha.Core.Realms
 
         void IDailyUpdatableItem.DayUpdate()
         {
-
+            (Economy as IDailyUpdatableItem).DayUpdate();
         }
 
         public bool IsIndependant { get { return Liege == null; } }

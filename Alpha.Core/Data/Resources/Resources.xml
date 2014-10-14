@@ -1,0 +1,29 @@
+﻿<resources>
+	<resource id="gold">
+		<name>Gold</name>
+		<probability>
+			<base>0.1</base>
+		</probability>
+	</resource>
+	<resource id="silver">
+		<name>Silver</name>
+		<probability>
+			<base>0.5</base>
+		</probability>
+	</resource>
+	<resource id="timber">
+		<name>Timber</name>
+		<probability>
+			<base>2</base>
+		</probability>
+	</resource>
+	<resource id="wheat">
+		<name>Wheat</name>
+		<probability>
+			<base>5</base>
+			<modifiers>
+				<multiplier factor="3">LandProvince.IsCoastal</multiplier>
+			</modifiers>
+		</probability>
+	</resource>
+</resources>

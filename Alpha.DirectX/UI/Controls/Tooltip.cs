@@ -53,7 +53,7 @@ namespace Alpha.DirectX.UI.Controls
         {
             _associatedControl = associatedControl;
             _text = context.TextManager.Create("Courrier", 14, "",
-                new Vector2I(300, 500), Color.Wheat, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(8));
+                new Vector2I(400, 500), Color.Wheat, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(8));
             if(text != null)
                 _text.Content = text;
             Texture texture = Context.TextureManager.Create("tooltip.png", @"Data/UI/");

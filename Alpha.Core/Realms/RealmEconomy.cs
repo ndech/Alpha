@@ -10,7 +10,7 @@
 
         void IDailyUpdatableItem.DayUpdate()
         {
-
+            Treasury += 2;
         }
     }
 }

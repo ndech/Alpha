@@ -1,4 +1,5 @@
-﻿using Alpha.Toolkit;
+﻿using System.Collections.Generic;
+using Alpha.Toolkit;
 
 namespace Alpha.Core
 {

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Globalization;
+using System.Windows.Input;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Controls;
 using Alpha.DirectX.UI.Controls.Custom;
@@ -37,7 +38,9 @@ namespace Alpha.DirectX.UI.Screens
                 () => context.World.Calendar.CurrentDate.ToString()));
             Register(new DynamicLabel(context, "fps", new UniRectangle(100, 0, 100, 50),
                 () => _counter.Value + "FPS"));
-
+            new PositionLayout(this, 200, 100, HorizontalAlignment.Center, VerticalAlignment.Top)
+                .Create(new DynamicLabel(Context, "money", new UniRectangle(),
+                    () => Context.Realm.Economy.Treasury.ToString(CultureInfo.InvariantCulture)));
             MinimapPanel minimapPanel = new MinimapPanel(context, _terrain);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Right, VerticalAlignment.Bottom).Create(minimapPanel);
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);

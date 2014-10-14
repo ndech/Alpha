@@ -1,6 +1,6 @@
 using System;
 
-namespace Alpha.Core.Events
+namespace Alpha.Core.Dynamic
 {
     class DynamicModifier<T> : IModifier<T>
     {

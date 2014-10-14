@@ -1,0 +1,11 @@
+﻿<buildings>
+	<building id ="fishing_port">
+		<name>Fishing port</name>
+		<constructionTime>
+			<base>100</base>
+		</constructionTime>
+		<cost>
+			<base>150</base>
+		</cost>
+	</building>
+</buildings>

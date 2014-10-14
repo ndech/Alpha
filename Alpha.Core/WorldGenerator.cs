@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.Common;
+using Alpha.Core.Dynamic;
 using Alpha.Core.Fleets;
 using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
@@ -27,10 +28,13 @@ namespace Alpha.Core
 
         IProcessableWorld IWorldGenerator.Generate(Action<String> feedback)
         {
-            feedback("Generating base shapes");
+            feedback("Initializing Script Engine");
+            Engine.Execute<bool>("true",Engine.NewSession);
+            feedback("Creating world");
             World world = new World(_dailyNotifications, _liveNotifications, _dataLock);
             Int32 width = 2000;
             Int32 height = 1000;
+            feedback("Generating base shapes");
             world.Size = new Vector2I(width, height);
             List<VoronoiSite> sites = Generator.Create(width, height, 1000, 1, 1256);
             feedback("Creating provinces");
@@ -56,6 +60,33 @@ namespace Alpha.Core
                     if (commonPoints.Count != 2)
                         continue;
                     province.CreateAdjacency(new ProvinceAdjacency(province, neighbourgProvince, commonPoints));
+                }
+            }
+            feedback("Planting fields");
+            foreach (LandProvince province in world.ProvinceManager.LandProvinces)
+            {
+                int numberOfResources = RandomGenerator.Get(1, 3);
+                List<Tuple<double, ResourceType>> resourceTuples =
+                    world.ProvinceManager.ResourceTypes.Select(
+                        r => new Tuple<double, ResourceType>(r.Probability.For(province), r)).ToList();
+                for (; numberOfResources > 0; numberOfResources--)
+                {
+                    double cumulativeProbability = resourceTuples.Sum(r => r.Item1);
+                    double position = RandomGenerator.GetDouble(0, cumulativeProbability);
+                    Tuple<double, ResourceType> value = null;
+                    double cursor = 0;
+                    foreach (Tuple<double, ResourceType> resourceTuple in resourceTuples)
+                    {
+                        if (position >= cursor && position <= cursor + resourceTuple.Item1)
+                        {
+                            value = resourceTuple;
+                            break;
+                        }
+                        cursor += resourceTuple.Item1;
+                    }
+                    value = value ?? resourceTuples.Last();
+                    resourceTuples.Remove(value);
+                    province.AddResource(value.Item2);
                 }
             }
             feedback("Forging realms");

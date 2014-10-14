@@ -40,6 +40,12 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Roslyn.Compilers">
+      <HintPath>..\Roslyn\Roslyn.Compilers.dll</HintPath>
+    </Reference>
+    <Reference Include="Roslyn.Compilers.CSharp">
+      <HintPath>..\Roslyn\Roslyn.Compilers.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,17 +65,19 @@
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Dynamic\Engine.cs" />
+    <Compile Include="Dynamic\ScriptContext.cs" />
     <Compile Include="Events\BaseEvent.cs" />
     <Compile Include="Events\DelayedEvent.cs" />
-    <Compile Include="Events\DynamicModifier.cs" />
+    <Compile Include="Dynamic\DynamicModifier.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Events\IEvent.cs" />
     <Compile Include="Events\IEventable.cs" />
-    <Compile Include="Events\IModifier.cs" />
+    <Compile Include="Dynamic\IModifier.cs" />
     <Compile Include="Events\InvalidEventDataExceptioncs.cs" />
     <Compile Include="Events\Outcome.cs" />
-    <Compile Include="Events\StaticModifier.cs" />
+    <Compile Include="Dynamic\StaticModifier.cs" />
     <Compile Include="Events\TriggeredEvent.cs" />
     <Compile Include="Events\XmlEventParsingExtension.cs" />
     <Compile Include="Fleets\Fleet.cs" />
@@ -88,7 +96,13 @@
     <Compile Include="Notifications\NewFleetNotification.cs" />
     <Compile Include="Notifications\NewSettlementNotification.cs" />
     <Compile Include="Notifications\Notification.cs" />
+    <Compile Include="Dynamic\DynamicValue.cs" />
+    <Compile Include="Provinces\Building.cs" />
+    <Compile Include="Provinces\Construction.cs" />
+    <Compile Include="Provinces\Resource.cs" />
+    <Compile Include="Provinces\ResourceType.cs" />
     <Compile Include="Provinces\Settlement.cs" />
+    <Compile Include="Provinces\SettlementType.cs" />
     <Compile Include="RealmToken.cs" />
     <Compile Include="Provinces\LandProvince.cs" />
     <Compile Include="Provinces\PathfindingNode.cs" />
@@ -119,12 +133,21 @@
       <Name>Alpha.WorldGeneration</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Data\Events\FleetEvents.xml">
+    <Folder Include="Data\Settlements\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Buildings\Buildings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Events\FleetEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Resources\Resources.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

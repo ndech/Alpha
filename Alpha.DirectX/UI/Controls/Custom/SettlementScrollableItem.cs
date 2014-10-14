@@ -55,6 +55,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 _name.Text = "";
                 _population.Expression = () => "";
+                _income.Expression = () => "";
                 _iconTooltip.Text = "";
                 _icon.Visible = false;
                 _population.Visible = false;
@@ -64,10 +65,11 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 _name.Text = item.Name;
                 _population.Expression = () => item.Population.ToString(CultureInfo.InvariantCulture);
-                _icon.BaseTexture = Context.TextureManager.Create(item.Type + ".dds", "Data/UI/").TextureResource;
-                _iconTooltip.Text = item.Type+ " of " +item.Name;
+                _icon.BaseTexture = Context.TextureManager.Create(item.Type.Id + ".dds", "Data/UI/").TextureResource;
+                _iconTooltip.Text = item.Type.Name+ " of " +item.Name;
                 _populationTooltip.Text = item.Population + " inhabitants" + Environment.NewLine +
                                           "Growing fast as fuck";
+                _income.Expression = () => string.Format("{0:N1}", item.Income);
                 _icon.Visible = true;
                 _population.Visible = true;
                 _income.Visible = true;

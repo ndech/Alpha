@@ -20,4 +20,10 @@
 		<font>Consolas</font>
 		<fontSize>22</fontSize>
 	</style>
+	<style in="settlement_item_income">
+		<horizontalAlignment>Right</horizontalAlignment>
+		<textColor>LightGray</textColor>
+		<font>Consolas</font>
+		<fontSize>22</fontSize>
+	</style>
 </styles>

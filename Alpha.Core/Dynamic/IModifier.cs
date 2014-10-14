@@ -1,4 +1,4 @@
-﻿namespace Alpha.Core.Events
+﻿namespace Alpha.Core.Dynamic
 {
     interface IModifier<in T>
     {

@@ -10,7 +10,7 @@ namespace Alpha.Core.Realms
 
         internal override void DayUpdate(DataLock dataLock)
         {
-            _realms.ForEach(realm=>dataLock.Write(()=>((IDailyUpdatableItem)realm).DayUpdate()));
+            _realms.DayUpdate(dataLock);
         }
 
         internal RealmManager(World world) : base(world)

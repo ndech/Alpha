@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Alpha.Core.Notifications;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
@@ -20,8 +21,9 @@ namespace Alpha.Core.Provinces
                 (float)RandomGenerator.GetDouble(0, 1), 
                 (float)RandomGenerator.GetDouble(0, 1),
                 (float)RandomGenerator.GetDouble(0, 1));
-            for (int i = 0; i < RandomGenerator.Get(1, 8); i++)
-                FoundSettlement();
+            Resources = new List<Resource>();
+            //for (int i = 0; i < RandomGenerator.Get(1, 8); i++)
+            //    FoundSettlement();
         }
 
         public Int32 Population
@@ -37,6 +39,7 @@ namespace Alpha.Core.Provinces
             double population = _population * (1+(RandomGenerator.GetDouble(YearlyGrowth-0.5, YearlyGrowth+0.5) / 365));
             PopulationLastDayVariation = (int)population - (int)_population;
             _population = population;
+
             foreach (Settlement settlement in Settlements)
                 settlement.DayUpdate();
         }
@@ -53,12 +56,26 @@ namespace Alpha.Core.Provinces
         private readonly List<Settlement> _settlements = new List<Settlement>();
         public IEnumerable<Settlement> Settlements { get { return _settlements; } }
 
-        public Settlement FoundSettlement()
+        public Settlement FoundSettlement(SettlementType type)
         {
-            Settlement settlement = new Settlement(this);
+            Owner.Economy.Treasury -= type.Cost;
+            Settlement settlement = new Settlement(this, type);
             _settlements.Add(settlement);
             World.Notify(new NewSettlementNotification(settlement));
             return settlement;
+        }
+
+        public IEnumerable<SettlementType> AvailableSettlementTypes { get
+        {
+            return World.ProvinceManager.SettlementTypes;
+        } }
+
+        public bool IsCoastal { get { return Adjacencies.Any(a => a.Neighbourg is SeaProvince); } }
+        public List<Resource> Resources { get; set; }
+
+        public void AddResource(ResourceType type)
+        {
+            Resources.Add(new Resource(type));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Alpha.Core.Fleets;
 using Alpha.Core.Movement;
 using Alpha.Toolkit;
@@ -16,6 +17,11 @@ namespace Alpha.Core.Provinces
         public IEnumerable<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
         public IEnumerable<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
 
+        internal List<SettlementType> SettlementTypes { get; private set; }
+        internal List<ResourceType> ResourceTypes { get; private set; }
+        internal List<Building> Buildings { get; private set; } 
+
+
         public Province GetById(String id)
         {
             return _provinces.Single(p => p.Id.Equals(id));
@@ -23,12 +29,19 @@ namespace Alpha.Core.Provinces
 
         internal ProvinceManager(World world) : base(world)
         {
-            
+            SettlementTypes = new List<SettlementType>
+            {
+                new SettlementType("sea_settlement", "Coastal settlement", "Living off the bounties of the sea, " +
+                                                                           "this group of people may become the fishermen who will feed your realm" +
+                                                                           "or the sailors who will discover plentiful lands.", 60)
+            };
+            ResourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
+            Buildings = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new Building(x)).ToList();
         }
 
         internal override void DayUpdate(DataLock dataLock)
         {
-            _provinces.ForEach(province => dataLock.Write(() => ((IDailyUpdatableItem)province).DayUpdate()));
+            _provinces.DayUpdate(dataLock);
         }
 
         internal void CreateProvince(Province province)
