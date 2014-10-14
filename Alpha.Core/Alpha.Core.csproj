@@ -62,6 +62,7 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\DestroyFleetCommand.cs" />
     <Compile Include="Commands\FoundSettlementCommand.cs" />
+    <Compile Include="Commands\NewConstructionCommand.cs" />
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Component.cs" />

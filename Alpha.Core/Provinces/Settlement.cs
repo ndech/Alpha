@@ -21,6 +21,7 @@ namespace Alpha.Core.Provinces
             Population = RandomGenerator.Get(1000, 6000);
             Income = RandomGenerator.GetDouble(-10, 10);
             Constructions = new List<Construction>();
+            Buildings = new List<Building>();
             Type = type;
         }
 
@@ -30,10 +31,16 @@ namespace Alpha.Core.Provinces
             Constructions.DayUpdate();
         }
 
-        public void ConstructionCompleted(Construction construction)
+        internal void ConstructionCompleted(Construction construction)
         {
             Buildings.Add(construction.Building);
             Constructions.Remove(construction);
+        }
+
+        internal void StartConstruction(Building building)
+        {
+            Province.Owner.Pay(building.Cost(this));
+            Constructions.Add(new Construction(building, this));
         }
     }
 }

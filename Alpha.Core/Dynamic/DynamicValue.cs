@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Alpha.Core.Dynamic
 {
-    public class DynamicValue<T>
+    internal class DynamicValue<T>
     {
         private readonly List<IModifier<T>> _modifiers;
         private readonly Double _base;

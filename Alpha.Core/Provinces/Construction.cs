@@ -9,7 +9,7 @@
         {
             Building = building;
             _settlement = settlement;
-            RemainingTime = (int)building.ConstructionTime.For(settlement);
+            RemainingTime = building.ConstructionDuration(settlement);
         }
 
         void IDailyUpdatableItem.DayUpdate()

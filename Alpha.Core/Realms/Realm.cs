@@ -93,5 +93,15 @@ namespace Alpha.Core.Realms
         {
             return Name;
         }
+
+        public void Pay(int cost)
+        {
+            Economy.Treasury -= cost;
+        }
+
+        public bool CanAfford(int cost)
+        {
+            return Economy.Treasury >= cost;
+        }
     }
 }
