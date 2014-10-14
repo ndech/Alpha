@@ -4,18 +4,20 @@
     {
         public Building Building { get; private set; }
         private readonly Settlement _settlement;
-        public int RemainingTime { get; set; }
+        public int ConstructionDuration { get; private set; }
+        public int Elapsed { get; set; }
         public Construction(Building building, Settlement settlement)
         {
             Building = building;
             _settlement = settlement;
-            RemainingTime = building.ConstructionDuration(settlement);
+            ConstructionDuration = building.ConstructionDuration(settlement);
+            Elapsed = 0;
         }
 
         void IDailyUpdatableItem.DayUpdate()
         {
-            RemainingTime--;
-            if (RemainingTime <= 0)
+            Elapsed++;
+            if (Elapsed >= ConstructionDuration)
                 _settlement.ConstructionCompleted(this);
         }
     }
