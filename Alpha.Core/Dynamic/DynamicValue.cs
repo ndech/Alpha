@@ -42,7 +42,7 @@ namespace Alpha.Core.Dynamic
                     _modifiers.Add(new DynamicModifier<T>(
                         Engine.Execute<Func<T, Double>>("(" + scriptIdentifier + ") => " + xmlModifier.Value, Engine.NewSession), type));
                 else
-                    _modifiers.Add(new StaticModifier<T>(Double.Parse(xmlModifier.Attribute("factor").Value),
+                    _modifiers.Add(new StaticModifier<T>(Double.Parse(xmlModifier.Attribute("factor").Value, CultureInfo.InvariantCulture),
                         Engine.Execute<Func<T, Boolean>>("(" + scriptIdentifier + ") => " + xmlModifier.Value, Engine.NewSession), type));
             }
         }

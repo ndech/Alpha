@@ -32,11 +32,12 @@ namespace Alpha.Core
             Engine.Execute<bool>("true",Engine.NewSession);
             feedback("Creating world");
             World world = new World(_dailyNotifications, _liveNotifications, _dataLock);
-            Int32 width = 2000;
-            Int32 height = 1000;
+            Int32 width = ConfigurationManager.Config.WorldWidth;
+            Int32 height = ConfigurationManager.Config.WorldHeight;
+            Int32 zoneCount = ConfigurationManager.Config.NumberOfRegions;
             feedback("Generating base shapes");
             world.Size = new Vector2I(width, height);
-            List<VoronoiSite> sites = Generator.Create(width, height, 3000, 1, 1256);
+            List<VoronoiSite> sites = Generator.Create(width, height, zoneCount, 1, 1256);
             feedback("Creating provinces");
             foreach (VoronoiSite site in sites)
             {

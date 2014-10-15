@@ -8,4 +8,34 @@
 			<base>150</base>
 		</cost>
 	</building>
+	<building id="timber_palisade">
+		<name>Timber Palisade</name>
+		<constructionTime>
+			<base>100</base>
+		</constructionTime>
+		<cost>
+			<base>100</base>
+			<modifiers>
+				<multiplier factor="0.8">Settlement.Province.HasResource("timber")</multiplier>
+			</modifiers>
+		</cost>
+		<resources>
+			<resource type ="timber">300</resource>
+		</resources>
+	</building>
+	<building id="drystone_low_wall">
+		<name>Drystone low wall</name>
+		<constructionTime>
+			<base>200</base>
+		</constructionTime>
+		<cost>
+			<base>200</base>
+			<modifiers>
+				<multiplier factor="0.8">Settlement.Province.HasResource("stone")</multiplier>
+			</modifiers>
+		</cost>
+		<resources>
+			<resource type ="stone">500</resource>
+		</resources>
+	</building>
 </buildings>

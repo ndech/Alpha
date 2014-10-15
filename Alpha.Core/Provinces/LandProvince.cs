@@ -77,5 +77,10 @@ namespace Alpha.Core.Provinces
         {
             Resources.Add(new Resource(type));
         }
+
+        public bool HasResource(String key)
+        {
+            return Resources.Any(r => r.Type.Id == key);
+        }
     }
 }

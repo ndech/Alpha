@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Alpha.Common;
 using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D;

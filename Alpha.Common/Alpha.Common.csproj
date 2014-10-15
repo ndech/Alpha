@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationManager.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="IProcessableWorld.cs" />
     <Compile Include="IWorldGenerator.cs" />
