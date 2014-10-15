@@ -26,4 +26,10 @@
 			</modifiers>
 		</probability>
 	</resource>
+	<resource id="stone">
+		<name>Stone</name>
+		<probability>
+			<base>5</base>
+		</probability>
+	</resource>
 </resources>

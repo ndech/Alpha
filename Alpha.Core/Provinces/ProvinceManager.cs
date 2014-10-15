@@ -11,7 +11,7 @@ namespace Alpha.Core.Provinces
 {
     public class ProvinceManager : Manager
     {
-
+        private Dictionary<String, Province> _provincesDictionary = new Dictionary<string, Province>(); 
         private readonly List<Province> _provinces = new List<Province>();
         public IEnumerable<Province> Provinces { get { return _provinces; } }
         public IEnumerable<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
@@ -24,7 +24,7 @@ namespace Alpha.Core.Provinces
 
         public Province GetById(String id)
         {
-            return _provinces.Single(p => p.Id.Equals(id));
+            return _provincesDictionary[id];
         }
 
         internal ProvinceManager(World world) : base(world)
@@ -47,6 +47,7 @@ namespace Alpha.Core.Provinces
         internal void CreateProvince(Province province)
         {
             _provinces.Add(province);
+            _provincesDictionary.Add(province.Id, province);
         }
 
         public List<Step> CalculatePath(Fleet fleet, Province destination)
