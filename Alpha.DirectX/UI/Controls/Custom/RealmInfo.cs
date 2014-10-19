@@ -6,7 +6,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     class RealmInfo : Panel
     {
         public RealmInfo(IContext context) 
-            : base(context, "realm_info", new UniRectangle(), new Color(context.Realm.Color.Item1, context.Realm.Color.Item2,context.Realm.Color.Item3))
+            : base(context, "realm_info", new UniRectangle(), context.Realm.Color)
         {
 
         }

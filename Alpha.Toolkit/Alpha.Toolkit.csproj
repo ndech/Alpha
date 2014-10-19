@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomColor.cs" />
     <Compile Include="DebugConsole.cs" />
     <Compile Include="ColorParser.cs" />
     <Compile Include="CpuUsageCounter.cs" />

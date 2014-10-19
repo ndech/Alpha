@@ -69,8 +69,6 @@ namespace Alpha.Core
                 }
             }
             feedback("Processing clusters");
-            int minLimit = 6;
-            int maxLimit = 9;
             foreach (Cluster cluster in world.ProvinceManager.Provinces.Select(p=>p.Cluster).Distinct().ToList())
             
             {
@@ -107,11 +105,9 @@ namespace Alpha.Core
                     List<ProvinceCluster> subsetClusters = clusters.Where(c => newProvince.Adjacencies.Select(a => a.Neighbourg).Any(c.Contains)).Distinct().ToList();
                     subsetClusters.RandomItem().Add(newProvince);
                 }
-                bool Changed = false;
-                int OptimumFunction = clusters.Sum(c => c.Count*c.Count);
+                int OptimumFunction;
                 do
                 {
-                    Changed = false;
                     OptimumFunction = clusters.Sum(c => c.Count * c.Count);
                     foreach (ProvinceCluster currentCluster in clusters.OrderByDescending(c=>c.Count))
                     {
@@ -136,7 +132,6 @@ namespace Alpha.Core
                                     break;
                                 if (IsContiguousCluster(currentCluster, switchingProvince))
                                 {
-                                    Changed = true;
                                     neighbourgCluster.Add(switchingProvince);
                                     currentCluster.Remove(switchingProvince);
                                     break;
@@ -145,7 +140,6 @@ namespace Alpha.Core
                         }
                     }
                 } while (OptimumFunction != clusters.Sum(c => c.Count * c.Count));
-                Changed = false;
             }
             feedback("Planting fields");
             foreach (LandProvince province in world.ProvinceManager.LandProvinces)

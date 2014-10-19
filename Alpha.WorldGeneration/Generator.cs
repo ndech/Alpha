@@ -15,7 +15,7 @@ namespace Alpha.WorldGeneration
     }
     public static class Generator
     {
-        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations, int seed, bool outputPictures = false)
+        public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations, int seed)
         {
             RandomGenerator.ResetSeed(seed);
             Dictionary<Vector, VoronoiSite> points = new Dictionary<Vector, VoronoiSite>(pointCount);
@@ -75,11 +75,6 @@ namespace Alpha.WorldGeneration
                     }
                 }
             }
-            if (outputPictures)
-            {
-                Draw("terrain", width, height, sites, RenderMode.Terrain);
-                Draw("clusters", width, height, sites, RenderMode.Cluster);
-            }
             DebugConsole.WriteLine("Land tiles  : " + sites.Count(s => !s.IsWater) +" ("+ String.Format("{0:P}", (float)sites.Count(s => !s.IsWater) / sites.Count)+")");
             DebugConsole.WriteLine("Water tiles : " + sites.Count(s => s.IsWater) + " (" + String.Format("{0:P}", (float)sites.Count(s => s.IsWater) / sites.Count)+")");
             return sites;
@@ -100,38 +95,6 @@ namespace Alpha.WorldGeneration
             foreach (VoronoiSite site in points.Values)
                 site.Reorder(width, height);
             return points.Values.ToList();
-        }
-
-        private static void Draw(string fileName, int width, int height, List<VoronoiSite> sites, RenderMode mode)
-        {
-            Bitmap bitmap = new Bitmap(width+1, height+1);
-            Graphics graphics = Graphics.FromImage(bitmap);
-            graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            graphics.Clear(Color.Black);
-
-            foreach (VoronoiSite site in sites)
-            {
-                if(site.VoronoiPoints.Count==0)
-                    return;
-                PointF[] list = new PointF[site.VoronoiPoints.Count];
-                for (int i = 0; i < site.VoronoiPoints.Count; i++)
-                    list[i] = new PointF((float)site.VoronoiPoints[i][0], (float)site.VoronoiPoints[i][1]);
-                if (mode == RenderMode.Terrain)
-                {
-                    if (site.IsWater)
-                        graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 156 - 5 * site.ShoreDistance, 203)), list);
-                    else
-                        graphics.FillPolygon(new SolidBrush(Color.FromArgb(73, 210 - 5 * site.ShoreDistance, 49)), list);
-                }
-                else if (mode == RenderMode.Cluster)
-                {
-                    if (site.Cluster != null)
-                        graphics.FillPolygon(new SolidBrush(site.Cluster.Color), list);
-                    else
-                        graphics.FillPolygon(new SolidBrush(Color.DarkGray), list);
-                }
-                graphics.DrawPolygon(new Pen(Color.Black), list);
-            }
         }
     }
 }
