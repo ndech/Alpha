@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Alpha.WorldGeneration;
 
 namespace Alpha.Core.Provinces
 {
@@ -13,7 +14,7 @@ namespace Alpha.Core.Provinces
         protected override void DayUpdate()
         { }
 
-        public SeaProvince(World world, List<Zone> zones) : base(world, zones)
+        public SeaProvince(World world, List<Zone> zones, Cluster cluster) : base(world, zones, cluster)
         {
             Name = "Sea";
         }

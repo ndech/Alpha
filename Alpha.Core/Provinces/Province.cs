@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
+using Alpha.WorldGeneration;
 
 namespace Alpha.Core.Provinces
 {
     public abstract class Province : Component, IDailyUpdatableItem, IEquatable<Province>
     {
-        protected Province(World world, List<Zone> zones) : base(world)
+        public Cluster Cluster { get; set; }
+
+        protected Province(World world, List<Zone> zones, Cluster cluster) : base(world)
         {
+            Cluster = cluster;
             _zones = zones;
             Center = zones.RandomItem().Center;
             NumericId = IdSequence;
@@ -56,5 +61,7 @@ namespace Alpha.Core.Provinces
         {
             return Vector3D.Distance(Center, other.Center);
         }
+
+        public IEnumerable<Province> Neighbourgs { get { return Adjacencies.Select(a => a.Neighbourg); } } 
     }
 }

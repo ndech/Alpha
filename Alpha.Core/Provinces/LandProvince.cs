@@ -4,6 +4,7 @@ using System.Linq;
 using Alpha.Core.Notifications;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
+using Alpha.WorldGeneration;
 
 namespace Alpha.Core.Provinces
 {
@@ -12,7 +13,7 @@ namespace Alpha.Core.Provinces
         private double _population = 1000;
         public int PopulationLastDayVariation { get; private set; }
 
-        public LandProvince(World world, List<Zone> zones) : base(world, zones)
+        public LandProvince(World world, List<Zone> zones, Cluster cluster) : base(world, zones, cluster)
         {
             _population = RandomGenerator.Get(1000, 100000);
             YearlyGrowth = RandomGenerator.GetDouble(-0.3, 0.9);
