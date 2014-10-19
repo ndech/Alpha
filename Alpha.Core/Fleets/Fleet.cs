@@ -12,7 +12,7 @@ namespace Alpha.Core.Fleets
 {
     public class Fleet : Component, IDailyUpdatableItem, IMovable, IEventable
     {
-        internal Fleet(World world, String name, Realm owner, Province location, List<Ship> ships) : base(world)
+        internal Fleet(World world, String name, Realm owner, Zone location, List<Ship> ships) : base(world)
         {
             Id = IdSequence;
             Name = name;
@@ -25,8 +25,8 @@ namespace Alpha.Core.Fleets
         public IEnumerable<Ship> Ships { get { return _ships; } }
         public int ShipCount { get { return _ships.Count; } }
         public Realm Owner { get; internal set; }
-        private Province _location;
-        public Province Location
+        private Zone _location;
+        public Zone Location
         {
             get
             {
@@ -38,9 +38,9 @@ namespace Alpha.Core.Fleets
                 _location = value;
             }
         }
-        public Func<Province, bool> CanCross { get { return province => province is SeaProvince; } }
+        public Func<Zone, bool> CanCross { get { return z => z.Province is SeaProvince; } }
         public float Speed { get { return _ships.Min(s => s.Speed); } }
-        void IMovable.SetLocation(Province location)
+        void IMovable.SetLocation(Zone location)
         {
             Location = location;
             World.Notify(new FleetMovedNotification(this));
@@ -69,7 +69,7 @@ namespace Alpha.Core.Fleets
         public bool HasMoveOrder { get { return MoveOrder != null; } }
 
         private static int _idSequence;
-        protected static int IdSequence { get { return ++_idSequence; } }
+        private static int IdSequence { get { return ++_idSequence; } }
         public int Id { get; private set; }
         void IDailyUpdatableItem.DayUpdate()
         {

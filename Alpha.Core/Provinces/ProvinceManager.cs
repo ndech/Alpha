@@ -11,7 +11,6 @@ namespace Alpha.Core.Provinces
 {
     public class ProvinceManager : Manager
     {
-        private Dictionary<String, Province> _provincesDictionary = new Dictionary<string, Province>(); 
         private readonly List<Province> _provinces = new List<Province>();
         public IEnumerable<Province> Provinces { get { return _provinces; } }
         public IEnumerable<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
@@ -22,10 +21,6 @@ namespace Alpha.Core.Provinces
         internal List<Building> Buildings { get; private set; } 
 
 
-        public Province GetById(String id)
-        {
-            return _provincesDictionary[id];
-        }
 
         internal ProvinceManager(World world) : base(world)
         {
@@ -47,15 +42,16 @@ namespace Alpha.Core.Provinces
         internal void CreateProvince(Province province)
         {
             _provinces.Add(province);
-            _provincesDictionary.Add(province.Id, province);
+            foreach (Zone zone in province.Zones)
+                zone.Province = province;
         }
 
-        public List<Step> CalculatePath(Fleet fleet, Province destination)
+        public List<Step> CalculatePath(Fleet fleet, Zone destination)
         {
             return CalculatePath((IMovable) fleet, destination);
         }
 
-        private List<Step> CalculatePath(IMovable movable, Province destination)
+        private List<Step> CalculatePath(IMovable movable, Zone destination)
         {
             if (movable.Location == destination || !movable.CanCross(destination))
                 return null;
@@ -63,7 +59,7 @@ namespace Alpha.Core.Provinces
             //Calculate path using A* algorithm
             SortedSet<PathfindingNode> openList = new SortedSet<PathfindingNode>(
                 Comparer<PathfindingNode>.Create((a, b) => a.CompareTo(b)));
-            HashSet<Province> closedList = new HashSet<Province>();
+            HashSet<Zone> closedList = new HashSet<Zone>();
             openList.Add(new PathfindingNode(movable.Location, destination.DistanceWith(movable.Location)));
             bool pathFound = destination == movable.Location;
             while (!pathFound)
@@ -71,18 +67,18 @@ namespace Alpha.Core.Provinces
                 if (openList.Count == 0)
                     break;
                 PathfindingNode currentNode = openList.First();
-                foreach (Province neighbourg in currentNode.Province.Adjacencies.Select(a => a.Neighbourg).Where(s => movable.CanCross(s)))
+                foreach (Zone neighbourg in currentNode.Zone.Adjacencies.Select(a => a.Neighbourg).Where(s => movable.CanCross(s)))
                 {
-                    if (closedList.Contains(neighbourg) || openList.Any(n => n.Province == neighbourg))
+                    if (closedList.Contains(neighbourg) || openList.Any(n => n.Zone == neighbourg))
                         continue;
                     openList.Add(new PathfindingNode(neighbourg, destination.DistanceWith(neighbourg), currentNode));
                     if (neighbourg == destination) // Path found !
                     {
                         pathFound = true;
-                        steps.Add(new Step(currentNode.Province, destination));
+                        steps.Add(new Step(currentNode.Zone, destination));
                         while (currentNode.Parent != null)
                         {
-                            steps.Add(new Step(currentNode.Parent.Province, currentNode.Province));
+                            steps.Add(new Step(currentNode.Parent.Zone, currentNode.Zone));
                             currentNode = currentNode.Parent;
                         }
                         steps.Reverse();
@@ -90,28 +86,27 @@ namespace Alpha.Core.Provinces
                     }
                 }
                 openList.Remove(currentNode);
-                closedList.Add(currentNode.Province);
+                closedList.Add(currentNode.Zone);
             }
             if (steps.Count == 0)
                 return steps;
             return steps;
         }
 
-        private Province _currentSearchProvince;
+        private Zone _currentSearchZone;
         public Province ClosestProvince(Vector3D position)
         {
-            if (_currentSearchProvince == null)
-                _currentSearchProvince = _provinces.First();
+            if (_currentSearchZone == null)
+                _currentSearchZone = _provinces.First().Zones.First();
             while (true)
             {
-                Province closestNeighbourgOrSelf =
-                    _currentSearchProvince.Adjacencies.Select(a => a.Neighbourg)
-                        .Union(_currentSearchProvince)
+                Zone closestNeighbourgOrSelf =
+                    _currentSearchZone.Adjacencies.Select(a => a.Neighbourg)
+                        .Union(_currentSearchZone)
                         .MinBy(p => Vector3D.Distance(p.Center, position));
-                if (closestNeighbourgOrSelf == _currentSearchProvince)
-                    return _currentSearchProvince;
-                else
-                    _currentSearchProvince = closestNeighbourgOrSelf;
+                if (closestNeighbourgOrSelf == _currentSearchZone)
+                    return _currentSearchZone.Province;
+                _currentSearchZone = closestNeighbourgOrSelf;
             }
         }
 

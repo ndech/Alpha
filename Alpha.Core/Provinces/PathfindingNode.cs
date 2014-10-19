@@ -6,17 +6,17 @@ namespace Alpha.Core.Provinces
 {
     class PathfindingNode : IComparable<PathfindingNode>
     {
-        public Province Province { get; set; }
-        public PathfindingNode Parent { get; set; }
+        public Zone Zone { get; private set; }
+        public PathfindingNode Parent { get; private set; }
         public double PathLength { get; set; }
         public double EstimateRemainingDistance { get; set; }
         public double Cost { get { return PathLength + EstimateRemainingDistance; } }
 
-        public PathfindingNode(Province site, double estimateRemainingDistance, PathfindingNode parent = null)
+        public PathfindingNode(Zone zone, double estimateRemainingDistance, PathfindingNode parent = null)
         {
-            Province = site;
+            Zone = zone;
             EstimateRemainingDistance = estimateRemainingDistance;
-            PathLength = parent == null ? 0 : parent.PathLength + Vector3D.Distance(parent.Province.Center, site.Center);
+            PathLength = parent == null ? 0 : parent.PathLength + Vector3D.Distance(parent.Zone.Center, zone.Center);
             Parent = parent;
         }
 

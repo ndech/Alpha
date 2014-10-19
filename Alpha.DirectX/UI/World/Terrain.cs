@@ -18,8 +18,8 @@ namespace Alpha.DirectX.UI.World
         private Buffer _indexBuffer;
         private int _indexCount;
         private readonly ShaderResourceView _borderTexture;
-        private ShaderResourceView _provinceColorTexture;
-        private ShaderResourceView _realmColorTexture;
+        private readonly ShaderResourceView _provinceColorTexture;
+        private readonly ShaderResourceView _realmColorTexture;
         private readonly TerrainShader _shader;
         public RenderingMode CurrentRenderingMode { get; set; }
 
@@ -101,11 +101,11 @@ namespace Alpha.DirectX.UI.World
                         float x = Vector3.Dot(center - pointA, pointB - pointA);
                         x /= Vector3.DistanceSquared(pointA, pointB);
                         Vector3 intersection = new Vector3(pointA.X + (x * (pointB.X - pointA.X)), 0.0f, pointA.Z + (x * (pointB.Z - pointA.Z)));
-                        int oppositeId = province.Adjacencies.Single(
+                        Zone oppositeZone = zone.Adjacencies.Single(
                             a =>
                                 a.CommonPoints.Contains(zone.Points[i]) &&
-                                a.CommonPoints.Contains(zone.Points[(i + 1)%zone.Points.Count])).Neighbourg.NumericId;
-                        Vector2 provinceId = new Vector2((float)province.NumericId/maxId, (float)oppositeId/maxId);
+                                a.CommonPoints.Contains(zone.Points[(i + 1)%zone.Points.Count])).Neighbourg;
+                        Vector2 provinceId = new Vector2((float)province.NumericId/maxId, (float)oppositeZone.Province.NumericId/maxId);
                         terrainVertices[index] = new VertexDefinition.TerrainVertex
                         {
                             position = center,

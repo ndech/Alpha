@@ -38,7 +38,7 @@ namespace Alpha.WorldGeneration
         public Cluster Cluster { get; set; }
         private static int idSeed=0;
         public int Id { get; set; }
-        public string ProvinceId { get; set; }
+        public string ZoneId { get; set; }
 
         public const int DefaultShoreDistance = 10000;
 

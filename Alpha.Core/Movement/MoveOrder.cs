@@ -7,7 +7,7 @@ namespace Alpha.Core.Movement
 {
     internal class MoveOrder<T> : IDailyUpdatableItem, IMoveOrder where T : IMovable
     {
-        public Province Destination { get { return _steps.Last().Destination; } }
+        public Zone Destination { get { return _steps.Last().Destination; } }
         private readonly List<Step> _steps;
         public IEnumerable<Step> Steps { get { return _steps; } }
  
@@ -40,7 +40,7 @@ namespace Alpha.Core.Movement
 
     public interface IMoveOrder
     {
-        Province Destination { get; }
+        Zone Destination { get; }
         IEnumerable<Step> Steps { get; }
         Double ProgressToNextStep { get; }
         Int32 CurrentStepIndex { get; }

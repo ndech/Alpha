@@ -4,11 +4,11 @@ using Alpha.Toolkit.Math;
 
 namespace Alpha.Core.Provinces
 {
-    public class ProvinceAdjacency
+    public class ZoneAdjacency
     {
-        public ProvinceAdjacency(Province province, Province neighbourg, List<Vector3D> commonPoints)
+        public ZoneAdjacency(Zone province, Zone neighbourg, List<Vector3D> commonPoints)
         {
-            Province = province;
+            Zone = province;
             Neighbourg = neighbourg;
             CommonPoints = commonPoints;
             PassingPoints = new List<Vector3D>
@@ -17,8 +17,8 @@ namespace Alpha.Core.Provinces
             };
         }
 
-        public Province Province { get; private set; }
-        public Province Neighbourg { get; private set; }
+        public Zone Zone { get; private set; }
+        public Zone Neighbourg { get; private set; }
         public List<Vector3D> PassingPoints { get; private set; }
         public List<Vector3D> CommonPoints { get; private set; } 
     }

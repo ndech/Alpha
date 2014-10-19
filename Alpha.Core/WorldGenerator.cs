@@ -11,7 +11,7 @@ using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using Alpha.WorldGeneration;
 
-class ProvinceCluster : List<Province>
+class ZoneCluster : List<Zone>
 {
     public bool Blocked { get; set; }
 }
@@ -43,75 +43,62 @@ namespace Alpha.Core
             feedback("Generating base shapes");
             world.Size = new Vector2I(width, height);
             List<VoronoiSite> sites = Generator.Create(width, height, zoneCount, 1, 1256);
-            feedback("Creating provinces");
+            feedback("Dividing the world");
+            Dictionary<string, Zone> zones = new Dictionary<string, Zone>();
             foreach (VoronoiSite site in sites)
             {
-                Province province;
-                if (site.IsWater)
-                    province = new SeaProvince(world, new List<Zone>(new[] { (Zone)site }), site.Cluster);
-                else
-                    province = new LandProvince(world, new List<Zone>(new[] { (Zone)site }), site.Cluster);
-                world.ProvinceManager.CreateProvince(province);
-                site.ProvinceId = province.Id;
+                Zone zone = (Zone) site;
+                zones.Add(zone.Id, zone);
+                site.ZoneId = zone.Id;
             }
-            feedback("Calculating province adjacencies");
+            feedback("Meeting new neighbourgs");
             foreach (VoronoiSite site in sites)
             {
-                Province province = world.ProvinceManager.GetById(site.ProvinceId);
-                foreach (VoronoiSite neighbourg in site.Neighbourgs)
+                Zone zone = zones[site.ZoneId];
+                foreach (VoronoiSite neighbourgSite in site.Neighbourgs)
                 {
-                    Province neighbourgProvince = world.ProvinceManager.GetById(neighbourg.ProvinceId);
-                    List<Vector3D> commonPoints = province.Zones.SelectMany(z => z.Points).
-                        Where(p => neighbourgProvince.Zones.SelectMany(z => z.Points).Contains(p)).ToList();
+                    Zone neighbourg = zones[neighbourgSite.ZoneId];
+                    List<Vector3D> commonPoints = zone.Points.Where(p => neighbourg.Points.Contains(p)).ToList();
                     if (commonPoints.Count != 2)
                         continue;
-                    province.CreateAdjacency(new ProvinceAdjacency(province, neighbourgProvince, commonPoints));
+                    zone.AddAdjacency(new ZoneAdjacency(zone, neighbourg, commonPoints));
                 }
             }
-            feedback("Processing clusters");
-            foreach (Cluster cluster in world.ProvinceManager.Provinces.Select(p=>p.Cluster).Distinct().ToList())
-            
+            feedback("Expanding provinces");
+            foreach (int clusterId in sites.Where(s=>!s.IsWater).Select(s=>s.Cluster.Id).Distinct())
             {
-                List<Province> todo = new List<Province>(world.ProvinceManager.Provinces.Where(p=>p.Cluster == cluster).ToList());
-                if(todo.Any(p=>p is SeaProvince))
-                    continue;
-                int todoCount = todo.Count;
-                int numberOfClusters = (todoCount/7)+1;
-                List<ProvinceCluster> clusters = new List<ProvinceCluster>();
+                const int targetSize = 7;
+                List<Zone> todo = sites.Where(s=>s.Cluster.Id == clusterId).Select(s=>zones[s.ZoneId]).OrderByRandom().ToList();
+                int numberOfClusters = (todo.Count/targetSize)+1;
+                List<ZoneCluster> clusters = new List<ZoneCluster>();
                 //First clusterisation
                 for (int i = 0; i < numberOfClusters; i++)
                 {
-                    ProvinceCluster subList = new ProvinceCluster();
-                    subList.Add(todo.RandomItem());
-                    todo.Remove(subList.First());
-                    while (subList.Count < 6)
-                    {
-                        var neighbourgs = subList.SelectMany(p => p.Adjacencies.Select(a => a.Neighbourg)).Where(todo.Contains).ToList();
-                        if (neighbourgs.Count == 0)
-                            break;
-                        Province newProvince = neighbourgs.RandomItem();
-                        subList.Add(newProvince);
-                        todo.Remove(newProvince);
-                    }
-                    clusters.Add(subList);
+                    Zone seed = todo.RandomItem();
+                    clusters.Add(new ZoneCluster {seed});
+                    todo.Remove(seed);
                 }
-                //Map provinces not associated to an cluster => first step of the iteration
-                while (todo.Count > 0)
+                while(todo.Count!=0)
                 {
-                    Province newProvince = todo.RandomItem();
-                    if(!newProvince.Adjacencies.Any(a => clusters.SelectMany(c=>c.Select(l=>l)).Contains(a.Neighbourg)))
-                        continue;
-                    todo.Remove(newProvince);
-                    List<ProvinceCluster> subsetClusters = clusters.Where(c => newProvince.Adjacencies.Select(a => a.Neighbourg).Any(c.Contains)).Distinct().ToList();
-                    subsetClusters.RandomItem().Add(newProvince);
+                    foreach (ZoneCluster cluster in clusters)
+                    {
+                        Zone neighbourg =
+                            todo.FirstOrDefault(
+                                z => cluster.SelectMany(c => c.Adjacencies.Select(a => a.Neighbourg)).Contains(z));
+                        if (neighbourg == null)
+                            continue;
+                        cluster.Add(neighbourg);
+                        todo.Remove(neighbourg);
+                    }
                 }
-                int OptimumFunction;
+                //Optimization to try to reach the optimal number of zones per cluster
+                int optimumFunction;
                 do
                 {
-                    OptimumFunction = clusters.Sum(c => c.Count * c.Count);
-                    foreach (ProvinceCluster currentCluster in clusters.OrderByDescending(c=>c.Count))
+                    optimumFunction = clusters.Sum(c => c.Count * c.Count);
+                    foreach (ZoneCluster currentCluster in clusters.OrderByDescending(c=>c.Count))
                     {
-                        List<ProvinceCluster> neighbourgClusters = clusters
+                        List<ZoneCluster> neighbourgClusters = clusters
                             .Where(
                                 c =>
                                     c.Any(p => currentCluster.SelectMany(x => x.Neighbourgs).Contains(p)) &&
@@ -119,28 +106,34 @@ namespace Alpha.Core
                             .OrderBy(c => c.Count)
                             .ToList();
                         neighbourgClusters = neighbourgClusters.Where(c => c.Count < currentCluster.Count).ToList();
-                        foreach (ProvinceCluster neighbourgCluster in neighbourgClusters)
+                        foreach (ZoneCluster neighbourgCluster in neighbourgClusters)
                         {
                             if(neighbourgCluster.Count >= currentCluster.Count)
                                 continue;
-                            foreach (Province switchingProvince in 
+                            foreach (Zone switchingZone in 
                                 currentCluster
                                 .Where(p => neighbourgCluster.SelectMany(x => x.Neighbourgs).Contains(p))
-                                .OrderBy(c=>RandomGenerator.GetDouble(0,1)))
+                                .OrderByRandom())
                             {
                                 if(currentCluster.Count == 0)
                                     break;
-                                if (IsContiguousCluster(currentCluster, switchingProvince))
+                                if (IsContiguousCluster(currentCluster, switchingZone))
                                 {
-                                    neighbourgCluster.Add(switchingProvince);
-                                    currentCluster.Remove(switchingProvince);
+                                    neighbourgCluster.Add(switchingZone);
+                                    currentCluster.Remove(switchingZone);
                                     break;
                                 }
                             }
                         }
                     }
-                } while (OptimumFunction != clusters.Sum(c => c.Count * c.Count));
+                } while (optimumFunction != clusters.Sum(c => c.Count * c.Count));
+                //Actual creation of the provinces
+                foreach (ZoneCluster cluster in clusters)
+                    world.ProvinceManager.CreateProvince(new LandProvince(world, cluster));
             }
+            feedback("Observing the waves");
+            foreach (VoronoiSite site in sites.Where(s => s.IsWater))
+                world.ProvinceManager.CreateProvince(new SeaProvince(world, new List<Zone>{zones[site.ZoneId]}));
             feedback("Planting fields");
             foreach (LandProvince province in world.ProvinceManager.LandProvinces)
             {
@@ -173,7 +166,7 @@ namespace Alpha.Core
                 world.RealmManager.CreateRealm(new Realm("Realm " + i));
             feedback("Spreading realms");
             List<Tuple<Vector3D, Realm>> realmPosition = 
-                world.ProvinceManager.LandProvinces.OrderBy(r => RandomGenerator.GetDouble(0, 1000))
+                world.ProvinceManager.LandProvinces.OrderByRandom()
                 .Take(world.RealmManager.Realms.Count())
                 .Select(p => p.Center)
                 .Zip(world.RealmManager.Realms, (v, r) => new Tuple<Vector3D, Realm>(v, r)).ToList();
@@ -181,21 +174,18 @@ namespace Alpha.Core
                 realmPosition.MinBy(t=> Vector3D.Distance(province.Center, t.Item1)).Item2.AddProvince(province);
             feedback("Launching the fleets");
             foreach (Realm realm in world.RealmManager.Realms)
-                world.FleetManager.CreateFleet(new Fleet(world, "Royal fleet of "+realm.Name, realm, world.ProvinceManager.SeaProvinces.RandomItem(), new List<Ship>{new Ship()}));
+                world.FleetManager.CreateFleet(new Fleet(world, "Royal fleet of "+realm.Name, realm, world.ProvinceManager.SeaProvinces.RandomItem().Zones.RandomItem(), new List<Ship>{new Ship()}));
             feedback("Polishing");
             return world;
         }
 
-        private bool IsContiguousCluster(ProvinceCluster currentCluster, Province switchingProvince)
+        private bool IsContiguousCluster(IEnumerable<Zone> currentCluster, Zone switchingZone)
         {
-            List<Province> newCluster = new List<Province>(currentCluster);
-            newCluster.Remove(switchingProvince);
+            List<Zone> newCluster = new List<Zone>(currentCluster);
+            newCluster.Remove(switchingZone);
             if (newCluster.Count == 0)
                 return false;
-            List<Province> check = new List<Province>()
-                    {
-                        newCluster.RandomItem()
-                    };
+            List<Zone> check = new List<Zone> { newCluster.RandomItem() };
             while (true)
             {
                 var x = check.SelectMany(p => p.Neighbourgs)

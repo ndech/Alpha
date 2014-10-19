@@ -108,7 +108,7 @@
     <Compile Include="Provinces\LandProvince.cs" />
     <Compile Include="Provinces\PathfindingNode.cs" />
     <Compile Include="Provinces\Province.cs" />
-    <Compile Include="Provinces\ProvinceAdjacency.cs" />
+    <Compile Include="Provinces\ZoneAdjacency.cs" />
     <Compile Include="Provinces\ProvinceManager.cs" />
     <Compile Include="Provinces\SeaProvince.cs" />
     <Compile Include="Provinces\Zone.cs" />

@@ -61,7 +61,7 @@ namespace Alpha.DirectX.UI.World
         private readonly IContext _context;
         private readonly ObjModel _model;
         private readonly LightShader _shader;
-        private readonly Dictionary<Province, FleetRenderingInfo> _fleetRenderingInfos = new Dictionary<Province, FleetRenderingInfo>();
+        private readonly Dictionary<Zone, FleetRenderingInfo> _fleetRenderingInfos = new Dictionary<Zone, FleetRenderingInfo>();
         private readonly TexturedRectangle _baseOverlay;
         private readonly TexturedRectangle _enemySubOverlay;
         private readonly TexturedRectangle _mineSubOverlay;

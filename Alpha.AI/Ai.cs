@@ -42,7 +42,7 @@ namespace Alpha.AI
                 if (!fleet.HasMoveOrder || RandomGenerator.Get(0, 10) == 0)
                 {
                     var steps = _world.ProvinceManager.CalculatePath(fleet,
-                        _world.ProvinceManager.SeaProvinces.Where(p => p != fleet.Location).RandomItem());
+                        _world.ProvinceManager.SeaProvinces.Where(p => p != fleet.Location.Province).RandomItem().Zones.RandomItem());
                     if(steps.Count>0) // If steps.Count == 0 => path not found
                         commands.Add(new MoveFleetCommand(fleet,steps));
                 }

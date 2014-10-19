@@ -16,6 +16,17 @@ namespace Alpha.Toolkit
             return source.Union(Enumerable.Repeat(item, 1));
         }
 
+        public static IEnumerable<T> OrderByRandom<T>(this IEnumerable<T> source)
+        {
+            var buffer = source.ToList();
+            for (int i = 0; i < buffer.Count; i++)
+            {
+                int j = RandomGenerator.Get(i, buffer.Count);
+                yield return buffer[j];
+                buffer[j] = buffer[i];
+            }
+        }
+
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
     Func<TSource, TKey> selector)
         {

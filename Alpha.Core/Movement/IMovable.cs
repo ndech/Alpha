@@ -5,10 +5,10 @@ namespace Alpha.Core.Movement
 {
     interface IMovable
     {
-        Province Location { get; }
-        Func<Province, bool> CanCross { get; }
+        Zone Location { get; }
+        Func<Zone, bool> CanCross { get; }
         float Speed { get; }
-        void SetLocation(Province location);
+        void SetLocation(Zone location);
         void EndMovement();
     }
 }

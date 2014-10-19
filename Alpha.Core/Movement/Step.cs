@@ -6,8 +6,8 @@ namespace Alpha.Core.Movement
 {
     public class Step
     {
-        public Province Source { get; private set; }
-        public Province Destination { get; private set; }
+        public Zone Source { get; private set; }
+        public Zone Destination { get; private set; }
         public Double Distance { get; private set; }
 
         public Double Duration(float speed)
@@ -15,7 +15,7 @@ namespace Alpha.Core.Movement
             return Distance/speed;
         }
 
-        public Step(Province source, Province destination)
+        public Step(Zone source, Zone destination)
         {
             Source = source;
             Destination = destination;

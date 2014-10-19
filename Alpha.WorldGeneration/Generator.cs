@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using Alpha.Voronoi;
 using Alpha.Toolkit;
 
 namespace Alpha.WorldGeneration
 {
-    enum RenderMode
-    {
-        Terrain,
-        Cluster
-    }
     public static class Generator
     {
         public static List<VoronoiSite> Create(int width, int height, int pointCount, int relaxations, int seed)
@@ -49,19 +42,18 @@ namespace Alpha.WorldGeneration
             //waterGenerator = new PerlinWaterGenerator();
             waterGenerator.GenerateWater(sites);
             //Associate water distance from shore and split the water in cluster (independant seas)
-            Stack<VoronoiSite> ToBeProcessedSites;
             while (true)
             {
-                ToBeProcessedSites = new Stack<VoronoiSite>();
+                Stack<VoronoiSite> toBeProcessedSites = new Stack<VoronoiSite>();
                 VoronoiSite site = sites.FirstOrDefault(s => s.ShoreDistance == VoronoiSite.DefaultShoreDistance && s.Neighbourgs.Any(p => p.IsWater != s.IsWater));
                 if (site == null)
                     break;
                 site.ShoreDistance = 1;
-                ToBeProcessedSites.Push(site);
+                toBeProcessedSites.Push(site);
                 Cluster cluster = new Cluster();
-                while (ToBeProcessedSites.Count > 0)
+                while (toBeProcessedSites.Count > 0)
                 {
-                    VoronoiSite item = ToBeProcessedSites.Pop();
+                    VoronoiSite item = toBeProcessedSites.Pop();
                     item.Cluster = cluster;
                     if (item.Neighbourgs.Any(s => item.IsWater != s.IsWater)) item.ShoreDistance = 1;
                     foreach (VoronoiSite neighbourg in item.Neighbourgs)
@@ -69,8 +61,8 @@ namespace Alpha.WorldGeneration
                         if ((neighbourg.IsWater == item.IsWater) && neighbourg.ShoreDistance > item.ShoreDistance + 1)
                         {
                             neighbourg.ShoreDistance = item.ShoreDistance + 1;
-                            if (!ToBeProcessedSites.Contains(neighbourg))
-                                ToBeProcessedSites.Push(neighbourg);
+                            if (!toBeProcessedSites.Contains(neighbourg))
+                                toBeProcessedSites.Push(neighbourg);
                         }
                     }
                 }
