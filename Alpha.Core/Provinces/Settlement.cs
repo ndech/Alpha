@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Alpha.Core.Dynamic;
+using System.Linq;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
@@ -44,6 +44,24 @@ namespace Alpha.Core.Provinces
         {
             Province.Owner.Pay(building.Cost(this));
             Constructions.Add(new Construction(building, this));
+        }
+
+        public override string ToString()
+        {
+            return Type.Name + " of " + Name;
+        }
+
+        private readonly List<Resource> _resources = new List<Resource>();
+        public IEnumerable<Resource> Resources { get { return _resources; } }
+
+        internal void AddResource(ResourceType type)
+        {
+            _resources.Add(new Resource(type));
+        }
+
+        public bool HasResource(String key)
+        {
+            return Resources.Any(r => r.Type.Id == key);
         }
     }
 }

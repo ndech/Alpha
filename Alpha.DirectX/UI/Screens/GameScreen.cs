@@ -103,11 +103,11 @@ namespace Alpha.DirectX.UI.Screens
             _fleetRenderer.RenderOverlay(deviceContext, viewMatrix, projectionMatrix);
         }
 
-        public Province HoveredProvince()
+        public Zone HoveredZone()
         {
             if (HoveredControl != null)
                 return null;
-            return Context.World.ProvinceManager.ClosestProvince(
+            return Context.World.ProvinceManager.ClosestZone(
                      (Vector3D)new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
         }
 

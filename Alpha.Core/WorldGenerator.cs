@@ -135,31 +135,11 @@ namespace Alpha.Core
             foreach (VoronoiSite site in sites.Where(s => s.IsWater))
                 world.ProvinceManager.CreateProvince(new SeaProvince(world, new List<Zone>{zones[site.ZoneId]}));
             feedback("Planting fields");
-            foreach (LandProvince province in world.ProvinceManager.LandProvinces)
+            foreach (Settlement settlement in world.ProvinceManager.LandProvinces.SelectMany(p=>p.AllSettlements))
             {
                 int numberOfResources = RandomGenerator.Get(1, 3);
-                List<Tuple<double, ResourceType>> resourceTuples =
-                    world.ProvinceManager.ResourceTypes.Select(
-                        r => new Tuple<double, ResourceType>(r.Probability.For(province), r)).ToList();
                 for (; numberOfResources > 0; numberOfResources--)
-                {
-                    double cumulativeProbability = resourceTuples.Sum(r => r.Item1);
-                    double position = RandomGenerator.GetDouble(0, cumulativeProbability);
-                    Tuple<double, ResourceType> value = null;
-                    double cursor = 0;
-                    foreach (Tuple<double, ResourceType> resourceTuple in resourceTuples)
-                    {
-                        if (position >= cursor && position <= cursor + resourceTuple.Item1)
-                        {
-                            value = resourceTuple;
-                            break;
-                        }
-                        cursor += resourceTuple.Item1;
-                    }
-                    value = value ?? resourceTuples.Last();
-                    resourceTuples.Remove(value);
-                    province.AddResource(value.Item2);
-                }
+                    settlement.AddResource(world.ProvinceManager.ResourceTypes.RandomWeightedItem(r=>r.Probability.For(settlement)));
             }
             feedback("Forging realms");
             for (int i = 0; i < 11; i++)

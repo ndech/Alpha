@@ -13,7 +13,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     class MapTooltip : Control
     {
         private readonly GameScreen _gameScreen;
-        private Province _hoveredProvince;
+        private Zone _hoveredZone;
         private readonly TexturedExtensibleRectangle _rectangle;
         private readonly Text.Text _text;
         private double _delay;
@@ -42,29 +42,29 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _gameScreen = gameScreen;
             _rectangle = new TexturedExtensibleRectangle(context, new Vector2I(), context.TextureManager.Create("tooltip.png", "Data/UI/"), 8);
             _text = context.TextManager.Create("Courrier", 14, "",
-                new Vector2I(300, 500), Color.Wheat, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(8));
+                new Vector2I(400, 600), Color.Wheat, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(8));
             _delay = .5f;
         }
 
         protected override void Update(double delta)
         {
-            Province currentProvince;
+            Zone currentZone;
             Vector2I mousePosition = Context.UiManager.MousePosition;
             if (mousePosition.X >= 0
                    && mousePosition.X < _gameScreen.Size.X
                    && mousePosition.Y >= 0
                    && mousePosition.Y < 0 + _gameScreen.Size.Y)
-                currentProvince = _gameScreen.HoveredProvince();
+                currentZone = _gameScreen.HoveredZone();
             else
-                currentProvince = null;
-            if (currentProvince != _hoveredProvince) //User has left the previous province
+                currentZone = null;
+            if (currentZone != _hoveredZone) //User has left the previous province
             {
-                _hoveredProvince = currentProvince;
+                _hoveredZone = currentZone;
                 _cooldown = 0;
                 _isVisible = false;
                 return;
             }
-            if(_hoveredProvince == null) return;
+            if(_hoveredZone == null) return;
             if (!_isVisible)
             {
                 _cooldown += delta;
@@ -80,17 +80,20 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         private void UpdateContent()
         {
-            string text = _hoveredProvince.Name;
-            if (_hoveredProvince is LandProvince)
+            string text;
+            if (_hoveredZone.Province is LandProvince)
             {
-                LandProvince landProvince = (_hoveredProvince as LandProvince);
-                text += "(" + landProvince.Owner.Name + ")";
+                LandProvince landProvince = (_hoveredZone.Province as LandProvince);
+                text = landProvince.AllSettlements.Single(s => s.Zone == _hoveredZone).ToString();
+                text += Environment.NewLine + "Province of " + landProvince.Name + " (" + landProvince.Owner.Name + ")";
                 text += Environment.NewLine + landProvince.BaseTax + " g/year";
                 text += Environment.NewLine + landProvince.Population + " pop ";
                 text += Text.Text.EnphasizeAsPercentage(landProvince.YearlyGrowth);
                 text += " ("+Text.Text.Enphasize(landProvince.PopulationLastDayVariation)+")";
                 text += Environment.NewLine + landProvince.Settlements.Count() + " settlements";
             }
+            else
+                text = _hoveredZone.Province.Name;
             _text.Content = text;
             _rectangle.Size = _text.UsedSize;
         }
