@@ -100,6 +100,7 @@
     <Compile Include="Dynamic\DynamicValue.cs" />
     <Compile Include="Provinces\Building.cs" />
     <Compile Include="Provinces\Construction.cs" />
+    <Compile Include="Provinces\Population.cs" />
     <Compile Include="Provinces\Resource.cs" />
     <Compile Include="Provinces\ResourceType.cs" />
     <Compile Include="Provinces\Settlement.cs" />

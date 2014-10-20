@@ -11,26 +11,26 @@ namespace Alpha.Core.Provinces
         public Zone Zone { get; private set; }
         public LandProvince Province { get; private set; }
         public BaseSettlementType Type { get; private set; }
-        public int Population { get; internal set; }
         public double Income { get; private set; }
         public List<Building> Buildings { get; internal set; }
         public List<Construction> Constructions { get; internal set; }
+        public Population Population { get; internal set; }
 
         public Settlement(World world, Zone zone, LandProvince province) : base(world)
         {
             Zone = zone;
             Province = province;
             Name = NameGenerator.GetSettlementName();
-            Population = RandomGenerator.Get(1000, 6000);
             Income = RandomGenerator.GetDouble(-10, 10);
             Constructions = new List<Construction>();
             Buildings = new List<Building>();
+            Population = new Population();
             Type = world.ProvinceManager.BaseSettlementTypes.RandomWeightedItem(t => t.Probability(zone));
         }
 
         void IDailyUpdatableItem.DayUpdate()
         {
-            Population ++;
+            Population.DayUpdate();
             Constructions.DayUpdate();
         }
 

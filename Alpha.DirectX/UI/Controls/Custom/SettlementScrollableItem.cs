@@ -64,10 +64,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
             else
             {
                 _name.Text = item.Name;
-                _population.Expression = () => item.Population.ToString(CultureInfo.InvariantCulture);
+                _population.Expression = () => item.Population.Value.ToString(CultureInfo.InvariantCulture);
                 _icon.BaseTexture = Context.TextureManager.Create(item.Type.Id + ".dds", "Data/UI/").TextureResource;
                 _iconTooltip.Text = item.ToString();
-                _populationTooltip.Text = item.Population + " inhabitants" + Environment.NewLine +
+                _populationTooltip.Text = item.Population.Value + " inhabitants" + Environment.NewLine +
                                           "Growing fast as fuck";
                 _income.Expression = () => string.Format("{0:N1}", item.Income);
                 _icon.Visible = true;
