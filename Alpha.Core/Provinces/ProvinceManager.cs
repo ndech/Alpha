@@ -16,20 +16,13 @@ namespace Alpha.Core.Provinces
         public IEnumerable<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
         public IEnumerable<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
 
-        internal List<SettlementType> SettlementTypes { get; private set; }
+        internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
         internal List<ResourceType> ResourceTypes { get; private set; }
         internal List<Building> Buildings { get; private set; } 
 
-
-
         internal ProvinceManager(World world) : base(world)
         {
-            SettlementTypes = new List<SettlementType>
-            {
-                new SettlementType("sea_settlement", "Coastal settlement", "Living off the bounties of the sea, " +
-                                                                           "this group of people may become the fishermen who will feed your realm" +
-                                                                           "or the sailors who will discover plentiful lands.", 60)
-            };
+            BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml").Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
             ResourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
             Buildings = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new Building(x)).ToList();
         }
@@ -96,6 +89,11 @@ namespace Alpha.Core.Provinces
         private Zone _currentSearchZone;
         public Province ClosestProvince(Vector3D position)
         {
+            return ClosestZone(position).Province;
+        }
+
+        public Zone ClosestZone(Vector3D position)
+        {
             if (_currentSearchZone == null)
                 _currentSearchZone = _provinces.First().Zones.First();
             while (true)
@@ -105,7 +103,7 @@ namespace Alpha.Core.Provinces
                         .Union(_currentSearchZone)
                         .MinBy(p => Vector3D.Distance(p.Center, position));
                 if (closestNeighbourgOrSelf == _currentSearchZone)
-                    return _currentSearchZone.Province;
+                    return _currentSearchZone;
                 _currentSearchZone = closestNeighbourgOrSelf;
             }
         }

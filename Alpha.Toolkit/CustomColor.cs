@@ -4,17 +4,17 @@ namespace Alpha.Toolkit
 {
     public class CustomColor
     {
-        public float Red { get; set; }
-        public float Green { get; set; }
-        public float Blue { get; set; }
+        public float Red { get; private set; }
+        public float Green { get; private set; }
+        public float Blue { get; private set; }
         public static CustomColor Random
         {
             get
             {
                 return new CustomColor(
-                (float)RandomGenerator.GetDouble(0, 1),
-                (float)RandomGenerator.GetDouble(0, 1),
-                (float)RandomGenerator.GetDouble(0, 1));
+                    (float)RandomGenerator.GetDouble(0, 1),
+                    (float)RandomGenerator.GetDouble(0, 1),
+                    (float)RandomGenerator.GetDouble(0, 1));
             }
         }
 

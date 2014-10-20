@@ -19,8 +19,9 @@ namespace Alpha.Core.Provinces
             Name = NameGenerator.GetRandomProvinceName();
             Color = CustomColor.Random;
             Resources = new List<Resource>();
-            //for (int i = 0; i < RandomGenerator.Get(1, 8); i++)
-            //    FoundSettlement();
+            Capital = new Settlement(world, zones.RandomItem(), this);
+            foreach (Zone zone in zones.Except(Capital.Zone))
+                _settlements.Add(new Settlement(world, zone, this));
         }
 
         public Int32 Population
@@ -37,7 +38,7 @@ namespace Alpha.Core.Provinces
             PopulationLastDayVariation = (int)population - (int)_population;
             _population = population;
 
-            foreach (Settlement settlement in Settlements)
+            foreach (Settlement settlement in AllSettlements)
                 settlement.DayUpdate();
         }
 
@@ -50,21 +51,15 @@ namespace Alpha.Core.Provinces
         public Realm Owner { get; internal set; }
         public CustomColor Color { get; internal set; }
 
+        public Settlement Capital { get; internal set; }
         private readonly List<Settlement> _settlements = new List<Settlement>();
         public IEnumerable<Settlement> Settlements { get { return _settlements; } }
+        public IEnumerable<Settlement> AllSettlements { get { return _settlements.Union(Capital); } }
 
-        public Settlement FoundSettlement(SettlementType type)
-        {
-            Owner.Economy.Treasury -= type.Cost;
-            Settlement settlement = new Settlement(this, type);
-            _settlements.Add(settlement);
-            World.Notify(new NewSettlementNotification(settlement));
-            return settlement;
-        }
 
         public IEnumerable<SettlementType> AvailableSettlementTypes { get
         {
-            return World.ProvinceManager.SettlementTypes;
+            return World.ProvinceManager.BaseSettlementTypes;
         } }
 
         public bool IsCoastal { get { return Zones.SelectMany(z => z.Neighbourgs).Any(z => z.Province is SeaProvince); } }

@@ -16,6 +16,11 @@ namespace Alpha.Toolkit
             return source.Union(Enumerable.Repeat(item, 1));
         }
 
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> source, T item)
+        {
+            return source.Except(Enumerable.Repeat(item, 1));
+        }
+
         public static IEnumerable<T> OrderByRandom<T>(this IEnumerable<T> source)
         {
             var buffer = source.ToList();
@@ -25,6 +30,25 @@ namespace Alpha.Toolkit
                 yield return buffer[j];
                 buffer[j] = buffer[i];
             }
+        }
+        
+        public static T RandomWeightedItem<T>(this IEnumerable<T> items, Func<T, double> weight)
+        {
+            List<Tuple<double, T>> tuples = items.Select(i => new Tuple<double, T>(weight(i),i)).ToList();
+            double cumulativeProbability = tuples.Sum(r => r.Item1);
+            double position = RandomGenerator.GetDouble(0, cumulativeProbability);
+            Tuple<double, T> value = null;
+            double cursor = 0;
+            foreach (Tuple<double, T> tuple in tuples)
+            {
+                if (position >= cursor && position <= cursor + tuple.Item1)
+                {
+                    value = tuple;
+                    break;
+                }
+                cursor += tuple.Item1;
+            }
+            return (value ?? tuples.Last()).Item2;
         }
 
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,

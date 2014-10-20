@@ -103,6 +103,7 @@
     <Compile Include="Provinces\Resource.cs" />
     <Compile Include="Provinces\ResourceType.cs" />
     <Compile Include="Provinces\Settlement.cs" />
+    <Compile Include="Provinces\BaseSettlementType.cs" />
     <Compile Include="Provinces\SettlementType.cs" />
     <Compile Include="RealmToken.cs" />
     <Compile Include="Provinces\LandProvince.cs" />
@@ -134,9 +135,7 @@
       <Name>Alpha.WorldGeneration</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\Settlements\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Data\Buildings\Buildings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -149,6 +148,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Settlements\Settlements.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

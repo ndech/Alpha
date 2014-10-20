@@ -45,7 +45,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 new UniRectangle(0.2f,_settlementScrollableContainer.RelativePosition.Y + _settlementScrollableContainer.Size.Y + 40, 0.6f, 40), 
                 "Create new settlement" );
             Register(newSettlementButton);
-            newSettlementButton.Clicked += b => Context.RegisterCommand(new FoundSettlementCommand(_province, _province.AvailableSettlementTypes.First()));
+            //newSettlementButton.Clicked += b => Context.RegisterCommand(new FoundSettlementCommand(_province, _province.AvailableSettlementTypes.First()));
 
             _resourceText = new Label(Context, "new_settlement",
                 new UniRectangle(0.2f, _settlementScrollableContainer.RelativePosition.Y + _settlementScrollableContainer.Size.Y + 80, 0.6f, 40),

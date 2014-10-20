@@ -1,0 +1,27 @@
+﻿<settlements>
+	<baseSettlements>
+		<settlement id ="base_settlement">
+			<name>Settlement</name>
+			<description>Attracted by a resourceful land, a group of men chose this place to found a settlement.</description>
+			<probability>
+				<base>1</base>
+				<modifiers>
+					<multiplier factor="0">Zone.IsCoastal</multiplier>
+				</modifiers>
+			</probability>
+		</settlement>
+		<settlement id ="sea_settlement">
+			<name>Coastal settlement</name>
+			<description>Living off the bounties of the sea, this group of people may become the fishermen who will feed your realm or the sailors who will discover plentiful lands.</description>
+			<probability>
+				<base>1</base>
+				<modifiers>
+					<multiplier factor="0">!Zone.IsCoastal</multiplier>
+				</modifiers>
+			</probability>
+		</settlement>
+	</baseSettlements>
+	<evolutionSettlements>
+		
+	</evolutionSettlements>
+</settlements>

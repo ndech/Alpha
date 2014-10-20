@@ -205,6 +205,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Data\UI\base_settlement.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\castle.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

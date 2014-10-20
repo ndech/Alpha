@@ -6,9 +6,9 @@ namespace Alpha.Core.Commands
     public class FoundSettlementCommand : Command
     {
         private readonly LandProvince _province;
-        private readonly SettlementType _type;
+        private readonly BaseSettlementType _type;
 
-        public FoundSettlementCommand(LandProvince province, SettlementType type)
+        public FoundSettlementCommand(LandProvince province, BaseSettlementType type)
         {
             _province = province;
             _type = type;
@@ -16,12 +16,12 @@ namespace Alpha.Core.Commands
 
         internal override void Execute()
         {
-            _province.FoundSettlement(_type).Population = 500;
+            //_province.FoundSettlement(_type).Population = 500;
         }
 
         internal override bool IsValid()
         {
-            return _province.Owner.Economy.Treasury >= _type.Cost;
+            return true; //_province.Owner.Economy.Treasury >= _type.Cost;
         }
     }
 }
