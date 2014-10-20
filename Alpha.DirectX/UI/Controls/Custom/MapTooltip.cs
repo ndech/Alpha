@@ -83,14 +83,15 @@ namespace Alpha.DirectX.UI.Controls.Custom
             string text;
             if (_hoveredZone.Province is LandProvince)
             {
-                LandProvince landProvince = (_hoveredZone.Province as LandProvince);
-                text = landProvince.AllSettlements.Single(s => s.Zone == _hoveredZone).ToString();
-                text += Environment.NewLine + "Province of " + landProvince.Name + " (" + landProvince.Owner.Name + ")";
-                text += Environment.NewLine + landProvince.BaseTax + " g/year";
-                text += Environment.NewLine + landProvince.Population + " pop ";
-                text += Text.Text.EnphasizeAsPercentage(landProvince.YearlyGrowth);
-                text += " ("+Text.Text.Enphasize(landProvince.PopulationLastDayVariation)+")";
-                text += Environment.NewLine + landProvince.Settlements.Count() + " settlements";
+                Settlement settlement = (_hoveredZone.Province as LandProvince).AllSettlements.Single(s => s.Zone == _hoveredZone);
+                text = settlement.ToString();
+                text += Environment.NewLine + "Province of " + settlement.Province.Name + " (" + settlement.Province.Owner.Name + ")";
+                text += Environment.NewLine + settlement.Province.BaseTax + " g/year";
+                text += Environment.NewLine + settlement.Province.Population + " pop ";
+                text += Text.Text.EnphasizeAsPercentage(settlement.Province.YearlyGrowth);
+                text += " (" + Text.Text.Enphasize(settlement.Province.PopulationLastDayVariation) + ")";
+                text += Environment.NewLine + string.Join(", ", settlement.Resources.Select(r=>r.Type.Name));
+
             }
             else
                 text = _hoveredZone.Province.Name;

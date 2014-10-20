@@ -139,7 +139,10 @@ namespace Alpha.Core
             {
                 int numberOfResources = RandomGenerator.Get(1, 3);
                 for (; numberOfResources > 0; numberOfResources--)
-                    settlement.AddResource(world.ProvinceManager.ResourceTypes.RandomWeightedItem(r=>r.Probability.For(settlement)));
+                    settlement.AddResource(
+                        world.ProvinceManager.ResourceTypes
+                        .Except(settlement.Resources.Select(r=>r.Type))
+                        .RandomWeightedItem(r=>r.Probability.For(settlement)));
             }
             feedback("Forging realms");
             for (int i = 0; i < 11; i++)

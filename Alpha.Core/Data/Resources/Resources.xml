@@ -22,7 +22,7 @@
 		<probability>
 			<base>5</base>
 			<modifiers>
-				<multiplier factor="3">LandProvince.IsCoastal</multiplier>
+				<multiplier factor="3">Settlement.Zone.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
 	</resource>

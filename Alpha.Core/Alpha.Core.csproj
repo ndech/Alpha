@@ -139,6 +139,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\Buildings\Buildings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Events\FleetEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

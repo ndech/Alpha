@@ -16,7 +16,7 @@
 		<cost>
 			<base>100</base>
 			<modifiers>
-				<multiplier factor="0.8">Settlement.Province.HasResource("timber")</multiplier>
+				<multiplier factor="0.8">Settlement.HasResource("timber")</multiplier>
 			</modifiers>
 		</cost>
 		<resources>
@@ -31,7 +31,7 @@
 		<cost>
 			<base>200</base>
 			<modifiers>
-				<multiplier factor="0.8">Settlement.Province.HasResource("stone")</multiplier>
+				<multiplier factor="0.8">Settlement.HasResource("stone")</multiplier>
 			</modifiers>
 		</cost>
 		<resources>

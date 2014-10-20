@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Alpha.Core.Notifications;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
 
@@ -18,7 +17,6 @@ namespace Alpha.Core.Provinces
             YearlyGrowth = RandomGenerator.GetDouble(-0.3, 0.9);
             Name = NameGenerator.GetRandomProvinceName();
             Color = CustomColor.Random;
-            Resources = new List<Resource>();
             Capital = new Settlement(world, zones.RandomItem(), this);
             foreach (Zone zone in zones.Except(Capital.Zone))
                 _settlements.Add(new Settlement(world, zone, this));
@@ -63,16 +61,5 @@ namespace Alpha.Core.Provinces
         } }
 
         public bool IsCoastal { get { return Zones.SelectMany(z => z.Neighbourgs).Any(z => z.Province is SeaProvince); } }
-        public List<Resource> Resources { get; set; }
-
-        public void AddResource(ResourceType type)
-        {
-            Resources.Add(new Resource(type));
-        }
-
-        public bool HasResource(String key)
-        {
-            return Resources.Any(r => r.Type.Id == key);
-        }
     }
 }
