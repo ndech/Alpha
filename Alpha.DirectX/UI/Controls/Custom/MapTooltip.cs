@@ -84,6 +84,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             if (_hoveredProvince is LandProvince)
             {
                 LandProvince landProvince = (_hoveredProvince as LandProvince);
+                text += "(" + landProvince.Owner.Name + ")";
                 text += Environment.NewLine + landProvince.BaseTax + " g/year";
                 text += Environment.NewLine + landProvince.Population + " pop ";
                 text += Text.Text.EnphasizeAsPercentage(landProvince.YearlyGrowth);

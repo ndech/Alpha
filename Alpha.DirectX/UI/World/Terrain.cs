@@ -56,8 +56,8 @@ namespace Alpha.DirectX.UI.World
             {
                 CustomColor color = colorGenerator(province);
                 Array.Copy(BitConverter.GetBytes(color.Red), 0, byteArray, province.NumericId * 16, 4);
-                Array.Copy(BitConverter.GetBytes(color.Blue), 0, byteArray, province.NumericId * 16 + 4, 4);
-                Array.Copy(BitConverter.GetBytes(color.Green), 0, byteArray, province.NumericId * 16 + 8, 4);
+                Array.Copy(BitConverter.GetBytes(color.Green), 0, byteArray, province.NumericId * 16 + 4, 4);
+                Array.Copy(BitConverter.GetBytes(color.Blue), 0, byteArray, province.NumericId * 16 + 8, 4);
                 Array.Copy(BitConverter.GetBytes(1.0f), 0, byteArray, province.NumericId * 16 + 12, 4);
             }
             DataStream dataStream = new DataStream(rowPitch,true, true);
