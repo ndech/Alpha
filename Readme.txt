@@ -1,1 +1,1 @@
-Physically acurate flight simulator (work in progress)
+Medieval economy simulator (work in progress)
