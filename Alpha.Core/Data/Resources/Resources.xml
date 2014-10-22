@@ -22,7 +22,7 @@
 		<probability>
 			<base>5</base>
 			<modifiers>
-				<multiplier factor="3">Settlement.Zone.IsCoastal</multiplier>
+				<multiplier factor="2">Settlement.Zone.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
 	</resource>
@@ -30,6 +30,15 @@
 		<name>Stone</name>
 		<probability>
 			<base>5</base>
+		</probability>
+	</resource>
+	<resource id="fish">
+		<name>Fish</name>
+		<probability>
+			<base>5</base>
+			<modifiers>
+				<multiplier factor="5">Settlement.Zone.IsCoastal</multiplier>
+			</modifiers>
 		</probability>
 	</resource>
 </resources>
