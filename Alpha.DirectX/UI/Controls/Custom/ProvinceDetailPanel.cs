@@ -60,7 +60,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _province = province;
             _name.Text = province.Name;
-            _settlementScrollableContainer.Refresh(province.Settlements.OrderByDescending(s=>s.Population).ToList());
+            _settlementScrollableContainer.Refresh(province.Settlements.OrderByDescending(s=>s.Population.Value).ToList());
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
@@ -12,6 +13,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     {
         private Settlement _settlement;
         private Label _name;
+        private ScrollableContainer<ResourceScrollableItem, Resource> _resourceScrollableContainer; 
         public SettlementDetailPanel(IContext context)
             : base(context, "settlement_panel", new UniRectangle(), Color.LightSlateGray)
         {
@@ -26,6 +28,13 @@ namespace Alpha.DirectX.UI.Controls.Custom
             IconButton closeButton;
             new PositionLayout(this, 20, 20, HorizontalAlignment.Right, VerticalAlignment.Top, new Padding(3))
                 .Create(closeButton = new IconButton(Context, "close_button"));
+
+            _resourceScrollableContainer =
+                new ScrollableContainer<ResourceScrollableItem, Resource>(Context, "settlements", 4,
+                    c => new ResourceScrollableItem(c));
+            new PositionLayout(this, _resourceScrollableContainer.Size.X, _resourceScrollableContainer.Size.Y,
+                               HorizontalAlignment.Center, VerticalAlignment.Middle)
+                              .Create(_resourceScrollableContainer);
             closeButton.Clicked += () => Visible = false;
         }
 
@@ -35,6 +44,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _settlement = settlement;
             _name.Text = settlement.Name;
+            _resourceScrollableContainer.Refresh(settlement.Resources.ToList());
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)

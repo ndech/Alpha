@@ -7,6 +7,5 @@ namespace Alpha.DirectX.UI.Controls
     {
         void Set(T item);
         Vector2I Size { get; }
-        Action<T> Action { get; }
     }
 }
