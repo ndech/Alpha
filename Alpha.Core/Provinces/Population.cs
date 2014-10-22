@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
@@ -15,9 +16,9 @@ namespace Alpha.Core.Provinces
         }
         public double YearlyGrowth { get; private set; }
 
-        internal Population()
+        internal Population(int range = 1000)
         {
-            _value = RandomGenerator.Get(1000, 100000);
+            _value = RandomGenerator.Get(range/2, 2*range);
             YearlyGrowth = RandomGenerator.GetDouble(-0.3, 0.9);
         }
 

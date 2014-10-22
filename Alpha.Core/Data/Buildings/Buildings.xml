@@ -7,6 +7,9 @@
 		<cost>
 			<base>150</base>
 		</cost>
+		<effects>
+			
+		</effects>
 	</building>
 	<building id="timber_palisade">
 		<name>Timber Palisade</name>
@@ -20,7 +23,7 @@
 			</modifiers>
 		</cost>
 		<resources>
-			<resource type ="timber">300</resource>
+			<resource type="timber">300</resource>
 		</resources>
 	</building>
 	<building id="drystone_low_wall">
@@ -35,7 +38,7 @@
 			</modifiers>
 		</cost>
 		<resources>
-			<resource type ="stone">500</resource>
+			<resource type="stone">500</resource>
 		</resources>
 	</building>
 </buildings>

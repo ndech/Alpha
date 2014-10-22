@@ -1,0 +1,22 @@
+﻿<resourcesLevels>
+	<resourceLevel id="scarce">
+		<name>Scarce</name>
+		<value>1</value>
+	</resourceLevel>
+	<resourceLevel id ="poor">
+		<name>Poor</name>
+		<value>2</value>
+	</resourceLevel>
+	<resourceLevel id ="normal">
+		<name>Normal</name>
+		<value>3</value>
+	</resourceLevel>
+	<resourceLevel id ="abundant">
+		<name>Abundant</name>
+		<value>5</value>
+	</resourceLevel>
+	<resourceLevel id ="exceptional">
+		<name>Exceptional</name>
+		<value>10</value>
+	</resourceLevel>
+</resourcesLevels>

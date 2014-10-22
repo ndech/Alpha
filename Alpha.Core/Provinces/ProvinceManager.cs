@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Alpha.Core.Fleets;
@@ -18,12 +17,15 @@ namespace Alpha.Core.Provinces
 
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
         internal List<ResourceType> ResourceTypes { get; private set; }
-        internal List<Building> Buildings { get; private set; } 
+        internal List<Building> Buildings { get; private set; }
+        internal List<ResourceLevel> ResourceLevels { get; private set; } 
 
         internal ProvinceManager(World world) : base(world)
         {
-            BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml").Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
+            BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml")
+                .Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
             ResourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
+            ResourceLevels = XDocument.Load(@"Data\Resources\ResourceLevels.xml").Descendants("resourceLevel").Select(x => new ResourceLevel(x)).ToList();
             Buildings = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new Building(x)).ToList();
         }
 
