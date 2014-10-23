@@ -32,6 +32,7 @@ namespace Alpha.Core.Provinces
         {
             Population.DayUpdate();
             Constructions.DayUpdate();
+            Resources.DayUpdate();
         }
 
         internal void ConstructionCompleted(Construction construction)

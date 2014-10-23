@@ -14,8 +14,12 @@ namespace Alpha.DirectX.UI.Controls.Custom
         private Icon _backgroundIcon;
         private Icon _icon;
         private Tooltip _iconTooltip;
+        private Tooltip _populationTooltip;
         private ProgressBar _populationProgressBar;
         private DynamicLabel _populationLabel;
+        private ProgressBar _storageProgressBar;
+        private DynamicLabel _storageLabel;
+        private Tooltip _storageTooltip;
 
         public ResourceScrollableItem(IContext context) : base(context,"resource_scrollable_item", new UniRectangle(), Color.Red )
         { }
@@ -27,7 +31,9 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _icon.BaseTexture = Context.TextureManager.Create("default.png", "Data/UI/").TextureResource;
                 _backgroundIcon.BaseTexture = Context.TextureManager.Create("default.png", "Data/UI/").TextureResource;
                 _populationLabel.Expression = () => "";
-                _populationProgressBar.SetValues(0,1,0);
+                _populationProgressBar.SetValues(0, 1, 0);
+                _storageLabel.Expression = () => "";
+                _storageProgressBar.SetValues(0, 1, 0);
             }
             else
             {
@@ -36,6 +42,12 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _iconTooltip.Text = item.Level.Name + " resource of " + item.Type.Name.ToLower();
                 _populationProgressBar.SetValues(0, item.MaxPopulation, item.Population.Value);
                 _populationLabel.Expression = () => item.Population.Value.ToString(CultureInfo.InvariantCulture);
+                _populationTooltip.Text = item.Population.Value.ToString(CultureInfo.InvariantCulture) + "/" +
+                                          item.MaxPopulation;
+                _storageProgressBar.SetValues(0, item.StorageCapacity, (int)item.StorageLevel);
+                _storageLabel.Expression = () => ((int)item.StorageLevel).ToString(CultureInfo.InvariantCulture);
+                _storageTooltip.Text = ((int)item.StorageLevel).ToString(CultureInfo.InvariantCulture) + "/" +
+                                          item.StorageCapacity;
             }
         }
         public override void Initialize()
@@ -49,12 +61,20 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 .Create(
                     _populationProgressBar =
                         new ProgressBar(Context, "population_progress_bar", new UniRectangle(), Color.BlueViolet))
-                .Create(_populationLabel = new DynamicLabel(Context, "population_label", new UniRectangle(), () => ""));
+                .Create(_populationLabel = new DynamicLabel(Context, "population_label", new UniRectangle(), () => ""))
+                .Right(60, VerticalAlignment.Middle, new Padding(20), 120)
+                .Create(
+                    _storageProgressBar =
+                        new ProgressBar(Context, "population_progress_bar", new UniRectangle(), Color.BlueViolet))
+                .Create(_storageLabel = new DynamicLabel(Context, "population_label", new UniRectangle(), () => ""));
             _iconTooltip = Register(new Tooltip(Context, "tooltip", _backgroundIcon, .5f, ""));
+            _populationTooltip = Register(new Tooltip(Context, "tooltip", _populationProgressBar, .5f, ""));
+            _storageTooltip = Register(new Tooltip(Context, "tooltip", _storageProgressBar, .5f, ""));
 
             //new PositionLayout(this, 200, 50, HorizontalAlignment.Center, VerticalAlignment.Middle)
             //    .Create(new )
         }
+
         public override Vector2I Size
         {
             get { return new Vector2I(400, 70); }
