@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
@@ -13,6 +14,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
         private Icon _backgroundIcon;
         private Icon _icon;
         private Tooltip _iconTooltip;
+        private ProgressBar _populationProgressBar;
+        private DynamicLabel _populationLabel;
 
         public ResourceScrollableItem(IContext context) : base(context,"resource_scrollable_item", new UniRectangle(), Color.Red )
         { }
@@ -23,12 +26,16 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 _icon.BaseTexture = Context.TextureManager.Create("default.png", "Data/UI/").TextureResource;
                 _backgroundIcon.BaseTexture = Context.TextureManager.Create("default.png", "Data/UI/").TextureResource;
+                _populationLabel.Expression = () => "";
+                _populationProgressBar.SetValues(0,1,0);
             }
             else
             {
                 _icon.BaseTexture = Context.TextureManager.Create(item.Type.Id + ".dds", "Data/UI/Resources/").TextureResource;
                 _backgroundIcon.BaseTexture = Context.TextureManager.Create("level_" + item.Level.Id + ".dds", "Data/UI/Resources/").TextureResource;
                 _iconTooltip.Text = item.Level.Name + " resource of " + item.Type.Name.ToLower();
+                _populationProgressBar.SetValues(0, item.MaxPopulation, item.Population.Value);
+                _populationLabel.Expression = () => item.Population.Value.ToString(CultureInfo.InvariantCulture);
             }
         }
         public override void Initialize()
@@ -37,8 +44,14 @@ namespace Alpha.DirectX.UI.Controls.Custom
             new PositionLayout(this, 80, 70, HorizontalAlignment.Left, VerticalAlignment.Middle)
                 .Create(_backgroundIcon = new Icon(Context, "resource_item_icon_background"));
             new PositionLayout(this, 54, 54, HorizontalAlignment.Left, VerticalAlignment.Middle, new Padding(8))
-                .Create(_icon = new Icon(Context, "resource_item_icon"));
+                .Create(_icon = new Icon(Context, "resource_item_icon"))
+                .Right(60, VerticalAlignment.Middle, new Padding(20), 120)
+                .Create(
+                    _populationProgressBar =
+                        new ProgressBar(Context, "population_progress_bar", new UniRectangle(), Color.BlueViolet))
+                .Create(_populationLabel = new DynamicLabel(Context, "population_label", new UniRectangle(), () => ""));
             _iconTooltip = Register(new Tooltip(Context, "tooltip", _backgroundIcon, .5f, ""));
+
             //new PositionLayout(this, 200, 50, HorizontalAlignment.Center, VerticalAlignment.Middle)
             //    .Create(new )
         }
