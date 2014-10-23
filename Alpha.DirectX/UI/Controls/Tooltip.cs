@@ -14,11 +14,11 @@ namespace Alpha.DirectX.UI.Controls
         private TexturedExtensibleRectangle _rectangle;
         private double _delay;
         private double _cooldown;
-        private Text.Text _text;
+        protected Text.Text _text;
         private readonly Control _associatedControl;
         private Vector2I _position;
         
-        public String Text
+        public virtual String Text
         {
             set
             {
@@ -59,6 +59,7 @@ namespace Alpha.DirectX.UI.Controls
             Texture texture = Context.TextureManager.Create("tooltip.png", @"Data/UI/");
             _rectangle = new TexturedExtensibleRectangle(Context, new Vector2I(), texture, 8);
             _delay = delay;
+            Visible = false;
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix,

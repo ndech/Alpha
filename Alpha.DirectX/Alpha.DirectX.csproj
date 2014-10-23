@@ -92,6 +92,7 @@
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
     <Compile Include="UI\Controls\Custom\ResourceScrollableItem.cs" />
     <Compile Include="UI\Controls\Custom\SettlementDetailPanel.cs" />
+    <Compile Include="UI\Controls\DynamicTooltip.cs" />
     <Compile Include="UI\Controls\Icon.cs" />
     <Compile Include="UI\Controls\Custom\MapTooltip.cs" />
     <Compile Include="UI\Controls\Custom\Minimap.cs" />
