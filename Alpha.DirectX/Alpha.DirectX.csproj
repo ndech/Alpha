@@ -103,6 +103,7 @@
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\IconButton.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Controls\ProgressBar.cs" />
     <Compile Include="UI\Controls\ScrollableContainer.cs" />
     <Compile Include="UI\Controls\IScrollableItem.cs" />
     <Compile Include="UI\Controls\Scrollbar.cs" />

@@ -30,11 +30,12 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 .Create(closeButton = new IconButton(Context, "close_button"));
 
             _resourceScrollableContainer =
-                new ScrollableContainer<ResourceScrollableItem, Resource>(Context, "settlements", 4,
+                new ScrollableContainer<ResourceScrollableItem, Resource>(Context, "settlements", 3,
                     c => new ResourceScrollableItem(c));
             new PositionLayout(this, _resourceScrollableContainer.Size.X, _resourceScrollableContainer.Size.Y,
                                HorizontalAlignment.Center, VerticalAlignment.Middle)
                               .Create(_resourceScrollableContainer);
+
             closeButton.Clicked += () => Visible = false;
         }
 

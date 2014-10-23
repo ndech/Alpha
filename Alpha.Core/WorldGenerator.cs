@@ -137,7 +137,7 @@ namespace Alpha.Core
             feedback("Planting fields");
             foreach (Settlement settlement in world.ProvinceManager.LandProvinces.SelectMany(p=>p.AllSettlements))
             {
-                int numberOfResources = RandomGenerator.Get(1, 4);
+                int numberOfResources = RandomGenerator.Get(1, 5);
                 for (int i = 0; i < numberOfResources; i++)
                     settlement.AddResource(
                         world.ProvinceManager.ResourceTypes

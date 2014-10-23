@@ -61,6 +61,10 @@ namespace Alpha.DirectX.UI.Controls
             _scrollBar.Refresh(_content.Count(),_numberOfVisibleItems, FirstVisibleItem);
             for (int i = 0; i < _numberOfVisibleItems; i++)
                 _items[i].Set(i+FirstVisibleItem < _content.Count() ? _content[i+FirstVisibleItem] : default(T1));
+            if (_content.Count <= _numberOfVisibleItems)
+                _scrollBar.Visible = false;
+            else
+                _scrollBar.Visible = true;
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
