@@ -11,9 +11,10 @@
             get { return Population.Value*0.01; }
         }
 
-        public Resource(ResourceType type)
+        public Resource(ResourceType type, ResourceLevel level)
         {
             Type = type;
+            Level = level;
             Population = new Population();
         }
     }

@@ -142,7 +142,8 @@ namespace Alpha.Core
                     settlement.AddResource(
                         world.ProvinceManager.ResourceTypes
                         .Except(settlement.Resources.Select(r=>r.Type))
-                        .RandomWeightedItem(r=>r.Probability.For(settlement)));
+                        .RandomWeightedItem(r=>r.Probability.For(settlement))
+                        , world.ProvinceManager.ResourceLevels.RandomWeightedItem((l)=>1.0f));
             }
             feedback("Forging realms");
             for (int i = 0; i < 11; i++)

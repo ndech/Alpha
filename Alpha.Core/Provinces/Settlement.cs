@@ -54,9 +54,9 @@ namespace Alpha.Core.Provinces
         private readonly List<Resource> _resources = new List<Resource>();
         public IEnumerable<Resource> Resources { get { return _resources; } }
 
-        internal void AddResource(ResourceType type)
+        internal void AddResource(ResourceType type, ResourceLevel level)
         {
-            _resources.Add(new Resource(type));
+            _resources.Add(new Resource(type, level));
         }
 
         public bool HasResource(String key)
