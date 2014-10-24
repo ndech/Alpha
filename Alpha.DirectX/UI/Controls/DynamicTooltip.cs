@@ -13,16 +13,11 @@ namespace Alpha.DirectX.UI.Controls
             : base(context, id, associatedControl, delay)
         { }
 
-        public override string Text
-        {
-            set { Expression = () => value; }
-        }
-
         protected override void Update(double delta)
         {
             base.Update(delta);
             if(Visible)
-                _text.Content = Expression();
+                Text = Expression();
         }
     }
 }
