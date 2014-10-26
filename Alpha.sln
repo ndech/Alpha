@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.Scripting", "Alpha.Scripting\Alpha.Scripting.csproj", "{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.WorldGeneration", "Alpha.WorldGeneration\Alpha.WorldGeneration.csproj", "{B49A9F3C-0FEE-43C6-A7A0-C5E9D595C858}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.Toolkit", "Alpha.Toolkit\Alpha.Toolkit.csproj", "{78B2A9C4-7657-4AFD-8AE8-5186237F205F}"
@@ -37,24 +35,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Native debug|Any CPU.ActiveCfg = Native debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Native debug|Any CPU.Build.0 = Native debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Native debug|Mixed Platforms.ActiveCfg = Native debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Native debug|Mixed Platforms.Build.0 = Native debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Native debug|x64.ActiveCfg = Native debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Native debug|x86.ActiveCfg = Native debug|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Release|x64.ActiveCfg = Release|Any CPU
-		{6E8E73CE-C2AC-4E57-81FE-431FCC733C70}.Release|x86.ActiveCfg = Release|Any CPU
 		{B49A9F3C-0FEE-43C6-A7A0-C5E9D595C858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B49A9F3C-0FEE-43C6-A7A0-C5E9D595C858}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B49A9F3C-0FEE-43C6-A7A0-C5E9D595C858}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

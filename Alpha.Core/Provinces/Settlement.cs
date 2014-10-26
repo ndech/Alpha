@@ -64,5 +64,11 @@ namespace Alpha.Core.Provinces
         {
             return Resources.Any(r => r.Type.Id == key);
         }
+
+        public int FoodPotential()
+        {
+            return Resources.Where(r => r.Type.Category == ResourceType.ResourceCategory.Food)
+                .Sum(r => r.Level.Value);
+        }
     }
 }

@@ -20,12 +20,14 @@ namespace Alpha.DirectX.UI.World
         private readonly ShaderResourceView _borderTexture;
         private readonly ShaderResourceView _provinceColorTexture;
         private readonly ShaderResourceView _realmColorTexture;
+        private readonly ShaderResourceView _foodAvailabilityTexture;
         private readonly TerrainShader _shader;
         public RenderingMode CurrentRenderingMode { get; set; }
 
         public enum RenderingMode
         {
             Province,
+            FoodAvailability,
             Realm
         }
 
@@ -36,7 +38,16 @@ namespace Alpha.DirectX.UI.World
             BuildBuffers(context, provinces);
             _provinceColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Color);
             _realmColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Owner.Color);
+
+            int maxFood = provinces.Max(p =>p.Settlements.Sum(s=>s.FoodPotential()));
+            _foodAvailabilityTexture = GenerateProvinceTexture(context, provinces,
+                p => LevelColor(p.Settlements.Sum(s => s.FoodPotential()), 0, maxFood));
             CurrentRenderingMode = RenderingMode.Realm;
+        }
+
+        public CustomColor LevelColor(int value, int min, int max)
+        {
+            return CustomColor.Lerp(new CustomColor(1, 0, 0), new CustomColor(0, 1, 0), (float) (value - min)/(max - min));
         }
 
         private ShaderResourceView GenerateProvinceTexture(IContext context, IEnumerable<LandProvince> provinces, Func<LandProvince, CustomColor> colorGenerator)
@@ -73,8 +84,14 @@ namespace Alpha.DirectX.UI.World
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.WaterVertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture,
-                CurrentRenderingMode == RenderingMode.Realm ? _realmColorTexture : _provinceColorTexture);
+            ShaderResourceView currentTexture;
+            if (CurrentRenderingMode == RenderingMode.Realm)
+                currentTexture = _realmColorTexture;
+            else if (CurrentRenderingMode == RenderingMode.Province)
+                currentTexture = _provinceColorTexture;
+            else
+                currentTexture = _foodAvailabilityTexture;
+            _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, currentTexture);
         }
         
         public void Update(double delta)

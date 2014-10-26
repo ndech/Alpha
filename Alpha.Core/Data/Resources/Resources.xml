@@ -25,6 +25,7 @@
 				<multiplier factor="2">Settlement.Zone.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
+		<category>Food</category>
 	</resource>
 	<resource id="stone">
 		<name>Stone</name>
@@ -40,5 +41,16 @@
 				<multiplier factor="5">Settlement.Zone.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
+		<category>Food</category>
+	</resource>
+	<resource id="livestock">
+		<name>Livestock</name>
+		<probability>
+			<base>2</base>
+			<modifiers>
+				<multiplier factor="2">!Settlement.Zone.IsCoastal</multiplier>
+			</modifiers>
+		</probability>
+		<category>Food</category>
 	</resource>
 </resources>

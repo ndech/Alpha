@@ -35,7 +35,13 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 "Data/UI/MinimapIcons/realm_map.dds",
                 "Data/UI/MinimapIcons/realm_map_toggled.dds");
             realmButton.Toggled += () => _terrain.CurrentRenderingMode = Terrain.RenderingMode.Realm;
-            
+
+            TogglableButton foodButton = new TogglableButton(Context, "minimap_food_mode",
+                new UniRectangle(),
+                "Data/UI/MinimapIcons/food_map.dds",
+                "Data/UI/MinimapIcons/food_map_toggled.dds");
+            foodButton.Toggled += () => _terrain.CurrentRenderingMode = Terrain.RenderingMode.FoodAvailability;
+
             TogglableButton terrainButton = new TogglableButton(Context, "minimap_terrain_mode",
                 new UniRectangle(),
                 "Data/UI/MinimapIcons/terrain_map.dds",
@@ -45,6 +51,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             politicalButton.Group = mapButtonGroup;
             realmButton.Group = mapButtonGroup;
             terrainButton.Group = mapButtonGroup;
+            foodButton.Group = mapButtonGroup;
 
             Register(new Minimap(Context,
                 new UniRectangle(10, 50, new UniScalar(1.0f, -20), new UniScalar(1.0f, -60))));
@@ -53,6 +60,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 .AddControl(_extraPanelToggle,40)
                 .AddControl(politicalButton, 40)
                 .AddControl(realmButton,40)
+                .AddControl(foodButton, 40)
                 .AddControl(terrainButton,40)
                 .Create();
         }

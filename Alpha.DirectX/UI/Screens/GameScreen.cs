@@ -117,7 +117,9 @@ namespace Alpha.DirectX.UI.Screens
             {
                 Province province = Context.World.ProvinceManager.ClosestProvince(
                     (Vector3D) new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
-                if (province is LandProvince && (province as LandProvince).Owner == Context.Realm)
+                if (province is LandProvince 
+                    //&& (province as LandProvince).Owner == Context.Realm
+                    )
                     _provinceDetailPanel.ShowProvince(province as LandProvince);
             }
         }

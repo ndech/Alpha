@@ -24,10 +24,17 @@ namespace Alpha.Toolkit
             Green = green;
             Blue = blue;
         }
-
+        
         public static implicit operator Color(CustomColor customColor)
         {
             return new Color(customColor.Red, customColor.Green, customColor.Blue);
+        }
+
+        public static CustomColor Lerp(CustomColor min, CustomColor max, float position)
+        {
+            return new CustomColor(min.Red + (max.Red - min.Red)*position,
+                min.Green + (max.Green - min.Green)*position,
+                min.Blue + (max.Blue - min.Blue)*position);
         }
     }
 }

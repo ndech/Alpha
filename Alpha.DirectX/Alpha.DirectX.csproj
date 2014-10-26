@@ -220,6 +220,12 @@
     <Content Include="Data\UI\default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\MinimapIcons\food_map.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\MinimapIcons\food_map_toggled.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\money.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -245,6 +251,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Resources\level_scarce.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\Resources\livestock.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\Resources\silver.dds">
