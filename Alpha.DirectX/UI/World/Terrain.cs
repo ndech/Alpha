@@ -39,9 +39,9 @@ namespace Alpha.DirectX.UI.World
             _provinceColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Color);
             _realmColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Owner.Color);
 
-            int maxFood = provinces.Max(p =>p.Settlements.Sum(s=>s.FoodPotential()));
+            int maxFood = provinces.Max(p =>p.AllSettlements.Sum(s=>s.FoodPotential()));
             _foodAvailabilityTexture = GenerateProvinceTexture(context, provinces,
-                p => LevelColor(p.Settlements.Sum(s => s.FoodPotential()), 0, maxFood));
+                p => LevelColor(p.AllSettlements.Sum(s => s.FoodPotential()), 0, maxFood));
             CurrentRenderingMode = RenderingMode.Realm;
         }
 
