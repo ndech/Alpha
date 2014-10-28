@@ -12,7 +12,7 @@ namespace Alpha.DirectX.UI.Controls
         protected override void Update(double delta)
         {
             base.Update(delta);
-            if(Visible)
+            if(Visible && Expression!=null)
                 Text = Expression();
         }
     }
