@@ -57,22 +57,19 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 .Create(_backgroundIcon = new Icon(Context, "resource_item_icon_background"));
             new PositionLayout(this, 54, 54, HorizontalAlignment.Left, VerticalAlignment.Middle, new Padding(8))
                 .Create(_icon = new Icon(Context, "resource_item_icon"))
-                .Right(60, VerticalAlignment.Middle, new Padding(20), 120)
+                .Right(30, VerticalAlignment.Top, new Padding(20,20, 5, 5), 120)
                 .Create(
                     _populationProgressBar =
                         new ProgressBar(Context, "population_progress_bar", new UniRectangle(), Color.BlueViolet))
                 .Create(_populationLabel = new DynamicLabel(Context, "population_label", new UniRectangle(), () => ""))
-                .Right(60, VerticalAlignment.Middle, new Padding(20), 120)
+                .Right(30, VerticalAlignment.Top, new Padding(20, 20, 5, 5), 120)
                 .Create(
                     _storageProgressBar =
-                        new ProgressBar(Context, "population_progress_bar", new UniRectangle(), Color.BlueViolet))
-                .Create(_storageLabel = new DynamicLabel(Context, "population_label", new UniRectangle(), () => ""));
+                        new ProgressBar(Context, "storage_progress_bar", new UniRectangle(), Color.BlueViolet))
+                .Create(_storageLabel = new DynamicLabel(Context, "storage_label", new UniRectangle(), () => ""));
             _iconTooltip = Register(new Tooltip(Context, "tooltip", _backgroundIcon, .5f, ""));
             _populationTooltip = Register(new DynamicTooltip(Context, "tooltip", _populationProgressBar, .5f));
             _storageTooltip = Register(new DynamicTooltip(Context, "tooltip", _storageProgressBar, .5f));
-
-            //new PositionLayout(this, 200, 50, HorizontalAlignment.Center, VerticalAlignment.Middle)
-            //    .Create(new )
         }
 
         public override Vector2I Size
