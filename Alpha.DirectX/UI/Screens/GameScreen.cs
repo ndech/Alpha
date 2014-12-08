@@ -19,6 +19,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly Sun _sun;
         private readonly Water _water;
         private readonly Terrain _terrain;
+        private readonly WorldTerrain _worldTerrain;
         private readonly Sky _sky;
         private readonly FleetRenderer _fleetRenderer;
         private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
@@ -30,6 +31,7 @@ namespace Alpha.DirectX.UI.Screens
             _sun = new Sun();
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
             _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces);
+            _worldTerrain = new WorldTerrain(context);
             _sky = new Sky(context);
             _fleetRenderer = new FleetRenderer(context);
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);
@@ -96,7 +98,11 @@ namespace Alpha.DirectX.UI.Screens
         {
             _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
-            _terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            //_terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            Context.DirectX.SetWireFrameMode(true);
+            _worldTerrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix,
+                Context.DirectX.ProjectionMatrix);
+            Context.DirectX.SetWireFrameMode(false);
             _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);

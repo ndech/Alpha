@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
