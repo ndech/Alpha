@@ -38,7 +38,7 @@ namespace Alpha.DirectX.UI.World
                 for (int j = 0; j < (width + 1); j++)
                     terrainVertices[i * (width + 1) + j] = new VertexDefinition.PositionTexture
                     {
-                        position = new Vector3((-(width / 2) + i) * pitch, 0.0f, (-(height / 2) + j) * pitch),
+                        position = new Vector3((-(height / 2) + i) * pitch, 0.0f, (-(width / 2) + j) * pitch),
                         texture = new Vector2(((float)j / width), ((float)i / height))
                     };
             _indexCount = width * height * 6;
