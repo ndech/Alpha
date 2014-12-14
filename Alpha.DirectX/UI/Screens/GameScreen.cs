@@ -63,7 +63,6 @@ namespace Alpha.DirectX.UI.Screens
             _counter.Update(delta);
             _fleetMoveOrderRenderer.Update(delta);
             UpdateCameraFromInput();
-            
         }
 
         private void UpdateCameraFromInput()
