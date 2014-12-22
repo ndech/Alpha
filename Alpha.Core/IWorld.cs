@@ -1,5 +1,4 @@
-﻿using Alpha.Core.Calendars;
-using Alpha.Core.Fleets;
+﻿using Alpha.Core.Fleets;
 using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
 
@@ -10,6 +9,6 @@ namespace Alpha.Core
         FleetManager FleetManager { get; }
         RealmManager RealmManager { get; }
         ProvinceManager ProvinceManager { get; }
-        Calendar Calendar { get; }
+        Calendar.Calendar Calendar { get; }
     }
 }

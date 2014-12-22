@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Alpha.Core.Calendars
+namespace Alpha.Core.Calendar
 {
     public class Date : IEquatable<Date>
     {

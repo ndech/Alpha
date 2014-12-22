@@ -10,6 +10,7 @@ namespace Alpha.DirectX.UI
         internal event CustomEventHandler<Fleet> NewFleetMoveOrder;
         internal event CustomEventHandler<Fleet> FleetMoved;
         internal event CustomEventHandler<Settlement> NewSettlement;
+        internal event CustomEventHandler DayChanged;
         internal void Process(IEnumerable<Notification> notifications)
         {
             foreach (Notification notification in notifications)
@@ -20,6 +21,8 @@ namespace Alpha.DirectX.UI
                     FleetMoved.Raise(((FleetMovedNotification)notification).Fleet);
                 if(notification is NewSettlementNotification)
                     NewSettlement.Raise(((NewSettlementNotification)notification).Settlement);
+                if (notification is DayChangedNotification)
+                    DayChanged.Raise();
             }
         }
     }

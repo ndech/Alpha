@@ -1,0 +1,18 @@
+﻿<seasons>
+  <season id="winter">
+    <name>Winter</name>
+    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 12</trigger>
+  </season>
+  <season id="spring">
+    <name>Spring</name>
+    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 3</trigger>
+  </season>
+  <season id="summer">
+    <name>Summer</name>
+    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 6</trigger>
+  </season>
+  <season id="autumn">
+    <name>Autumn</name>
+    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 9</trigger>
+  </season>
+</seasons>
