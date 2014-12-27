@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Alpha.Core.Tags
 {
-    public class TagCollection
+    public class TagCollection : IEnumerable<Tag>
     {
-        private List<Tag> Tags; 
+        private HashSet<Tag> Tags;
 
         public void Add(Tag tag)
         {
@@ -20,8 +21,18 @@ namespace Alpha.Core.Tags
         {
             if (!Contains(tag))
                 return false;
-            Tags.RemoveAll(t=> t.Equals(tag));
+            Tags.Remove(tag);
             return true;
+        }
+
+        public IEnumerator<Tag> GetEnumerator()
+        {
+            return Tags.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

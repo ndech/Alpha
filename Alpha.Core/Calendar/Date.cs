@@ -2,18 +2,18 @@
 
 namespace Alpha.Core.Calendar
 {
-    public class Date : IEquatable<Date>
+    public class Date : IEquatable<Date>, IComparable<Date>
     {
         private readonly int _day;
         public int Day { get { return _day; } }
 
-        private readonly int _month;
-        public int Month { get { return _month; } }
+        private readonly Month _month;
+        public Month Month { get { return _month; } }
 
         private readonly int _year;
         public int Year { get { return _year; } }
 
-        public Date(int day, int month, int year)
+        public Date(int day, Month month, int year)
         {
             _day = day;
             _month = month;
@@ -31,27 +31,17 @@ namespace Alpha.Core.Calendar
         {
             return (Day == other.Day && Month == other.Month && Year == other.Year);
         }
-        public override String ToString()
+
+        public int CompareTo(Date other)
         {
-            return Day + @"/" + Month + @"/" + Year;
+            if (other.Year != Year) return Year - other.Year;
+            if (other.Month != Month) return Month.Position - other.Month.Position;
+            return Day - other.Day;
         }
 
-        internal Date NextDay()
+        public override String ToString()
         {
-            int day = Day + 1;
-            int month = Month;
-            int year = Year;
-            if (day > 30)
-            {
-                day = 1;
-                month++;
-                if (month > 12)
-                {
-                    month = 1;
-                    year++;
-                }
-            }
-            return new Date(day, month, year);
+            return Day + " " + Month + " " + Year;
         }
     }
 }

@@ -36,8 +36,8 @@ namespace Alpha.DirectX.UI.Screens
             _fleetRenderer = new FleetRenderer(context);
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);
             _counter = new FpsCounter();
-            Register(new DynamicLabel(context, "calendar", new UniRectangle(new UniScalar(1.0f, -100), 0, 100, 50),
-                () => context.World.Calendar.CurrentDate.ToString()));
+            Register(new DynamicLabel(context, "calendar", new UniRectangle(new UniScalar(1.0f, -300), 0, 300, 50),
+                () => context.World.Calendar.CurrentDate + " (" + context.World.Calendar.CurrentSeason + ")"));
             Register(new DynamicLabel(context, "fps", new UniRectangle(100, 0, 100, 50),
                 () => _counter.Value + "FPS"));
             new PositionLayout(this, 200, 100, HorizontalAlignment.Center, VerticalAlignment.Top)
@@ -99,8 +99,8 @@ namespace Alpha.DirectX.UI.Screens
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
             //_terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             Context.DirectX.SetWireFrameMode(true);
-            _worldTerrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix,
-                Context.DirectX.ProjectionMatrix);
+            //_worldTerrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix,
+            //    Context.DirectX.ProjectionMatrix);
             Context.DirectX.SetWireFrameMode(false);
             _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);

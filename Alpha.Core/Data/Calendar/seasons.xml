@@ -1,18 +1,18 @@
 ﻿<seasons>
   <season id="winter">
     <name>Winter</name>
-    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 12</trigger>
+    <trigger>Calendar.Month.Position &lt; 3 || (Calendar.Month.Position == 3 &amp;&amp; Calendar.Day  &lt; 21 ) || (Calendar.Month.Position == 12 &amp;&amp; Calendar.Day  &gt;= 21 )</trigger>
   </season>
   <season id="spring">
     <name>Spring</name>
-    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 3</trigger>
+    <trigger>Calendar.Month.Position &lt; 6 || (Calendar.Month.Position == 6 &amp;&amp; Calendar.Day  &lt; 21 )</trigger>
   </season>
   <season id="summer">
     <name>Summer</name>
-    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 6</trigger>
+    <trigger>Calendar.Month.Position &lt; 9 || (Calendar.Month.Position == 9 &amp;&amp; Calendar.Day  &lt; 21 )</trigger>
   </season>
   <season id="autumn">
     <name>Autumn</name>
-    <trigger>Calendar.Day = 21 &amp;&amp; Calendar.Month = 9</trigger>
+    <trigger>true</trigger>
   </season>
 </seasons>

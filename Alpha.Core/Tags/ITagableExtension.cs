@@ -13,9 +13,18 @@ namespace Alpha.Core.Tags
             tagable.Tags.Add(tag);
         }
 
+        public static void Tag(this ITagable tagable, String tag)
+        {
+            tagable.Tag(new BaseTag(tag));
+        }
+
         public static bool HasTag(this ITagable tagable, Tag tag)
         {
             return tagable.Tags.Contains(tag);
+        }
+        public static bool HasTag(this ITagable tagable, String tag)
+        {
+            return tagable.Tags.Any(t=> t is BaseTag && ((BaseTag)t).Key == tag);
         }
 
         public static bool PopTag(this ITagable tagable, Tag tag)

@@ -57,7 +57,9 @@
   <ItemGroup>
     <Compile Include="Calendar\Calendar.cs" />
     <Compile Include="Calendar\Date.cs" />
+    <Compile Include="Calendar\Month.cs" />
     <Compile Include="Calendar\Season.cs" />
+    <Compile Include="Character\Character.cs" />
     <Compile Include="Commands\ChangeTreasuryCommand.cs" />
     <Compile Include="Commands\EventOnlyCommand.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Realms\Realm.cs" />
     <Compile Include="Realms\RealmEconomy.cs" />
     <Compile Include="Realms\RealmManager.cs" />
+    <Compile Include="Tags\BaseTag.cs" />
     <Compile Include="Tags\ITagable.cs" />
     <Compile Include="Tags\ITagableExtension.cs" />
     <Compile Include="Tags\Tag.cs" />
@@ -159,7 +162,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Calendar\seasons.xml" />
+    <EmbeddedResource Include="Data\Calendar\months.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Calendar\seasons.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Data\Resources\ResourceLevels.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

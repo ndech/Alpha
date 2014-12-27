@@ -26,4 +26,7 @@
 		<font>Consolas</font>
 		<fontSize>22</fontSize>
 	</style>
+  <style in="calendar">
+    <textColor>Red</textColor>
+  </style>
 </styles>

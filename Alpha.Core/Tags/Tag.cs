@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Alpha.Core.Tags
 {
-    public class Tag
+    public abstract class Tag : IEquatable<Tag>
     {
+        public abstract bool Equals(Tag other);
     }
 }

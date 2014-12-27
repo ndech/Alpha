@@ -1,0 +1,50 @@
+﻿<months>
+  <month id="january">
+    <name>January</name>
+    <length>31</length>
+  </month>
+  <month id="february">
+    <name>February</name>
+    <length>28 + ((Year % 4 == 0 &amp;&amp; (!(Year % 100 == 0) || Year % 400 == 0)) ? 1 : 0)</length>
+  </month>
+  <month id="march">
+    <name>March</name>
+    <length>31</length>
+  </month>
+  <month id="april">
+    <name>January</name>
+    <length>30</length>
+  </month>
+  <month id="mai">
+    <name>Mai</name>
+    <length>31</length>
+  </month>
+  <month id="june">
+    <name>June</name>
+    <length>30</length>
+  </month>
+  <month id="july">
+    <name>July</name>
+    <length>31</length>
+  </month>
+  <month id="august">
+    <name>August</name>
+    <length>31</length>
+  </month>
+  <month id="september">
+    <name>September</name>
+    <length>30</length>
+  </month>
+  <month id="october">
+    <name>October</name>
+    <length>31</length>
+  </month>
+  <month id="november">
+    <name>November</name>
+    <length>31</length>
+  </month>
+  <month id="december">
+    <name>December</name>
+    <length>31</length>
+  </month>
+</months>
