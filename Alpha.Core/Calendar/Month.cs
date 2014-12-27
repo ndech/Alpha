@@ -6,7 +6,7 @@ using Alpha.Core.Dynamic;
 
 namespace Alpha.Core.Calendar
 {
-    public class Month : IEquatable<Month>
+    public class Month : IEquatable<Month>, IComparable<Month>
     {
         public String Name { get; private set; }
         internal String Id { get; private set; }
@@ -33,6 +33,11 @@ namespace Alpha.Core.Calendar
         public bool Equals(Month other)
         {
             return other.Id == Id;
+        }
+
+        public int CompareTo(Month other)
+        {
+            return Position - other.Position;
         }
 
         public override string ToString()

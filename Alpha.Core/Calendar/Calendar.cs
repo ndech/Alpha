@@ -46,7 +46,7 @@ namespace Alpha.Core.Calendar
 
         internal int AgeOf(Date birthdate)
         {
-            throw new NotImplementedException();
+            return Year - birthdate.Year + ((birthdate.Month.Position < Month.Position || (birthdate.Month == Month && birthdate.Day <= Day)) ? 1 : 0);
         }
 
         private Date NextDay(Date currentDate)
