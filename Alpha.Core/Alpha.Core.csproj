@@ -55,11 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendar\Calendar.cs" />
-    <Compile Include="Calendar\Date.cs" />
-    <Compile Include="Calendar\Month.cs" />
-    <Compile Include="Calendar\Season.cs" />
-    <Compile Include="Character\Character.cs" />
+    <Compile Include="Calendars\Calendar.cs" />
+    <Compile Include="Calendars\Date.cs" />
+    <Compile Include="Calendars\Month.cs" />
+    <Compile Include="Calendars\Season.cs" />
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\CharacterManager.cs" />
     <Compile Include="Commands\ChangeTreasuryCommand.cs" />
     <Compile Include="Commands\EventOnlyCommand.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Commands\NewConstructionCommand.cs" />
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
+    <Compile Include="Commands\SetNickNameCommand.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Dynamic\Engine.cs" />
     <Compile Include="Dynamic\ScriptContext.cs" />

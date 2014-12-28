@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Tags;
 using Alpha.Toolkit;
 
-namespace Alpha.Core.Calendar
+namespace Alpha.Core.Calendars
 {
     public class Calendar : Manager, ITagable
     {
@@ -27,8 +26,8 @@ namespace Alpha.Core.Calendar
             Tags = new TagCollection();
             _seasons = Season.LoadSeasons();
             _months = Month.LoadMonths();
-            CurrentDate = new Date(1,_months.Skip(4).First(),1900);
-            _currentSeason = _seasons.First();
+            CurrentDate = new Date(28,_months.Skip(11).First(),2014);
+            _currentSeason = Season.CurrentSeason(_seasons, this);
         }
 
         internal override void DayUpdate(DataLock dataLock)
@@ -46,7 +45,7 @@ namespace Alpha.Core.Calendar
 
         internal int AgeOf(Date birthdate)
         {
-            return Year - birthdate.Year + ((birthdate.Month.Position < Month.Position || (birthdate.Month == Month && birthdate.Day <= Day)) ? 1 : 0);
+            return Year - birthdate.Year + ((birthdate.Month.Position < Month.Position || (birthdate.Month == Month && birthdate.Day <= Day)) ? 0 : -1);
         }
 
         private Date NextDay(Date currentDate)
@@ -71,5 +70,10 @@ namespace Alpha.Core.Calendar
         public int Year { get { return CurrentDate.Year; } }
         public Month Month { get { return CurrentDate.Month; } }
         public int Day { get { return CurrentDate.Day; } }
+
+        public Date Date(int day, int month, int year)
+        {
+            return new Date(day, _months.ElementAt(month-1), year);
+        }
     }
 }

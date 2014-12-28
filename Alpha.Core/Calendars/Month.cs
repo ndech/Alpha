@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using System.Linq;
+using System.Xml.Linq;
 using Alpha.Core.Dynamic;
 
-namespace Alpha.Core.Calendar
+namespace Alpha.Core.Calendars
 {
     public class Month : IEquatable<Month>, IComparable<Month>
     {

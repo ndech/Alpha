@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Alpha.Common;
+using Alpha.Core.Characters;
 using Alpha.Core.Commands;
 using Alpha.Core.Events;
 using Alpha.Core.Fleets;
@@ -26,7 +27,8 @@ namespace Alpha.Core
         public RealmManager RealmManager { get; private set; }
         internal EventManager EventManager { get; private set; }
         public ProvinceManager ProvinceManager { get; private set; }
-        public Calendar.Calendar Calendar { get; private set; }
+        public CharacterManager CharacterManager { get; private set; }
+        public Calendars.Calendar Calendar { get; private set; }
         public Vector2I Size { get; set; }
 
         private event CustomEventHandler<RealmToken> NewRealm;
@@ -62,8 +64,9 @@ namespace Alpha.Core
             RealmManager = new RealmManager(this);
             FleetManager = new FleetManager(this);
             ProvinceManager = new ProvinceManager(this);
-            Calendar = new Calendar.Calendar(this);
-            Managers = new List<Manager> { Calendar, FleetManager, RealmManager, ProvinceManager };
+            CharacterManager = new CharacterManager(this);
+            Calendar = new Calendars.Calendar(this);
+            Managers = new List<Manager> { Calendar, FleetManager, RealmManager, ProvinceManager, CharacterManager };
             Managers.ForEach(m=>m.Initialize());
         }
 

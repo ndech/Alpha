@@ -9,6 +9,6 @@ namespace Alpha.Core
         FleetManager FleetManager { get; }
         RealmManager RealmManager { get; }
         ProvinceManager ProvinceManager { get; }
-        Calendar.Calendar Calendar { get; }
+        Calendars.Calendar Calendar { get; }
     }
 }
