@@ -2,50 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Dynamic;
+using Alpha.Toolkit;
 
 namespace Alpha.Core.Events
 {
-    public class Event<T> : IEvent<T> where T : IEventable
+    public class Event<T> : BaseEvent<T> where T : IEventable
     {
-        public String Id { get; private set; }
-        public bool IsTriggeredOnly { get; set; }
-        public void TryTrigger(T eventable)
-        {
+        public override bool IsTriggeredOnly { get { return false; } }
 
+        public override void TryTrigger(T eventable)
+        {
+            if(!IsValid(eventable))
+                return;
+            if (RandomGenerator.Get(0, MeanTimeToHappen(eventable)) == 0)
+                Console.WriteLine(this + " " +eventable);
         }
 
-        private int BaseMeanTimeToHappen { get; set; }
-        private IList<IModifier<T>> MeanTimeToHappenModifiers { get; set; }
-        private IList<Func<T, Boolean>> PreConditions { get; set; }
         private Func<T, String> LabelGenerator { get; set; }
+
+        private readonly DynamicValue<T> _meanTimeToHappen;
         public String Label(T item)
         {
             return LabelGenerator(item);
         }
 
         //        public IList<Action<Object>> Initializers { get; set; } 
-
         //        public IList<Outcome<T>> Outcomes { get; set; }
         //        public Action<T> PreExecute { get; set; }
 
 
-        public Event(string id)
+        internal Event(string id, IEnumerable<Condition<T>> conditions, DynamicValue<T> meanTimeToHappen) : base(id, conditions)
         {
-            Id = id;
-            PreConditions = new List<Func<T, bool>>();
-            MeanTimeToHappenModifiers = new List<IModifier<T>>();
-            //Outcomes = new List<Outcome<T>>();
-            //Initializers = new List<Action<Object>>();
+            _meanTimeToHappen = meanTimeToHappen;
         }
 
         public int MeanTimeToHappen(T item)
         {
-            return (int)MeanTimeToHappenModifiers.Aggregate((double)BaseMeanTimeToHappen, (value, multiplier) => value * multiplier.Modifier(item));
-        }
-
-        public bool PreConditionsValid(T item)
-        {
-            return PreConditions.All(condition => condition(item));
+            return (int) _meanTimeToHappen.For(item);
         }
     }
 }

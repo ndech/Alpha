@@ -1,5 +1,5 @@
 ﻿<events>
-	<event id="fleet_treasure_1" type="fleet" triggered-only="false">
+  <!--	<event id="fleet_treasure_1" type="fleet" triggered-only="false">
 		<label>The captain of the {Fleet.Name} navigating in {Fleet.Location} has noticed a strange looking island.</label>
 		<conditions>
 			<condition>Fleet.ShipCount &gt; 10</condition>
@@ -24,5 +24,5 @@
 				</effects>
 			</outcome>
 		</outcomes>
-	</event>
-</events>
+	</event>-->
+  </events>

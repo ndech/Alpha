@@ -1,0 +1,27 @@
+﻿<events>
+  <event id="character_nickname_the_old" type="character" triggered-only="false">
+    <label>The captain of the {Fleet.Name} navigating in {Fleet.Location} has noticed a strange looking island.</label>
+    <conditions>
+      <condition>!Character.HasNickName</condition>
+      <condition>Character.Age &gt; 60</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>15y</base>
+      <modifiers>
+        <multiplier factor ="0.5">Character.Age &gt; 70</multiplier>
+        <multiplier factor ="0.5">Character.Age &gt; 80</multiplier>
+        <multiplier factor ="0.1">Character.Age &gt; 90</multiplier>
+      </modifiers>
+    </meanTimeToHappen>
+    <outcomes>
+      <variables>
+      </variables>
+      <outcome>
+        <label>It is true, I am old !</label>
+        <effects>
+          <effect>SetNickNameCommand(Character, "The old")</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+</events>

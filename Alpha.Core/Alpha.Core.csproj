@@ -71,6 +71,7 @@
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Commands\SetNickNameCommand.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Dynamic\Condition.cs" />
     <Compile Include="Dynamic\Engine.cs" />
     <Compile Include="Dynamic\ScriptContext.cs" />
     <Compile Include="Events\BaseEvent.cs" />
@@ -170,6 +171,9 @@
     <EmbeddedResource Include="Data\Calendar\seasons.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Data\Events\CharacterNickNamesEvent.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Resources\ResourceLevels.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

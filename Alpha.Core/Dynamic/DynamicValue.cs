@@ -23,8 +23,12 @@ namespace Alpha.Core.Dynamic
         }
 
         internal DynamicValue(XElement definition)
+            : this(definition, s => Double.Parse(s, CultureInfo.InvariantCulture))
+        { }
+
+        internal DynamicValue(XElement definition, Func<String, double> baseValueParser)
         {
-            _base = Double.Parse(definition.Element("base").Value, CultureInfo.InvariantCulture);
+            _base = baseValueParser(definition.Element("base").Value);
             _modifiers = new List<IModifier<T>>();
             XElement xModifiers = definition.Element("modifiers");
             String scriptIdentifier = typeof(T).Name;

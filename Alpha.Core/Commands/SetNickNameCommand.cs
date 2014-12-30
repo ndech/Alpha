@@ -5,13 +5,18 @@ namespace Alpha.Core.Commands
 {
     class SetNickNameCommand  : Command
     {
-        public SetNickNameCommand(Character character, String Nickname)
+        private readonly Character _character;
+        private readonly string _nickname;
+
+        public SetNickNameCommand(Character character, String nickname)
         {
-            
+            _character = character;
+            _nickname = nickname;
         }
+
         internal override void Execute()
         {
-
+            _character.NickName = _nickname;
         }
     }
 }

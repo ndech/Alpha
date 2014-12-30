@@ -11,9 +11,9 @@ namespace Alpha.Core.Calendars
         public String Id { get; private set; }
         public String Name { get; private set; }
         public int Order { get; private set; }
-        internal Func<Calendars.Calendar, bool> Trigger { get; private set; }
+        internal Func<Calendar, bool> Trigger { get; private set; }
 
-        public Season(String id, String name, int order, Func<Calendars.Calendar, bool> trigger)
+        public Season(String id, String name, int order, Func<Calendar, bool> trigger)
         {
             Id = id;
             Name = name;
@@ -25,15 +25,15 @@ namespace Alpha.Core.Calendars
             : this(element.Attribute("id").Value, 
                    element.Element("name").Value,
                    index,
-                   Engine.Execute<Func<Calendars.Calendar, bool>>("(Calendar)=>" + element.Element("trigger").Value, Engine.NewSession))
+                   Engine.Execute<Func<Calendar, bool>>("(Calendar)=>" + element.Element("trigger").Value, Engine.NewSession))
         { }
 
         internal static IEnumerable<Season> LoadSeasons()
         {
-            return XDocument.Load(@"Data\Calendar\seasons.xml").Descendants("season").Select((item, index) => new Season(item, index));
+            return XDocument.Load(@"Data\Calendar\seasons.xml").Descendants("season").Select((item, index) => new Season(item, index)).ToList();
         }
 
-        internal static Season CurrentSeason(IEnumerable<Season> seasons, Calendars.Calendar calendar)
+        internal static Season CurrentSeason(IEnumerable<Season> seasons, Calendar calendar)
         {
             return seasons.OrderBy(s=>s.Order).First(s => s.Trigger(calendar));
         }
