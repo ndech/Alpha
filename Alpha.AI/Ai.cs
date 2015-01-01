@@ -24,10 +24,6 @@ namespace Alpha.AI
         public IEnumerable<Command> Process(DataLock dataLock, IEnumerable<Notification> notifications)
         {
             List<Command> commands = new List<Command>();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    dataLock.AiRead(() => Thread.Sleep(RandomGenerator.Get(1, 10)));
-            //}
             commands.AddRange(dataLock.AiRead<List<Command>>(ProcessFleets));
             DebugConsole.WriteLine("IA calculations done for " + _realm);
             return commands;

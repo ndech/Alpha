@@ -15,7 +15,7 @@ namespace Alpha.DirectX.UI.World
 {
     class FleetRenderer
     {
-        class FleetRenderingInfo
+        class FleetRenderingInfo : IDisposable
         {
             public readonly Matrix WorldMatrix;
             public readonly Vector3 WorldPosition;
@@ -55,6 +55,11 @@ namespace Alpha.DirectX.UI.World
                     -context.Camera.ViewMatrix * context.DirectX.ProjectionMatrix)
                     -new Vector3(context.ScreenSize.X, context.ScreenSize.Y, 0)/2
                     +offset2D);
+            }
+
+            public void Dispose()
+            {
+                Text.Dispose();
             }
         }
 
@@ -100,7 +105,11 @@ namespace Alpha.DirectX.UI.World
         {
             var info = _fleetRenderingInfos.Single(kvp => kvp.Value.Fleets.Contains(fleet));
             if (info.Value.FleetCount == 1)
+            {
+                info.Value.Dispose();
                 _fleetRenderingInfos.Remove(info.Key);
+                
+            }
             else info.Value.Fleets.Remove(fleet);
         }
         

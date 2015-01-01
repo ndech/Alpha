@@ -13,7 +13,7 @@ namespace Alpha.DirectX.UI.World
 {
     class FleetMoveOrderRenderer
     {
-        private class MoveOrderRenderingItem
+        private class MoveOrderRenderingItem : IDisposable
         {
             public readonly Int32 VertexCount;
             public readonly Buffer VertexBuffer;
@@ -28,6 +28,11 @@ namespace Alpha.DirectX.UI.World
                 Speed = speed;
                 VisiblePointsOffset = 0;
                 FilledPointsOffset = 0;
+            }
+
+            public void Dispose()
+            {
+                VertexBuffer.Dispose();
             }
         }
 
@@ -52,6 +57,10 @@ namespace Alpha.DirectX.UI.World
             {
                 _items.Remove(fleet);
                 return;
+            }
+            if (_items.ContainsKey(fleet))
+            {
+                _items[fleet].Dispose();
             }
             List<Step> steps = fleet.MoveOrder.Steps.ToList();
             List<VertexDefinition.Path> vertices = new List<VertexDefinition.Path>();

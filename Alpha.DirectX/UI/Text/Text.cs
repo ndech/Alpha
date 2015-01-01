@@ -234,8 +234,10 @@ namespace Alpha.DirectX.UI.Text
 
         public void Dispose()
         {
-            if(_indexBuffer != null) _indexBuffer.Dispose();
-            if(_vertexBuffer != null) _vertexBuffer.Dispose();
+            if(_indexBuffer != null) 
+                _indexBuffer.Dispose();
+            if(_vertexBuffer != null) 
+                _vertexBuffer.Dispose();
         }
 
         public Vector2I UsedSize { get; private set; }
