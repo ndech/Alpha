@@ -1,45 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using Alpha.Core.Commands;
 using Alpha.Core.Dynamic;
+using Roslyn.Scripting;
 
 namespace Alpha.Core.Events
 {
-    public class Outcome<T>
+    class Outcome<T>
     {
-        public Func<T, String> LabelFunc { private get; set; }
-        public Func<T, String> TooltîpFunc { private get; set; }
-        public Action<T> PreExecute { get; set; }
-        public IList<Func<T, Boolean>> Conditions { private get; set; }
-        public IList<Action<T>> Effects { get; set; }
-        public int BaseIaAffinity { get; set; }
-        private IList<IModifier<T>> IaAffinityModifiers { get; set; }
+        private readonly Func<T, String> _labelFunc;
+        private Func<T, String> _tooltîpFunc;
+        private readonly IEnumerable<Func<T, Command>> _effects;
+        private DynamicValue<T> _iaAffinity;
+        private readonly IEnumerable<Condition<T>> _conditions;
 
-        public Outcome()
+        internal Outcome(XElement item)
         {
-            Conditions = new List<Func<T, bool>>();
-            Effects = new List<Action<T>>();
-            IaAffinityModifiers = new List<IModifier<T>>();
+            String identifier = typeof (T).Name;
+            _labelFunc = Engine.Execute<Func<T, String>>("(" + identifier + ")=>" + item.Element("label").Value, Engine.NewSession);
+            Session session = Engine.NewSession;
+            Engine.Execute<String>("using Alpha.Core.Commands;", session);
+            _effects = item.Element("effects").Elements("effect").Select(e => Engine.Execute<Func<T, Command>>("(" + identifier + ")=> new " + e.Value, session)).ToList();
         }
 
         public String Label(T item)
         {
-            return LabelFunc(item);
+            return _labelFunc(item);
         }
 
         public String Tooltip(T item)
         {
-            return TooltîpFunc == null ? null : TooltîpFunc(item);
+            return _tooltîpFunc == null ? null : _tooltîpFunc(item);
         }
 
-        public bool ConditionsValid(T item)
+        internal bool IsValid(T item)
         {
-            return Conditions.All(condition => condition(item));
+            return _conditions.All(c => c.IsValid(item));
         }
 
-        public Double IaAffinity(T item)
+        public double IaAffinity(T item)
         {
-            return IaAffinityModifiers.Aggregate((double)BaseIaAffinity, (value, multiplier) => value * multiplier.Modifier(item));
+            return _iaAffinity.For(item);
+        }
+
+        public IEnumerable<Command> Execute(T item)
+        {
+            return _effects.Select(e => e(item));
         }
     }
 }

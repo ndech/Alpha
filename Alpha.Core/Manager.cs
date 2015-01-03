@@ -15,7 +15,12 @@ namespace Alpha.Core
         {
             foreach (T eventable in eventables)
                 foreach (IEvent<T> e in events.Where(e=>!e.IsTriggeredOnly))
-                    dataLock.Write(()=>e.TryTrigger(eventable));
+                    dataLock.Write(() =>
+                    {
+                        var result = e.TryTrigger(eventable);
+                        if (result != null)
+                            World.RegisterCommands(new RealmToken(World.RealmManager.Realms.RandomItem()), result);
+                    });
         }
 
         internal abstract void DayUpdate(DataLock datalock);

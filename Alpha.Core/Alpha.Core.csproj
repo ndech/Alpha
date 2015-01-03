@@ -171,9 +171,9 @@
     <EmbeddedResource Include="Data\Calendar\seasons.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Data\Events\CharacterNickNamesEvent.xml">
+    <EmbeddedResource Include="Data\Events\CharacterNickNamesEvent.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Data\Resources\ResourceLevels.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

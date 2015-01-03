@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Core.Commands;
 using Alpha.Core.Dynamic;
 using Alpha.Toolkit;
 
@@ -10,12 +11,20 @@ namespace Alpha.Core.Events
     {
         public override bool IsTriggeredOnly { get { return false; } }
 
-        public override void TryTrigger(T eventable)
+        public override IEnumerable<Command> TryTrigger(T eventable)
         {
             if(!IsValid(eventable))
-                return;
+                return null;
             if (RandomGenerator.Get(0, MeanTimeToHappen(eventable)) == 0)
-                Console.WriteLine(this + " " +eventable);
+            {
+                Console.WriteLine(this + " " + eventable);
+                foreach (Outcome<T> outcome in Outcomes)
+                {
+                    Console.WriteLine(outcome.Label(eventable));
+                    return outcome.Execute(eventable);
+                }
+            }
+            return null;
         }
 
         private Func<T, String> LabelGenerator { get; set; }
@@ -31,7 +40,7 @@ namespace Alpha.Core.Events
         //        public Action<T> PreExecute { get; set; }
 
 
-        internal Event(string id, IEnumerable<Condition<T>> conditions, DynamicValue<T> meanTimeToHappen) : base(id, conditions)
+        internal Event(string id, IEnumerable<Condition<T>> conditions, DynamicValue<T> meanTimeToHappen, IEnumerable<Outcome<T>> outcomes) : base(id, conditions, outcomes)
         {
             _meanTimeToHappen = meanTimeToHappen;
         }

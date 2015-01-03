@@ -25,6 +25,9 @@ namespace Alpha.DirectX
 
         public DirectXUi(IGame game, WorldContainer worldContainer)
         {
+#if GPU_DEBUG
+            SharpDX.Configuration.EnableObjectTracking = true;
+#endif
             _game = game;
             _worldContainer = worldContainer;
             _timer = new Toolkit.Timer();

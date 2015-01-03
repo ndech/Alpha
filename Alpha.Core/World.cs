@@ -76,7 +76,7 @@ namespace Alpha.Core
             if (_interactiveModeRealms.Contains(source))
             {
                 DebugConsole.WriteLine("Interactive command : " + command);
-                new Thread(()=>_datalock.ImmediateWrite(() =>ExecuteCommand(command))).Start();
+                new Thread(()=>_datalock.ImmediateWrite(() => ExecuteCommand(command))).Start();
                 DebugConsole.WriteLine("Interactive command done : " + command);
                 return;
             }

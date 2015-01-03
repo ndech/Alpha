@@ -216,14 +216,15 @@ namespace Alpha.Core.Events
                                       xmlEvent.Attribute("triggered-only").Value.Equals("true");
                     IEnumerable<Condition<T>> conditions = xmlEvent.Element("conditions").Elements("condition")
                         .Select(c => new Condition<T>(Engine.Execute<Func<T, bool>>("("+identifier+") => "+c.Value, Engine.NewSession))).ToList();
+                    IEnumerable<Outcome<T>> outcomes = xmlEvent.Element("outcomes").Elements("outcome").Select(o => new Outcome<T>(o)).ToList();
                     if (isTriggeredOnly)
                     {
-                        newEvent = new TriggeredEvent<T>(eventId, conditions);
+                        newEvent = new TriggeredEvent<T>(eventId, conditions, outcomes);
                     }
                     else
                     {
                         DynamicValue<T> meanTimeToHappen = new DynamicValue<T>(xmlEvent.Element("meanTimeToHappen"), s=>TimeSpanParser.Parse(s));
-                        newEvent = new Event<T>(eventId, conditions, meanTimeToHappen);   
+                        newEvent = new Event<T>(eventId, conditions, meanTimeToHappen, outcomes);   
                     }
                     events.Add(newEvent);
                 }

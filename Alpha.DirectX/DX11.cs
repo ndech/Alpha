@@ -79,6 +79,7 @@ namespace Alpha.DirectX
             FeatureLevel[] featureLevels = { FeatureLevel.Level_11_0, 
                                                FeatureLevel.Level_10_0 };
 #if GPU_DEBUG
+            //Use https://dev.windows.com/en-us/develop/graphics-debugging-and-frame-analysis-update on Windows 10 to install debug layer.
             Device = new Device(DriverType.Hardware, DeviceCreationFlags.Debug, featureLevels);
 #else
             Device = new Device(DriverType.Hardware, DeviceCreationFlags.None, featureLevels);

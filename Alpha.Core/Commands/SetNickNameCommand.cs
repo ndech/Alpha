@@ -3,7 +3,7 @@ using Alpha.Core.Characters;
 
 namespace Alpha.Core.Commands
 {
-    class SetNickNameCommand  : Command
+    public class SetNickNameCommand  : Command
     {
         private readonly Character _character;
         private readonly string _nickname;

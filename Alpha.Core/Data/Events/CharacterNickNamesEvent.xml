@@ -1,6 +1,6 @@
 ﻿<events>
   <event id="character_nickname_the_old" type="character" triggered-only="false">
-    <label>The captain of the {Fleet.Name} navigating in {Fleet.Location} has noticed a strange looking island.</label>
+    <label>Today, I heard one of the serving girls mocking me because I'm old.</label>
     <conditions>
       <condition>!Character.HasNickName</condition>
       <condition>Character.Age &gt; 60</condition>
@@ -14,10 +14,8 @@
       </modifiers>
     </meanTimeToHappen>
     <outcomes>
-      <variables>
-      </variables>
       <outcome>
-        <label>It is true, I am old !</label>
+        <label>"It is true, I am old !"</label>
         <effects>
           <effect>SetNickNameCommand(Character, "The old")</effect>
         </effects>
