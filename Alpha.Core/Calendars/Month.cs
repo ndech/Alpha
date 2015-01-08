@@ -32,7 +32,9 @@ namespace Alpha.Core.Calendars
 
         public bool Equals(Month other)
         {
-            return other.Id == Id;
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Position == other.Position;
         }
 
         public bool Equals(int other)
@@ -67,6 +69,18 @@ namespace Alpha.Core.Calendars
                 months[i].Next = months[i + 1];
             months.Last().Next = months.First();
             return months;
+        }
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Month)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Position;
         }
     }
 }

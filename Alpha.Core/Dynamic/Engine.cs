@@ -10,7 +10,7 @@ namespace Alpha.Core.Dynamic
         static readonly ScriptEngine _engine = new ScriptEngine();
         public static T Execute<T>(string query, Session session)
         {
-            return _engine.Execute<T>(query, session);
+            return session.Execute<T>(query);
         }
 
         private static ScriptContext ScriptContext
@@ -25,7 +25,7 @@ namespace Alpha.Core.Dynamic
         {
             get
             {
-                Session session = Session.Create(ScriptContext);
+                Session session = _engine.CreateSession(ScriptContext);
                 session.AddReference(typeof(ScriptContext).Assembly);
                 Execute<String>("using Alpha.Core.Tags;", session);
                 return session;

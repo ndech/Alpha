@@ -3,7 +3,7 @@
     <label></label>
     <conditions>
       <condition>Calendar.Day == 25</condition>
-      <condition>Calendar.Month.Equals(12)</condition>
+      <condition>Calendar.Month == 12</condition>
     </conditions>
     <meanTimeToHappen>
       <base>0d</base>
