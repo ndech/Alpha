@@ -1,0 +1,52 @@
+﻿<events>
+  <event id="girl_puberty" type="character" triggered-only="false">
+    <label>I woke up to see my sheets stained of blood!</label>
+    <conditions>
+      <condition>Character.IsFemale</condition>
+      <condition>!Character.HasTag("fertile")</condition>
+      <condition>!Character.HasTag("menopaused")</condition>
+      <condition>!Character.HasTag("barren")</condition>
+      <condition>Character.Age &gt; 10</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>3y2m</base>
+      <modifiers>
+        <multiplier factor ="0.5">Character.Age &gt; 12</multiplier>
+        <multiplier factor ="0.5">Character.Age &gt; 15</multiplier>
+      </modifiers>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <label>"I hope my father won't marry me away at "+ Character.Age +"."</label>
+        <effects>
+          <effect>TagCommand(Character, "fertile")</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+  <event id="women_menopause" type="character" triggered-only="false">
+    <label></label>
+    <conditions>
+      <condition>Character.IsFemale</condition>
+      <condition>Character.HasTag("fertile")</condition>
+      <condition>Character.Age &gt; 35</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>10y</base>
+      <modifiers>
+        <multiplier factor ="0.5">Character.Age &gt; 40</multiplier>
+        <multiplier factor ="0.5">Character.Age &gt; 45</multiplier>
+        <multiplier factor ="0.5">Character.Age &gt; 50</multiplier>
+      </modifiers>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <label>"I won't father children no more... (Age "+Character.Age+")"</label>
+        <effects>
+          <effect>RemoveTagCommand(Character, "fertile")</effect>
+          <effect>TagCommand(Character, "menopaused")</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+</events>

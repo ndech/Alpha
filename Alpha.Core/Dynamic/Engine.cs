@@ -1,4 +1,5 @@
-﻿using Roslyn.Scripting;
+﻿using System;
+using Roslyn.Scripting;
 using Roslyn.Scripting.CSharp;
 
 namespace Alpha.Core.Dynamic
@@ -26,6 +27,7 @@ namespace Alpha.Core.Dynamic
             {
                 Session session = Session.Create(ScriptContext);
                 session.AddReference(typeof(ScriptContext).Assembly);
+                Execute<String>("using Alpha.Core.Tags;", session);
                 return session;
             }
         }

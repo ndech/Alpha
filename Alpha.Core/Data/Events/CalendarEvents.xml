@@ -1,0 +1,20 @@
+﻿<events>
+  <event id="calendar_christmas" type="calendar" triggered-only="false">
+    <label></label>
+    <conditions>
+      <condition>Calendar.Day == 25</condition>
+      <condition>Calendar.Month.Equals(12)</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>0d</base>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <label>"It's christmas !"</label>
+        <effects>
+          <effect>TagCommand(Calendar, "christmas", 1)</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+</events>

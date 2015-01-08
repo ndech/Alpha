@@ -6,7 +6,7 @@
       <condition>Character.Age &gt; 60</condition>
     </conditions>
     <meanTimeToHappen>
-      <base>15y</base>
+      <base>18y</base>
       <modifiers>
         <multiplier factor ="0.5">Character.Age &gt; 70</multiplier>
         <multiplier factor ="0.5">Character.Age &gt; 80</multiplier>
@@ -15,9 +15,10 @@
     </meanTimeToHappen>
     <outcomes>
       <outcome>
-        <label>"It is true, I am old !"</label>
+        <label>"It is true, I am "+Character.Age+"!"</label>
         <effects>
           <effect>SetNickNameCommand(Character, "The old")</effect>
+          <effect>TagCommand(Character, "nick_name_the_old")</effect>
         </effects>
       </outcome>
     </outcomes>

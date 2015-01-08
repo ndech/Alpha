@@ -70,6 +70,8 @@
     <Compile Include="Commands\RenameFleetCommand.cs" />
     <Compile Include="Commands\MoveFleetCommand.cs" />
     <Compile Include="Commands\SetNickNameCommand.cs" />
+    <Compile Include="Commands\TagCommand.cs" />
+    <Compile Include="Commands\RemoveTagCommand.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Dynamic\Condition.cs" />
     <Compile Include="Dynamic\Engine.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Tags\ITagableExtension.cs" />
     <Compile Include="Tags\Tag.cs" />
     <Compile Include="Tags\TagCollection.cs" />
+    <Compile Include="Tags\TimerTag.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorldContainer.cs" />
@@ -171,7 +174,14 @@
     <EmbeddedResource Include="Data\Calendar\seasons.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Data\Events\CharacterNickNamesEvent.xml">
+    <EmbeddedResource Include="Data\Events\CharacterNickNameEvents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Events\FertilityEvents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Events\CalendarEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Data\Resources\ResourceLevels.xml">

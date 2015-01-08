@@ -35,6 +35,21 @@ namespace Alpha.Core.Calendars
             return other.Id == Id;
         }
 
+        public bool Equals(int other)
+        {
+            return other == Position;
+        }
+
+        public static bool operator ==(Month month, int other)
+        {
+            return month != null && month.Equals(other);
+        }
+
+        public static bool operator !=(Month month, int other)
+        {
+            return !(month == other);
+        }
+
         public int CompareTo(Month other)
         {
             return Position - other.Position;

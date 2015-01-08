@@ -20,8 +20,9 @@ namespace Alpha.Core.Fleets
             Location = location;
             _ships = ships;
         }
+
         public String Name { get; internal set; }
-        private readonly List<Ship> _ships = new List<Ship>();
+        private readonly List<Ship> _ships;
         public IEnumerable<Ship> Ships { get { return _ships; } }
         public int ShipCount { get { return _ships.Count; } }
         public Realm Owner { get; internal set; }

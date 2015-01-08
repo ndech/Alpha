@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Alpha.Core.Events;
+using Alpha.Core.Realms;
 using Alpha.Core.Tags;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Calendars
 {
-    public class Calendar : Manager, ITagable
+    public class Calendar : Manager, ITagable, IEventable
     {
         public Season CurrentSeason
         {
@@ -38,10 +40,14 @@ namespace Alpha.Core.Calendars
                 CurrentSeason = Season.CurrentSeason(_seasons, this);
                 CurrentSeasonLength++;
             });
+            Tags.DayUpdate(dataLock);
+            TryTriggerEvents(_events, this.Yield(), dataLock);
         }
 
         internal override void Initialize()
-        { }
+        {
+            _events = World.EventManager.LoadEvents<Calendar>();
+        }
 
         internal int AgeOf(Date birthdate)
         {
@@ -67,6 +73,7 @@ namespace Alpha.Core.Calendars
         private Season _currentSeason;
         private readonly IEnumerable<Season> _seasons;
         private readonly IEnumerable<Month> _months;
+        private List<IEvent<Calendar>> _events;
         public int Year { get { return CurrentDate.Year; } }
         public Month Month { get { return CurrentDate.Month; } }
         public int Day { get { return CurrentDate.Day; } }
@@ -74,6 +81,11 @@ namespace Alpha.Core.Calendars
         public Date Date(int day, int month, int year)
         {
             return new Date(day, _months.ElementAt(month-1), year);
+        }
+
+        public Realm ResponsibleRealm
+        {
+            get { throw new System.NotImplementedException(); }
         }
     }
 }
