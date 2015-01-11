@@ -1,17 +1,16 @@
 ﻿using System;
 using Alpha.DirectX.UI.Coordinates;
-using Alpha.DirectX.UI.Layouts;
-using SharpDX;
-using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit.Math;
+using SharpDX;
 
 namespace Alpha.DirectX.UI.Controls
 {
-    class Window : Panel
+    abstract class Window : Panel
     {
         public String Title { get; private set; }
         private Label _titleLabel;
         private Panel _contentPanel;
+        public abstract UniVector MinimumSize { get; }
 
         public Window(IContext context, string id, UniRectangle coordinates, String title) : base(context, id, coordinates, Color.Wheat)
         {

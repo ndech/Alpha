@@ -29,4 +29,7 @@
   <style in="calendar">
     <textColor>Red</textColor>
   </style>
+  <style in="resources_stats_label">
+    <horizontalAlignment>Left</horizontalAlignment>
+  </style>
 </styles>
