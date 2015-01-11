@@ -26,6 +26,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly FpsCounter _counter;
         private readonly ProvinceDetailPanel _provinceDetailPanel;
         private readonly SettlementDetailPanel _settlementDetailPanel;
+        private readonly Window _statisticsWindow;
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
@@ -54,6 +55,8 @@ namespace Alpha.DirectX.UI.Screens
                 .Create(_settlementDetailPanel);
             Register(new MapTooltip(context, this));
             new PositionLayout(this, 100, 25, HorizontalAlignment.Left, VerticalAlignment.Top).Create(new RealmInfo(context));
+            Register(
+                _statisticsWindow = new Window(context, "statistics_window", new UniRectangle(200, 200, 200, 200), "Test"));
         }
 
         protected override void Update(double delta)
@@ -85,6 +88,8 @@ namespace Alpha.DirectX.UI.Screens
                 if (Context.UiManager.IsKeyPressed(Key.Down))
                     Context.Camera.Move(0, -1);
             }
+            if (Context.UiManager.IsKeyPressed(Key.S))
+                _statisticsWindow.Visible = true;
         }
 
         public override bool OnMouseScrolled(int delta)

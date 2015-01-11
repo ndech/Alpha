@@ -81,7 +81,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             if (ClickedControl != null)
             {
-                ClickedControl.OnControlDragged();
+                ClickedControl.OnControlDragged(Context.UiManager.MousePosition - Context.UiManager.PreviousMousePosition);
                 return;
             }
             //Todo : if activated control

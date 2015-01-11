@@ -113,6 +113,7 @@
     <Compile Include="UI\Controls\TogglableButton.cs" />
     <Compile Include="UI\Controls\TogglableButtonGroup.cs" />
     <Compile Include="UI\Controls\Tooltip.cs" />
+    <Compile Include="UI\Controls\Window.cs" />
     <Compile Include="UI\Layouts\HorizontalLayout.cs" />
     <Compile Include="UI\Layouts\Layout.cs" />
     <Compile Include="UI\Layouts\PositionLayout.cs" />

@@ -14,6 +14,7 @@ namespace Alpha.Core.Provinces
         public double Income { get; private set; }
         public List<Building> Buildings { get; internal set; }
         public List<Construction> Constructions { get; internal set; }
+        public IEnumerable<Resource> Resources { get { return _resources; } }
         public Population Population { get; internal set; }
 
         public Settlement(World world, Zone zone, LandProvince province) : base(world)
@@ -53,7 +54,6 @@ namespace Alpha.Core.Provinces
         }
 
         private readonly List<Resource> _resources = new List<Resource>();
-        public IEnumerable<Resource> Resources { get { return _resources; } }
 
         internal void AddResource(ResourceType type, ResourceLevel level)
         {

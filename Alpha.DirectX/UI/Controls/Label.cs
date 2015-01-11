@@ -52,5 +52,10 @@ namespace Alpha.DirectX.UI.Controls
             _text = Context.TextManager.Create(_style.Font, _style.FontSize, _textValue, Size, _style.TextColor,
                 _style.HorizontalAlignment, _style.VerticalAlignment, _style.Padding);
         }
+
+        public override void OnResize()
+        {
+            _text.Size = Size;
+        }
     }
 }

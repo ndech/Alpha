@@ -35,5 +35,10 @@ namespace Alpha.DirectX.UI.Controls
         {
             Rectangle = new PlainRectangle(Context, Size, Color);
         }
+
+        public override void OnResize()
+        {
+            Rectangle.Size = Size;
+        }
     }
 }

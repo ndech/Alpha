@@ -83,7 +83,7 @@ namespace Alpha.DirectX.UI.Controls
             OnMouseLeft();
         }
         
-        public virtual void OnControlDragged()
+        public virtual void OnControlDragged(Vector2I move)
         {
 
         }

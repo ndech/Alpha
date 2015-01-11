@@ -49,7 +49,17 @@ namespace Alpha.DirectX.UI.Text
         }
         public Color BaseColor { get; set; }
         public Font Font;
-        public Vector2I Size;
+        private Vector2I _size;
+
+        public Vector2I Size
+        {
+            get { return _size; }
+            set
+            {
+                _size = value;
+                Update();
+            } 
+        }
         private Padding Padding { get; set; }
         private int _numberOfLetters;
         private int SpaceSize {get { return Font.Characters[' '].width; }}
@@ -66,7 +76,7 @@ namespace Alpha.DirectX.UI.Text
         public Text(IContext context, string content, Font font, Vector2I size, Color color, HorizontalAlignment horizontalAligment, VerticalAlignment verticalAlignment, Padding padding)
         {
             Font = font;
-            Size = size;
+            _size = size;
             Padding = padding;
             VerticalAlignment = verticalAlignment;
             HorizontalAlignment = horizontalAligment;

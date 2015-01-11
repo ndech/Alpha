@@ -19,6 +19,12 @@ namespace Alpha.DirectX.UI
         public Tooltip VisibleTooltip { get; set; }
         public StyleManager StyleManager { get; private set; }
         public Vector2I MousePosition { get; private set; }
+        public Vector2I RelativeMousePosition(Vector2I origin)
+        {
+            return MousePosition - origin;
+        }
+
+        public Vector2I PreviousMousePosition { get; private set; }
         private IInput _input;
         public bool IsKeyPressed(Key key)
         {
@@ -40,6 +46,7 @@ namespace Alpha.DirectX.UI
 
         private void OnMouseMoved(Vector2I position)
         {
+            PreviousMousePosition = MousePosition;
             MousePosition = position;
             if (_activeScreens.Count > 0)
                 _activeScreens[0].MouseMoved(position);
@@ -56,6 +63,8 @@ namespace Alpha.DirectX.UI
             _input.KeyReleased += OnKeyReleased;
             _input.MouseScrolled += OnMouseScrolled;
             ScreenSize = context.ScreenSize;
+            MousePosition = ScreenSize/2;
+            PreviousMousePosition = ScreenSize/2;
         }
 
         private void OnMouseScrolled(int delta)

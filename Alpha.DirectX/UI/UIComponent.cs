@@ -61,7 +61,7 @@ namespace Alpha.DirectX.UI
         protected virtual void Activate() { }
 
         protected virtual void Desactivate() { }
-        public T Register<T>(T component) where T : Control
+        public virtual T Register<T>(T component) where T : Control
         {
             Controls.Add(component);
             component.Parent = this;
@@ -141,5 +141,15 @@ namespace Alpha.DirectX.UI
                 control.Dispose();
             DisposeItem();
         }
+
+        public void Resize()
+        {
+            foreach (Control control in Controls)
+                control.OnResize();
+            OnResize();
+        }
+
+        public virtual void OnResize()
+        { }
     }
 }

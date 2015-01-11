@@ -77,7 +77,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _mapTexture = new TexturedRectangle(Context, new ShaderResourceView(Context.DirectX.Device, minimapTexture), Size);
         }
 
-        public override void OnControlDragged()
+        public override void OnControlDragged(Vector2I previousMousePosition)
         {
             Vector2I mousePosition = Context.UiManager.MousePosition;
             
