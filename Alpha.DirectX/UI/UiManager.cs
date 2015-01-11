@@ -16,6 +16,7 @@ namespace Alpha.DirectX.UI
     {
         private readonly List<Screen> _activeScreens;
         private readonly MousePointer _mousePointer;
+        private IInput _input;
         public Tooltip VisibleTooltip { get; set; }
         public StyleManager StyleManager { get; private set; }
         public Vector2I MousePosition { get; private set; }
@@ -25,7 +26,11 @@ namespace Alpha.DirectX.UI
         }
 
         public Vector2I PreviousMousePosition { get; private set; }
-        private IInput _input;
+        public Vector2I RelativePreviousMousePosition(Vector2I origin)
+        {
+            return PreviousMousePosition - origin;
+        }
+
         public bool IsKeyPressed(Key key)
         {
             return _input.IsKeyPressed(key);

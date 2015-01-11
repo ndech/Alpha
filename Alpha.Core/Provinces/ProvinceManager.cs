@@ -16,7 +16,8 @@ namespace Alpha.Core.Provinces
         public IEnumerable<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
 
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
-        internal List<ResourceType> ResourceTypes { get; private set; }
+        private readonly List<ResourceType> _resourceTypes;
+        public IEnumerable<ResourceType> ResourceTypes { get { return _resourceTypes; } }
         internal List<Building> Buildings { get; private set; }
         internal List<ResourceLevel> ResourceLevels { get; private set; } 
 
@@ -24,7 +25,7 @@ namespace Alpha.Core.Provinces
         {
             BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml")
                 .Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
-            ResourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
+            _resourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
             ResourceLevels = XDocument.Load(@"Data\Resources\ResourceLevels.xml").Descendants("resourceLevel").Select(x => new ResourceLevel(x)).ToList();
             Buildings = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new Building(x)).ToList();
         }

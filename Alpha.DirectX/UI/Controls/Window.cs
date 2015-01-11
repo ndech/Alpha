@@ -45,7 +45,7 @@ namespace Alpha.DirectX.UI.Controls
 
         public override void OnControlDragged(Vector2I move)
         {
-            Vector2I mousePosition = Context.UiManager.RelativeMousePosition(Position);
+            Vector2I mousePosition = Context.UiManager.RelativePreviousMousePosition(Position);
             if (mousePosition.X > Size.X - 3)
             {
                 Coordinates = new UniRectangle(Coordinates.Position, Coordinates.Size + new UniVector(move.X, 0));

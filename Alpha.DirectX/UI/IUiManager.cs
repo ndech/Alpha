@@ -15,6 +15,7 @@ namespace Alpha.DirectX.UI
         Vector2I MousePosition { get; }
         Vector2I RelativeMousePosition(Vector2I origin);
         Vector2I PreviousMousePosition { get; }
+        Vector2I RelativePreviousMousePosition(Vector2I origin);
         bool IsKeyPressed(Key key);
         void RecalculateActiveComponents();
         bool IsAnyKeyPressed(params Key[] keys);
