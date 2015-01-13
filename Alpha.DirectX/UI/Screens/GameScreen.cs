@@ -90,6 +90,8 @@ namespace Alpha.DirectX.UI.Screens
             }
             if (Context.UiManager.IsKeyPressed(Key.S))
                 _statisticsWindow.Visible = true;
+            if (Context.UiManager.IsKeyPressed(Key.X))
+                Context.DirectX.SwitchWireFrameMode();
         }
 
         public override bool OnMouseScrolled(int delta)
@@ -103,10 +105,8 @@ namespace Alpha.DirectX.UI.Screens
             _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
             //_terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
-            Context.DirectX.SetWireFrameMode(true);
             //_worldTerrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix,
             //    Context.DirectX.ProjectionMatrix);
-            Context.DirectX.SetWireFrameMode(false);
             _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);

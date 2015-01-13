@@ -16,16 +16,15 @@ namespace Alpha.DirectX.UI.Controls
         private float _numberOfVisibleItems;
         private ScrollBar _scrollBar;
 
-        private float _currentPosition = 0;
+        private float _targetPosition = 0;
+        private float _actualPosition = 0;
 
         private float CurrentPosition
         {
-            get { return _currentPosition; }
+            get { return _actualPosition; }
             set
             {
-                _currentPosition = Math.Max(0.0f, Math.Min(value, _data.Count - _numberOfVisibleItems));
-                CalculateItemPositions();
-                Refresh();
+                _targetPosition = Math.Max(0.0f, Math.Min(value, _data.Count - _numberOfVisibleItems));
             }
         }
 
@@ -60,7 +59,7 @@ namespace Alpha.DirectX.UI.Controls
             Register(_scrollBar = new ScrollBar(Context));
             _scrollBar.Moved += pos =>
             {
-                CurrentPosition += pos*0.1f;
+                CurrentPosition += pos*1f;
             };
         }
 
@@ -98,8 +97,21 @@ namespace Alpha.DirectX.UI.Controls
 
         public override bool OnMouseScrolled(int delta)
         {
-            CurrentPosition -= delta * 0.1f;
+            CurrentPosition -= delta * 1f;
             return true;
+        }
+
+        protected override void Update(double delta)
+        {
+            if (Math.Abs(_targetPosition - _actualPosition) < 0.00001) return;
+            _actualPosition = _actualPosition + 10*(float)delta*(_targetPosition - _actualPosition);
+            CalculateItemPositions();
+            Refresh();
+        }
+
+        public override void OnResize()
+        {
+
         }
     }
 }

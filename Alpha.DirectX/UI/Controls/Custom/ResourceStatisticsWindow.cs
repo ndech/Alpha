@@ -13,31 +13,40 @@ namespace Alpha.DirectX.UI.Controls.Custom
         class ResourceItem : Panel, IScrollableItem<ResourceType>
         {
             private Label _label;
+            private Icon _icon;
             public ResourceItem(IContext context) : base(context, "resources_stats_resource_panel", new UniRectangle(), Color.Azure)
-            {
-            }
+            { }
 
             public override void Initialize()
             {
                 base.Initialize();
-                _label = Register(_label = new Label(Context, Id, new UniRectangle(0, 0, 1.0f, 1.0f), ""));
+                _label = Register(new Label(Context, Id, new UniRectangle(50, 0, 150, 1.0f), ""));
+                _icon = new Icon(Context, "resource_item_icon");
+                _icon.Coordinates = new UniRectangle(0, 0, 50, 50);
+                Register(_icon);
             }
 
             public void Set(ResourceType item)
             {
                 if (item == null)
+                {
                     _label.Text = "";
+                    _icon.BaseTexture = Context.TextureManager.Create("default.png", "Data/UI/").TextureResource;
+                }
                 else
+                {
                     _label.Text = item.Name;
+                    _icon.BaseTexture = Context.TextureManager.Create(item.Id + ".dds", "Data/UI/Resources/").TextureResource;
+                }
             }
             public override Vector2I Size
             {
-                get { return new Vector2I(100, 50); }
+                get { return StaticSize; }
             }
 
             public static Vector2I StaticSize
             {
-                get { return new Vector2I(100, 50); }
+                get { return new Vector2I(200, 50); }
             }
         }
         public ResourceStatisticsWindow(IContext context, UniRectangle coordinates) : base(context, "resources_stats_window", coordinates, "Resources statistics")

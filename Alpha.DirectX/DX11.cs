@@ -369,6 +369,15 @@ namespace Alpha.DirectX
             _isWireframeEnabled = false;
         }
 
+        public void SwitchWireFrameMode()
+        {
+            if (_isWireframeEnabled)
+                DeviceContext.Rasterizer.State = _rasterStateSolid;
+            else
+                DeviceContext.Rasterizer.State = _rasterStateWireFrame;
+            _isWireframeEnabled = !_isWireframeEnabled;
+        }
+
         public void SetBackBufferAsRenderTarget()
         {
             DeviceContext.OutputMerger.SetRenderTargets(DepthStencilView, _renderTargetView);
