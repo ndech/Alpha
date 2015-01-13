@@ -81,7 +81,7 @@ namespace Alpha.DirectX.UI
                 Control control = Controls[i];
                 Control hoveredControl = control.GetHoveredControl(position);
                 if (hoveredControl != null)
-                    return control;
+                    return hoveredControl;
             }
             return this as Control;
         }
