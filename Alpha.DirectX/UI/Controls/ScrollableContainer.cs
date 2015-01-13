@@ -44,7 +44,7 @@ namespace Alpha.DirectX.UI.Controls
             foreach (T item in _items)
                 Register(item);
             Register(_scrollBar = new ScrollBar(Context));
-            _scrollBar.Moved += (pos) =>
+            _scrollBar.Moved += pos =>
             {
                 FirstVisibleItem += pos;
             };

@@ -51,6 +51,11 @@ namespace Alpha.DirectX.UI.Controls
                 Coordinates = new UniRectangle(Coordinates.Position, Coordinates.Size + new UniVector(move.X, 0));
                 Resize();
             }
+            else if (mousePosition.Y > Size.Y - 3)
+            {
+                Coordinates = new UniRectangle(Coordinates.Position, Coordinates.Size + new UniVector(0, move.Y));
+                Resize();
+            }
             else
                 Coordinates = new UniRectangle(Coordinates.Position + new UniVector(move.X, move.Y), Coordinates.Size);
         }

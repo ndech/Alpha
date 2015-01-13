@@ -32,7 +32,7 @@ namespace Alpha.DirectX.UI
                 control.UpdateTree(delta);
         }
 
-        public void RenderTree(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        internal virtual void RenderTree(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             if (!IsVisible()) return;
             Render(deviceContext, worldMatrix * DisplacementMatrix, viewMatrix, projectionMatrix);

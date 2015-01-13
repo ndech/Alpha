@@ -8,7 +8,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 {
     class ResourceStatisticsWindow : Window
     {
-        private ScrollableContainer<ResourceItem, ResourceType> _resourceScrollableContainer;
+        private ResizableScrollableContainer<ResourceItem, ResourceType> _resourceScrollableContainer;
 
         class ResourceItem : Panel, IScrollableItem<ResourceType>
         {
@@ -34,6 +34,11 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 get { return new Vector2I(100, 50); }
             }
+
+            public static Vector2I StaticSize
+            {
+                get { return new Vector2I(100, 50); }
+            }
         }
         public ResourceStatisticsWindow(IContext context, UniRectangle coordinates) : base(context, "resources_stats_window", coordinates, "Resources statistics")
         {
@@ -43,11 +48,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             base.Initialize();
             Register(new Label(Context, "resources_stats_label", new UniRectangle(5, 5, 190, 20), "Resources :"));
-            _resourceScrollableContainer = new ScrollableContainer<ResourceItem, ResourceType>(Context,
-                "ressource_stats_container", 3, (c) => new ResourceItem(c));
-            _resourceScrollableContainer.Coordinates = new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35));
+            _resourceScrollableContainer = new ResizableScrollableContainer<ResourceItem, ResourceType>(Context,
+                "ressource_stats_container", new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35)), c => new ResourceItem(c), ()=> ResourceItem.StaticSize);
             Register(_resourceScrollableContainer);
-            _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.ToList());
+            _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.OrderBy(t=>t.Name).ToList());
         }
 
         public override UniVector MinimumSize

@@ -47,7 +47,7 @@ namespace Alpha.DirectX.UI.Controls
             _movingPart.Render(deviceContext, worldMatrix * Matrix.Translation(0, _position, 0), viewMatrix, projectionMatrix);
         }
 
-        public void Refresh(int totalNumberOfItems, int visibleNumberOfItems, int firstVisible)
+        public void Refresh(float totalNumberOfItems, float visibleNumberOfItems, float firstVisible)
         {
             int size;
             if (visibleNumberOfItems >= totalNumberOfItems)
@@ -57,8 +57,8 @@ namespace Alpha.DirectX.UI.Controls
             }
             else
             {
-                size = Math.Max(MinHeight, (int)((Size.Y - 2 * Width) * ((float)visibleNumberOfItems / totalNumberOfItems)));
-                _position = Width + (int)((Size.Y - 2 * Width) * ((float)firstVisible / totalNumberOfItems));
+                size = Math.Max(MinHeight, (int)((Size.Y - 2 * Width) * (visibleNumberOfItems / totalNumberOfItems)));
+                _position = Width + (int)((Size.Y - 2 * Width) * (firstVisible / totalNumberOfItems));
             }
             _movingPart.Size = new Vector2I(Width, size);
         }
