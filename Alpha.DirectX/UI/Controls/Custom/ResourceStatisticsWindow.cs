@@ -20,7 +20,9 @@ namespace Alpha.DirectX.UI.Controls.Custom
             public override void Initialize()
             {
                 base.Initialize();
+                //Overlay = true;
                 _label = Register(new Label(Context, Id, new UniRectangle(50, 0, 150, 1.0f), ""));
+                _label.Overlay = true;
                 _icon = new Icon(Context, "resource_item_icon");
                 _icon.Coordinates = new UniRectangle(0, 0, 50, 50);
                 Register(_icon);
