@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX;
 
@@ -21,10 +22,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 base.Initialize();
                 //Overlay = true;
-                _label = Register(new Label(Context, Id, new UniRectangle(50, 0, 150, 1.0f), ""));
+                _label = Register(new Label(Context, Id, new UniRectangle(60, 0, 140, 1.0f), ""));
                 _label.Overlay = true;
                 _icon = new Icon(Context, "resource_item_icon");
-                _icon.Coordinates = new UniRectangle(0, 0, 50, 50);
+                _icon.Coordinates = new UniRectangle(10, 0, 50, 50);
                 Register(_icon);
             }
 
@@ -62,7 +63,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _resourceScrollableContainer = new ResizableScrollableContainer<ResourceItem, ResourceType>(Context,
                 "ressource_stats_container", new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35)), c => new ResourceItem(c), ()=> ResourceItem.StaticSize);
             Register(_resourceScrollableContainer);
-            _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.OrderBy(t=>t.Name).ToList());
+            _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.OrderBy(t=>t.Name).Times(10).ToList());
         }
 
         public override UniVector MinimumSize

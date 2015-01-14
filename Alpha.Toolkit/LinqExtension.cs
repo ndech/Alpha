@@ -89,5 +89,12 @@ namespace Alpha.Toolkit
         {
             yield return item;
         }
+
+        public static IEnumerable<T> Times<T>(this IEnumerable<T> items, int repeat)
+        {
+            for (int i = 0; i < repeat; i++)
+                foreach (T item in items)
+                    yield return item;
+        }
     }
 }
