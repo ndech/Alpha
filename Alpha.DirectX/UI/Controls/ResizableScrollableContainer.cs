@@ -41,26 +41,21 @@ namespace Alpha.DirectX.UI.Controls
         public override void Initialize()
         {
             base.Initialize();
-            Update();
-        }
-
-        public void Update()
-        {
-            _numberOfVisibleItems = (float)Size.Y / _itemSize().Y;
-
             _items = new List<T>();
-
-            for (int i = 0; i < _numberOfVisibleItems+2; i++)
-                _items.Add(_generator(Context));
-            CalculateItemPositions();
-
-            foreach (T item in _items)
-                Register(item);
             Register(_scrollBar = new ScrollBar(Context));
             _scrollBar.Moved += pos =>
             {
-                CurrentPosition += pos*1f;
+                CurrentPosition += pos * 1f;
             };
+            CreateRequiredItems();
+        }
+
+        public void CreateRequiredItems()
+        {
+            _numberOfVisibleItems = (float)Size.Y / _itemSize().Y;
+            for (int i = _items.Count; i < _numberOfVisibleItems+2; i++)
+                _items.Add(Register(_generator(Context), _scrollBar));
+            CalculateItemPositions();
         }
 
         public void Refresh(List<T1> data)
@@ -111,7 +106,8 @@ namespace Alpha.DirectX.UI.Controls
 
         public override void OnResize()
         {
-
+            CreateRequiredItems();
+            Refresh();
         }
     }
 }

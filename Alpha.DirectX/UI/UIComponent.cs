@@ -61,9 +61,24 @@ namespace Alpha.DirectX.UI
         protected virtual void Activate() { }
 
         protected virtual void Desactivate() { }
-        public virtual T Register<T>(T component) where T : Control
+
+        public virtual T Register<T>(T component)
+            where T : Control
         {
-            Controls.Add(component);
+            return Register<T, Control>(component);
+        }
+
+        public virtual T Register<T, T1>(T component, T1 before = default(T1)) where T : Control where T1 : Control
+        {
+            if (before == null) // Append at the end
+                Controls.Add(component);
+            else
+            {
+                int index = Controls.IndexOf(before);
+                if(index == -1)
+                    throw new Exception("The component can not be found");
+                Controls.Insert(index, component);
+            }
             component.Parent = this;
             component.LoadStyle();
             component.Initialize();
@@ -145,7 +160,7 @@ namespace Alpha.DirectX.UI
         public void Resize()
         {
             foreach (Control control in Controls)
-                control.OnResize();
+                control.Resize();
             OnResize();
         }
 

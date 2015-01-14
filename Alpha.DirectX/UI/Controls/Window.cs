@@ -62,12 +62,12 @@ namespace Alpha.DirectX.UI.Controls
 
         private T RegisterInThis<T>(T component) where T : Control
         {
-            return base.Register(component);
+            return base.Register<T,Control>(component);
         }
 
-        public override T Register<T>(T component)
+        public override T Register<T, T1>(T component, T1 before = default(T1))
         {
-            return _contentPanel.Register(component);
+            return _contentPanel.Register(component, before);
         }
     }
 }

@@ -71,5 +71,10 @@ namespace Alpha.DirectX.UI.Controls
             else if (relativeYPosition > Size.Y - Width)
                 Moved.Raise(1);
         }
+
+        public override void OnResize()
+        {
+            _fixedPart.Size = new Vector2I(Width, Size.Y);
+        }
     }
 }
