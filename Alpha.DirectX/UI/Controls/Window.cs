@@ -46,12 +46,17 @@ namespace Alpha.DirectX.UI.Controls
         public override void OnControlDragged(Vector2I move)
         {
             Vector2I mousePosition = Context.UiManager.RelativePreviousMousePosition(Position);
-            if (mousePosition.X > Size.X - 3)
+            if ((mousePosition.X >= Size.X - 3) && (mousePosition.Y >= Size.Y - 3))
+            {
+                Coordinates = new UniRectangle(Coordinates.Position, Coordinates.Size + new UniVector(move.X, move.Y));
+                Resize();
+            }
+            else if (mousePosition.X >= Size.X - 3)
             {
                 Coordinates = new UniRectangle(Coordinates.Position, Coordinates.Size + new UniVector(move.X, 0));
                 Resize();
             }
-            else if (mousePosition.Y > Size.Y - 3)
+            else if (mousePosition.Y >= Size.Y - 3)
             {
                 Coordinates = new UniRectangle(Coordinates.Position, Coordinates.Size + new UniVector(0, move.Y));
                 Resize();

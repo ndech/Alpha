@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.Toolkit;
@@ -10,13 +11,18 @@ namespace Alpha.DirectX.UI.Controls.Custom
     class ResourceStatisticsWindow : Window
     {
         private ResizableScrollableContainer<ResourceItem, ResourceType> _resourceScrollableContainer;
+        private ResourceType _selectedResourceType;
 
         class ResourceItem : Panel, IScrollableItem<ResourceType>
         {
+            private readonly Action<ResourceType> _setSelectedResourceType;
             private Label _label;
             private Icon _icon;
-            public ResourceItem(IContext context) : base(context, "resources_stats_resource_panel", new UniRectangle(), Color.Azure)
-            { }
+            private ResourceType _item;
+            public ResourceItem(IContext context, Action<ResourceType> setSelectedResourceType) : base(context, "resources_stats_resource_panel", new UniRectangle(), Color.Azure)
+            {
+                _setSelectedResourceType = setSelectedResourceType;
+            }
 
             public override void Initialize()
             {
@@ -31,6 +37,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
             public void Set(ResourceType item)
             {
+                Color = Color.Azure;
+                _item = item;
                 if (item == null)
                 {
                     _label.Text = "";
@@ -51,6 +59,16 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 get { return new Vector2I(200, 50); }
             }
+
+            public void Toggle()
+            {
+                Color = Color.Red;
+            }
+
+            public override void OnMouseClicked()
+            {
+                _setSelectedResourceType(_item);
+            }
         }
         public ResourceStatisticsWindow(IContext context, UniRectangle coordinates) : base(context, "resources_stats_window", coordinates, "Resources statistics")
         {
@@ -61,14 +79,26 @@ namespace Alpha.DirectX.UI.Controls.Custom
             base.Initialize();
             Register(new Label(Context, "resources_stats_label", new UniRectangle(5, 5, 190, 20), "Resources :"));
             _resourceScrollableContainer = new ResizableScrollableContainer<ResourceItem, ResourceType>(Context,
-                "ressource_stats_container", new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35)), c => new ResourceItem(c), ()=> ResourceItem.StaticSize);
+                "ressource_stats_container", new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35)), c => new ResourceItem(c, ResourceTypeSelected), ()=> ResourceItem.StaticSize);
             Register(_resourceScrollableContainer);
             _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.OrderBy(t=>t.Name).Times(10).ToList());
+            _resourceScrollableContainer.CustomExecute = (item, type) => { if (type == _selectedResourceType) item.Toggle(); };
         }
 
         public override UniVector MinimumSize
         {
             get { return new UniVector(300, 300);}
+        }
+
+        public void ResourceTypeSelected(ResourceType type)
+        {
+            _selectedResourceType = type;
+            _resourceScrollableContainer.Refresh();
+        }
+
+        public override bool OnMouseScrolled(int delta)
+        {
+            return true;
         }
     }
 }

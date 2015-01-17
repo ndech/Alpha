@@ -44,22 +44,22 @@ namespace Alpha.DirectX.UI.Controls
 
         public override void OnMouseEntered()
         {
-            _plainRectangle.Color = Color.Khaki.ToVector4();
+            _plainRectangle.Color = Color.Khaki;
         }
 
         public override void OnMouseLeft()
         {
-            _plainRectangle.Color = new Vector4(1, 1, 1, 1);
+            _plainRectangle.Color = Color.White;
         }
 
         public override void OnMouseClicked()
         {
-            _plainRectangle.Color = Color.SaddleBrown.ToVector4();
+            _plainRectangle.Color = Color.SaddleBrown;
         }
 
         public override void OnMouseReleasedInBounds()
         {
-            _plainRectangle.Color = Color.Khaki.ToVector4();
+            _plainRectangle.Color = Color.Khaki;
             Clicked.Raise(this);
         }
 

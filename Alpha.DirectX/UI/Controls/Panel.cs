@@ -8,12 +8,23 @@ namespace Alpha.DirectX.UI.Controls
     class Panel : Control
     {
         protected PlainRectangle Rectangle;
-        protected Color Color;
+
+
+        private Color _color;
+        protected Color Color
+        {
+            get { return _color; }
+            set
+            {
+                _color = value;
+                Rectangle.Color = value;
+            }
+        }
         
         public Panel(IContext context, String id, UniRectangle coordinates, Color color)
             : base(context, id, coordinates)
         {
-            Color = color;
+            _color = color;
         }
 
         public override string ComponentType

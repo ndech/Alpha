@@ -72,13 +72,19 @@ namespace Alpha.DirectX.UI.Controls
 
         public void Refresh()
         {
-            if(_data == null)
+            if (_data == null)
                 return;
             _scrollBar.Refresh(_data.Count(), _numberOfVisibleItems, CurrentPosition);
-            for (int i = 0; i < _numberOfVisibleItems+2; i++)
-                _items[i].Set(i + (int)CurrentPosition < _data.Count() ? _data[i + (int)CurrentPosition] : default(T1));
+            for (int i = 0; i < _numberOfVisibleItems + 2; i++)
+            {
+                T1 dataItem = i + (int) CurrentPosition < _data.Count() ? _data[i + (int) CurrentPosition] : default(T1);
+                _items[i].Set(dataItem);
+                if (CustomExecute != null)
+                    CustomExecute(_items[i], dataItem);
+            }
             _scrollBar.Visible = !(_data.Count <= _numberOfVisibleItems);
         }
+        internal Action<T, T1> CustomExecute { get; set; }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         { }

@@ -12,8 +12,8 @@ namespace Alpha.DirectX.UI
 {
     class PlainRectangle : Rectangle
     {
-        private Vector4 _color;
-        public Vector4 Color
+        private Color _color;
+        public Color Color
         {
             get { return _color; }
             set
@@ -30,7 +30,7 @@ namespace Alpha.DirectX.UI
         {
             _shader = context.Shaders.ColorShader;
             DeviceContext = context.DirectX.Device.ImmediateContext;
-            _color = color.ToVector4();
+            _color = color;
             const int vertexCount = 4;
             _vertices = new VertexDefinition.PositionColor[vertexCount];
             VertexBuffer = Buffer.Create(context.DirectX.Device, _vertices,
@@ -66,10 +66,11 @@ namespace Alpha.DirectX.UI
             float right = Size.X;
             float bottom = Size.Y;
 
-            _vertices[0] = new VertexDefinition.PositionColor {position = new Vector3(left, top, 0), color = _color};
-            _vertices[1] = new VertexDefinition.PositionColor {position = new Vector3(right, bottom, 0), color = _color};
-            _vertices[2] = new VertexDefinition.PositionColor {position = new Vector3(left, bottom, 0), color = _color};
-            _vertices[3] = new VertexDefinition.PositionColor {position = new Vector3(right, top, 0), color = _color};
+            Vector4 color = _color.ToVector4();
+            _vertices[0] = new VertexDefinition.PositionColor {position = new Vector3(left, top, 0), color = color};
+            _vertices[1] = new VertexDefinition.PositionColor {position = new Vector3(right, bottom, 0), color = color};
+            _vertices[2] = new VertexDefinition.PositionColor {position = new Vector3(left, bottom, 0), color = color};
+            _vertices[3] = new VertexDefinition.PositionColor {position = new Vector3(right, top, 0), color =  color};
 
             DataStream mappedResource;
             DeviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,
