@@ -19,7 +19,7 @@ namespace Alpha.Core.Provinces
         internal Population(int range = 1000)
         {
             _value = RandomGenerator.Get(range/2, 2*range);
-            YearlyGrowth = RandomGenerator.GetDouble(-0.3, 0.9);
+            YearlyGrowth = 0;//RandomGenerator.GetDouble(-0.05, 0.05);
         }
 
         void IDailyUpdatableItem.DayUpdate()

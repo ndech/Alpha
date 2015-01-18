@@ -8,10 +8,11 @@ using SharpDX;
 
 namespace Alpha.DirectX.UI.Controls.Custom
 {
-    class ResourceStatisticsWindow : Window
+    class StatisticsWindow : Window
     {
         private ResizableScrollableContainer<ResourceItem, ResourceType> _resourceScrollableContainer;
         private ResourceType _selectedResourceType;
+        private Label _outputLabel;
 
         class ResourceItem : Panel, IScrollableItem<ResourceType>
         {
@@ -27,7 +28,6 @@ namespace Alpha.DirectX.UI.Controls.Custom
             public override void Initialize()
             {
                 base.Initialize();
-                //Overlay = true;
                 _label = Register(new Label(Context, Id, new UniRectangle(60, 0, 140, 1.0f), ""));
                 _label.Overlay = true;
                 _icon = new Icon(Context, "resource_item_icon");
@@ -70,19 +70,26 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _setSelectedResourceType(_item);
             }
         }
-        public ResourceStatisticsWindow(IContext context, UniRectangle coordinates) : base(context, "resources_stats_window", coordinates, "Resources statistics")
+        public StatisticsWindow(IContext context, UniRectangle coordinates) : base(context, "resources_stats_window", coordinates, "Resources statistics")
         {
         }
 
         public override void Initialize()
         {
             base.Initialize();
-            Register(new Label(Context, "resources_stats_label", new UniRectangle(5, 5, 190, 20), "Resources :"));
+            TabContainer tabContainer;
+            Register(tabContainer = new TabContainer(Context, "stats_tabs_container"));
+            Tab resourcesTab = tabContainer.RegisterTab(new Tab(Context, "stats_resources_tab", "Resources"));
+            resourcesTab.Register(new Label(Context, "resources_stats_label", new UniRectangle(5, 5, 190, 20), "Resources :"));
             _resourceScrollableContainer = new ResizableScrollableContainer<ResourceItem, ResourceType>(Context,
                 "ressource_stats_container", new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35)), c => new ResourceItem(c, ResourceTypeSelected), ()=> ResourceItem.StaticSize);
-            Register(_resourceScrollableContainer);
+            resourcesTab.Register(_resourceScrollableContainer);
             _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.OrderBy(t=>t.Name).Times(10).ToList());
             _resourceScrollableContainer.CustomExecute = (item, type) => { if (type == _selectedResourceType) item.Toggle(); };
+            resourcesTab.Register(_outputLabel = new Label(Context, "resources_stats_output_label", new UniRectangle(205, 5, 290, 20), "No output"));
+            Context.NotificationResolver.DayUpdateDone += DayUpdate;
+
+            Tab populationTab = tabContainer.RegisterTab(new Tab(Context, "stats_population_tab", "Population"));
         }
 
         public override UniVector MinimumSize
@@ -94,11 +101,26 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             _selectedResourceType = type;
             _resourceScrollableContainer.Refresh();
+            DayUpdate();
         }
 
         public override bool OnMouseScrolled(int delta)
         {
             return true;
+        }
+
+        public void DayUpdate()
+        {
+            if (_selectedResourceType == null)
+                _outputLabel.Text = "No output";
+            else
+            {
+                double totalOutput = Context.World.ProvinceManager.LandProvinces.SelectMany(p => p.Settlements)
+                    .SelectMany(s => s.Resources).Where(r => r.Type == _selectedResourceType)
+                    .Sum(r => r.Output);
+                _outputLabel.Text = "Output: "+totalOutput;
+            }
+            
         }
     }
 }

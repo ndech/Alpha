@@ -15,6 +15,7 @@
         {
             CurrentButton.Untoggle();
             CurrentButton = togglableButton;
+            CurrentButton.Toggle();
         }
     }
 }

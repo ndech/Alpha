@@ -93,6 +93,7 @@ namespace Alpha.Core
         private void DayUpdate()
         {
             Managers.ForEach(u => u.DayUpdate(_datalock));
+            Notify(new DayUpdateDoneNotification());
         }
 
         private void ProcessCommands()

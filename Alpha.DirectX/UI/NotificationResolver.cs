@@ -11,18 +11,21 @@ namespace Alpha.DirectX.UI
         internal event CustomEventHandler<Fleet> FleetMoved;
         internal event CustomEventHandler<Settlement> NewSettlement;
         internal event CustomEventHandler DayChanged;
+        internal event CustomEventHandler DayUpdateDone;
         internal void Process(IEnumerable<Notification> notifications)
         {
             foreach (Notification notification in notifications)
             {
                 if(notification is NewFleetMoveOrderNotification)
                     NewFleetMoveOrder.Raise(((NewFleetMoveOrderNotification)notification).Fleet);
-                if(notification is FleetMovedNotification)
+                else if(notification is FleetMovedNotification)
                     FleetMoved.Raise(((FleetMovedNotification)notification).Fleet);
-                if(notification is NewSettlementNotification)
+                else if(notification is NewSettlementNotification)
                     NewSettlement.Raise(((NewSettlementNotification)notification).Settlement);
-                if (notification is DayChangedNotification)
+                else if (notification is DayChangedNotification)
                     DayChanged.Raise();
+                else if(notification is DayUpdateDoneNotification)
+                    DayUpdateDone.Raise();
             }
         }
     }

@@ -25,6 +25,7 @@
         void IDailyUpdatableItem.DayUpdate()
         {
             StorageLevel += Output;
+            Population.DayUpdate();
         }
     }
 }

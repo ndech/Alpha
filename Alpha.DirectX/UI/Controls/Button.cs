@@ -94,5 +94,11 @@ namespace Alpha.DirectX.UI.Controls
             _plainRectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
             _text.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
         }
+
+        public override void OnResize()
+        {
+            _plainRectangle.Size = Size;
+            _text.Size = Size;
+        }
     }
 }

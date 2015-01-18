@@ -1,4 +1,5 @@
 ﻿using Alpha.DirectX.UI.Controls;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX;
 
@@ -120,6 +121,7 @@ namespace Alpha.DirectX.UI.Screens
         
         public void MouseClicked(Vector2I position, int button)
         {
+            DebugConsole.WriteLine("Clicked on : "+HoveredControl);
             ClickedControl = HoveredControl;
             if(ClickedControl == null)
                 OnMouseClicked(position, button);

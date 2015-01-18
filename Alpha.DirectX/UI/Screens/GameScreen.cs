@@ -56,7 +56,7 @@ namespace Alpha.DirectX.UI.Screens
             Register(new MapTooltip(context, this));
             new PositionLayout(this, 100, 25, HorizontalAlignment.Left, VerticalAlignment.Top).Create(new RealmInfo(context));
             Register(
-                _statisticsWindow = new ResourceStatisticsWindow(context, new UniRectangle(200, 200, 400, 200)));
+                _statisticsWindow = new StatisticsWindow(context, new UniRectangle(200, 200, 400, 200)));
         }
 
         protected override void Update(double delta)

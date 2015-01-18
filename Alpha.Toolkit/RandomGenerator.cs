@@ -15,7 +15,7 @@ namespace Alpha.Toolkit
 
         public static double GetDouble(double min, double max)
         {
-            return _generator.NextDouble() * max + min;
+            return _generator.NextDouble() * (max - min) + min;
         }
 
         public static void ResetSeed(int seed)

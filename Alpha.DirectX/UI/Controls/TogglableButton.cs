@@ -39,14 +39,15 @@ namespace Alpha.DirectX.UI.Controls
         
         public override void OnMouseClicked()
         {
-            if (CurrentState == State.Normal)
-            {
-                Toggle();
-                if (Group != null)
-                    Group.SetActiveButton(this);
-            }
+            if(Group != null)
+                Group.SetActiveButton(this);
             else
-                CurrentState = State.Normal;
+            {
+                if (CurrentState == State.Normal)
+                    Toggle();
+                else
+                    Untoggle();
+            }
         }
 
         public override string ComponentType
@@ -85,6 +86,12 @@ namespace Alpha.DirectX.UI.Controls
         {
             CurrentState = State.Toggled;
             Toggled.Raise();
+        }
+
+        public override void OnResize()
+        {
+            _iconNormal.Size = Size;
+            _iconToggled.Size = Size;
         }
     }
 }

@@ -103,6 +103,7 @@
     <Compile Include="Movement\MoveOrder.cs" />
     <Compile Include="Movement\Step.cs" />
     <Compile Include="Notifications\DayChangedNotification.cs" />
+    <Compile Include="Notifications\DayUpdateDoneNotification.cs" />
     <Compile Include="Notifications\FleetMovedNotification.cs" />
     <Compile Include="Notifications\NewFleetMoveOrderNotification.cs" />
     <Compile Include="Notifications\NewFleetNotification.cs" />

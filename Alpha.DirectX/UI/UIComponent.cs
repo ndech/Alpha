@@ -159,9 +159,9 @@ namespace Alpha.DirectX.UI
 
         public void Resize()
         {
+            OnResize();
             foreach (Control control in Controls)
                 control.Resize();
-            OnResize();
         }
 
         public virtual void OnResize()
