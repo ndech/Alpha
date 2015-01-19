@@ -53,4 +53,14 @@
 		</probability>
 		<category>Food</category>
 	</resource>
+	<resource id="salt">
+		<name>Salt</name>
+		<probability>
+			<base>2</base>
+			<modifiers>
+				<multiplier factor="2">Settlement.Zone.IsCoastal</multiplier>
+			</modifiers>
+		</probability>
+		<category>Food</category>
+	</resource>
 </resources>

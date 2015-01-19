@@ -285,6 +285,9 @@
     <Content Include="Data\UI\Resources\livestock.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\Resources\salt.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\Resources\silver.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
