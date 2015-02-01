@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Native debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -107,6 +109,7 @@
     <Compile Include="UI\Controls\DynamicLabel.cs" />
     <Compile Include="UI\Controls\IconButton.cs" />
     <Compile Include="UI\Controls\Panel.cs" />
+    <Compile Include="UI\Controls\PieChart.cs" />
     <Compile Include="UI\Controls\ProgressBar.cs" />
     <Compile Include="UI\Controls\ResizableScrollableContainer.cs" />
     <Compile Include="UI\Controls\ScrollableContainer.cs" />

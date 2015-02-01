@@ -71,7 +71,7 @@ namespace Alpha.DirectX.UI
             _vertices[3] = new VertexDefinition.PositionTexture { position = new Vector3(right, top, 0.0f), texture = new Vector2(1, 0) };
 
             DataStream mappedResource;
-            _deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,
+                   _deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,
                 out mappedResource);
             mappedResource.WriteRange(_vertices);
             _deviceContext.UnmapSubresource(VertexBuffer, 0);

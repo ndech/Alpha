@@ -1,7 +1,7 @@
-Texture2D shaderTexture;
-SamplerState SampleType;
+Texture2D shaderTexture : register(t0);
+SamplerState SampleType : register(s0);
 
-cbuffer MatrixBuffer
+cbuffer MatrixBuffer : register (b0)
 {
 	matrix worldMatrix;
 	matrix viewMatrix;

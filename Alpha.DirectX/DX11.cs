@@ -82,7 +82,7 @@ namespace Alpha.DirectX
             //Use https://dev.windows.com/en-us/develop/graphics-debugging-and-frame-analysis-update on Windows 10 to install debug layer.
             Device = new Device(DriverType.Hardware, DeviceCreationFlags.Debug, featureLevels);
 #else
-            Device = new Device(DriverType.Hardware, DeviceCreationFlags.None, featureLevels);
+            Device = new Device(DriverType.Hardware, DeviceCreationFlags.Debug, featureLevels);
 #endif
             if(ConfigurationManager.Config.AntiAliasing)
                 _maxQualityLevel = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, 4);

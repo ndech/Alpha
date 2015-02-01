@@ -8,7 +8,6 @@ namespace Alpha.DirectX.Shaders
 {
     class TextureShader : Shader
     {
-
         private const string ShaderFileName = @"Data/Shaders/Texture.hlsl";
         VertexShader VertexShader { get; set; }
         PixelShader PixelShader { get; set; }
@@ -44,19 +43,6 @@ namespace Alpha.DirectX.Shaders
                 BorderColor = new Color4(0, 0, 0, 0),
                 MinimumLod = 0,
                 MaximumLod = 0
-            };
-            samplerDesc = new SamplerStateDescription
-            {
-                Filter = Filter.MinMagMipPoint,
-                AddressU = TextureAddressMode.Clamp,
-                AddressV = TextureAddressMode.Clamp,
-                AddressW = TextureAddressMode.Clamp,
-                MipLodBias = 0,
-                MaximumAnisotropy = 1,
-                ComparisonFunction = Comparison.Always,
-                BorderColor = Color.Transparent,
-                MinimumLod = 0,
-                MaximumLod = float.MaxValue
             };
 
             // Create the texture sampler state.

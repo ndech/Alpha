@@ -95,8 +95,6 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 new UniRectangle(210, 5, new UniScalar(1.0f, -215), new UniScalar(1.0f, -10)), 200, PieChartValues));
 
             Tab populationTab = tabContainer.RegisterTab(new Tab(Context, "stats_population_tab", "Population"));
-
-
         }
 
         public List<Tuple<CustomColor, double, String, String>> PieChartValues()
