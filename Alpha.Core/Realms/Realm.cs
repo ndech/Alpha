@@ -21,7 +21,11 @@ namespace Alpha.Core.Realms
         private readonly List<Realm> _vassals = new List<Realm>();
         private readonly List<LandProvince> _demesne = new List<LandProvince>();
         public IEnumerable<Realm> Vassals { get { return _vassals; } }
-        public IEnumerable<LandProvince> Demesne { get { return _demesne; } } 
+        public IEnumerable<LandProvince> Demesne { get { return _demesne; } }
+        public IEnumerable<LandProvince> AllDependantProvinces { get
+        {
+            return _demesne.Union(_vassals.SelectMany(v => v.AllDependantProvinces));
+        } } 
         //public IEnumerable<Fleet> Fleets { get { return World.FleetManager.Fleets.Where(f => f.Owner.Equals(this)); } } 
         
         public String Name { get; internal set; }
@@ -31,7 +35,13 @@ namespace Alpha.Core.Realms
             (Economy as IDailyUpdatableItem).DayUpdate();
         }
 
-        public bool IsIndependant { get { return Liege == null; } }
+        public bool IsIndependant
+        {
+            get
+            {
+                return Liege == null;
+            }
+        }
 
         public Realm RandomDirectVassal { get { return _vassals.RandomItem(); } }
 
@@ -50,8 +60,8 @@ namespace Alpha.Core.Realms
         }
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj) && ReferenceEquals(null, this)) return true;
+            if (ReferenceEquals(null, obj) || ReferenceEquals(null, this)) return false;
             if (obj is RealmToken)
                 return Id == ((RealmToken) obj).Realm.Id;
             if (obj is Realm)
@@ -75,6 +85,7 @@ namespace Alpha.Core.Realms
         }
         public static bool operator ==(Realm one, RealmToken other)
         {
+            if (ReferenceEquals(null, one) && ReferenceEquals(null, other)) return true;
             return !ReferenceEquals(one, null) && !ReferenceEquals(other, null) && one.Equals(other.Realm);
         }
 

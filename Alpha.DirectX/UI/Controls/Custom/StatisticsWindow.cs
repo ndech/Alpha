@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
@@ -11,6 +12,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     class StatisticsWindow : Window
     {
         private ResizableScrollableContainer<ResourceItem, ResourceType> _resourceScrollableContainer;
+        private PieChart _resourceRepartitionChart;
         private ResourceType _selectedResourceType;
         private Label _outputLabel;
 
@@ -89,7 +91,38 @@ namespace Alpha.DirectX.UI.Controls.Custom
             resourcesTab.Register(_outputLabel = new Label(Context, "resources_stats_output_label", new UniRectangle(205, 5, 290, 20), "No output"));
             Context.NotificationResolver.DayUpdateDone += DayUpdate;
 
+            _resourceRepartitionChart = resourcesTab.Register(new PieChart(Context, "resource_chart",
+                new UniRectangle(210, 5, new UniScalar(1.0f, -215), new UniScalar(1.0f, -10)), 200, PieChartValues));
+
             Tab populationTab = tabContainer.RegisterTab(new Tab(Context, "stats_population_tab", "Population"));
+
+
+        }
+
+        public List<Tuple<CustomColor, double, String, String>> PieChartValues()
+        {
+            if (_selectedResourceType == null)
+                return new List<Tuple<CustomColor, double, string, string>> { new Tuple<CustomColor, double, string, string>(new CustomColor(0.2f, 0.2f, 0.2f), 1, "NA", "NA") };
+
+            var data = Context.World.RealmManager.IndependantsRealms.Select(realm => new
+            {
+                Realm = realm,
+                Amount = realm
+                    .AllDependantProvinces
+                    .SelectMany(p =>
+                        p.Settlements
+                            .SelectMany(s =>
+                                s.Resources
+                                    .Where(r => r.Type.Equals(_selectedResourceType))))
+                    .Sum(r => r.Output)
+            })
+            .OrderByDescending(x=>x.Amount).ToList();
+            return
+                data.Select(
+                    d =>
+                        new Tuple<CustomColor, double, string, string>(d.Realm.Color, d.Amount, d.Realm.Name,
+                            d.Realm.Name + "\nProduction : " + d.Amount + " (" + d.Amount/data.Sum(x => x.Amount) +
+                            ")")).ToList();
         }
 
         public override UniVector MinimumSize
@@ -101,6 +134,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             _selectedResourceType = type;
             _resourceScrollableContainer.Refresh();
+            _resourceRepartitionChart.Refresh();
             DayUpdate();
         }
 

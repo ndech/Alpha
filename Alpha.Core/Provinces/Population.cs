@@ -6,7 +6,6 @@ namespace Alpha.Core.Provinces
 {
     public class Population : IDailyUpdatableItem
     {
-
         private double _value = 1000;
         public int LastDayVariation { get; private set; }
         public Int32 Value

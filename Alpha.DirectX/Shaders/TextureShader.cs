@@ -45,6 +45,19 @@ namespace Alpha.DirectX.Shaders
                 MinimumLod = 0,
                 MaximumLod = 0
             };
+            samplerDesc = new SamplerStateDescription
+            {
+                Filter = Filter.MinMagMipPoint,
+                AddressU = TextureAddressMode.Clamp,
+                AddressV = TextureAddressMode.Clamp,
+                AddressW = TextureAddressMode.Clamp,
+                MipLodBias = 0,
+                MaximumAnisotropy = 1,
+                ComparisonFunction = Comparison.Always,
+                BorderColor = Color.Transparent,
+                MinimumLod = 0,
+                MaximumLod = float.MaxValue
+            };
 
             // Create the texture sampler state.
             SamplerState = new SamplerState(device, samplerDesc);
@@ -60,6 +73,18 @@ namespace Alpha.DirectX.Shaders
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.DrawIndexed(indexCount, 0, 0);
+        }
+
+        public void RenderNotIndexed(DeviceContext deviceContext, int vertexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture)
+        {
+            UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, worldMatrix, viewMatrix, projectionMatrix);
+            deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
+            deviceContext.PixelShader.SetShaderResource(0, texture);
+            deviceContext.InputAssembler.InputLayout = Layout;
+            deviceContext.VertexShader.Set(VertexShader);
+            deviceContext.PixelShader.Set(PixelShader);
+            deviceContext.PixelShader.SetSampler(0, SamplerState);
+            deviceContext.Draw(vertexCount, 0);
         }
     }
 }
