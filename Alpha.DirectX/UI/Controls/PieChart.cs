@@ -21,7 +21,7 @@ namespace Alpha.DirectX.UI.Controls
         private TextureShader _shader;
         private Func<List<Tuple<CustomColor, double, String, String>>> _valuesGenerator;
         private ShaderResourceView _colorTexture;
-        private List<PieChartInfo> _data = new List<PieChartInfo>();
+        private List<PieChartInfo> _data;
 
         class PieChartInfo
         {
@@ -102,7 +102,7 @@ namespace Alpha.DirectX.UI.Controls
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             double size = Math.Min(Size.X, Size.Y)*0.45 - 10;
-            int stride = Utilities.SizeOf<VertexDefinition.PositionColor>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
+            int stride = Utilities.SizeOf<VertexDefinition.PositionTexture>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, stride, 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             _shader.RenderNotIndexed(deviceContext, _sliceNumber * 3, Matrix.Scaling((int)size) * Matrix.Translation(Size.X/2, Size.Y/2, 0) * worldMatrix, viewMatrix, projectionMatrix, _colorTexture);
