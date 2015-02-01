@@ -59,15 +59,15 @@ namespace Alpha.DirectX.UI.Controls
                     texture = texture,
                     position = new Vector3(0, 0, 0)
                 };
-                vertices[i * 3 + 2] = new VertexDefinition.PositionTexture
-                {
-                    texture = texture,
-                    position = new Vector3((float)Math.Sin(i*(Math.PI * 2) / _sliceNumber), (float)Math.Cos(i*(Math.PI * 2) / _sliceNumber), 0)
-                };
                 vertices[i * 3 + 1] = new VertexDefinition.PositionTexture
                 {
                     texture = texture,
-                    position = new Vector3((float)Math.Sin((i+1) * (Math.PI * 2) / _sliceNumber), (float)Math.Cos((i+1) * (Math.PI * 2) / _sliceNumber), 0)
+                    position = new Vector3((float)Math.Sin(i*(Math.PI * 2) / _sliceNumber), -(float)Math.Cos(i*(Math.PI * 2) / _sliceNumber), 0)
+                };
+                vertices[i * 3 + 2] = new VertexDefinition.PositionTexture
+                {
+                    texture = texture,
+                    position = new Vector3((float)Math.Sin((i+1) * (Math.PI * 2) / _sliceNumber), -(float)Math.Cos((i+1) * (Math.PI * 2) / _sliceNumber), 0)
                 };
             }
             _vertexBuffer = Buffer.Create(context.DirectX.Device, vertices,
@@ -101,11 +101,11 @@ namespace Alpha.DirectX.UI.Controls
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            double size = Math.Min(Size.X, Size.Y)*0.45 - 10;
+            float size = (float)(Math.Min(Size.X, Size.Y)*0.45 - 10);
             int stride = Utilities.SizeOf<VertexDefinition.PositionTexture>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, stride, 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            _shader.RenderNotIndexed(deviceContext, _sliceNumber * 3, Matrix.Scaling((int)size) * Matrix.Translation(Size.X/2, Size.Y/2, 0) * worldMatrix, viewMatrix, projectionMatrix, _colorTexture);
+            _shader.RenderNotIndexed(deviceContext, _sliceNumber * 3, Matrix.Scaling(size) * Matrix.Translation(Size.X/2, Size.Y/2, 0) * worldMatrix, viewMatrix, projectionMatrix, _colorTexture);
         }
 
         public void Refresh()
