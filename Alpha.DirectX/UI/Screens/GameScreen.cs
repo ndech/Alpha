@@ -104,7 +104,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
-            //_terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             //_worldTerrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix,
             //    Context.DirectX.ProjectionMatrix);
             _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
