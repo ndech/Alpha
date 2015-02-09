@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SharpDX;
 
 namespace Alpha.Toolkit
 {
@@ -95,6 +96,17 @@ namespace Alpha.Toolkit
             for (int i = 0; i < repeat; i++)
                 foreach (T item in items)
                     yield return item;
+        }
+
+        public static Vector3 AverageVector(this IEnumerable<Vector3> source)
+        {
+            List<Vector3> values = source.ToList();
+            Vector3 result = new Vector3();
+            foreach (Vector3 value in values)
+            {
+                result += value;
+            }
+            return result/values.Count;
         }
     }
 }

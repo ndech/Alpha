@@ -78,7 +78,7 @@ namespace Alpha.DirectX.Shaders
             // Create a texture sampler state description.
             var samplerDesc = new SamplerStateDescription
             {
-                Filter = Filter.ComparisonAnisotropic,
+                Filter = Filter.Anisotropic,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,
@@ -87,7 +87,7 @@ namespace Alpha.DirectX.Shaders
                 ComparisonFunction = Comparison.Always,
                 BorderColor = new Color4(0, 0, 0, 0),
                 MinimumLod = 0,
-                MaximumLod = 0
+                MaximumLod = 10
             };
 
             // Create the texture sampler state.

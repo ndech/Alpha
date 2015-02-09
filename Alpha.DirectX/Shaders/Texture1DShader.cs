@@ -6,16 +6,16 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.DirectX.Shaders
 {
-    class TextureShader : Shader
+    class Texture1DShader : Shader
     {
-        private const string ShaderFileName = @"Data/Shaders/Texture.hlsl";
+        private const string ShaderFileName = @"Data/Shaders/Texture1D.hlsl";
         VertexShader VertexShader { get; set; }
         PixelShader PixelShader { get; set; }
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
-        public TextureShader(Device device)
+        public Texture1DShader(Device device)
         {
             var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TextureVertexShader", "vs_4_0", ShaderFlags);
             var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TexturePixelShader", "ps_4_0", ShaderFlags);

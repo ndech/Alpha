@@ -16,6 +16,8 @@ namespace Alpha.DirectX.UI.Screens
 {
     class GameScreen : Screen
     {
+        private readonly Sphere _sphere;
+        private readonly Sphere _sphere2;
         private readonly Sun _sun;
         private readonly Water _water;
         private readonly Terrain _terrain;
@@ -30,6 +32,8 @@ namespace Alpha.DirectX.UI.Screens
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
+            _sphere = new Sphere(Context, Color.Red, 5, 1200);
+            _sphere2 = new Sphere(Context, Color.Blue, 5, 0);
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
             _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces);
             _worldTerrain = new WorldTerrain(context);
@@ -63,6 +67,8 @@ namespace Alpha.DirectX.UI.Screens
         {
             _water.Update(delta);
             _terrain.Update(delta);
+            _sphere.Update(delta);
+            _sphere2.Update(delta);
             _counter.Update(delta);
             _fleetMoveOrderRenderer.Update(delta);
             UpdateCameraFromInput();
@@ -111,6 +117,10 @@ namespace Alpha.DirectX.UI.Screens
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             _fleetRenderer.RenderOverlay(deviceContext, viewMatrix, projectionMatrix);
+            Context.DirectX.EnableZBuffer();
+            _sphere.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _sphere2.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            Context.DirectX.DisableZBuffer();
         }
 
         public Zone HoveredZone()

@@ -53,7 +53,7 @@ namespace Alpha.DirectX
             for (int i = 0; i < points.Count; i++)
             {
                 verticesDefinition[i].position = vertices[points[i].Item1-1];
-                verticesDefinition[i].texture = textures[points[i].Item2-1];
+                verticesDefinition[i].texture = textures[points[i].Item2-1]*10;
                 verticesDefinition[i].normal = normals[points[i].Item3-1];
             }
             VertexCount = points.Count;

@@ -20,7 +20,11 @@ namespace Alpha.Common
         {
             SetValues(ScreenModes.Large);
             SetValues(WorldSize.Small);
+#if DEBUG
+            AntiAliasing = false;
+#else
             AntiAliasing = true;
+#endif
             FarLimit = 50000.0f;
             NearLimit = 10f;
             VSync = true;

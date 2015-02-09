@@ -17,7 +17,7 @@ namespace Alpha.DirectX.UI.Controls
     {
         private readonly int _sliceNumber;
         private readonly Buffer _vertexBuffer;
-        private TextureShader _shader;
+        private Texture1DShader _shader;
         private Func<List<Tuple<CustomColor, double, String, String>>> _valuesGenerator;
         private ShaderResourceView _colorTexture;
         private List<PieChartInfo> _data;
@@ -48,7 +48,7 @@ namespace Alpha.DirectX.UI.Controls
         {
             _sliceNumber = sliceNumber;
             _valuesGenerator = valuesGenerator;
-            _shader = Context.Shaders.TextureShader;
+            _shader = Context.Shaders.Texture1DShader;
             var vertices = new VertexDefinition.PositionTexture[_sliceNumber * 3];
             for (int i = 0; i < sliceNumber; i++)
             {

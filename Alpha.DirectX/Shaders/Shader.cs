@@ -73,7 +73,7 @@ namespace Alpha.DirectX.Shaders
             {
                 return new SamplerStateDescription
                 {
-                    Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                    Filter = Filter.MinLinearMagMipPoint,
                     AddressU = TextureAddressMode.Wrap,
                     AddressV = TextureAddressMode.Wrap,
                     AddressW = TextureAddressMode.Wrap,

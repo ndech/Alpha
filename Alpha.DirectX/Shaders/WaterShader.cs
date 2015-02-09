@@ -87,7 +87,7 @@ namespace Alpha.DirectX.Shaders
             // Create a texture sampler state description.
             var samplerDescWrap = new SamplerStateDescription
             {
-                Filter = Filter.ComparisonMinLinearMagPointMipLinear,
+                Filter = Filter.MinLinearMagPointMipLinear,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,

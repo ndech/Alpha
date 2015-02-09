@@ -86,6 +86,7 @@
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderManager.cs" />
     <Compile Include="Shaders\TerrainShader.cs" />
+    <Compile Include="Shaders\Texture1DShader.cs" />
     <Compile Include="Shaders\TextureShader.cs" />
     <Compile Include="Shaders\VertexDefinition.cs" />
     <Compile Include="Shaders\WaterShader.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="UI\World\FleetMoveOrderRenderer.cs" />
     <Compile Include="UI\World\FleetRenderer.cs" />
     <Compile Include="UI\World\Sky.cs" />
+    <Compile Include="UI\World\Sphere.cs" />
     <Compile Include="UI\World\Sun.cs" />
     <Compile Include="UI\World\Terrain.cs" />
     <Compile Include="UI\World\Water.cs" />
@@ -238,6 +240,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Shaders\WorldTerrain.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\Texture1D.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Data\UI\base_settlement.dds">

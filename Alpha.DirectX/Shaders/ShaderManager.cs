@@ -12,6 +12,7 @@ namespace Alpha.DirectX.Shaders
         public PathShader PathShader { get; private set; }
         public TerrainShader TerrainShader { get; private set; }
         public WorldTerrainShader WorldTerrainShader { get; private set; }
+        public Texture1DShader Texture1DShader { get; private set; }
 
         public ShaderManager(Device device)
         {
@@ -23,6 +24,7 @@ namespace Alpha.DirectX.Shaders
             PathShader = new PathShader(device);
             TerrainShader = new TerrainShader(device);
             WorldTerrainShader = new WorldTerrainShader(device);
+            Texture1DShader = new Texture1DShader(device);
         }
     }
 }

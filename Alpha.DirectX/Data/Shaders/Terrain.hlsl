@@ -43,7 +43,7 @@ SamplerState SampleBorder : register (s0);
 SamplerState SampleColor : register (s1);
 
 Texture2D borderTexture   : register(t0);
-Texture2D provinceColorTexture   : register(t1);
+Texture1D provinceColorTexture   : register(t1);
 
 float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 {
