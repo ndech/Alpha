@@ -88,5 +88,10 @@ namespace Alpha.DirectX
             _form.Show();
             _form.Name = "Alpha";
         }
+
+        public void Dispose()
+        {
+            _directX.Dispose();
+        }
     }
 }

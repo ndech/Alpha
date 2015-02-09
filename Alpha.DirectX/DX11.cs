@@ -301,7 +301,8 @@ namespace Alpha.DirectX
             if (_disposed) return;
             if (SwapChain != null && SwapChain.IsFullScreen) // Before shutting down set swap chain to windowed mode 
                 SwapChain.SetFullscreenState(false, null);
-            DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, DepthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
+            DisposeHelper.DisposeAndSetToNull(_rasterStateSolid, _rasterStateWireFrame, _alphaDisabledBlendState, _alphaEnabledBlendState,
+                DepthStencilView, RenderToTextureDepthStencilView, _depthStencilState, _depthDisabledStencilState, _depthStencilBuffer, _renderTargetView, Device, SwapChain);
             _disposed = true;
         }
 
