@@ -48,7 +48,7 @@ namespace Alpha.DirectX.UI.Controls
         {
             _sliceNumber = sliceNumber;
             _valuesGenerator = valuesGenerator;
-            _shader = Context.Shaders.Texture1DShader;
+            _shader = Context.Shaders.Get<Texture1DShader>();
             var vertices = new VertexDefinition.PositionTexture[_sliceNumber * 3];
             for (int i = 0; i < sliceNumber; i++)
             {

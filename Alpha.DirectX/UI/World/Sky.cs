@@ -13,7 +13,7 @@ namespace Alpha.DirectX.UI.World
         public Sky(IContext context)
         {
             _skydome = new ObjModel(context.DirectX.Device, "skydome.obj", context.TextureManager.Create("Sky.png"));
-            _shader = context.Shaders.LightShader;
+            _shader = context.Shaders.Get<LightShader>();
         }
 
         public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix, Light light, ICamera camera)

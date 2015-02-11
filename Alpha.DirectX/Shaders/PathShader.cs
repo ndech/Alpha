@@ -86,9 +86,9 @@ namespace Alpha.DirectX.Shaders
             deviceContext.GeometryShader.Set(null);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(VertexShader, PixelShader, Layout, ConstantMatrixBuffer);
+            DisposeHelper.DisposeAndSetToNull(VertexShader, PixelShader, SamplerState, GeometryShader, Layout, ConstantMatrixBuffer);
         }
     }
 }

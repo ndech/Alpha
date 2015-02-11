@@ -25,7 +25,7 @@ namespace Alpha.DirectX.UI
 
         public TexturedRectangle(IContext context, ShaderResourceView texture, Vector2I size)
         {
-            _shader = context.Shaders.TextureShader;
+            _shader = context.Shaders.Get<TextureShader>();
             _texture = texture;
             _deviceContext = context.DirectX.Device.ImmediateContext;
 

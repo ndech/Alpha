@@ -81,7 +81,7 @@ namespace Alpha.DirectX.UI.Text
             VerticalAlignment = verticalAlignment;
             HorizontalAlignment = horizontalAligment;
             BaseColor = color;
-            _shader = context.Shaders.FontShader;
+            _shader = context.Shaders.Get<FontShader>();
             _device = context.DirectX.Device;
             Content = content;
         }

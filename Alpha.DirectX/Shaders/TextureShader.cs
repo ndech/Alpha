@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using Alpha.Toolkit;
+using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
 using Buffer = SharpDX.Direct3D11.Buffer;
@@ -71,6 +72,11 @@ namespace Alpha.DirectX.Shaders
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.Draw(vertexCount, 0);
+        }
+
+        public override void Dispose()
+        {
+            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, Layout, PixelShader, VertexShader);
         }
     }
 }

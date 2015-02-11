@@ -78,7 +78,6 @@ namespace Alpha.EntryPoint
                 _dayTimer.WaitForNextDay(_continue);
                 DebugConsole.WriteLine("Day end");
             }
-            _ui.Dispose();
         }
 
         private void NewRealm(RealmToken token)
@@ -89,6 +88,7 @@ namespace Alpha.EntryPoint
 
         public void Exit()
         {
+            _ui.Dispose();
             _continue.Stop();
         }
     }

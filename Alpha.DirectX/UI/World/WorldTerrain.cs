@@ -29,7 +29,7 @@ namespace Alpha.DirectX.UI.World
             _heightMap = context.TextureManager.Create("heightmap.bmp", "Data/Map/");
             _normalMap = context.TextureManager.Create("normal.bmp", "Data/Map/").TextureResource;
             _provinceMap = context.TextureManager.Create("provinces.bmp", "Data/Map/").TextureResource;
-            _terrainShader = context.Shaders.WorldTerrainShader;
+            _terrainShader = context.Shaders.Get<WorldTerrainShader>();
             BuildTerrainBuffers(context);
             BuildWaterBuffers(context);
         }

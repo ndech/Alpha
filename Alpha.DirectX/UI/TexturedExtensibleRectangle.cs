@@ -39,7 +39,7 @@ namespace Alpha.DirectX.UI
 
         public TexturedExtensibleRectangle(IContext context, Vector2I size, Texture texture, int fixedBorderRadius, float depth = 0.0f)
         {
-            _shader = context.Shaders.TextureShader;
+            _shader = context.Shaders.Get<TextureShader>();
             _deviceContext = context.DirectX.DeviceContext;
             _texture = texture;
             _fixedBorderRadius = fixedBorderRadius;

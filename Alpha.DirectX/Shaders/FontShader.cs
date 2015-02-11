@@ -45,7 +45,7 @@ namespace Alpha.DirectX.Shaders
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.DrawIndexed(indexCount, 0, 0);
         }
-        public void Dispose()
+        public override void Dispose()
         {
             DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, Layout, PixelShader, VertexShader);
         }

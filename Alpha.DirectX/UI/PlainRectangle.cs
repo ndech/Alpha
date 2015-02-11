@@ -28,7 +28,7 @@ namespace Alpha.DirectX.UI
 
         public PlainRectangle(IContext context, Vector2I size, Color color)
         {
-            _shader = context.Shaders.ColorShader;
+            _shader = context.Shaders.Get<ColorShader>();
             DeviceContext = context.DirectX.Device.ImmediateContext;
             _color = color;
             const int vertexCount = 4;

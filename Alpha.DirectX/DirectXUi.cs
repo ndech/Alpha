@@ -92,6 +92,7 @@ namespace Alpha.DirectX
         public void Dispose()
         {
             _directX.Dispose();
+            _context.Dispose();
         }
     }
 }

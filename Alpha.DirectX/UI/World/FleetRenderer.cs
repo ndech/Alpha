@@ -75,7 +75,7 @@ namespace Alpha.DirectX.UI.World
         public FleetRenderer(IContext context)
         {
             _context = context;
-            _shader = context.Shaders.LightShader;
+            _shader = context.Shaders.Get<LightShader>();
             _model = new ObjModel(context.DirectX.Device, "BasicBoat.obj", context.TextureManager.Create("Metal.png"));
             _baseOverlay = new TexturedRectangle(context, context.TextureManager.Create("fleet_overlay.dds", "Data/UI/"));
             _enemySubOverlay = new TexturedRectangle(context, context.TextureManager.Create("fleet_overlay_relation_enemy.dds", "Data/UI/"));

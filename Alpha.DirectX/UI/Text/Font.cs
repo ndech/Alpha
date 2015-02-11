@@ -31,9 +31,9 @@ namespace Alpha.DirectX.UI.Text
 
         public Font(IContext context, String font, int height)
         {
-            Texture = new Texture(context.DirectX.Device, font + "-" + height + "px.png", @"Data/Fonts/");
-            ParseFileData(@"Data/Fonts/"+font+"-"+height+"px.fnt",Texture.Width, Texture.Height);
             _context = context;
+            Texture = context.TextureManager.Create(font + "-" + height + "px.png", @"Data/Fonts/");
+            ParseFileData(@"Data/Fonts/"+font+"-"+height+"px.fnt",Texture.Width, Texture.Height);
         }
 
         private void ParseFileData(string fileName, int textureWidth, int textureHeight)

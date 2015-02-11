@@ -48,5 +48,11 @@ namespace Alpha.DirectX
             UiManager = uiManager;
             Input = input;
         }
+
+        public void Dispose()
+        {
+            Shaders.Dispose();
+            TextureManager.Dispose();
+        }
     }
 }

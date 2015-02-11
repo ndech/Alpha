@@ -143,6 +143,7 @@
     <Compile Include="UI\IUiManager.cs" />
     <Compile Include="UI\Screens\GameScreen.cs" />
     <Compile Include="UI\Screens\Screen.cs" />
+    <Compile Include="UI\Screens\SphericalWorldScreen.cs" />
     <Compile Include="UI\Screens\WorldGeneratingScreen.cs" />
     <Compile Include="UI\Screens\WorldParametersScreen.cs" />
     <Compile Include="UI\Styles\Alignments.cs" />

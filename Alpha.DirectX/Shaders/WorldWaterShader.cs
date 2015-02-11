@@ -150,7 +150,7 @@ namespace Alpha.DirectX.Shaders
             deviceContext.DrawIndexed(indexCount, 0, 0);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             DisposeHelper.DisposeAndSetToNull(VertexShader, PixelShader, Layout, ConstantMatrixBuffer);
         }

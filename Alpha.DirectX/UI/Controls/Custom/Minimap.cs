@@ -149,7 +149,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 new VertexBufferBinding(_overlayVertexBuffer, Utilities.SizeOf<VertexDefinition.PositionColor>(), 0));
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStrip;
             deviceContext.Rasterizer.SetScissorRectangle(Position.X, Position.Y, Position.X + Size.X, Position.Y + Size.Y);
-            Context.Shaders.ColorShader.RenderNotIndexed(deviceContext, 5, worldMatrix, viewMatrix, projectionMatrix);
+            Context.Shaders.Get<ColorShader>().RenderNotIndexed(deviceContext, 5, worldMatrix, viewMatrix, projectionMatrix);
             deviceContext.Rasterizer.SetScissorRectangle(0, 0, Context.ScreenSize.X, Context.ScreenSize.Y);
         }
     }

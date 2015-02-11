@@ -26,7 +26,7 @@ namespace Alpha.DirectX.UI.World
         {
             _bumpMapTexture = context.TextureManager.Create("OceanWater.png").TextureResource;
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
-            _shader = context.Shaders.WaterShader;
+            _shader = context.Shaders.Get<WaterShader>();
             BuildBuffers(context, provinces);
         }
 

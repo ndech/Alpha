@@ -19,7 +19,7 @@ namespace Alpha.DirectX.UI.Text
             Font = font;
             MaxLength = maxLength;
             Color = color;
-            _shader = context.Shaders.FontShader;
+            _shader = context.Shaders.Get<FontShader>();
             _icons = new List<TexturedRectangle>();
             // The index buffer is static and do not change when the text changes
             UInt32[] indices = new UInt32[maxLength * 6]; // 6 indices per character

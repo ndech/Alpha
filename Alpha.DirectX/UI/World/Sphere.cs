@@ -25,7 +25,7 @@ namespace Alpha.DirectX.UI.World
         {
             _color = color;
             _iterations = iterations;
-            _shader = context.Shaders.ColorShader;
+            _shader = context.Shaders.Get<ColorShader>();
             BuildBuffers(context, subdivisionLevel);
         }
         

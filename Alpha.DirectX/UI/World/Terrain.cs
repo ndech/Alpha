@@ -34,7 +34,7 @@ namespace Alpha.DirectX.UI.World
         public Terrain(IContext context, IEnumerable<LandProvince> provinces)
         {
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
-            _shader = context.Shaders.TerrainShader;
+            _shader = context.Shaders.Get<TerrainShader>();
             BuildBuffers(context, provinces);
             _provinceColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Color);
             _realmColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Owner.Color);

@@ -1,4 +1,5 @@
-﻿using Alpha.Common;
+﻿using System;
+using Alpha.Common;
 using Alpha.Core;
 using Alpha.Core.Commands;
 using Alpha.Core.Realms;
@@ -11,7 +12,7 @@ using SharpDX.Windows;
 
 namespace Alpha.DirectX
 {
-    interface IContext
+    interface IContext : IDisposable
     {
         IUiManager UiManager { get; }
         Vector2I ScreenSize { get; }

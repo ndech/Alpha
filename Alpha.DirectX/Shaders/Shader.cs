@@ -1,11 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
+using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.Shaders
 {
-    public abstract class Shader
+    public abstract class Shader : IDisposable
     {
         [StructLayout(LayoutKind.Sequential)]
         internal struct MatrixBuffer
@@ -86,5 +88,7 @@ namespace Alpha.DirectX.Shaders
                 };
             }
         }
+
+        public abstract void Dispose();
     }
 }

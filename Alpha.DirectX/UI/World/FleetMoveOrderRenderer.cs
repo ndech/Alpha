@@ -44,7 +44,7 @@ namespace Alpha.DirectX.UI.World
 
         public FleetMoveOrderRenderer(IContext context)
         {
-            _shader = context.Shaders.PathShader;
+            _shader = context.Shaders.Get<PathShader>();
             _pathTexture = context.TextureManager.Create("Path.png").TextureResource;
             foreach (Fleet fleet in context.World.FleetManager.Fleets.Where(f=>f.HasMoveOrder))
                 NewMoveOrder(context, fleet);
