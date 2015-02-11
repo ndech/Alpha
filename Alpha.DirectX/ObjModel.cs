@@ -75,7 +75,7 @@ namespace Alpha.DirectX
 
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer, Texture);
+            DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer);
         }
     }
 }

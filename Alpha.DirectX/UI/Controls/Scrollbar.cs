@@ -1,5 +1,6 @@
 ﻿using System;
 using Alpha.DirectX.UI.Coordinates;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -32,7 +33,7 @@ namespace Alpha.DirectX.UI.Controls
 
         protected override void DisposeItem()
         {
-            _fixedPart.Dispose();
+            DisposeHelper.DisposeAndSetToNull(_fixedPart, _movingPart);
         }
 
         public override void Initialize()

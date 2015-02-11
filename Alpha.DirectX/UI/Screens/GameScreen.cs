@@ -143,5 +143,10 @@ namespace Alpha.DirectX.UI.Screens
                     _provinceDetailPanel.ShowProvince(province as LandProvince);
             }
         }
+
+        protected override void DisposeItem()
+        {
+            DisposeHelper.DisposeAndSetToNull(_fleetRenderer, _fleetMoveOrderRenderer, _water, _terrain, _worldTerrain, _sky, _sphere, _sphere2);
+        }
     }
 }

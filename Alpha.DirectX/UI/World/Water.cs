@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.Shaders;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -11,7 +12,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.UI.World
 {
-    class Water
+    class Water : IDisposable
     {
         private Buffer _vertexBuffer;
         private Buffer _indexBuffer;
@@ -88,6 +89,11 @@ namespace Alpha.DirectX.UI.World
             }
             _vertexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.VertexBuffer, waterVertices);
             _indexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.IndexBuffer, waterIndices);
+        }
+
+        public void Dispose()
+        {
+            DisposeHelper.DisposeAndSetToNull(_vertexBuffer, _indexBuffer);
         }
     }
 }

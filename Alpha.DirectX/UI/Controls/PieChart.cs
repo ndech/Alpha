@@ -93,7 +93,9 @@ namespace Alpha.DirectX.UI.Controls
         }
 
         protected override void DisposeItem()
-        { }
+        {
+            DisposeHelper.DisposeAndSetToNull(_colorTexture, _vertexBuffer);
+        }
 
         public override void Initialize()
         { }

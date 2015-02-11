@@ -1,10 +1,11 @@
-﻿using Alpha.DirectX.Shaders;
+﻿using System;
+using Alpha.DirectX.Shaders;
 using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.World
 {
-    class Sky
+    class Sky : IDisposable
     {
         private readonly ObjModel _skydome;
         private float _angle;
@@ -27,6 +28,11 @@ namespace Alpha.DirectX.UI.World
         public void Update(double delta)
         {
             _angle += (float)delta * 0.04f;
+        }
+
+        public void Dispose()
+        {
+            _skydome.Dispose();
         }
     }
 }

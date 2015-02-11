@@ -1,4 +1,5 @@
 ﻿using Alpha.DirectX.UI;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -27,7 +28,7 @@ namespace Alpha.DirectX
         
         public void Dispose()
         {
-            _default.Dispose();
+            DisposeHelper.DisposeAndSetToNull(_default, _drag);
         }
 
         public void Render(DeviceContext deviceContext, Matrix viewMatrix, Matrix projectionMatrix)

@@ -10,7 +10,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.UI
 {
-    class PlainRectangle : Rectangle
+    class PlainRectangle : Rectangle, IDisposable
     {
         private Color _color;
         public Color Color

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI.Coordinates;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D;
@@ -17,6 +19,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     class Minimap : Control
     {
         private TexturedRectangle _mapTexture;
+        private ShaderResourceView _minimapTexture;
         private Buffer _overlayVertexBuffer;
         public Minimap(IContext context, UniRectangle coordinates) : base(context, "minimap", coordinates)
         {
@@ -29,7 +32,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         protected override void DisposeItem()
         {
-
+            DisposeHelper.DisposeAndSetToNull(_mapTexture, _overlayVertexBuffer, _mapTexture, _minimapTexture);
         }
 
         public override void Initialize()
@@ -73,8 +76,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
             dataStream.Write(byteArray, 0, byteCount);
             DataBox data = new DataBox(dataStream.DataPointer, rowPitch, byteCount);
             Context.DirectX.DeviceContext.UpdateSubresource(data, minimapTexture);
-
-            _mapTexture = new TexturedRectangle(Context, new ShaderResourceView(Context.DirectX.Device, minimapTexture), Size);
+            _minimapTexture = new ShaderResourceView(Context.DirectX.Device, minimapTexture);
+            _mapTexture = new TexturedRectangle(Context, _minimapTexture , Size);
         }
 
         public override void OnControlDragged(Vector2I previousMousePosition)

@@ -10,7 +10,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.UI
 {
-    class TexturedRectangle : Rectangle
+    class TexturedRectangle : Rectangle, IDisposable
     {
         private readonly TextureShader _shader;
         private readonly VertexDefinition.PositionTexture[] _vertices;

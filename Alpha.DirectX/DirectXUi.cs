@@ -93,6 +93,7 @@ namespace Alpha.DirectX
         {
             _directX.Dispose();
             _context.Dispose();
+            _uiManager.Dispose();
         }
     }
 }

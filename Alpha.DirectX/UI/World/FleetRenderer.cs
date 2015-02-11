@@ -13,7 +13,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.World
 {
-    class FleetRenderer
+    class FleetRenderer : IDisposable
     {
         class FleetRenderingInfo : IDisposable
         {
@@ -156,6 +156,13 @@ namespace Alpha.DirectX.UI.World
             if (status == FleetRenderingInfo.Status.Enemy)
                 return _enemySubOverlay;
             return _allySubOverlay;
+        }
+
+        public void Dispose()
+        {
+            foreach (FleetRenderingInfo fleetRenderingInfo in _fleetRenderingInfos.Values)
+                fleetRenderingInfo.Dispose();
+            DisposeHelper.DisposeAndSetToNull(_model, _mineSubOverlay, _enemySubOverlay, _baseOverlay, _allySubOverlay, _neutralSubOverlay);
         }
     }
 }

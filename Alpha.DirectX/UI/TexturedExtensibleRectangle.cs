@@ -10,7 +10,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.UI
 {
-    class TexturedExtensibleRectangle
+    class TexturedExtensibleRectangle : IDisposable
     {
         private readonly Buffer _vertexBuffer;
         private readonly Buffer _indexBuffer;

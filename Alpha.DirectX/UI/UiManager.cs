@@ -125,6 +125,7 @@ namespace Alpha.DirectX.UI
 
         public void Dispose()
         {
+            _mousePointer.Dispose();
             foreach (Screen screen in _activeScreens)
                 screen.Dispose();
         }
@@ -157,7 +158,8 @@ namespace Alpha.DirectX.UI
 
         public void SetScreen(Screen screen)
         {
-            _activeScreens.Clear();
+            for(int i = _activeScreens.Count -1; i>=0; i--)
+                DeleteScreen(_activeScreens[i]);
             _activeScreens.Add(screen);
         }
 

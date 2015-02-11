@@ -11,7 +11,7 @@ using SharpDX.Direct3D;
 
 namespace Alpha.DirectX.UI.World
 {
-    class FleetMoveOrderRenderer
+    class FleetMoveOrderRenderer : IDisposable
     {
         private class MoveOrderRenderingItem : IDisposable
         {
@@ -53,14 +53,14 @@ namespace Alpha.DirectX.UI.World
 
         private void NewMoveOrder(IContext context, Fleet fleet)
         {
+            if (_items.ContainsKey(fleet))
+            {
+                _items[fleet].Dispose();
+            }
             if (fleet.MoveOrder == null)
             {
                 _items.Remove(fleet);
                 return;
-            }
-            if (_items.ContainsKey(fleet))
-            {
-                _items[fleet].Dispose();
             }
             List<Step> steps = fleet.MoveOrder.Steps.ToList();
             List<VertexDefinition.Path> vertices = new List<VertexDefinition.Path>();
@@ -139,6 +139,12 @@ namespace Alpha.DirectX.UI.World
                                Color.Red.ToVector4(),
                                Color.MistyRose.ToVector4());
             }
+        }
+
+        public void Dispose()
+        {
+            foreach (MoveOrderRenderingItem item in _items.Values)
+                item.Dispose();
         }
     }
 }

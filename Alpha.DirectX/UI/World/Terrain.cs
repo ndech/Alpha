@@ -12,7 +12,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.UI.World
 {
-    class Terrain
+    class Terrain : IDisposable
     {
         private Buffer _vertexBuffer;
         private Buffer _indexBuffer;
@@ -151,6 +151,12 @@ namespace Alpha.DirectX.UI.World
             }
             _vertexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.VertexBuffer, terrainVertices);
             _indexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.IndexBuffer, terrainIndices);
+        }
+
+        public void Dispose()
+        {
+            DisposeHelper.DisposeAndSetToNull(_indexBuffer, _foodAvailabilityTexture, _provinceColorTexture, _realmColorTexture,
+                _vertexBuffer);
         }
     }
 }

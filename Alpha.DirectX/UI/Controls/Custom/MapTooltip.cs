@@ -4,6 +4,7 @@ using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Screens;
 using Alpha.DirectX.UI.Styles;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -116,7 +117,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         protected override void DisposeItem()
         {
-
+            DisposeHelper.DisposeAndSetToNull(_text, _rectangle);
         }
 
         public override void Initialize()

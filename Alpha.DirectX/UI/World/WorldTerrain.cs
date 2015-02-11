@@ -1,5 +1,6 @@
 ﻿using System;
 using Alpha.DirectX.Shaders;
+using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -8,7 +9,7 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace Alpha.DirectX.UI.World
 {
-    class WorldTerrain
+    class WorldTerrain : IDisposable
     {
         private Buffer _terrainVertexBuffer;
         private Buffer _terrainIndexBuffer;
@@ -100,5 +101,10 @@ namespace Alpha.DirectX.UI.World
 
         public void Update(double delta)
         { }
+
+        public void Dispose()
+        {
+            DisposeHelper.DisposeAndSetToNull(_terrainIndexBuffer, _terrainVertexBuffer, _waterIndexBuffer, _waterVertexBuffer);
+        }
     }
 }

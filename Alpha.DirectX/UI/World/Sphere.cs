@@ -11,7 +11,7 @@ using SharpDX.DXGI;
 
 namespace Alpha.DirectX.UI.World
 {
-    class Sphere
+    class Sphere : IDisposable
     {
         private readonly Color _color;
         private readonly int _iterations;
@@ -172,6 +172,11 @@ namespace Alpha.DirectX.UI.World
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             _shader.Render(deviceContext, _indexCount, Matrix.Scaling(200) * worldMatrix, viewMatrix, projectionMatrix);
+        }
+
+        public void Dispose()
+        {
+            DisposeHelper.DisposeAndSetToNull(_vertexBuffer, _indexBuffer);
         }
     }
 }
