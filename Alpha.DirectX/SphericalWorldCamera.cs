@@ -2,9 +2,8 @@
 
 namespace Alpha.DirectX
 {
-    class Camera : ICamera
+    class SphericalWorldCamera : ICamera
     {
-        private IContext _context;
         private Matrix _viewMatrix;
         private Matrix _uiMatrix;
         private Matrix _reflectionMatrix;
@@ -40,10 +39,10 @@ namespace Alpha.DirectX
             set { _targetPosition = value; }
         }
 
-        public Camera()
+        public SphericalWorldCamera()
         {
-            _targetPosition = new Vector3(0, 200, 0);
-            _currentPosition = new Vector3(0, 200, 0);
+            _targetPosition = new Vector3(0, 500, -500);
+            _currentPosition = new Vector3(0, 500, -500);
             _orientation = new Vector3(0, 0.7f, 0);
             Calculate();
         }
@@ -71,11 +70,6 @@ namespace Alpha.DirectX
 
             _reflectionMatrix = Matrix.LookAtLH(new Vector3(_currentPosition.X, -_currentPosition.Y, _currentPosition.Z),
                 new Vector3(_currentPosition.X + lookAt.X, -_currentPosition.Y /*- lookAt.Y*/, _currentPosition.Z + lookAt.Z), up);
-        }
-
-        public void Initialize(IContext context)
-        {
-            _context = context;
         }
     }
 }

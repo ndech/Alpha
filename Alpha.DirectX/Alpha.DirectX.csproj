@@ -92,6 +92,7 @@
     <Compile Include="Shaders\WaterShader.cs" />
     <Compile Include="Shaders\WorldTerrainShader.cs" />
     <Compile Include="Shaders\WorldWaterShader.cs" />
+    <Compile Include="SphericalWorldCamera.cs" />
     <Compile Include="UI\Controls\Custom\BuildingScrollableItem.cs" />
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
