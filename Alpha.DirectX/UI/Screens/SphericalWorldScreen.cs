@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
 using SharpDX;
@@ -15,8 +16,8 @@ namespace Alpha.DirectX.UI.Screens
         private readonly SphericalWorldCamera _camera;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, Color.Red, 5, 1200);
-            _sphere2 = new Sphere(Context, Color.Blue, 5, 0);
+            _sphere = new Sphere(Context, Color.Red, 100, 1200);
+            _sphere2 = new Sphere(Context, Color.Blue, 17, 0);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();
@@ -25,10 +26,10 @@ namespace Alpha.DirectX.UI.Screens
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             Context.DirectX.EnableZBuffer();
-            Matrix translationMatrix = Matrix.Translation(0, 0, 0);
             _sky.Render(deviceContext, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun ,_camera);
-            _sphere.Render(deviceContext, translationMatrix, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
-            _sphere2.Render(deviceContext, translationMatrix, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _sphere.Render(deviceContext, Matrix.Scaling(200), _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+
+            //_sphere2.Render(deviceContext, Matrix.RotationY((float)Math.PI / 2) * Matrix.Scaling(200), _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             Context.DirectX.DisableZBuffer();
         }
 
