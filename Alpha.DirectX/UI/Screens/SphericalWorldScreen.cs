@@ -1,4 +1,5 @@
-﻿using Alpha.DirectX.UI.World;
+﻿using System.Windows.Input;
+using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -24,14 +25,51 @@ namespace Alpha.DirectX.UI.Screens
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             Context.DirectX.EnableZBuffer();
+            Matrix translationMatrix = Matrix.Translation(0, 0, 0);
             _sky.Render(deviceContext, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun ,_camera);
-            _sphere.Render(deviceContext, Matrix.Identity, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
-            _sphere2.Render(deviceContext, Matrix.Identity, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _sphere.Render(deviceContext, translationMatrix, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _sphere2.Render(deviceContext, translationMatrix, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             Context.DirectX.DisableZBuffer();
         }
+
+        protected override void Update(double delta)
+        {
+            UpdateCameraFromInput();
+            _camera.Update(delta);
+        }
+
         protected override void DisposeItem()
         {
             DisposeHelper.DisposeAndSetToNull(_sphere, _sphere2);
+        }
+        public override bool OnMouseScrolled(int delta)
+        {
+            _camera.Zoom(-delta);
+            return true;
+        }
+
+        private bool keyPressed = false;
+        private void UpdateCameraFromInput()
+        {
+            if (Context.UiManager.IsKeyPressed(Key.Left))
+                _camera.Move(-1, 0);
+            if (Context.UiManager.IsKeyPressed(Key.Right))
+                _camera.Move(1, 0);
+            if (Context.UiManager.IsKeyPressed(Key.Up))
+                _camera.Move(0, 1);
+            if (Context.UiManager.IsKeyPressed(Key.Down))
+                _camera.Move(0, -1);
+
+            if (Context.UiManager.IsKeyPressed(Key.X))
+            {
+                if (!keyPressed)
+                {
+                    Context.DirectX.SwitchWireFrameMode();
+                    keyPressed = true;
+                }
+            }
+            else
+                keyPressed = false;
         }
     }
 }

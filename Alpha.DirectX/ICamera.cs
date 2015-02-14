@@ -7,7 +7,6 @@ namespace Alpha.DirectX
         Matrix UiMatrix { get; }
         Matrix ViewMatrix { get; }
         Vector3 Position { get; set; }
-        Matrix ReflectionMatrix { get; }
         void Move(int x, int y);
         void Rotate(int tick);
         void Zoom(int tick);

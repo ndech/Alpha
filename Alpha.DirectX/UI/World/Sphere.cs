@@ -102,7 +102,7 @@ namespace Alpha.DirectX.UI.World
             _indexCount = indices.Count;
             _vertexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.VertexBuffer, verticesDispersion.Select(v => new VertexDefinition.PositionColor
             {
-                position = (v.Position-averagePosition)*(1-(float)((v.Offset-averageOffset)/(50*(maxOffset+1)))),
+                position = (v.Position-averagePosition)*(1-(float)((v.Offset-averageOffset)/(15*(maxOffset+1)))),
                 color = _color.ToVector4()
             }).ToArray());
             _indexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.IndexBuffer, indices.ToArray());

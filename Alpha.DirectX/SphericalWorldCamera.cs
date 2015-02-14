@@ -1,30 +1,28 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 
 namespace Alpha.DirectX
 {
     class SphericalWorldCamera : ICamera
     {
         private Matrix _viewMatrix;
-        private Matrix _uiMatrix;
-        private Matrix _reflectionMatrix;
-        private Vector3 _targetPosition;
-        private Vector3 _currentPosition;
+        private double _distance = 500;
+        private double _targetDistance = 500;
         private Vector3 _orientation;
 
         public Matrix ViewMatrix { get { return _viewMatrix; } }
 
-        public Matrix UiMatrix { get { return _uiMatrix; } }
-
-        public Matrix ReflectionMatrix { get { return _reflectionMatrix; } }
+        public Matrix UiMatrix { get { throw new InvalidOperationException("No Ui matrix for spherical cameras");} }
 
         public void Move(int x, int y)
         {
-            _targetPosition += Vector3.TransformCoordinate(new Vector3(5*x, 0, 5*y), Matrix.RotationY(_orientation.X));
+            _orientation.X += -(float)(x * 0.01);
+            _orientation.Y = (float)Math.Max(-Math.PI/2, Math.Min(_orientation.Y+(y * 0.01), Math.PI/2));
         }
 
         public void Zoom(int tick)
         {
-            _targetPosition.Y += 10*tick;
+            _targetDistance += 10*tick;
         }
 
         public void Rotate(int tick)
@@ -35,24 +33,23 @@ namespace Alpha.DirectX
 
         public Vector3 Position
         {
-            get { return _targetPosition; }
-            set { _targetPosition = value; }
+            get { return new Vector3((float)_distance); }
+            set { //_targetPosition = value; 
+            }
         }
 
         public SphericalWorldCamera()
         {
-            _targetPosition = new Vector3(0, 500, -500);
-            _currentPosition = new Vector3(0, 500, -500);
-            _orientation = new Vector3(0, 0.7f, 0);
+            _orientation = new Vector3(0, 0, 0);
             Calculate();
         }
 
         public void Update(double delta)
         {
-            _currentPosition += (_targetPosition - _currentPosition)*0.08f;
+            _distance += (_targetDistance - _distance)*delta*5;
             Calculate();
         }
-        
+
 
         private void Calculate()
         {
@@ -60,16 +57,12 @@ namespace Alpha.DirectX
             Matrix rotationMatrix = Matrix.RotationYawPitchRoll(_orientation.X, _orientation.Y, _orientation.Z);
 
             // Get the direction that the camera is pointing to and the up direction
-            Vector3 lookAt = Vector3.TransformCoordinate(Vector3.UnitZ, rotationMatrix);
             Vector3 up = Vector3.TransformCoordinate(Vector3.UnitY, rotationMatrix);
-            
+
+            Vector3 position = Vector3.TransformCoordinate(new Vector3(0,0, -(float)_distance), rotationMatrix);
+
             // Finally create the view matrix from the three updated vectors.
-            _viewMatrix = Matrix.LookAtLH(_currentPosition, _currentPosition + lookAt, up);
-
-            _uiMatrix = Matrix.LookAtLH(new Vector3(0, 0, -50), Vector3.UnitZ, Vector3.UnitY) * Matrix.Scaling(1, -1, 1);
-
-            _reflectionMatrix = Matrix.LookAtLH(new Vector3(_currentPosition.X, -_currentPosition.Y, _currentPosition.Z),
-                new Vector3(_currentPosition.X + lookAt.X, -_currentPosition.Y /*- lookAt.Y*/, _currentPosition.Z + lookAt.Z), up);
+            _viewMatrix = Matrix.LookAtLH(position, new Vector3(0, 0, 0), up);
         }
     }
 }
