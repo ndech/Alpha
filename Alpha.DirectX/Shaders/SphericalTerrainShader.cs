@@ -7,19 +7,19 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace Alpha.DirectX.Shaders
 {
-    class TextureShader : Shader
+    class SphericalTerrainShader : Shader
     {
-        private const string ShaderFileName = @"Data/Shaders/Texture.hlsl";
+        private const string ShaderFileName = @"Data/Shaders/SphericalTerrain.hlsl";
         VertexShader VertexShader { get; set; }
         PixelShader PixelShader { get; set; }
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         SamplerState SamplerState { get; set; }
 
-        public TextureShader(Device device)
+        public SphericalTerrainShader(Device device)
         {
-            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TextureVertexShader", "vs_4_0", ShaderFlags);
-            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "TexturePixelShader", "ps_4_0", ShaderFlags);
+            var vertexShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "SphericalTerrainVertexShader", "vs_4_0", ShaderFlags);
+            var pixelShaderByteCode = ShaderBytecode.CompileFromFile(ShaderFileName, "SphericalTerrainPixelShader", "ps_4_0", ShaderFlags);
 
             VertexShader = new VertexShader(device, vertexShaderByteCode);
             PixelShader = new PixelShader(device, pixelShaderByteCode);

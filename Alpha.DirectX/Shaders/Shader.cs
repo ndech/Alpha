@@ -33,7 +33,7 @@ namespace Alpha.DirectX.Shaders
             }
         }
 
-        public ShaderFlags ShaderFlags
+        public static ShaderFlags ShaderFlags
         {
             get
             {

@@ -20,7 +20,8 @@ namespace Alpha.DirectX.Shaders
                     ,new PathShader(device)
                     ,new TerrainShader(device)
                     ,new WorldTerrainShader(device)
-                    ,new Texture1DShader(device));
+                    ,new Texture1DShader(device)
+                    ,new SphericalTerrainShader(device));
         }
 
         private void Register(params Shader[] shaders)

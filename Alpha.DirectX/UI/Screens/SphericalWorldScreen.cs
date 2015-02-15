@@ -10,14 +10,12 @@ namespace Alpha.DirectX.UI.Screens
     class SphericalWorldScreen : Screen
     {
         private readonly Sphere _sphere;
-        private readonly Sphere _sphere2;
         private readonly Sky _sky;
         private readonly Sun _sun;
         private readonly SphericalWorldCamera _camera;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, Color.Red, 100, 1200);
-            _sphere2 = new Sphere(Context, Color.Blue, 17, 0);
+            _sphere = new Sphere(Context, Color.Red, 255, 1200);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();
@@ -28,8 +26,6 @@ namespace Alpha.DirectX.UI.Screens
             Context.DirectX.EnableZBuffer();
             _sky.Render(deviceContext, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun ,_camera);
             _sphere.Render(deviceContext, Matrix.Scaling(200), _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
-
-            //_sphere2.Render(deviceContext, Matrix.RotationY((float)Math.PI / 2) * Matrix.Scaling(200), _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             Context.DirectX.DisableZBuffer();
         }
 
@@ -41,7 +37,7 @@ namespace Alpha.DirectX.UI.Screens
 
         protected override void DisposeItem()
         {
-            DisposeHelper.DisposeAndSetToNull(_sphere, _sphere2);
+            DisposeHelper.DisposeAndSetToNull(_sphere);
         }
         public override bool OnMouseScrolled(int delta)
         {
