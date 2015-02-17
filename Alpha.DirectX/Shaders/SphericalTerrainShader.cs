@@ -54,10 +54,10 @@ namespace Alpha.DirectX.Shaders
             var vertexSamplerDesc = new SamplerStateDescription
             {
                 Filter = Filter.MinMagMipPoint,
-                AddressU = TextureAddressMode.Mirror,
-                AddressV = TextureAddressMode.Mirror,
-                AddressW = TextureAddressMode.Mirror,
-                BorderColor = Color.Transparent,
+                AddressU = TextureAddressMode.Border,
+                AddressV = TextureAddressMode.Border,
+                AddressW = TextureAddressMode.Border,
+                BorderColor = Color.White,
                 ComparisonFunction = Comparison.Never,
                 MaximumAnisotropy = 0,
                 MipLodBias = 0,

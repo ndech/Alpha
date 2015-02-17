@@ -25,7 +25,7 @@ PixelInputType SphericalTerrainVertexShader(VertexInputType input)
 {
 	PixelInputType output;
 	input.position.w = 1.0f;
-	input.position.xyz *= 2+heightMap.SampleLevel(vertexSampler, input.tex, 0).r;;
+	input.position.xyz *= 2+heightMap.SampleLevel(vertexSampler, input.tex, -1).r;;
 	output.position = mul(input.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
