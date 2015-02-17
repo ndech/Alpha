@@ -69,6 +69,19 @@ namespace Alpha.DirectX.UI.World
             }
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        struct TextureSizeData
+        {
+            public readonly float Size;
+            public readonly Vector3 Padding;
+
+            public TextureSizeData(float size)
+            {
+                Size = size;
+                Padding = new Vector3();
+            }
+        }
+
         private void GenerateHeightMaps(int faceSubdivisions)
         {
             ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile(@"Data/Shaders/TerrainCompute.hlsl", "init", "cs_5_0", Shader.ShaderFlags);
@@ -77,19 +90,19 @@ namespace Alpha.DirectX.UI.World
             shaderByteCode = ShaderBytecode.CompileFromFile(@"Data/Shaders/TerrainCompute.hlsl", "applyRandomDisplacement", "cs_5_0", Shader.ShaderFlags);
             ComputeShader baseTerrainGeneration = new ComputeShader(_context.DirectX.Device, shaderByteCode);
             shaderByteCode.Dispose();
-
+            const int textureSize = 1024;
             Texture2DDescription textureDescription = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.ShaderResource | BindFlags.UnorderedAccess,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.R32_Float,
-                Height = 1024,
+                Height = textureSize,
+                Width = textureSize,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                Width = 1024
+                Usage = ResourceUsage.Default
             };
 
             Buffer planeBuffer = new Buffer(_context.DirectX.Device,
@@ -102,8 +115,21 @@ namespace Alpha.DirectX.UI.World
                     OptionFlags = ResourceOptionFlags.None,
                     StructureByteStride = 0
                 });
+            Buffer textureSizeBuffer = new Buffer(_context.DirectX.Device,
+                new BufferDescription
+                {
+                    Usage = ResourceUsage.Dynamic,
+                    SizeInBytes = Utilities.SizeOf<TextureSizeData>(),
+                    BindFlags = BindFlags.ConstantBuffer,
+                    CpuAccessFlags = CpuAccessFlags.Write,
+                    OptionFlags = ResourceOptionFlags.None,
+                    StructureByteStride = 0
+                });
             DataStream mappedResource;
-
+            _context.DirectX.DeviceContext.MapSubresource(textureSizeBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
+            mappedResource.Write(new TextureSizeData(textureSize));
+            _context.DirectX.DeviceContext.UnmapSubresource(textureSizeBuffer, 0);
+            _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(1, textureSizeBuffer);
 
             foreach (Face face in _faces)
             {
@@ -114,12 +140,12 @@ namespace Alpha.DirectX.UI.World
 
                 _context.DirectX.DeviceContext.ComputeShader.Set(initTerrain);
                 _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, face.UnorderedAccessView);
-                _context.DirectX.DeviceContext.Dispatch(32, 32, 1);
+                _context.DirectX.DeviceContext.Dispatch(textureSize / 32, textureSize/32, 1);
             }
 
-            
 
-            for (int i = 0; i < 10000; i++)
+
+            for (int i = 0; i < _iterations; i++)
             {
                 Vector3 normal = new Vector3((float)RandomGenerator.GetDouble(-1, 1), (float)RandomGenerator.GetDouble(-1, 1), (float)RandomGenerator.GetDouble(-1, 1));
                 Vector4 data = new Vector4(Vector3.Normalize(normal), (float)RandomGenerator.GetDouble(-1, 1));
@@ -131,7 +157,7 @@ namespace Alpha.DirectX.UI.World
                     _context.DirectX.DeviceContext.ComputeShader.Set(baseTerrainGeneration);
                     _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, face.UnorderedAccessView);
                     _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(0, planeBuffer);
-                    _context.DirectX.DeviceContext.Dispatch(32, 32, 1);
+                    _context.DirectX.DeviceContext.Dispatch(textureSize / 32, textureSize / 32, 1);
                 }
             }
             _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, null);

@@ -15,6 +15,7 @@ namespace Alpha.DirectX.Shaders
         InputLayout Layout { get; set; }
         Buffer ConstantMatrixBuffer { get; set; }
         SamplerState SamplerState { get; set; }
+        SamplerState VertexSamplerState { get; set; }
 
         public SphericalTerrainShader(Device device)
         {
@@ -48,30 +49,38 @@ namespace Alpha.DirectX.Shaders
 
             // Create the texture sampler state.
             SamplerState = new SamplerState(device, samplerDesc);
+
+            // Create a texture sampler state description.
+            var vertexSamplerDesc = new SamplerStateDescription
+            {
+                Filter = Filter.MinMagMipPoint,
+                AddressU = TextureAddressMode.Mirror,
+                AddressV = TextureAddressMode.Mirror,
+                AddressW = TextureAddressMode.Mirror,
+                BorderColor = Color.Transparent,
+                ComparisonFunction = Comparison.Never,
+                MaximumAnisotropy = 0,
+                MipLodBias = 0,
+                MinimumLod = 0,
+                MaximumLod = 0
+            };
+
+            // Create the texture sampler state.
+            VertexSamplerState = new SamplerState(device, vertexSamplerDesc);
         }
 
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture)
         {
             UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, worldMatrix, viewMatrix, projectionMatrix);
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
+            deviceContext.VertexShader.SetShaderResource(0, texture);
+            deviceContext.VertexShader.SetSampler(1,VertexSamplerState);
             deviceContext.PixelShader.SetShaderResource(0, texture);
             deviceContext.InputAssembler.InputLayout = Layout;
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetSampler(0, SamplerState);
             deviceContext.DrawIndexed(indexCount, 0, 0);
-        }
-
-        public void RenderNotIndexed(DeviceContext deviceContext, int vertexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture)
-        {
-            UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, worldMatrix, viewMatrix, projectionMatrix);
-            deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
-            deviceContext.PixelShader.SetShaderResource(0, texture);
-            deviceContext.InputAssembler.InputLayout = Layout;
-            deviceContext.VertexShader.Set(VertexShader);
-            deviceContext.PixelShader.Set(PixelShader);
-            deviceContext.PixelShader.SetSampler(0, SamplerState);
-            deviceContext.Draw(vertexCount, 0);
         }
 
         public override void Dispose()

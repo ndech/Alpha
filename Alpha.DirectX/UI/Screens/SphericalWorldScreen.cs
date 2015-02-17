@@ -15,7 +15,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly SphericalWorldCamera _camera;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, Color.Red, 255, 1200);
+            _sphere = new Sphere(Context, Color.Red, 255, 10000);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();
@@ -25,7 +25,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             Context.DirectX.EnableZBuffer();
             _sky.Render(deviceContext, _camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun ,_camera);
-            _sphere.Render(deviceContext, Matrix.Scaling(200), _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
+            _sphere.Render(deviceContext, Matrix.Scaling(100), _camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             Context.DirectX.DisableZBuffer();
         }
 

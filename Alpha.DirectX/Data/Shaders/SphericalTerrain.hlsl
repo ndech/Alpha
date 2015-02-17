@@ -1,5 +1,6 @@
-Texture2D shaderTexture : register(t0);
-SamplerState SampleType : register(s0);
+Texture2D heightMap : register(t0);
+SamplerState pixelSampler : register(s0);
+SamplerState vertexSampler : register(s1);
 
 cbuffer MatrixBuffer : register (b0)
 {
@@ -24,6 +25,7 @@ PixelInputType SphericalTerrainVertexShader(VertexInputType input)
 {
 	PixelInputType output;
 	input.position.w = 1.0f;
+	input.position.xyz *= 2+heightMap.SampleLevel(vertexSampler, input.tex, 0).r;;
 	output.position = mul(input.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
@@ -34,6 +36,5 @@ PixelInputType SphericalTerrainVertexShader(VertexInputType input)
 float4 SphericalTerrainPixelShader(PixelInputType input) : SV_TARGET
 {
 	float textureColor;
-	textureColor = shaderTexture.Sample(SampleType, input.tex);
-	return float4(textureColor,0,0,1);
+	return float4(heightMap.Sample(pixelSampler, input.tex).rrr, 1);
 }
