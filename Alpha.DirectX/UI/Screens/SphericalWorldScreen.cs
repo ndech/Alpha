@@ -15,7 +15,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly SphericalWorldCamera _camera;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, Color.Red, 255, 10000);
+            _sphere = new Sphere(Context, 255, 10000);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();

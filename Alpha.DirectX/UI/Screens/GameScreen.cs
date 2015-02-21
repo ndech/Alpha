@@ -32,8 +32,8 @@ namespace Alpha.DirectX.UI.Screens
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
-            _sphere = new Sphere(Context, Color.Red, 5, 1200);
-            _sphere2 = new Sphere(Context, Color.Blue, 5, 0);
+            _sphere = new Sphere(Context, 5, 1200);
+            _sphere2 = new Sphere(Context, 5, 0);
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
             _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces);
             _worldTerrain = new WorldTerrain(context);

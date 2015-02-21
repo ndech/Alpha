@@ -26,20 +26,18 @@ namespace Alpha.DirectX.UI.World
             public ShaderResourceView ShaderResourceView { get; set; }
             public UnorderedAccessView UnorderedAccessView { get; set; }
         }
-        private readonly Color _color;
+
         private readonly int _iterations;
         private Buffer _vertexBuffer;
         private Buffer _indexBuffer;
         private int _indexCount;
         private readonly SphericalTerrainShader _shader;
-        private List<ShaderResourceView> _heightMaps;
         private List<Face> _faces;
         private IContext _context;
 
 
-        public Sphere(IContext context, Color color, int faceSubdivisions, int iterations)
+        public Sphere(IContext context,int faceSubdivisions, int iterations)
         {
-            _color = color;
             _iterations = iterations;
             _context = context;
             _shader = context.Shaders.Get<SphericalTerrainShader>();
@@ -52,9 +50,8 @@ namespace Alpha.DirectX.UI.World
                 new Face(Matrix.RotationY(-MathUtil.PiOverTwo)),
                 new Face(Matrix.RotationY(MathUtil.PiOverTwo))
             };
-            _heightMaps = new List<ShaderResourceView>(context.TextureManager.Create("Sky.png").TextureResource.Yield().Times(6));
             BuildBuffers(context, faceSubdivisions);
-            GenerateHeightMaps(faceSubdivisions);
+            GenerateHeightMaps();
         }
         [StructLayout(LayoutKind.Sequential)]
         struct ComputeData
@@ -82,7 +79,7 @@ namespace Alpha.DirectX.UI.World
             }
         }
 
-        private void GenerateHeightMaps(int faceSubdivisions)
+        private void GenerateHeightMaps()
         {
             ShaderBytecode shaderByteCode = ShaderBytecode.CompileFromFile(@"Data/Shaders/TerrainCompute.hlsl", "init", "cs_5_0", Shader.ShaderFlags);
             ComputeShader initTerrain = new ComputeShader(_context.DirectX.Device, shaderByteCode);
@@ -105,31 +102,9 @@ namespace Alpha.DirectX.UI.World
                 Usage = ResourceUsage.Default
             };
 
-            Buffer planeBuffer = new Buffer(_context.DirectX.Device,
-                new BufferDescription
-                {
-                    Usage = ResourceUsage.Dynamic,
-                    SizeInBytes = Utilities.SizeOf<ComputeData>(),
-                    BindFlags = BindFlags.ConstantBuffer,
-                    CpuAccessFlags = CpuAccessFlags.Write,
-                    OptionFlags = ResourceOptionFlags.None,
-                    StructureByteStride = 0
-                });
-            Buffer textureSizeBuffer = new Buffer(_context.DirectX.Device,
-                new BufferDescription
-                {
-                    Usage = ResourceUsage.Dynamic,
-                    SizeInBytes = Utilities.SizeOf<TextureSizeData>(),
-                    BindFlags = BindFlags.ConstantBuffer,
-                    CpuAccessFlags = CpuAccessFlags.Write,
-                    OptionFlags = ResourceOptionFlags.None,
-                    StructureByteStride = 0
-                });
-            DataStream mappedResource;
-            _context.DirectX.DeviceContext.MapSubresource(textureSizeBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-            mappedResource.Write(new TextureSizeData(textureSize-1));
-            _context.DirectX.DeviceContext.UnmapSubresource(textureSizeBuffer, 0);
-            _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(1, textureSizeBuffer);
+            ConstantBuffer<ComputeData> planeBuffer = new ConstantBuffer<ComputeData>(_context);
+            ConstantBuffer<TextureSizeData> textureSizeBuffer = new ConstantBuffer<TextureSizeData>(_context, new TextureSizeData(textureSize - 1));
+            _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(1, textureSizeBuffer.Buffer);
 
             foreach (Face face in _faces)
             {
@@ -149,12 +124,10 @@ namespace Alpha.DirectX.UI.World
                 Vector4 data = new Vector4(Vector3.Normalize(normal), (float)RandomGenerator.GetDouble(-1, 1));
                 foreach (Face face in _faces)
                 {
-                    _context.DirectX.DeviceContext.MapSubresource(planeBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out mappedResource);
-                    mappedResource.Write(new ComputeData(data, Matrix.Transpose(face.Transform)));
-                    _context.DirectX.DeviceContext.UnmapSubresource(planeBuffer, 0);
+                    planeBuffer.Update(new ComputeData(data, Matrix.Transpose(face.Transform)));
                     _context.DirectX.DeviceContext.ComputeShader.Set(baseTerrainGeneration);
                     _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, face.UnorderedAccessView);
-                    _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(0, planeBuffer);
+                    _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(0, planeBuffer.Buffer);
                     _context.DirectX.DeviceContext.Dispatch(textureSize / 32, textureSize / 32, 1);
                 }
             }
