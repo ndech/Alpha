@@ -15,7 +15,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly SphericalWorldCamera _camera;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, 255, 10000);
+            _sphere = new Sphere(Context, 255, 0);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();
@@ -33,11 +33,12 @@ namespace Alpha.DirectX.UI.Screens
         {
             UpdateCameraFromInput();
             _camera.Update(delta);
+            _sphere.Update(delta);
         }
 
         protected override void DisposeItem()
         {
-            DisposeHelper.DisposeAndSetToNull(_sphere);
+            DisposeHelper.DisposeAndSetToNull(_sphere, _sky);
         }
         public override bool OnMouseScrolled(int delta)
         {

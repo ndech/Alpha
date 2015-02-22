@@ -36,5 +36,5 @@ PixelInputType SphericalTerrainVertexShader(VertexInputType input)
 float4 SphericalTerrainPixelShader(PixelInputType input) : SV_TARGET
 {
 	float textureColor;
-	return float4(heightMap.Sample(pixelSampler, input.tex).rrr, 1);
+	return float4(heightMap.SampleLevel(pixelSampler, input.tex,-1).rrr, 1);
 }

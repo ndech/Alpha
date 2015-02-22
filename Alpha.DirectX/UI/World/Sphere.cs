@@ -32,8 +32,11 @@ namespace Alpha.DirectX.UI.World
         private Buffer _indexBuffer;
         private int _indexCount;
         private readonly SphericalTerrainShader _shader;
-        private List<Face> _faces;
-        private IContext _context;
+        private readonly List<Face> _faces;
+        private readonly IContext _context;
+
+        const int TextureSize = 2048;
+        const int BatchSize = 32;
 
 
         public Sphere(IContext context,int faceSubdivisions, int iterations)
@@ -54,12 +57,12 @@ namespace Alpha.DirectX.UI.World
             GenerateHeightMaps();
         }
         [StructLayout(LayoutKind.Sequential)]
-        struct ComputeData
+        struct PlaneData
         {
             public readonly Vector4 Plane;
             public readonly Matrix Rotation;
 
-            public ComputeData(Vector4 plane, Matrix rotation)
+            public PlaneData(Vector4 plane, Matrix rotation)
             {
                 Plane = plane;
                 Rotation = rotation;
@@ -67,15 +70,19 @@ namespace Alpha.DirectX.UI.World
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct TextureSizeData
+        struct ComputeData
         {
             public readonly float Size;
-            public readonly Vector3 Padding;
+            public readonly uint OffsetX;
+            public readonly uint OffsetY;
+            public readonly float Level;
 
-            public TextureSizeData(float size)
+            public ComputeData(float size, uint offsetX, uint offsetY, float level)
             {
                 Size = size;
-                Padding = new Vector3();
+                OffsetX = offsetX;
+                OffsetY = offsetY;
+                Level = level;
             }
         }
 
@@ -85,26 +92,24 @@ namespace Alpha.DirectX.UI.World
             ComputeShader initTerrain = new ComputeShader(_context.DirectX.Device, shaderByteCode);
             shaderByteCode.Dispose();
             shaderByteCode = ShaderBytecode.CompileFromFile(@"Data/Shaders/TerrainCompute.hlsl", "applyRandomDisplacement", "cs_5_0", Shader.ShaderFlags);
-            ComputeShader baseTerrainGeneration = new ComputeShader(_context.DirectX.Device, shaderByteCode);
+            _baseTerrainGeneration = new ComputeShader(_context.DirectX.Device, shaderByteCode);
             shaderByteCode.Dispose();
-            const int textureSize = 256;
             Texture2DDescription textureDescription = new Texture2DDescription
             {
                 ArraySize = 1,
                 BindFlags = BindFlags.ShaderResource | BindFlags.UnorderedAccess,
                 CpuAccessFlags = CpuAccessFlags.None,
                 Format = Format.R32_Float,
-                Height = textureSize,
-                Width = textureSize,
+                Height = TextureSize,
+                Width = TextureSize,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
                 Usage = ResourceUsage.Default
             };
 
-            ConstantBuffer<ComputeData> planeBuffer = new ConstantBuffer<ComputeData>(_context);
-            ConstantBuffer<TextureSizeData> textureSizeBuffer = new ConstantBuffer<TextureSizeData>(_context, new TextureSizeData(textureSize - 1));
-            _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(1, textureSizeBuffer.Buffer);
+            ConstantBuffer<ComputeData> computeBuffer = new ConstantBuffer<ComputeData>(_context);
+            _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(1, computeBuffer.Buffer);
 
             foreach (Face face in _faces)
             {
@@ -112,33 +117,44 @@ namespace Alpha.DirectX.UI.World
                 Texture2D texture = new Texture2D(_context.DirectX.Device, textureDescription);
                 face.ShaderResourceView = new ShaderResourceView(_context.DirectX.Device, texture);
                 face.UnorderedAccessView = new UnorderedAccessView(_context.DirectX.Device, texture);
+                texture.Dispose();
 
                 _context.DirectX.DeviceContext.ComputeShader.Set(initTerrain);
                 _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, face.UnorderedAccessView);
-                _context.DirectX.DeviceContext.Dispatch(textureSize / 32, textureSize/32, 1);
+                computeBuffer.Update(new ComputeData(TextureSize - 1 - BatchSize, 0, 0, 0.0f));
+                _context.DirectX.DeviceContext.Dispatch(TextureSize / BatchSize, TextureSize / BatchSize, 1);
+                computeBuffer.Update(new ComputeData(TextureSize - 1 - BatchSize, BatchSize / 2, BatchSize / 2, 0.5f));
+                _context.DirectX.DeviceContext.Dispatch(TextureSize / BatchSize - 1, TextureSize / BatchSize - 1, 1);
             }
 
-            for (int i = 0; i < _iterations; i++)
+             _planeBuffer = new ConstantBuffer<PlaneData>(_context);
+
+            initTerrain.Dispose();
+            computeBuffer.Dispose();
+        }
+
+        private ConstantBuffer<PlaneData> _planeBuffer;
+        private ComputeShader _baseTerrainGeneration;
+
+        public void Update(double delta)
+        {
+            _context.DirectX.DeviceContext.PixelShader.SetShaderResource(0, null);
+            _context.DirectX.DeviceContext.VertexShader.SetShaderResource(0, null);
+            for (int i = 0; i < 10; i++)
             {
                 Vector3 normal = new Vector3((float)RandomGenerator.GetDouble(-1, 1), (float)RandomGenerator.GetDouble(-1, 1), (float)RandomGenerator.GetDouble(-1, 1));
                 Vector4 data = new Vector4(Vector3.Normalize(normal), (float)RandomGenerator.GetDouble(-1, 1));
                 foreach (Face face in _faces)
                 {
-                    planeBuffer.Update(new ComputeData(data, Matrix.Transpose(face.Transform)));
-                    _context.DirectX.DeviceContext.ComputeShader.Set(baseTerrainGeneration);
+                    _planeBuffer.Update(new PlaneData(data, Matrix.Transpose(face.Transform)));
+                    _context.DirectX.DeviceContext.ComputeShader.Set(_baseTerrainGeneration);
                     _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, face.UnorderedAccessView);
-                    _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(0, planeBuffer.Buffer);
-                    _context.DirectX.DeviceContext.Dispatch(textureSize / 32, textureSize / 32, 1);
+                    _context.DirectX.DeviceContext.ComputeShader.SetConstantBuffer(0, _planeBuffer.Buffer);
+                    _context.DirectX.DeviceContext.Dispatch(TextureSize / BatchSize - 1, TextureSize / BatchSize - 1, 1);
                 }
             }
             _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, null);
-            initTerrain.Dispose();
-            baseTerrainGeneration.Dispose();
-            planeBuffer.Dispose();
         }
-
-        public void Update(double delta)
-        { }
         
         private void BuildBuffers(IContext context, int faceSubdivisions)
         {
@@ -149,8 +165,9 @@ namespace Alpha.DirectX.UI.World
                     vertices[j * (faceSubdivisions + 1) + i] = new VertexDefinition.SphericalTerrainVertex
                     {
                         position = Vector3.Normalize(new Vector3((float)(-(1.0) + (double)2*i / faceSubdivisions), (float)(-(1.0) + (double)2*j / faceSubdivisions), -1.0f)),
-                        texture = new Vector2((0.5f + i) / (faceSubdivisions + 1), (0.5f + j) / (faceSubdivisions + 1)),
-                        //texture = new Vector2( (float)i / faceSubdivisions , (float)j / (faceSubdivisions))
+                        texture = new Vector2(
+                            ((1.0f + BatchSize) / (2 * TextureSize)) + ((i * (TextureSize - BatchSize - 1.0f)) / ((faceSubdivisions ) * TextureSize)),
+                            ((1.0f + BatchSize) / (2 * TextureSize)) + ((j * (TextureSize - BatchSize - 1.0f)) / ((faceSubdivisions ) * TextureSize)))
                     };
 
             _indexCount = faceSubdivisions * faceSubdivisions * 6;
@@ -180,7 +197,9 @@ namespace Alpha.DirectX.UI.World
         
         public void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(_vertexBuffer, _indexBuffer);
+            DisposeHelper.DisposeAndSetToNull(_vertexBuffer, _indexBuffer, _baseTerrainGeneration, _planeBuffer);
+            foreach (Face face in _faces)
+                DisposeHelper.DisposeAndSetToNull(face.ShaderResourceView, face.UnorderedAccessView);
         }
     }
 }

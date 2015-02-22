@@ -85,7 +85,7 @@ namespace Alpha.DirectX.Shaders
 
         public override void Dispose()
         {
-            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, Layout, PixelShader, VertexShader);
+            DisposeHelper.DisposeAndSetToNull(SamplerState, ConstantMatrixBuffer, Layout, PixelShader, VertexShader, VertexSamplerState);
         }
     }
 }
