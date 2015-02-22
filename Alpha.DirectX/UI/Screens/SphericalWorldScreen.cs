@@ -15,7 +15,7 @@ namespace Alpha.DirectX.UI.Screens
         private readonly SphericalWorldCamera _camera;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, 255, 0);
+            _sphere = new Sphere(Context, 255, 2000);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();
@@ -49,6 +49,14 @@ namespace Alpha.DirectX.UI.Screens
         private bool keyPressed = false;
         private void UpdateCameraFromInput()
         {
+            if (Context.UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
+            {
+                if (Context.UiManager.IsKeyPressed(Key.Up))
+                    _camera.Tilt(-1);
+                if (Context.UiManager.IsKeyPressed(Key.Down))
+                    _camera.Tilt(1);
+                return;
+            }
             if (Context.UiManager.IsKeyPressed(Key.Left))
                 _camera.Move(-1, 0);
             if (Context.UiManager.IsKeyPressed(Key.Right))

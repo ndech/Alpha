@@ -20,6 +20,11 @@ namespace Alpha.DirectX
             _orientation.Y = (float)Math.Max(-Math.PI/2, Math.Min(_orientation.Y+(y * 0.01), Math.PI/2));
         }
 
+        public void Tilt(int z)
+        {
+            _orientation.Z += -(float)(z * 0.01);
+        }
+
         public void Zoom(int tick)
         {
             _targetDistance += 10*tick;

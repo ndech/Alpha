@@ -18,7 +18,7 @@ struct VertexInputType
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
-	float2 tex : TEXCOORD0;
+	float2 tex : TEXCOORD0_CENTROID;
 };
 
 PixelInputType SphericalTerrainVertexShader(VertexInputType input)
@@ -36,5 +36,5 @@ PixelInputType SphericalTerrainVertexShader(VertexInputType input)
 float4 SphericalTerrainPixelShader(PixelInputType input) : SV_TARGET
 {
 	float textureColor;
-	return float4(heightMap.SampleLevel(pixelSampler, input.tex,-1).rrr, 1);
+	return float4(heightMap.SampleLevel(vertexSampler, input.tex, -1).rrr, 1);
 }

@@ -27,7 +27,7 @@ namespace Alpha.DirectX.UI.World
             public UnorderedAccessView UnorderedAccessView { get; set; }
         }
 
-        private readonly int _iterations;
+        private int _iterations;
         private Buffer _vertexBuffer;
         private Buffer _indexBuffer;
         private int _indexCount;
@@ -138,6 +138,7 @@ namespace Alpha.DirectX.UI.World
 
         public void Update(double delta)
         {
+            if(_iterations < 0) return;
             _context.DirectX.DeviceContext.PixelShader.SetShaderResource(0, null);
             _context.DirectX.DeviceContext.VertexShader.SetShaderResource(0, null);
             for (int i = 0; i < 10; i++)
@@ -154,6 +155,7 @@ namespace Alpha.DirectX.UI.World
                 }
             }
             _context.DirectX.DeviceContext.ComputeShader.SetUnorderedAccessView(0, null);
+            _iterations -= 10;
         }
         
         private void BuildBuffers(IContext context, int faceSubdivisions)
