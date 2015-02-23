@@ -6,6 +6,7 @@ using Alpha.DirectX.Input;
 using Alpha.DirectX.Shaders;
 using Alpha.DirectX.UI;
 using Alpha.DirectX.UI.Text;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using SharpDX.Windows;
 
@@ -28,13 +29,14 @@ namespace Alpha.DirectX
         public Realm Realm { get { return _worldContainer.PlayerRealm; } }
         public RealmToken RealmToken { get { return _worldContainer.PlayerRealm; } }
         public NotificationResolver NotificationResolver { get; private set; }
+        public DataLock DataLock { get; private set; }
 
         public void RegisterCommand(Command command)
         {
             World.RegisterCommand(RealmToken, command);
         }
 
-        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input, Camera camera, NotificationResolver notificationResolver)
+        public Context(RenderForm form, Dx11 directX, IGame game, WorldContainer worldContainer, IUiManager uiManager, IInput input, Camera camera, NotificationResolver notificationResolver, DataLock datalock)
         {
             _worldContainer = worldContainer;
             NotificationResolver = notificationResolver;
@@ -47,6 +49,7 @@ namespace Alpha.DirectX
             Camera = camera;
             UiManager = uiManager;
             Input = input;
+            DataLock = datalock;
         }
 
         public void Dispose()

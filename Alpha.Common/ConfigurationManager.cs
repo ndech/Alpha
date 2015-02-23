@@ -18,7 +18,7 @@ namespace Alpha.Common
         };
         private ConfigurationManager()
         {
-            SetValues(ScreenModes.Large);
+            SetValues(ScreenModes.Fullscreen);
             SetValues(WorldSize.Small);
 #if DEBUG
             AntiAliasing = false;
@@ -57,8 +57,8 @@ namespace Alpha.Common
             if (screenMode == ScreenModes.Fullscreen)
             {
                 WindowedMode = false;
-                Height = 900;
-                Width = 1600;
+                Height = 1080;
+                Width = 1920;
                 
             }
             else if (screenMode == ScreenModes.Windowed)

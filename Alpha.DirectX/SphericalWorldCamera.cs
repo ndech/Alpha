@@ -6,8 +6,8 @@ namespace Alpha.DirectX
     class SphericalWorldCamera : ICamera
     {
         private Matrix _viewMatrix;
-        private double _distance = 500;
-        private double _targetDistance = 500;
+        private double _distance = 1000;
+        private double _targetDistance = 1000;
         private Vector3 _orientation;
 
         public Matrix ViewMatrix { get { return _viewMatrix; } }

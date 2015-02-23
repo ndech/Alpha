@@ -32,4 +32,11 @@
   <style in="resources_stats_label">
     <horizontalAlignment>Left</horizontalAlignment>
   </style>
+  <style in="fps_counter">
+    <horizontalAlignment>Left</horizontalAlignment>
+    <verticalAlignment>Top</verticalAlignment>
+    <textColor>White</textColor>
+    <font>Courrier</font>
+    <fontSize>14</fontSize>
+  </style>
 </styles>

@@ -69,13 +69,15 @@ namespace Alpha.DirectX.Shaders
             VertexSamplerState = new SamplerState(device, vertexSamplerDesc);
         }
 
-        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView texture)
+        public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView terrain, ShaderResourceView water)
         {
             UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, worldMatrix, viewMatrix, projectionMatrix);
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
-            deviceContext.VertexShader.SetShaderResource(0, texture);
+            deviceContext.VertexShader.SetShaderResource(0, terrain);
+            deviceContext.VertexShader.SetShaderResource(1, water);
             deviceContext.VertexShader.SetSampler(1,VertexSamplerState);
-            deviceContext.PixelShader.SetShaderResource(0, texture);
+            deviceContext.PixelShader.SetShaderResource(0, terrain);
+            deviceContext.PixelShader.SetShaderResource(1, water);
             deviceContext.InputAssembler.InputLayout = Layout;
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.PixelShader.Set(PixelShader);

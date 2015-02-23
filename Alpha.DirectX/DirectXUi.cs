@@ -34,14 +34,14 @@ namespace Alpha.DirectX
             _notificationResolver = new NotificationResolver();
         }
 
-        private void Initialize()
+        private void Initialize(DataLock dataLock)
         {
             CreateWindow();
             _directX = new Dx11(_form);
             _uiManager = new UiManager();
             _input = new Input.Input();
             _camera = new Camera();
-            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _camera, _notificationResolver);
+            _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _camera, _notificationResolver, dataLock);
             _camera.Initialize(_context);
             _input.Initialize(_context);
             _uiManager.Initialize(_context);
@@ -69,7 +69,7 @@ namespace Alpha.DirectX
 
         public void StartRenderLoop(DataLock dataLock)
         {
-            Initialize();
+            Initialize(dataLock);
             RenderLoop.Run(_form, () =>
             {
                 dataLock.UiRead(()=> Update(_timer.Tick()));

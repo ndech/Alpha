@@ -16,12 +16,9 @@ namespace Alpha.DirectX.UI.Screens
 {
     class GameScreen : Screen
     {
-        private readonly Sphere _sphere;
-        private readonly Sphere _sphere2;
         private readonly Sun _sun;
         private readonly Water _water;
         private readonly Terrain _terrain;
-        private readonly WorldTerrain _worldTerrain;
         private readonly Sky _sky;
         private readonly FleetRenderer _fleetRenderer;
         private readonly FleetMoveOrderRenderer _fleetMoveOrderRenderer;
@@ -32,11 +29,8 @@ namespace Alpha.DirectX.UI.Screens
         public GameScreen(IContext context) : base(context, "game_screen", false)
         {
             _sun = new Sun();
-            _sphere = new Sphere(Context, 5, 1200);
-            _sphere2 = new Sphere(Context, 5, 0);
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
             _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces);
-            _worldTerrain = new WorldTerrain(context);
             _sky = new Sky(context);
             _fleetRenderer = new FleetRenderer(context);
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);
@@ -67,8 +61,6 @@ namespace Alpha.DirectX.UI.Screens
         {
             _water.Update(delta);
             _terrain.Update(delta);
-            _sphere.Update(delta);
-            _sphere2.Update(delta);
             _counter.Update(delta);
             _fleetMoveOrderRenderer.Update(delta);
             UpdateCameraFromInput();
@@ -111,15 +103,11 @@ namespace Alpha.DirectX.UI.Screens
             _sky.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _water.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix, _sun);
             _terrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
-            //_worldTerrain.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix,
-            //    Context.DirectX.ProjectionMatrix);
             _fleetRenderer.Render3D(deviceContext, Context.Camera.ViewMatrix,
                 Context.DirectX.ProjectionMatrix, _sun, Context.Camera);
             _fleetMoveOrderRenderer.Render(deviceContext, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             _fleetRenderer.RenderOverlay(deviceContext, viewMatrix, projectionMatrix);
             Context.DirectX.EnableZBuffer();
-            _sphere.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
-            _sphere2.Render(deviceContext, Matrix.Identity, Context.Camera.ViewMatrix, Context.DirectX.ProjectionMatrix);
             Context.DirectX.DisableZBuffer();
         }
 
@@ -146,7 +134,7 @@ namespace Alpha.DirectX.UI.Screens
 
         protected override void DisposeItem()
         {
-            DisposeHelper.DisposeAndSetToNull(_fleetRenderer, _fleetMoveOrderRenderer, _water, _terrain, _worldTerrain, _sky, _sphere, _sphere2);
+            DisposeHelper.DisposeAndSetToNull(_fleetRenderer, _fleetMoveOrderRenderer, _water, _terrain, _sky);
         }
     }
 }

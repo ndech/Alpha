@@ -1,5 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Alpha.DirectX.UI.Controls;
+using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.World;
 using Alpha.Toolkit;
 using SharpDX;
@@ -13,12 +14,16 @@ namespace Alpha.DirectX.UI.Screens
         private readonly Sky _sky;
         private readonly Sun _sun;
         private readonly SphericalWorldCamera _camera;
+        private readonly FpsCounter _counter;
         public SphericalWorldScreen(IContext context) : base(context, "spherical_world")
         {
-            _sphere = new Sphere(Context, 255, 2000);
+            _sphere = new Sphere(Context, 255, 5000);
             _sky = new Sky(Context);
             _sun = new Sun();
             _camera = new SphericalWorldCamera();
+            _counter = new FpsCounter();
+            Register(new DynamicLabel(context, "fps_counter", new UniRectangle(5, 5, 100, 50),
+                () => _counter.Value + "FPS"));
         }
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
@@ -34,6 +39,7 @@ namespace Alpha.DirectX.UI.Screens
             UpdateCameraFromInput();
             _camera.Update(delta);
             _sphere.Update(delta);
+            _counter.Update(delta);
         }
 
         protected override void DisposeItem()
@@ -46,7 +52,7 @@ namespace Alpha.DirectX.UI.Screens
             return true;
         }
 
-        private bool keyPressed = false;
+        private bool _keyPressed = false;
         private void UpdateCameraFromInput()
         {
             if (Context.UiManager.IsAnyKeyPressed(Key.LeftShift, Key.RightShift))
@@ -68,14 +74,14 @@ namespace Alpha.DirectX.UI.Screens
 
             if (Context.UiManager.IsKeyPressed(Key.X))
             {
-                if (!keyPressed)
+                if (!_keyPressed)
                 {
                     Context.DirectX.SwitchWireFrameMode();
-                    keyPressed = true;
+                    _keyPressed = true;
                 }
             }
             else
-                keyPressed = false;
+                _keyPressed = false;
         }
     }
 }
