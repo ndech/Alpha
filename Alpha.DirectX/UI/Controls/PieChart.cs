@@ -17,10 +17,10 @@ namespace Alpha.DirectX.UI.Controls
     {
         private readonly int _sliceNumber;
         private readonly Buffer _vertexBuffer;
-        private Texture1DShader _shader;
-        private Func<List<Tuple<CustomColor, double, String, String>>> _valuesGenerator;
-        private ShaderResourceView _colorTexture;
-        private List<PieChartInfo> _data;
+        private readonly Texture1DShader _shader;
+        private readonly Func<List<Tuple<CustomColor, double, String, String>>> _valuesGenerator;
+        private readonly ShaderResourceView _colorTexture;
+        private readonly List<PieChartInfo> _data;
 
         class PieChartInfo
         {
@@ -120,7 +120,6 @@ namespace Alpha.DirectX.UI.Controls
                 current += tuple.Item2;
                 _data.Add(new PieChartInfo(Convert.ToInt32(current*_sliceNumber/total) - _data.Sum(x=>x.SliceCount), tuple.Item1, tuple.Item3, tuple.Item4));
             }
-            int y = Convert.ToInt32(current * _sliceNumber / total);
             int sum = _data.Sum(x => x.SliceCount);
             Debug.Assert(sum == _sliceNumber, "All pie chart slices should have data attached");
             UpdateTexture(Context, _colorTexture, _sliceNumber);

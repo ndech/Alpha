@@ -1,5 +1,5 @@
 ﻿using System;
-using Alpha.Core.Provinces;
+using Alpha.Core.Buildings;
 using Alpha.Toolkit.Math;
 
 namespace Alpha.DirectX.UI.Controls.Custom

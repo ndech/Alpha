@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Alpha.Core.Events;
 using Alpha.Core.Realms;
+using Alpha.Core.Save;
 using Alpha.Core.Tags;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Calendars
 {
-    public class Calendar : Manager, ITagable, IEventable
+    public class Calendar : Manager, ITagable, IEventable, ISavable
     {
         public Season CurrentSeason
         {
@@ -86,6 +88,19 @@ namespace Alpha.Core.Calendars
         public Realm ResponsibleRealm
         {
             get { throw new System.NotImplementedException(); }
+        }
+        
+        public void Load()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public XElement Save()
+        {
+            return new XElement("calendar",
+                new XElement("day", Day),
+                new XElement("year", Year),
+                Tags.Save());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Alpha.Core.Tags
+﻿using System.Xml.Linq;
+
+namespace Alpha.Core.Tags
 {
     class TimerTag : BaseTag, IDailyUpdatableItem
     {
@@ -14,9 +16,16 @@
             _duration--;
         }
 
-        public bool IsValid()
+        internal override bool IsValid()
         {
             return _duration > 0;
+        }
+
+        public override XElement Save()
+        {
+            return new XElement("timerTag", 
+                new XElement("duration", _duration),
+                new XElement("key", Key));
         }
     }
 }

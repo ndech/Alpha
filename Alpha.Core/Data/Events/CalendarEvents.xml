@@ -17,4 +17,22 @@
       </outcome>
     </outcomes>
   </event>
+  <event id="calendar_not_christmas" type="calendar" triggered-only="false">
+    <label></label>
+    <conditions>
+      <condition>Calendar.Day != 25</condition>
+      <condition>Calendar.Month != 12</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>0d</base>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <label>"It's not christmas !"</label>
+        <effects>
+          <effect>TagCommand(Calendar, "not_christmas", 1)</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
 </events>

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Alpha.Core.Calendars;
 using Alpha.Core.Events;
 using Alpha.Core.Realms;
 using Alpha.Core.Tags;
+using Alpha.Core.Save;
 
 namespace Alpha.Core.Characters
 {
@@ -13,7 +15,7 @@ namespace Alpha.Core.Characters
         Male,
         Female
     }
-    public class Character : Component, IEventable, ITagable
+    public class Character : Component, IEventable, ITagable, ISavable
     {
         public Date BirthDate { get; private set; }
         public Date DeathDate { get; private set; }
@@ -49,6 +51,22 @@ namespace Alpha.Core.Characters
         public override string ToString()
         {
             return FirstName + " " + (HasNickName ? "\"" + NickName + "\" " : "") + LastName;
+        }
+
+        public XElement Save()
+        {
+            return new XElement("character",
+                new XElement("firstName", FirstName),
+                new XElement("lastName", LastName),
+                new XElement("nickName", NickName),
+                new XElement("gender", Gender),
+                Tags.Save()
+                );
+        }
+
+        public void Load()
+        {
+            throw new NotImplementedException();
         }
     }
 }

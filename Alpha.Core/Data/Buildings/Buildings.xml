@@ -1,44 +1,16 @@
 ﻿<buildings>
-	<building id ="fishing_port">
-		<name>Fishing port</name>
-		<constructionTime>
-			<base>100</base>
-		</constructionTime>
-		<cost>
-			<base>150</base>
-		</cost>
-		<effects>
-			
-		</effects>
-	</building>
-	<building id="timber_palisade">
+	<building id="wall_1">
 		<name>Timber Palisade</name>
-		<constructionTime>
-			<base>100</base>
-		</constructionTime>
 		<cost>
-			<base>100</base>
+			<base>500</base>
 			<modifiers>
 				<multiplier factor="0.8">Settlement.HasResource("timber")</multiplier>
 			</modifiers>
 		</cost>
 		<resources>
-			<resource type="timber">300</resource>
-		</resources>
-	</building>
-	<building id="drystone_low_wall">
-		<name>Drystone low wall</name>
-		<constructionTime>
-			<base>200</base>
-		</constructionTime>
-		<cost>
-			<base>200</base>
-			<modifiers>
-				<multiplier factor="0.8">Settlement.HasResource("stone")</multiplier>
-			</modifiers>
-		</cost>
-		<resources>
-			<resource type="stone">500</resource>
+			<resource type="timber">
+        <base>300</base>
+      </resource>
 		</resources>
 	</building>
 </buildings>

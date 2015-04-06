@@ -59,6 +59,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\BuildingType.cs" />
+    <Compile Include="Buildings\Construction.cs" />
+    <Compile Include="Buildings\ResourceRequirement.cs" />
     <Compile Include="Calendars\Calendar.cs" />
     <Compile Include="Calendars\Date.cs" />
     <Compile Include="Calendars\Month.cs" />
@@ -112,8 +116,6 @@
     <Compile Include="Notifications\NewSettlementNotification.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Dynamic\DynamicValue.cs" />
-    <Compile Include="Provinces\Building.cs" />
-    <Compile Include="Provinces\Construction.cs" />
     <Compile Include="Provinces\Population.cs" />
     <Compile Include="Provinces\Resource.cs" />
     <Compile Include="Provinces\ResourceLevel.cs" />
@@ -132,6 +134,8 @@
     <Compile Include="Realms\Realm.cs" />
     <Compile Include="Realms\RealmEconomy.cs" />
     <Compile Include="Realms\RealmManager.cs" />
+    <Compile Include="Save\ISavable.cs" />
+    <Compile Include="Save\SaveGame.cs" />
     <Compile Include="Tags\BaseTag.cs" />
     <Compile Include="Tags\ITagable.cs" />
     <Compile Include="Tags\ITagableExtension.cs" />
@@ -188,6 +192,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Events\CalendarEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Data\Resources\ResourceLevels.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

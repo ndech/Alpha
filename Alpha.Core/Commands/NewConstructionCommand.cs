@@ -1,26 +1,27 @@
-﻿using Alpha.Core.Provinces;
+﻿using Alpha.Core.Buildings;
+using Alpha.Core.Provinces;
 
 namespace Alpha.Core.Commands
 {
     class NewConstructionCommand : Command
     {
-        private readonly Building _building;
+        private readonly BuildingType _buildingtype;
         private readonly Settlement _settlement;
 
-        public NewConstructionCommand(Building building, Settlement settlement)
+        public NewConstructionCommand(BuildingType buildingtype, Settlement settlement)
         {
-            _building = building;
+            _buildingtype = buildingtype;
             _settlement = settlement;
         }
 
         internal override bool IsValid()
         {
-            return _settlement.Province.Owner.CanAfford(_building.Cost(_settlement));
+            return true;
         }
 
         internal override void Execute()
         {
-            _settlement.StartConstruction(_building);
+            _settlement.StartConstruction(_buildingtype);
         }
     }
 }

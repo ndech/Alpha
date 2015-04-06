@@ -11,6 +11,7 @@ using Alpha.Core.Fleets;
 using Alpha.Core.Notifications;
 using Alpha.Core.Provinces;
 using Alpha.Core.Realms;
+using Alpha.Core.Save;
 using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 
@@ -117,6 +118,7 @@ namespace Alpha.Core
         {
             ProcessCommands();
             DayUpdate();
+            ProcessCommands();
         }
 
         public void RegisterInteractiveRealm(RealmToken token)
@@ -128,6 +130,11 @@ namespace Alpha.Core
         {
             _liveNotifications.Add(notification);
             _dailyNotifications.Add(notification);
+        }
+
+        public void Save(String fileName)
+        {
+            new SaveGame(fileName, Calendar, CharacterManager);
         }
     }
 }

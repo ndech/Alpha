@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using Alpha.Core.Buildings;
+using Alpha.Core.Save;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
 {
-    public class Settlement : Component, IDailyUpdatableItem
+    public class Settlement : Component, IDailyUpdatableItem, ISavable
     {
         public String Name { get; private set; }
         public Zone Zone { get; private set; }
@@ -38,13 +41,12 @@ namespace Alpha.Core.Provinces
 
         internal void ConstructionCompleted(Construction construction)
         {
-            Buildings.Add(construction.Building);
+            //Buildings.Add(construction.);
             Constructions.Remove(construction);
         }
 
-        internal void StartConstruction(Building building)
+        internal void StartConstruction(BuildingType building)
         {
-            Province.Owner.Pay(building.Cost(this));
             Constructions.Add(new Construction(building, this));
         }
 
@@ -69,6 +71,17 @@ namespace Alpha.Core.Provinces
         {
             return Resources.Where(r => r.Type.Category == ResourceType.ResourceCategory.Food)
                 .Sum(r => r.Level.Value);
+        }
+
+        public XElement Save()
+        {
+            return new XElement("settlement",
+                        new XElement("name"));
+        }
+
+        public void Load()
+        {
+            throw new NotImplementedException();
         }
     }
 }

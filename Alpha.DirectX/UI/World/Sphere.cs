@@ -166,7 +166,7 @@ namespace Alpha.DirectX.UI.World
                 _context.DirectX.DeviceContext.Dispatch(TextureSize / BatchSize, TextureSize / BatchSize, 1);
 
                 _context.DirectX.DeviceContext.ComputeShader.Set(initWater);
-                computeBuffer.Update(new ComputeData(TextureSize - 1 - BatchSize, 0, 0, 0.8f));
+                computeBuffer.Update(new ComputeData(TextureSize - 1 - BatchSize, 0, 0, 0.05f));
                 _context.DirectX.DeviceContext.Dispatch(TextureSize / BatchSize, TextureSize / BatchSize, 1);
 
                 _context.DirectX.DeviceContext.ComputeShader.Set(initTerrain);
@@ -219,7 +219,7 @@ namespace Alpha.DirectX.UI.World
                 _context.DirectX.DeviceContext.PixelShader.SetShaderResource(1, null);
                 _context.DirectX.DeviceContext.VertexShader.SetShaderResource(1, null);
                 _timer.Tick();
-                for (int i = 0; i < 2 && _iterations > -5000; i++)
+                for (int i = 0; i < 1 && _iterations > -5000; i++)
                 {
                     foreach (Face face in _faces)
                     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace Alpha.Core.Tags
 {
@@ -14,6 +15,21 @@ namespace Alpha.Core.Tags
         public override bool Equals(Tag other)
         {
             return other is BaseTag && ((BaseTag) other).Key.Equals(Key);
+        }
+
+        public override XElement Save()
+        {
+            return new XElement("baseTag", Key);
+        }
+
+        public override void Load()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override bool IsValid()
+        {
+            return true;
         }
 
         public override string ToString()

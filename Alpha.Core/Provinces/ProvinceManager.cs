@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Alpha.Core.Buildings;
 using Alpha.Core.Fleets;
 using Alpha.Core.Movement;
 using Alpha.Toolkit;
@@ -18,7 +19,7 @@ namespace Alpha.Core.Provinces
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
         private readonly List<ResourceType> _resourceTypes;
         public IEnumerable<ResourceType> ResourceTypes { get { return _resourceTypes; } }
-        internal List<Building> Buildings { get; private set; }
+        internal List<BuildingType> BuildingsTypes { get; private set; }
         internal List<ResourceLevel> ResourceLevels { get; private set; } 
 
         internal ProvinceManager(World world) : base(world)
@@ -27,7 +28,7 @@ namespace Alpha.Core.Provinces
                 .Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
             _resourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
             ResourceLevels = XDocument.Load(@"Data\Resources\ResourceLevels.xml").Descendants("resourceLevel").Select(x => new ResourceLevel(x)).ToList();
-            Buildings = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new Building(x)).ToList();
+            BuildingsTypes = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new BuildingType(x, _resourceTypes)).ToList();
         }
 
         internal override void DayUpdate(DataLock dataLock)

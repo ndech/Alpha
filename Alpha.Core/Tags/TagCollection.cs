@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Xml.Linq;
+using Alpha.Core.Save;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Tags
 {
-    public class TagCollection : IEnumerable<Tag>, IDailyUpdatable
+    public class TagCollection : IEnumerable<Tag>, IDailyUpdatable, ISavable
     {
         private readonly HashSet<Tag> _tags;
 
@@ -53,9 +54,19 @@ namespace Alpha.Core.Tags
         {
             dataLock.Write(()=>
             {
-                _tags.OfType<TimerTag>().DayUpdate();
-                _tags.RemoveWhere(t => (t is TimerTag && !((TimerTag) t).IsValid()));
+                _tags.OfType<IDailyUpdatableItem>().DayUpdate();
+                _tags.RemoveWhere(t => !t.IsValid());
             });
+        }
+        
+        public void Load()
+        {
+            throw new NotImplementedException();
+        }
+
+        public XElement Save()
+        {
+            return new XElement("tags", _tags.Select(t=>t.Save()));
         }
     }
 }

@@ -35,6 +35,10 @@ namespace Alpha.DirectX.UI.Screens
             _fleetRenderer = new FleetRenderer(context);
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);
             _counter = new FpsCounter();
+
+            Button saveButton = new Button(context, "save_button", new UniRectangle(0, 0, 100, 100), "save");
+            Register(saveButton);
+            saveButton.Clicked += (b) => context.World.Save("test.xml");
             Register(new DynamicLabel(context, "calendar", new UniRectangle(new UniScalar(1.0f, -300), 0, 300, 50),
                 () => context.World.Calendar.CurrentDate + " (" + context.World.Calendar.CurrentSeason + ")"));
             Register(new DynamicLabel(context, "fps", new UniRectangle(100, 0, 100, 50),

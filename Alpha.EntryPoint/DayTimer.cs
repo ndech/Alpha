@@ -5,7 +5,7 @@ namespace Alpha.EntryPoint
 {
     class DayTimer
     {
-        private const int SecondsPerDay = 1;
+        private const double SecondsPerDay = 0.2;
         private readonly Stopwatch _stopWatch;
         internal DayTimer()
         {
