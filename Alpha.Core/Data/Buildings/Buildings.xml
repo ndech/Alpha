@@ -1,16 +1,30 @@
 ﻿<buildings>
 	<building id="wall_1">
 		<name>Timber Palisade</name>
-		<cost>
-			<base>500</base>
-			<modifiers>
-				<multiplier factor="0.8">Settlement.HasResource("timber")</multiplier>
-			</modifiers>
-		</cost>
-		<resources>
-			<resource type="timber">
-        <base>300</base>
-      </resource>
-		</resources>
+    <constructionSteps>
+      <constructionStep>
+        <name>Digging the ground</name>
+        <manpower>
+          <base>2000</base>
+        </manpower>
+      </constructionStep>
+      <constructionStep>
+        <name>Preparing the wood</name>
+        <resources>
+          <resource type="timber">
+            <base>300</base>
+          </resource>
+        </resources>
+        <manpower>
+          <base>1500</base>
+        </manpower>
+      </constructionStep>
+      <constructionStep>
+        <name>Building the wall</name>
+        <manpower>
+          <base>5000</base>
+        </manpower>
+      </constructionStep>
+    </constructionSteps>
 	</building>
 </buildings>

@@ -30,6 +30,7 @@ namespace Alpha.Core.Provinces
             _resourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
             ResourceLevels = XDocument.Load(@"Data\Resources\ResourceLevels.xml").Descendants("resourceLevel").Select(x => new ResourceLevel(x)).ToList();
             _buildingsTypes = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new BuildingType(x, _resourceTypes)).ToList();
+            BuildingStatus.Initialize();
         }
 
         internal override void DayUpdate(DataLock dataLock)

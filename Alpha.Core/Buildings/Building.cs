@@ -10,8 +10,7 @@ namespace Alpha.Core.Buildings
 
         public BuildingStatus BuildingCondition
         {
-            get { return "OK"; }
+            get { return BuildingStatus.For(this); }
         }
-
     }
 }

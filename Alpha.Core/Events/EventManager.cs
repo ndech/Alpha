@@ -215,7 +215,7 @@ namespace Alpha.Core.Events
                     bool isTriggeredOnly = xmlEvent.Attribute("triggered-only") != null &&
                                       xmlEvent.Attribute("triggered-only").Value.Equals("true");
                     IEnumerable<Condition<T>> conditions = xmlEvent.Element("conditions").Elements("condition")
-                        .Select(c => new Condition<T>(Engine.Execute<Func<T, bool>>("("+identifier+") => "+c.Value, Engine.NewSession))).ToList();
+                        .Select(c => new Condition<T>(c)).ToList();
                     IEnumerable<Outcome<T>> outcomes = xmlEvent.Element("outcomes").Elements("outcome").Select(o => new Outcome<T>(o)).ToList();
                     if (isTriggeredOnly)
                     {

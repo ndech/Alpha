@@ -18,10 +18,10 @@ namespace Alpha.Core.Buildings
         {
             Id = element.MandatoryAttribute("id", "A building must have an Id.").Value;
             Name = element.MandatoryElement("name", "A building type must have a name ("+Id+").").Value;
-            ConstructionSteps =
-                element.MandatoryElement("constructionSteps", "A building type must have a name (" + Id + ").")
-                    .Elements("constructionStep")
-                    .Select(e => new ConstructionStep(e, resourceTypes))
+            ConstructionSteps = element
+                    .MandatoryElement("constructionSteps", "A building type must have have at least one construction step (" + Id + ").")
+                    .AtLeastOne("constructionStep", "A building type must have have at least one construction step (" + Id + ").")
+                    .Select(e => new ConstructionStep(this, e, resourceTypes))
                     .ToList();
         }
     }

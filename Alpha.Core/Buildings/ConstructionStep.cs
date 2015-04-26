@@ -10,23 +10,28 @@ namespace Alpha.Core.Buildings
     public class ConstructionStep
     {
         private readonly Dictionary<ResourceType, DynamicValue<Settlement>> _resourceRequirements;
-        private DynamicValue<Settlement> _manpowerRequirement;
+        private readonly DynamicValue<Settlement> _manpowerRequirement;
         
-
-        internal List<ResourceRequirement> RequirementsFor(Settlement location)
+        internal List<ResourceRequirement> ResourceRequirementsFor(Settlement location)
         {
             return _resourceRequirements.Select(kvp => new ResourceRequirement(kvp.Key, (int)kvp.Value.For(location))).ToList();
         }
 
-        internal ConstructionStep(XElement element, IEnumerable<ResourceType> resourceTypes)
+        internal int ManPowerRequirementsFor(Settlement location)
+        {
+            return (int)_manpowerRequirement.For(location);
+        }
+
+        internal ConstructionStep(BuildingType buildingType, XElement element, IEnumerable<ResourceType> resourceTypes)
         {
             _resourceRequirements = element.Descendants("resource")
                 .Select(e => new
                 {
-                    Resource = resourceTypes.Single(t => t.Id.Equals(e.MandatoryAttribute("type", "A building type has an invalid resource.").Value)),
+                    Resource = resourceTypes.Single(t => t.Id.Equals(e.MandatoryAttribute("type", "A construction step has a resource with no type ("+buildingType.Id+").").Value)),
                     Value = new DynamicValue<Settlement>(e)
                 })
                 .ToDictionary(e => e.Resource, e => e.Value);
+            _manpowerRequirement = new DynamicValue<Settlement>(element.MandatoryElement("manpower", "A construction step has no manpower requirement (" + buildingType.Id + ")."));
         }
     }
 }

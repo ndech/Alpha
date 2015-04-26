@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -46,6 +47,14 @@ namespace Alpha.Core.Events
             if (item == null)
                 return defaultValue;
             return function(item);
+        }
+
+        public static IEnumerable<XElement> AtLeastOne(this XElement element, String subItem, String exceptionMessage)
+        {
+            List<XElement> elements = element.Elements(subItem).ToList();
+            if (elements.Any())
+                return elements;
+            throw new InvalidEventDataException(exceptionMessage);
         }
     }
 }

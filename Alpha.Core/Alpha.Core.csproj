@@ -60,8 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\BuildingStatus.cs" />
     <Compile Include="Buildings\BuildingType.cs" />
     <Compile Include="Buildings\Construction.cs" />
+    <Compile Include="Buildings\ConstructionStep.cs" />
     <Compile Include="Buildings\ResourceRequirement.cs" />
     <Compile Include="Calendars\Calendar.cs" />
     <Compile Include="Calendars\Date.cs" />
@@ -81,6 +83,9 @@
     <Compile Include="Commands\TagCommand.cs" />
     <Compile Include="Commands\RemoveTagCommand.cs" />
     <Compile Include="Component.cs" />
+    <Content Include="Data\Buildings\BuildingStatuses.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Compile Include="Dynamic\Condition.cs" />
     <Compile Include="Dynamic\Engine.cs" />
     <Compile Include="Dynamic\ScriptContext.cs" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Calendars;
 using Alpha.Core.Provinces;
-using Alpha.Toolkit;
 
 namespace Alpha.Core.Buildings
 {
@@ -25,7 +24,7 @@ namespace Alpha.Core.Buildings
         {
             _type = type;
             _location = location;
-            _resourceRequirements = _type.RequirementsFor(location);
+            //_resourceRequirements = _type.RequirementsFor(location);
         }
 
         void IDailyUpdatableItem.DayUpdate()
