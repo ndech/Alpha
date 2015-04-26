@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Alpha.Core.Calendars;
 using Alpha.Core.Provinces;
 using Alpha.Toolkit;
@@ -30,7 +32,17 @@ namespace Alpha.Core.Buildings
         {
             if (_constructionStage == ConstructionStage.ResourceGathering)
             {
-                
+                if(_resourceRequirements.All(rr=>rr.IsFullfilled))
+                    _constructionStage = ConstructionStage.Construction;
+                foreach (ResourceRequirement requirement in _resourceRequirements)
+                {
+                    Resource resource = _location.Resources.SingleOrDefault(r => r.Type == requirement.ResourceType);
+                    if(resource == null)
+                        continue;
+                    double change = Math.Min(resource.StorageLevel, requirement.RemainingValue);
+                    requirement.CurrentValue += change;
+                    resource.StorageLevel -= change;
+                }
             }
             else
             {

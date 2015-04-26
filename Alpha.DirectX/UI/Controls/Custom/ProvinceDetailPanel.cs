@@ -38,12 +38,6 @@ namespace Alpha.DirectX.UI.Controls.Custom
             new PositionLayout(this, _settlementScrollableContainer.Size.X, _settlementScrollableContainer.Size.Y, 
                                HorizontalAlignment.Center, VerticalAlignment.Middle)
                               .Create(_settlementScrollableContainer);
-            Button newSettlementButton = new Button(Context, "new_settlement", 
-                new UniRectangle(0.2f,_settlementScrollableContainer.RelativePosition.Y + _settlementScrollableContainer.Size.Y + 40, 0.6f, 40), 
-                "Create new settlement" );
-            Register(newSettlementButton);
-            //newSettlementButton.Clicked += b => Context.RegisterCommand(new FoundSettlementCommand(_province, _province.AvailableSettlementTypes.First()));
-            
             Context.NotificationResolver.NewSettlement +=
                 s =>
                 {

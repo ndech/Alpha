@@ -11,7 +11,7 @@
 
         public double Output
         {
-            get { return Population.Value*0.01; }
+            get { return Population.Value*0.002; }
         }
 
         public Resource(ResourceType type, ResourceLevel level)

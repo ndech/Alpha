@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Input;
+using Alpha.Core.Commands;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
@@ -28,6 +29,14 @@ namespace Alpha.DirectX.UI.Controls.Custom
             IconButton closeButton;
             new PositionLayout(this, 20, 20, HorizontalAlignment.Right, VerticalAlignment.Top, new Padding(3))
                 .Create(closeButton = new IconButton(Context, "close_button"));
+
+            Button buildButton;
+            new PositionLayout(this, 150, 20, HorizontalAlignment.Center, VerticalAlignment.Bottom, new Padding(30))
+                .Create(buildButton = new Button(Context, "build_button", new UniRectangle(), "build wall" ));
+            buildButton.Clicked +=
+                (b) =>
+                    Context.RegisterCommand(
+                        new NewConstructionCommand(Context.World.ProvinceManager.BuildingTypes.First(), _settlement));
 
             _resourceScrollableContainer =
                 new ScrollableContainer<ResourceScrollableItem, Resource>(Context, "settlements", 3,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Alpha.Core.Events
@@ -27,6 +28,24 @@ namespace Alpha.Core.Events
         public static XAttribute MandatoryAttribute(this XElement element, String subItem, String exceptionMessage)
         {
             return element.Attribute(subItem).Mandatory(exceptionMessage);
+        }
+
+        public static int ToInt(this XElement element)
+        {
+            return int.Parse(element.Value);
+        }
+
+        public static int ToInt(this XAttribute attribute)
+        {
+            return int.Parse(attribute.Value);
+        }
+
+        public static T OptionalElement<T>(this XElement element, String subItem, Func<XElement, T> function, T defaultValue = default(T))
+        {
+            XElement item = element.Elements(subItem).SingleOrDefault();
+            if (item == null)
+                return defaultValue;
+            return function(item);
         }
     }
 }

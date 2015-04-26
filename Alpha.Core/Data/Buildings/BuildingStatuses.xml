@@ -1,0 +1,44 @@
+﻿<buildingStatuses>
+  <buildingStatus order="1">
+    <label>Burned down</label>
+    <condition>
+      Building.Condition &lt; 0.5 &amp;&amp; Building.HasTag("building_burned")
+    </condition>
+  </buildingStatus>
+  <buildingStatus order="2">
+    <label>Ruined</label>
+    <condition>
+      Building.Condition &lt; 0.1
+    </condition>
+  </buildingStatus>
+  <buildingStatus order="3">
+    <label>Heavily damaged</label>
+    <condition>
+      Building.Condition &lt; 0.3
+    </condition>
+  </buildingStatus>
+  <buildingStatus order="4">
+    <label>Damaged</label>
+    <condition>
+      Building.Condition &lt; 0.5
+    </condition>
+  </buildingStatus>
+  <buildingStatus order="5">
+    <label>Decent</label>
+    <condition>
+      Building.Condition &lt; 0.7
+    </condition>
+  </buildingStatus>
+  <buildingStatus order="6">
+    <label>Good</label>
+    <condition>
+      Building.Condition &lt; 0.7
+    </condition>
+  </buildingStatus>
+  <buildingStatus order="7">
+    <label>Top</label>
+    <condition>
+      true
+    </condition>
+  </buildingStatus>
+</buildingStatuses>

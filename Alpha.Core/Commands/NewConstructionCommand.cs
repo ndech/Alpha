@@ -3,7 +3,7 @@ using Alpha.Core.Provinces;
 
 namespace Alpha.Core.Commands
 {
-    class NewConstructionCommand : Command
+    public class NewConstructionCommand : Command
     {
         private readonly BuildingType _buildingtype;
         private readonly Settlement _settlement;
