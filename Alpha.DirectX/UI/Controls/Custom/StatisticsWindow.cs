@@ -86,7 +86,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _resourceScrollableContainer = new ResizableScrollableContainer<ResourceItem, ResourceType>(Context,
                 "ressource_stats_container", new UniRectangle(5, 30, 200,new UniScalar(1.0f, -35)), c => new ResourceItem(c, ResourceTypeSelected), ()=> ResourceItem.StaticSize);
             resourcesTab.Register(_resourceScrollableContainer);
-            _resourceScrollableContainer.Refresh(Context.World.ProvinceManager.ResourceTypes.OrderBy(t=>t.Name).Times(10).ToList());
+            _resourceScrollableContainer.Refresh(ResourceType.Types.OrderBy(t=>t.Name).Times(10).ToList());
             _resourceScrollableContainer.CustomExecute = (item, type) => { if (type == _selectedResourceType) item.Toggle(); };
             resourcesTab.Register(_outputLabel = new Label(Context, "resources_stats_output_label", new UniRectangle(205, 5, 290, 20), "No output"));
             Context.NotificationResolver.DayUpdateDone += DayUpdate;

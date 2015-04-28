@@ -17,20 +17,20 @@ namespace Alpha.Core.Provinces
         public IEnumerable<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
 
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
-        private readonly List<ResourceType> _resourceTypes;
-        public IEnumerable<ResourceType> ResourceTypes { get { return _resourceTypes; } }
         private readonly List<BuildingType> _buildingsTypes;
         public IEnumerable<BuildingType> BuildingTypes { get { return _buildingsTypes; } }
         internal List<ResourceLevel> ResourceLevels { get; private set; } 
 
         internal ProvinceManager(World world) : base(world)
         {
+            ResourceType.Initialize();
+            BuildingStatus.Initialize();
             BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml")
                 .Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
-            _resourceTypes = XDocument.Load(@"Data\Resources\Resources.xml").Descendants("resource").Select(x => new ResourceType(x)).ToList();
+            
             ResourceLevels = XDocument.Load(@"Data\Resources\ResourceLevels.xml").Descendants("resourceLevel").Select(x => new ResourceLevel(x)).ToList();
-            _buildingsTypes = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new BuildingType(x, _resourceTypes)).ToList();
-            BuildingStatus.Initialize();
+            _buildingsTypes = XDocument.Load(@"Data\Buildings\Buildings.xml").Descendants("building").Select(x => new BuildingType(x)).ToList();
+
         }
 
         internal override void DayUpdate(DataLock dataLock)

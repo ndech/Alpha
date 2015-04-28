@@ -29,9 +29,8 @@ namespace Alpha.Core.Buildings
 
         internal static void Initialize()
         {
-            _statuses = XDocument.Load(@"Data\Buildings\BuildingsStatuses.xml")
-                .Root
-                .Elements("buildingStatus")
+            _statuses = XDocument.Load(@"Data\Buildings\BuildingStatuses.xml")
+                .Descendants("buildingStatus")
                 .Select(e => new BuildingStatus(e))
                 .OrderBy(s=>s.Order)
                 .ToList();

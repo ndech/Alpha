@@ -1,16 +1,22 @@
 ﻿using Alpha.Core.Provinces;
+using Alpha.Core.Tags;
 
 namespace Alpha.Core.Buildings
 {
-    public class Building
+    public class Building : ITagable
     {
         public BuildingType Type { get; internal set; }
         public Settlement Location { get; internal set; }
-        internal float ConditionPercentage { get; set; }
+        public float Condition { get; set; }
 
-        public BuildingStatus BuildingCondition
+        public BuildingStatus Status
         {
             get { return BuildingStatus.For(this); }
+        }
+
+        public TagCollection Tags
+        {
+            get { throw new System.NotImplementedException(); }
         }
     }
 }

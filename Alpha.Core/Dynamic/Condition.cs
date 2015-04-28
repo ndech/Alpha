@@ -10,7 +10,7 @@ namespace Alpha.Core.Dynamic
         internal Condition(XElement element)
         {
             String scriptIdentifier = typeof(T).Name;
-            Engine.Execute<Func<T, Double>>("(" + scriptIdentifier + ") => " + element.Value, Engine.NewSession);
+            _expression = Engine.Execute<Func<T, bool>>("(" + scriptIdentifier + ") => " + element.Value, Engine.NewSession);
         }
 
         public Condition(bool expression)

@@ -83,9 +83,10 @@
     <Compile Include="Commands\TagCommand.cs" />
     <Compile Include="Commands\RemoveTagCommand.cs" />
     <Compile Include="Component.cs" />
-    <Content Include="Data\Buildings\BuildingStatuses.xml">
+    <EmbeddedResource Include="Data\Buildings\BuildingStatuses.xml">
       <SubType>Designer</SubType>
-    </Content>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Compile Include="Dynamic\Condition.cs" />
     <Compile Include="Dynamic\Engine.cs" />
     <Compile Include="Dynamic\ScriptContext.cs" />

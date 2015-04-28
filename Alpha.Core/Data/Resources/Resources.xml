@@ -22,7 +22,7 @@
 		<probability>
 			<base>5</base>
 			<modifiers>
-				<multiplier factor="2">Settlement.Zone.IsCoastal</multiplier>
+				<multiplier factor="2">LandProvince.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
 		<category>Food</category>
@@ -38,7 +38,7 @@
 		<probability>
 			<base>5</base>
 			<modifiers>
-				<multiplier factor="5">Settlement.Zone.IsCoastal</multiplier>
+				<multiplier factor="5">LandProvince.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
 		<category>Food</category>
@@ -48,7 +48,7 @@
 		<probability>
 			<base>2</base>
 			<modifiers>
-				<multiplier factor="2">!Settlement.Zone.IsCoastal</multiplier>
+				<multiplier factor="2">!LandProvince.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
 		<category>Food</category>
@@ -58,7 +58,7 @@
 		<probability>
 			<base>2</base>
 			<modifiers>
-				<multiplier factor="2">Settlement.Zone.IsCoastal</multiplier>
+				<multiplier factor="2">LandProvince.IsCoastal</multiplier>
 			</modifiers>
 		</probability>
 		<category>Food</category>
