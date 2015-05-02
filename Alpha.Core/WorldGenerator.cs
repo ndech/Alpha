@@ -67,7 +67,7 @@ namespace Alpha.Core
             feedback("Expanding provinces");
             foreach (int clusterId in sites.Where(s=>!s.IsWater).Select(s=>s.Cluster.Id).Distinct())
             {
-                const int targetSize = 7;
+                const int targetSize = 4;
                 List<Zone> todo = sites.Where(s=>s.Cluster.Id == clusterId).Select(s=>zones[s.ZoneId]).OrderByRandom().ToList();
                 int numberOfClusters = (todo.Count/targetSize)+1;
                 List<ZoneCluster> clusters = new List<ZoneCluster>();

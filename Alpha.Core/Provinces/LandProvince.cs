@@ -7,7 +7,7 @@ using Alpha.Toolkit;
 namespace Alpha.Core.Provinces
 {
     [ScriptName("Province")]
-    public class LandProvince : Province
+    public class LandProvince : Province, IScriptLandProvinceForResourcesGeneration
     {
         public LandProvince(World world, List<Zone> zones) : base(world, zones)
         {
@@ -31,7 +31,6 @@ namespace Alpha.Core.Provinces
         }
         public Realm Owner { get; internal set; }
         public CustomColor Color { get; internal set; }
-
         public Settlement Capital { get; internal set; }
         private readonly List<Settlement> _settlements = new List<Settlement>();
         public IEnumerable<Settlement> Settlements { get { return _settlements; } }

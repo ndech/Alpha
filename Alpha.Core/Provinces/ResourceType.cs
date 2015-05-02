@@ -15,14 +15,14 @@ namespace Alpha.Core.Provinces
         }
         public String Id { get; private set; }
         public String Name { get; private set; }
-        internal DynamicValue<LandProvince> Probability { get; private set; }
+        internal DynamicValue<IScriptLandProvinceForResourcesGeneration> Probability { get; private set; }
         public ResourceCategory Category { get; private set; }
         
         internal ResourceType(XElement element)
         {
             Id = element.MandatoryAttribute("id", "A resource type without id is defined.").Value;
             Name = element.MandatoryElement("name", "The resource type ("+Id+") has no name.").Value;
-            Probability = new DynamicValue<LandProvince>(element.Element("probability"));
+            Probability = new DynamicValue<IScriptLandProvinceForResourcesGeneration>(element.Element("probability"));
             ResourceCategory category = ResourceCategory.Default;
             bool conversionSucceeded = element.Element("category") != null;
             if(conversionSucceeded)
