@@ -4,6 +4,7 @@ using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
 using Alpha.DirectX.UI.Styles;
+using Alpha.Toolkit;
 using SharpDX;
 using HorizontalAlignment = Alpha.DirectX.UI.Styles.HorizontalAlignment;
 
@@ -52,7 +53,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _province = province;
             _name.Text = province.Name;
-            _settlementScrollableContainer.Refresh(province.Settlements.OrderByDescending(s=>s.Population.Value).ToList());
+            _settlementScrollableContainer.Refresh(province.Capital.Yield().ToList());
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alpha.Core.Dynamic;
 using Alpha.Core.Realms;
@@ -9,19 +10,17 @@ namespace Alpha.Core.Provinces
     [ScriptName("Province")]
     public class LandProvince : Province, IScriptLandProvinceForResourcesGeneration
     {
-        public LandProvince(World world, List<Zone> zones) : base(world, zones)
+        public LandProvince(World world, Zone zone) : base(world, zone)
         {
             Name = NameGenerator.GetRandomProvinceName();
             Color = CustomColor.Random;
-            Capital = new Settlement(world, zones.RandomItem(), this);
-            foreach (Zone zone in zones.Except(Capital.Zone))
-                _settlements.Add(new Settlement(world, zone, this));
+            Capital = new Settlement(world, this);
         }
         
         protected override void DayUpdate()
         {
-            foreach (Settlement settlement in AllSettlements)
-                settlement.DayUpdate();
+            Capital.DayUpdate();
+            Resources.DayUpdate();
         }
 
         public override sealed string Name { get; internal set; }
@@ -32,9 +31,26 @@ namespace Alpha.Core.Provinces
         public Realm Owner { get; internal set; }
         public CustomColor Color { get; internal set; }
         public Settlement Capital { get; internal set; }
-        private readonly List<Settlement> _settlements = new List<Settlement>();
-        public IEnumerable<Settlement> Settlements { get { return _settlements; } }
-        public IEnumerable<Settlement> AllSettlements { get { return _settlements.Union(Capital); } }
+
+        private readonly List<Resource> _resources = new List<Resource>(); 
+        public IEnumerable<Resource> Resources { get { return _resources; } }
+
+        internal void AddResource(ResourceType type, ResourceLevel level)
+        {
+            _resources.Add(new Resource(type, level));
+        }
+
+        public bool HasResource(String key)
+        {
+            return Resources.Any(r => r.Type.Id == key);
+        }
+
+        public int FoodPotential()
+        {
+            return Resources.Where(r => r.Type.Category == ResourceType.ResourceCategory.Food)
+                .Sum(r => r.Level.Value);
+        }
+
         public bool IsCoastal { get { return Zones.SelectMany(z => z.Neighbourgs).Any(z => z.Province is SeaProvince); } }
     }
 }

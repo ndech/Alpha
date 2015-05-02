@@ -54,7 +54,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _settlement = settlement;
             _name.Text = settlement.Name;
-            _resourceScrollableContainer.Refresh(settlement.Resources.OrderByDescending(r=>r.Level.Value).ToList());
+            _resourceScrollableContainer.Refresh(settlement.Province.Resources.OrderByDescending(r=>r.Level.Value).ToList());
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)

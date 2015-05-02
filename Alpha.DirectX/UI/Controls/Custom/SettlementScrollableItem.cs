@@ -69,7 +69,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _iconTooltip.Text = item.ToString();
                 _populationTooltip.Text = item.Population.Value + " inhabitants" + Environment.NewLine +
                                           "Growing fast as fuck";
-                _income.Expression = () => string.Format("{0:N1}", item.Income);
+                _income.Expression = () => string.Format("{0:N1}", 0);
                 _icon.Visible = true;
                 _population.Visible = true;
                 _income.Visible = true;

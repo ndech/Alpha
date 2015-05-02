@@ -35,7 +35,7 @@ namespace Alpha.Core.Buildings
                     _constructionStage = ConstructionStage.Construction;
                 foreach (ResourceRequirement requirement in _resourceRequirements)
                 {
-                    Resource resource = _location.Resources.SingleOrDefault(r => r.Type == requirement.ResourceType);
+                    Resource resource = _location.Province.Resources.SingleOrDefault(r => r.Type == requirement.ResourceType);
                     if(resource == null)
                         continue;
                     double change = Math.Min(resource.StorageLevel, requirement.RemainingValue);

@@ -107,11 +107,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 Realm = realm,
                 Amount = realm
                     .AllDependantProvinces
-                    .SelectMany(p =>
-                        p.Settlements
-                            .SelectMany(s =>
-                                s.Resources
-                                    .Where(r => r.Type.Equals(_selectedResourceType))))
+                    .SelectMany(p => p.Resources)
+                    .Where(r => r.Type.Equals(_selectedResourceType))
                     .Sum(r => r.Output)
             })
             .OrderByDescending(x=>x.Amount).ToList();
@@ -147,7 +144,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 _outputLabel.Text = "No output";
             else
             {
-                double totalOutput = Context.World.ProvinceManager.LandProvinces.SelectMany(p => p.Settlements)
+                double totalOutput = Context.World.ProvinceManager.LandProvinces
                     .SelectMany(s => s.Resources).Where(r => r.Type == _selectedResourceType)
                     .Sum(r => r.Output);
                 _outputLabel.Text = "Output: "+totalOutput;

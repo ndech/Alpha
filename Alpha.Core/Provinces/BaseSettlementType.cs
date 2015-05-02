@@ -6,9 +6,10 @@ namespace Alpha.Core.Provinces
 {
     public class BaseSettlementType : SettlementType
     {
-        private readonly DynamicValue<Zone> _probability;
+        private readonly DynamicValue<LandProvince> _probability;
 
-        private BaseSettlementType(String id, String name, String description, DynamicValue<Zone> probability) : base(id, name, description)
+        private BaseSettlementType(String id, String name, String description, DynamicValue<LandProvince> probability)
+            : base(id, name, description)
         {
             _probability = probability;
         }
@@ -18,13 +19,13 @@ namespace Alpha.Core.Provinces
             string id = element.Attribute("id").Value;
             string name = element.Element("name").Value;
             string description = element.Element("description").Value;
-            DynamicValue<Zone> probability = new DynamicValue<Zone>(element.Element("probability"));
+            DynamicValue<LandProvince> probability = new DynamicValue<LandProvince>(element.Element("probability"));
             return new BaseSettlementType(id, name, description, probability);
         }
 
-        public double Probability(Zone zone)
+        public double Probability(LandProvince province)
         {
-            return _probability.For(zone);
+            return _probability.For(province);
         }
     }
 }

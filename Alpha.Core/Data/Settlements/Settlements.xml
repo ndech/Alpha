@@ -6,7 +6,7 @@
 			<probability>
 				<base>1</base>
 				<modifiers>
-					<multiplier factor="0">Zone.IsCoastal</multiplier>
+					<multiplier factor="0">Province.IsCoastal</multiplier>
 				</modifiers>
 			</probability>
 		</settlement>
@@ -16,7 +16,7 @@
 			<probability>
 				<base>1</base>
 				<modifiers>
-					<multiplier factor="0">!Zone.IsCoastal</multiplier>
+					<multiplier factor="0">!Province.IsCoastal</multiplier>
 				</modifiers>
 			</probability>
 		</settlement>

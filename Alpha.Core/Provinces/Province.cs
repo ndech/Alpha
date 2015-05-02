@@ -16,6 +16,10 @@ namespace Alpha.Core.Provinces
             Id = GenerateStringId(NumericId);
         }
 
+        protected Province(World world, Zone zone)
+            : this(world, new List<Zone>() { zone })
+        {}
+
         public abstract string Name { get; internal set; }
 
         protected abstract string GenerateStringId(int id);
