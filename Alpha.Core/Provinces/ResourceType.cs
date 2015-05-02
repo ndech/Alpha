@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Xml.Linq;
-using Alpha.Core.Buildings;
 using Alpha.Core.Dynamic;
+using Alpha.Core.Events;
 
 namespace Alpha.Core.Provinces
 {
@@ -23,8 +20,8 @@ namespace Alpha.Core.Provinces
         
         internal ResourceType(XElement element)
         {
-            Id = element.Attribute("id").Value;
-            Name = element.Element("name").Value;
+            Id = element.MandatoryAttribute("id", "A resource type without id is defined.").Value;
+            Name = element.MandatoryElement("name", "The resource type ("+Id+") has no name.").Value;
             Probability = new DynamicValue<LandProvince>(element.Element("probability"));
             ResourceCategory category = ResourceCategory.Default;
             bool conversionSucceeded = element.Element("category") != null;
@@ -36,25 +33,6 @@ namespace Alpha.Core.Provinces
         public override string ToString()
         {
             return Id;
-        }
-
-        private static List<ResourceType> _resourceTypes;
-        
-        internal static void Initialize()
-        {
-            _resourceTypes = XDocument.Load(@"Data\Resources\Resources.xml")
-                .Descendants("resource")
-                .Select(x => new ResourceType(x))
-                .ToList();
-        }
-
-        public static IEnumerable<ResourceType> Types
-        {
-            get
-            {
-                Debug.Assert(_resourceTypes != null, "Resource types not initialized");
-                return _resourceTypes;
-            }
         }
     }
 }

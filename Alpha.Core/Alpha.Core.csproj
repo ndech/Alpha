@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingStatus.cs" />
+    <Compile Include="Buildings\BuildingStatuses.cs" />
     <Compile Include="Buildings\BuildingType.cs" />
     <Compile Include="Buildings\Construction.cs" />
     <Compile Include="Buildings\ConstructionStep.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Provinces\Resource.cs" />
     <Compile Include="Provinces\ResourceLevel.cs" />
     <Compile Include="Provinces\ResourceType.cs" />
+    <Compile Include="Provinces\ResourceTypes.cs" />
     <Compile Include="Provinces\Settlement.cs" />
     <Compile Include="Provinces\BaseSettlementType.cs" />
     <Compile Include="Provinces\SettlementType.cs" />

@@ -11,7 +11,7 @@ namespace Alpha.Core.Buildings
 
         public BuildingStatus Status
         {
-            get { return BuildingStatus.For(this); }
+            get { return BuildingStatuses.For(this); }
         }
 
         public TagCollection Tags

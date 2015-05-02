@@ -25,7 +25,7 @@ namespace Alpha.Core.Provinces
         public int NumericId { get; set; }
         public String Id { get; private set; }
 
-        private readonly List<Zone> _zones = new List<Zone>();
+        private readonly List<Zone> _zones;
         public IEnumerable<Zone> Zones { get { return _zones; } }
 
         public Vector3D Center { get; private set; }

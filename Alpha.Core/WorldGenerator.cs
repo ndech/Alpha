@@ -140,7 +140,7 @@ namespace Alpha.Core
                 int numberOfResources = RandomGenerator.Get(1, 5);
                 for (int i = 0; i < numberOfResources; i++)
                     settlement.AddResource(
-                        ResourceType.Types
+                        ResourceTypes.Types
                         .Except(settlement.Resources.Select(r=>r.Type))
                         .RandomWeightedItem(r=>r.Probability.For(settlement.Province))
                         , world.ProvinceManager.ResourceLevels.RandomWeightedItem((l)=>1.0f));

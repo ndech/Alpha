@@ -27,7 +27,7 @@ namespace Alpha.Core.Buildings
             _resourceRequirements = element.Descendants("resource")
                 .Select(e => new
                 {
-                    Resource = ResourceType.Types.Single(t => t.Id.Equals(e.MandatoryAttribute("type", "A construction step has a resource with no type ("+buildingType.Id+").").Value)),
+                    Resource = ResourceTypes.Types.Single(t => t.Id.Equals(e.MandatoryAttribute("type", "A construction step has a resource with no type ("+buildingType.Id+").").Value)),
                     Value = new DynamicValue<Settlement>(e)
                 })
                 .ToDictionary(e => e.Resource, e => e.Value);
