@@ -17,12 +17,6 @@ namespace Alpha.Core.Dynamic
             return _modifiers.Aggregate(_base, (value, multiplier) => value * multiplier.Modifier(item));
         }
         
-        internal DynamicValue(Double @base, List<IModifier<T>> modifiers)
-        {
-            _base = @base;
-            _modifiers = modifiers;
-        }
-
         internal DynamicValue(XElement definition)
             : this(definition, s => Double.Parse(s, CultureInfo.InvariantCulture))
         { }
