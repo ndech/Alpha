@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Roslyn.Scripting;
 using Roslyn.Scripting.CSharp;
 
@@ -15,7 +16,10 @@ namespace Alpha.Core.Dynamic
 
         public static Func<T,T2> GetFunc<T,T2>(string query, Session session)
         {
-            String scriptIdentifier;
+            ScriptNameAttribute attribute =
+                (typeof (T).GetCustomAttributes(typeof (ScriptNameAttribute), false)).Cast<ScriptNameAttribute>()
+                    .SingleOrDefault();
+            String scriptIdentifier = attribute == null ? typeof (T).Name : attribute.ScriptName;
             return session.Execute<Func<T, T2>>("(" + scriptIdentifier + ") =>" + query);
         }
 

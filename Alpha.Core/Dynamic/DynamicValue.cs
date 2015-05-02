@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
+using Alpha.Core.Events;
 
 namespace Alpha.Core.Dynamic
 {
@@ -28,10 +29,9 @@ namespace Alpha.Core.Dynamic
 
         internal DynamicValue(XElement definition, Func<String, double> baseValueParser)
         {
-            _base = baseValueParser(definition.Element("base").Value);
+            _base = baseValueParser(definition.MandatoryElement("base", "A dynamic value is defined without base.").Value);
             _modifiers = new List<IModifier<T>>();
             XElement xModifiers = definition.Element("modifiers");
-            String scriptIdentifier = typeof(T).Name;
             if (xModifiers == null) return;
             foreach (XElement xmlModifier in xModifiers.Elements())
             {
@@ -44,10 +44,10 @@ namespace Alpha.Core.Dynamic
                     continue;
                 if (xmlModifier.Attribute("factor") == null)
                     _modifiers.Add(new DynamicModifier<T>(
-                        Engine.Execute<Func<T, Double>>("(" + scriptIdentifier + ") => " + xmlModifier.Value, Engine.NewSession), type));
+                        Engine.GetFunc<T, Double>(xmlModifier.Value, Engine.NewSession), type));
                 else
                     _modifiers.Add(new StaticModifier<T>(Double.Parse(xmlModifier.Attribute("factor").Value, CultureInfo.InvariantCulture),
-                        Engine.Execute<Func<T, Boolean>>("(" + scriptIdentifier + ") => " + xmlModifier.Value, Engine.NewSession), type));
+                        Engine.GetFunc<T, Boolean>(xmlModifier.Value, Engine.NewSession), type));
             }
         }
     }

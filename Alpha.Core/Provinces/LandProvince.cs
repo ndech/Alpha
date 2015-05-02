@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Alpha.Core.Dynamic;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
 {
+    [ScriptName("Province")]
     public class LandProvince : Province
     {
-
         public LandProvince(World world, List<Zone> zones) : base(world, zones)
         {
             Name = NameGenerator.GetRandomProvinceName();
