@@ -98,6 +98,14 @@ namespace Alpha.Toolkit
                     yield return item;
         }
 
+        public static IEnumerable<T> Jump<T>(this IEnumerable<T> data, int step, int? count = null)
+        {
+            IList<T> list = data.ToList();
+            count = count ?? list.Count;
+            for(int i = 0; i< count; i++)
+                yield return list[(step+i)%list.Count];
+        }
+
         public static Vector3 AverageVector(this IEnumerable<Vector3> source)
         {
             List<Vector3> values = source.ToList();

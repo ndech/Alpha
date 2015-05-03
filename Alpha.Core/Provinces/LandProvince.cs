@@ -52,5 +52,6 @@ namespace Alpha.Core.Provinces
         }
 
         public bool IsCoastal { get { return Zones.SelectMany(z => z.Neighbourgs).Any(z => z.Province is SeaProvince); } }
+        public double Surface { get { return Zones.Sum(z => z.Surface); } }
     }
 }

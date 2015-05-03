@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
 using Alpha.WorldGeneration;
 
@@ -44,5 +45,14 @@ namespace Alpha.Core.Provinces
         }
 
         public bool IsCoastal { get { return Neighbourgs.Any(z => z.IsWater); } }
+
+        public double Surface
+        {
+            get
+            {
+                return 0.5*Math.Abs(Points.Zip(Points.Jump(1), (a,b)=> new { From = a, To = b})
+                    .Sum(segment => (segment.From.X * segment.To.Z) - (segment.From.Z * segment.To.X)));
+            }
+        }
     }
 }

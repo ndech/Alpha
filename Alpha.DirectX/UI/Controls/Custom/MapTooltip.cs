@@ -88,7 +88,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 text = province.ToString();
                 text += Environment.NewLine + "Province of " + province.Name;
                 text += Environment.NewLine + province.Capital.Population.Value + " pop ";
-                text += Text.Text.EnphasizeAsPercentage(province.Capital.Population.YearlyGrowth);
+                text += Environment.NewLine + province.Surface + " km²";
+                text += Environment.NewLine + Text.Text.EnphasizeAsPercentage(province.Capital.Population.YearlyGrowth);
                 text += " (" + Text.Text.Enphasize(province.Capital.Population.LastDayVariation) + ")";
                 text += Environment.NewLine + string.Join(", ", province.Resources.Select(r=>r.Type.Name).OrderBy(s=>s));
             }
