@@ -63,6 +63,7 @@
     <Compile Include="Buildings\BuildingStatus.cs" />
     <Compile Include="Buildings\BuildingStatuses.cs" />
     <Compile Include="Buildings\BuildingType.cs" />
+    <Compile Include="Buildings\BuildingTypes.cs" />
     <Compile Include="Buildings\Construction.cs" />
     <Compile Include="Buildings\ConstructionStep.cs" />
     <Compile Include="Buildings\ResourceRequirement.cs" />
@@ -173,7 +174,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Data\Buildings\Buildings.xml">
+    <EmbeddedResource Include="Data\Buildings\BuildingTypes.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </EmbeddedResource>

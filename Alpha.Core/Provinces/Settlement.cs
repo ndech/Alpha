@@ -40,7 +40,7 @@ namespace Alpha.Core.Provinces
 
         internal void StartConstruction(BuildingType building)
         {
-            Constructions.Add(new Construction(building, this));
+            Constructions.Add(new Construction(building, this, World.Calendar.Today));
         }
 
         public override string ToString()

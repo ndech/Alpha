@@ -89,7 +89,9 @@ namespace Alpha.Core.Calendars
         {
             get { throw new System.NotImplementedException(); }
         }
-        
+
+        public Date Today { get { return CurrentDate; } }
+
         public void Load()
         {
             throw new System.NotImplementedException();

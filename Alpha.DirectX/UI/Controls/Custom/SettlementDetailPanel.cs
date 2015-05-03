@@ -7,6 +7,7 @@ using Alpha.DirectX.UI.Layouts;
 using Alpha.DirectX.UI.Styles;
 using SharpDX;
 using HorizontalAlignment = Alpha.DirectX.UI.Styles.HorizontalAlignment;
+using Alpha.Core.Buildings;
 
 namespace Alpha.DirectX.UI.Controls.Custom
 {
@@ -14,7 +15,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
     {
         private Settlement _settlement;
         private Label _name;
-        private ScrollableContainer<ResourceScrollableItem, Resource> _resourceScrollableContainer; 
+        private ScrollableContainer<ResourceScrollableItem, Resource> _resourceScrollableContainer;
+        Button _buildButton;
         public SettlementDetailPanel(IContext context)
             : base(context, "settlement_panel", new UniRectangle(), Color.LightSlateGray)
         {
@@ -30,13 +32,12 @@ namespace Alpha.DirectX.UI.Controls.Custom
             new PositionLayout(this, 20, 20, HorizontalAlignment.Right, VerticalAlignment.Top, new Padding(3))
                 .Create(closeButton = new IconButton(Context, "close_button"));
 
-            Button buildButton;
             new PositionLayout(this, 150, 20, HorizontalAlignment.Center, VerticalAlignment.Bottom, new Padding(30))
-                .Create(buildButton = new Button(Context, "build_button", new UniRectangle(), "build wall" ));
-            buildButton.Clicked +=
+                .Create(_buildButton = new Button(Context, "build_button", new UniRectangle(), "Build"));
+            _buildButton.Clicked +=
                 (b) =>
                     Context.RegisterCommand(
-                        new NewConstructionCommand(Context.World.ProvinceManager.BuildingTypes.First(), _settlement));
+                        new NewConstructionCommand(BuildingTypes.AvailableFor(_settlement).First(), _settlement));
 
             _resourceScrollableContainer =
                 new ScrollableContainer<ResourceScrollableItem, Resource>(Context, "settlements", 3,
@@ -54,6 +55,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _settlement = settlement;
             _name.Text = settlement.Name;
+            _buildButton.Text = "Build "+ BuildingTypes.AvailableFor(_settlement).First().Name;
             _resourceScrollableContainer.Refresh(settlement.Province.Resources.OrderByDescending(r=>r.Level.Value).ToList());
         }
 

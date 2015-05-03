@@ -1,4 +1,23 @@
 ﻿<buildings>
+  <building id="dock_1">
+    <name>Fishing port</name>
+    <constructionSteps>
+      <constructionStep>
+        <name>BUilding docks</name>
+        <resources>
+          <resource type="timber">
+            <base>300</base>
+          </resource>
+        </resources>
+        <manpower>
+          <base>3000</base>
+        </manpower>
+      </constructionStep>
+    </constructionSteps>
+    <preConditions>
+      <condition>Settlement.Province.IsCoastal</condition>
+    </preConditions>
+  </building>
 	<building id="wall_1">
 		<name>Timber Palisade</name>
     <constructionSteps>

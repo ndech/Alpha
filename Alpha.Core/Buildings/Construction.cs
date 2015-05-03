@@ -20,10 +20,11 @@ namespace Alpha.Core.Buildings
             Construction
         }
 
-        public Construction(BuildingType type, Settlement location)
+        public Construction(BuildingType type, Settlement location, Date today)
         {
             _type = type;
             _location = location;
+            _startDate = today;
             //_resourceRequirements = _type.RequirementsFor(location);
         }
 
