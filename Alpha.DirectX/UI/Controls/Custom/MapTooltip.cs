@@ -85,8 +85,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             if (_hoveredZone.Province is LandProvince)
             {
                 LandProvince province = _hoveredZone.Province as LandProvince;
-                text = province.ToString();
-                text += Environment.NewLine + "Province of " + province.Name;
+                text = "Province of " + province.Name;
                 text += Environment.NewLine + province.Capital.Population.Value + " pop ";
                 text += Environment.NewLine + province.Surface + " km²";
                 text += Environment.NewLine + Text.Text.EnphasizeAsPercentage(province.Capital.Population.YearlyGrowth);

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Linq;
 using System.Windows.Input;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Controls;
@@ -30,7 +31,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             _sun = new Sun();
             _water = new Water(context, context.World.ProvinceManager.SeaProvinces);
-            _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces);
+            _terrain = new Terrain(context, context.World.ProvinceManager.LandProvinces.ToList());
             _sky = new Sky(context);
             _fleetRenderer = new FleetRenderer(context);
             _fleetMoveOrderRenderer = new FleetMoveOrderRenderer(context);

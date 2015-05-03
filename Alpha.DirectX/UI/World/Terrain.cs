@@ -31,7 +31,7 @@ namespace Alpha.DirectX.UI.World
             Realm
         }
 
-        public Terrain(IContext context, IEnumerable<LandProvince> provinces)
+        public Terrain(IContext context, IList<LandProvince> provinces)
         {
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
             _shader = context.Shaders.Get<TerrainShader>();
@@ -50,7 +50,7 @@ namespace Alpha.DirectX.UI.World
             return CustomColor.Lerp(new CustomColor(1, 0, 0), new CustomColor(0, 1, 0), (float) (value - min)/(max - min));
         }
 
-        private ShaderResourceView GenerateProvinceTexture(IContext context, IEnumerable<LandProvince> provinces, Func<LandProvince, CustomColor> colorGenerator)
+        private ShaderResourceView GenerateProvinceTexture(IContext context, IList<LandProvince> provinces, Func<LandProvince, CustomColor> colorGenerator)
         {
             int maxId = provinces.Max(p => p.NumericId);
             Texture1D provinceTexture = new Texture1D(context.DirectX.Device, new Texture1DDescription
@@ -97,7 +97,7 @@ namespace Alpha.DirectX.UI.World
         public void Update(double delta)
         { }
 
-        private void BuildBuffers(IContext context, IEnumerable<LandProvince> provinces)
+        private void BuildBuffers(IContext context, IList<LandProvince> provinces)
         {
             _indexCount = provinces.SelectMany(p => p.Zones).Sum(z => z.Points.Count) * 3;
             UInt32[] terrainIndices = new UInt32[_indexCount];
