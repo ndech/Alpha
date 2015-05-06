@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using SharpDX;
 
@@ -104,6 +105,34 @@ namespace Alpha.Toolkit
             count = count ?? list.Count;
             for(int i = 0; i< count; i++)
                 yield return list[(step+i)%list.Count];
+        }
+
+        public static T Single<T>(this IEnumerable<T> data, String exceptionMessage)
+        {
+            try
+            {
+                return data.Single();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidOperationException(exceptionMessage, e);
+            }
+        }
+        public static T Single<T>(this IEnumerable<T> data, Func<T, bool> predicate, String exceptionMessage)
+        {
+            try
+            {
+                return data.Single(predicate);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidOperationException(exceptionMessage, e);
+            }
+        }
+
+        public static IReadOnlyList<T> ToReadOnly<T>(this IEnumerable<T> data)
+        {
+            return new ReadOnlyCollection<T>(data.ToList());
         }
 
         public static Vector3 AverageVector(this IEnumerable<Vector3> source)

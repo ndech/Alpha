@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Alpha.Core.Dynamic;
 using Alpha.Core.Events;
 using Alpha.Core.Provinces;
+using Alpha.Toolkit;
 
 namespace Alpha.Core.Buildings
 {
@@ -12,9 +13,10 @@ namespace Alpha.Core.Buildings
     {
         public String Id { get; private set; }
         public String Name { get; private set; }
-        public IEnumerable<ConstructionStep> ConstructionSteps { get { return _constructionSteps; } }
+        public IReadOnlyCollection<ConstructionStep> ConstructionSteps { get; private set; }
+        public IReadOnlyCollection<BuildingType> ReplaceBuildings { get; private set; }
+        public IReadOnlyCollection<BuildingType> UnlocksBuildings { get; private set; }
 
-        private readonly List<ConstructionStep> _constructionSteps;
         private readonly List<Condition<Settlement>> _preConditions;
         private List<Condition<Settlement>> _conditions; 
 
@@ -22,11 +24,11 @@ namespace Alpha.Core.Buildings
         {
             Id = element.MandatoryAttribute("id", "A building must have an Id.").Value;
             Name = element.MandatoryElement("name", "A building type must have a name ("+Id+").").Value;
-            _constructionSteps = element
+            ConstructionSteps = element
                     .MandatoryElement("constructionSteps", "A building type must have have at least one construction step (" + Id + ").")
                     .AtLeastOne("constructionStep", "A building type must have have at least one construction step (" + Id + ").")
                     .Select(e => new ConstructionStep(this, e))
-                    .ToList();
+                    .ToReadOnly();
             _preConditions = element.
                 OptionalElement("preConditions", 
                     e => e.Elements("condition").Select(c=> new Condition<Settlement>(c)).ToList(),
@@ -40,6 +42,16 @@ namespace Alpha.Core.Buildings
         public bool PreConditionsValidFor(Settlement settlement)
         {
             return _preConditions.All(p => p.IsValid(settlement));
+        }
+
+        public void SetReplaceBuildings(IEnumerable<BuildingType> types)
+        {
+            ReplaceBuildings = types.ToReadOnly();
+        }
+
+        public void SetUnlocksBuildings(IEnumerable<BuildingType> types)
+        {
+            UnlocksBuildings = types.ToReadOnly();
         }
 
         public override string ToString()

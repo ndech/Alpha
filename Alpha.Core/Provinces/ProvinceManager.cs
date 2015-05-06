@@ -12,9 +12,9 @@ namespace Alpha.Core.Provinces
     public class ProvinceManager : Manager
     {
         private readonly List<Province> _provinces = new List<Province>();
-        public IEnumerable<Province> Provinces { get { return _provinces; } }
-        public IEnumerable<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>(); } }
-        public IEnumerable<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>(); } }
+        public IReadOnlyCollection<Province> Provinces { get { return _provinces; } }
+        public IReadOnlyCollection<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>().ToReadOnly(); } } //ToDo: caching
+        public IReadOnlyCollection<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>().ToReadOnly(); } } //ToDo: caching
 
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
         internal List<ResourceLevel> ResourceLevels { get; private set; } 
