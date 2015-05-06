@@ -4,6 +4,7 @@ using System.Threading;
 using Alpha.Core;
 using Alpha.Core.Commands;
 using Alpha.Core.Fleets;
+using Alpha.Core.Movement;
 using Alpha.Core.Notifications;
 using Alpha.Core.Realms;
 using Alpha.Toolkit;
@@ -37,7 +38,7 @@ namespace Alpha.AI
             {
                 if (!fleet.HasMoveOrder || RandomGenerator.Get(0, 10) == 0)
                 {
-                    var steps = _world.ProvinceManager.CalculatePath(fleet,
+                    var steps = PathFinder.CalculatePath(fleet,
                         _world.ProvinceManager.SeaProvinces.Where(p => p != fleet.Location.Province).RandomItem().Zones.RandomItem());
                     if(steps.Count>0) // If steps.Count == 0 => path not found
                         commands.Add(new MoveFleetCommand(fleet,steps));

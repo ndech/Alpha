@@ -131,11 +131,12 @@ namespace Alpha.Core
             //    foreach (ZoneCluster cluster in clusters)
             //        world.ProvinceManager.CreateProvince(new LandProvince(world, cluster));
             //}
-            foreach (VoronoiSite site in sites.Where(s => !s.IsWater))
-                world.ProvinceManager.CreateProvince(new LandProvince(world, zones[site.ZoneId]));
-            feedback("Observing the waves");
-            foreach (VoronoiSite site in sites.Where(s => s.IsWater))
-                world.ProvinceManager.CreateProvince(new SeaProvince(world, new List<Zone>{zones[site.ZoneId]}));
+
+
+            world.ProvinceManager.LoadProvinces(
+                sites.Where(s => !s.IsWater).Select(s => new LandProvince(world, zones[s.ZoneId])).
+                Union<Province>(sites.Where(s => s.IsWater).Select(s => new SeaProvince(world, new List<Zone>{zones[s.ZoneId]}))));
+            
             feedback("Planting fields");
             foreach (LandProvince province in world.ProvinceManager.LandProvinces)
             {

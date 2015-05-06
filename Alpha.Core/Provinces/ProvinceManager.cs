@@ -2,19 +2,15 @@
 using System.Linq;
 using System.Xml.Linq;
 using Alpha.Core.Buildings;
-using Alpha.Core.Fleets;
-using Alpha.Core.Movement;
 using Alpha.Toolkit;
-using Alpha.Toolkit.Math;
 
 namespace Alpha.Core.Provinces
 {
     public class ProvinceManager : Manager
     {
-        private readonly List<Province> _provinces = new List<Province>();
-        public IReadOnlyCollection<Province> Provinces { get { return _provinces; } }
-        public IReadOnlyCollection<SeaProvince> SeaProvinces { get { return _provinces.OfType<SeaProvince>().ToReadOnly(); } } //ToDo: caching
-        public IReadOnlyCollection<LandProvince> LandProvinces { get { return _provinces.OfType<LandProvince>().ToReadOnly(); } } //ToDo: caching
+        public IReadOnlyCollection<Province> Provinces { get; private set; }
+        public IReadOnlyCollection<SeaProvince> SeaProvinces { get; private set; }
+        public IReadOnlyCollection<LandProvince> LandProvinces { get; private set; }
 
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
         internal List<ResourceLevel> ResourceLevels { get; private set; } 
@@ -25,7 +21,6 @@ namespace Alpha.Core.Provinces
             BuildingStatuses.Initialize();
             BuildingTypes.Initialize();
 
-
             BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml")
                 .Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
             
@@ -34,86 +29,15 @@ namespace Alpha.Core.Provinces
 
         internal override void DayUpdate(DataLock dataLock)
         {
-            _provinces.DayUpdate(dataLock);
+            Provinces.DayUpdate(dataLock);
         }
 
-        internal void CreateProvince(Province province)
+        public void LoadProvinces(IEnumerable<Province> provinces)
         {
-            _provinces.Add(province);
-            foreach (Zone zone in province.Zones)
-                zone.Province = province;
+            Provinces = provinces.ToReadOnly();
+            SeaProvinces = Provinces.OfType<SeaProvince>().ToReadOnly();
+            LandProvinces = Provinces.OfType<LandProvince>().ToReadOnly();
+            ProvincePicker.Initialize(Provinces.First().Zones.First());
         }
-
-        public List<Step> CalculatePath(Fleet fleet, Zone destination)
-        {
-            return CalculatePath((IMovable) fleet, destination);
-        }
-
-        private List<Step> CalculatePath(IMovable movable, Zone destination)
-        {
-            if (movable.Location == destination || !movable.CanCross(destination))
-                return null;
-            List<Step> steps = new List<Step>();
-            //Calculate path using A* algorithm
-            SortedSet<PathfindingNode> openList = new SortedSet<PathfindingNode>(
-                Comparer<PathfindingNode>.Create((a, b) => a.CompareTo(b)));
-            HashSet<Zone> closedList = new HashSet<Zone>();
-            openList.Add(new PathfindingNode(movable.Location, destination.DistanceWith(movable.Location)));
-            bool pathFound = destination == movable.Location;
-            while (!pathFound)
-            {
-                if (openList.Count == 0)
-                    break;
-                PathfindingNode currentNode = openList.First();
-                foreach (Zone neighbourg in currentNode.Zone.Adjacencies.Select(a => a.Neighbourg).Where(s => movable.CanCross(s)))
-                {
-                    if (closedList.Contains(neighbourg) || openList.Any(n => n.Zone == neighbourg))
-                        continue;
-                    openList.Add(new PathfindingNode(neighbourg, destination.DistanceWith(neighbourg), currentNode));
-                    if (neighbourg == destination) // Path found !
-                    {
-                        pathFound = true;
-                        steps.Add(new Step(currentNode.Zone, destination));
-                        while (currentNode.Parent != null)
-                        {
-                            steps.Add(new Step(currentNode.Parent.Zone, currentNode.Zone));
-                            currentNode = currentNode.Parent;
-                        }
-                        steps.Reverse();
-                        break;
-                    }
-                }
-                openList.Remove(currentNode);
-                closedList.Add(currentNode.Zone);
-            }
-            if (steps.Count == 0)
-                return steps;
-            return steps;
-        }
-
-        private Zone _currentSearchZone;
-        public Province ClosestProvince(Vector3D position)
-        {
-            return ClosestZone(position).Province;
-        }
-
-        public Zone ClosestZone(Vector3D position)
-        {
-            if (_currentSearchZone == null)
-                _currentSearchZone = _provinces.First().Zones.First();
-            while (true)
-            {
-                Zone closestNeighbourgOrSelf =
-                    _currentSearchZone.Adjacencies.Select(a => a.Neighbourg)
-                        .Union(_currentSearchZone)
-                        .MinBy(p => Vector3D.Distance(p.Center, position));
-                if (closestNeighbourgOrSelf == _currentSearchZone)
-                    return _currentSearchZone;
-                _currentSearchZone = closestNeighbourgOrSelf;
-            }
-        }
-
-        internal override void Initialize()
-        { }
     }
 }

@@ -116,6 +116,7 @@
     <Compile Include="IWorld.cs" />
     <Compile Include="Movement\IMovable.cs" />
     <Compile Include="Movement\MoveOrder.cs" />
+    <Compile Include="Movement\PathFinder.cs" />
     <Compile Include="Movement\Step.cs" />
     <Compile Include="Notifications\DayChangedNotification.cs" />
     <Compile Include="Notifications\DayUpdateDoneNotification.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Dynamic\DynamicValue.cs" />
     <Compile Include="Provinces\IScriptLandProvinceForResourcesGeneration.cs" />
+    <Compile Include="Provinces\ProvincePicker.cs" />
     <Compile Include="Provinces\Population.cs" />
     <Compile Include="Provinces\Resource.cs" />
     <Compile Include="Provinces\ResourceLevel.cs" />

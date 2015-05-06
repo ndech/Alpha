@@ -55,7 +55,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             {
                 for (int j = 0; j < minimapTexture.Description.Height; j++)
                 {
-                    if (Context.World.ProvinceManager.ClosestProvince(new Vector3D((
+                    if (ProvincePicker.ClosestProvince(new Vector3D((
                         (float)i * Context.World.Size.X) / Size.X, 0, ((float)(Size.Y-j) * Context.World.Size.Y) / Size.Y)) is LandProvince)
                     {
                         byteArray[4 * (j * minimapTexture.Description.Width + i)] = 106;

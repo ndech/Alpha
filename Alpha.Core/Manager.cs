@@ -9,7 +9,8 @@ namespace Alpha.Core
     {
         internal Manager(World world) : base(world)
         {}
-        internal abstract void Initialize();
+
+        internal virtual void Initialize() { }
 
         protected void TryTriggerEvents<T>(IEnumerable<IEvent<T>> events, IEnumerable<T> eventables, DataLock dataLock) where T : IEventable
         {

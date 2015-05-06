@@ -12,6 +12,8 @@ namespace Alpha.Core.Provinces
         {
             _zones = zones;
             Center = zones.RandomItem().Center;
+            foreach (Zone zone in Zones)
+                zone.Province = this;
             NumericId = IdSequence;
             Id = GenerateStringId(NumericId);
         }

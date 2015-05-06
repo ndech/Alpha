@@ -120,7 +120,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             if (HoveredControl != null)
                 return null;
-            return Context.World.ProvinceManager.ClosestZone(
+            return ProvincePicker.ClosestZone(
                      (Vector3D)new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
         }
 
@@ -128,7 +128,7 @@ namespace Alpha.DirectX.UI.Screens
         {
             if (button == 0)
             {
-                Province province = Context.World.ProvinceManager.ClosestProvince(
+                Province province = ProvincePicker.ClosestProvince(
                     (Vector3D) new Picker(Context, Context.UiManager.MousePosition).GroundIntersection);
                 if (province is LandProvince 
                     //&& (province as LandProvince).Owner == Context.Realm
