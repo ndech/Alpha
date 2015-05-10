@@ -1,0 +1,51 @@
+﻿<events>
+  <event id="building_normal_degradation" type="building">
+    <label></label>
+    <conditions/>
+    <meanTimeToHappen>
+      <base>6000d</base>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <effects>
+          <effect>ChangeBuildingConditionCommand(Building, -0.01)</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+  <event id="building_thunder_fire" type="building">
+    <label>Building.Type.Name+" on fire!"</label>
+    <conditions>
+      <condition>!Building.HasTag("burning")</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>600d</base>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <label>Building.Type.Name+" on fire!"</label>
+        <effects>
+          <effect>TagCommand(Building, "burning")</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+  <event id="building_fire_propagation" type="building">
+    <label></label>
+    <conditions>
+      <condition>!Building.HasTag("burning")</condition>
+      <condition>Building.Location.Buildings.Any(b=>b.HasTag("burning"))</condition>
+    </conditions>
+    <meanTimeToHappen>
+      <base>50d</base>
+    </meanTimeToHappen>
+    <outcomes>
+      <outcome>
+        <label>"Fire in " + Building.Location.Name + " propagates : " + Building.Type.Name + " on fire!"</label>
+        <effects>
+          <effect>TagCommand(Building, "burning")</effect>
+        </effects>
+      </outcome>
+    </outcomes>
+  </event>
+</events>

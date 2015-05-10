@@ -24,9 +24,9 @@ namespace Alpha.Core.Provinces
         }
 
         public override sealed string Name { get; internal set; }
-        protected override string GenerateStringId(int id)
+        protected override string IdPrefix
         {
-            return "land_province_" + id;
+            get { return "land_province"; }
         }
         public Realm Owner { get; internal set; }
         public CustomColor Color { get; internal set; }

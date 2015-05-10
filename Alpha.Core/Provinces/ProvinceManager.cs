@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using Alpha.Core.Buildings;
+using Alpha.Core.Events;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
@@ -12,6 +13,8 @@ namespace Alpha.Core.Provinces
         public IReadOnlyCollection<SeaProvince> SeaProvinces { get; private set; }
         public IReadOnlyCollection<LandProvince> LandProvinces { get; private set; }
 
+        private readonly List<IEvent<Building>> _buildingsEvents;
+
         internal List<BaseSettlementType> BaseSettlementTypes { get; private set; }
         internal List<ResourceLevel> ResourceLevels { get; private set; } 
 
@@ -20,6 +23,7 @@ namespace Alpha.Core.Provinces
             ResourceTypes.Initialize();
             BuildingStatuses.Initialize();
             BuildingTypes.Initialize();
+            _buildingsEvents = World.EventManager.LoadEvents<Building>();
 
             BaseSettlementTypes = XDocument.Load(@"Data\Settlements\Settlements.xml")
                 .Descendants("baseSettlements").Descendants("settlement").Select(BaseSettlementType.Create).ToList();
@@ -30,6 +34,7 @@ namespace Alpha.Core.Provinces
         internal override void DayUpdate(DataLock dataLock)
         {
             Provinces.DayUpdate(dataLock);
+            TryTriggerEvents(_buildingsEvents, LandProvinces.SelectMany(p=>p.Capital.Buildings), dataLock);
         }
 
         public void LoadProvinces(IEnumerable<Province> provinces)

@@ -73,6 +73,7 @@
     <Compile Include="Calendars\Season.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterManager.cs" />
+    <Compile Include="Commands\ChangeBuildingConditionCommand.cs" />
     <Compile Include="Commands\ChangeTreasuryCommand.cs" />
     <Compile Include="Commands\EventOnlyCommand.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -87,6 +88,9 @@
     <Compile Include="Component.cs" />
     <EmbeddedResource Include="Data\Buildings\BuildingStatuses.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Events\BuildingConditionEvents.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Compile Include="Dynamic\ScriptNameAttribute.cs" />

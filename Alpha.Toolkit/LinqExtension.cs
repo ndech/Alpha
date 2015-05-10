@@ -25,7 +25,7 @@ namespace Alpha.Toolkit
 
         public static IEnumerable<T> OrderByRandom<T>(this IEnumerable<T> source)
         {
-            var buffer = source.ToList();
+            List<T> buffer = source.ToList();
             for (int i = 0; i < buffer.Count; i++)
             {
                 int j = RandomGenerator.Get(i, buffer.Count);

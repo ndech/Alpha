@@ -5,9 +5,10 @@ namespace Alpha.Core.Provinces
     public class SeaProvince : Province
     {
         public override sealed string Name { get; internal set; }
-        protected override string GenerateStringId(int id)
+
+        protected override string IdPrefix
         {
-            return "sea_province_" + id;
+            get { return "sea_province"; }
         }
 
         protected override void DayUpdate()

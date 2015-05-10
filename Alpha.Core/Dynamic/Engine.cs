@@ -37,7 +37,9 @@ namespace Alpha.Core.Dynamic
             {
                 Session session = _engine.CreateSession(ScriptContext);
                 session.AddReference(typeof(ScriptContext).Assembly);
+                session.AddReference("System.Core");
                 Execute<String>("using Alpha.Core.Tags;", session);
+                Execute<String>("using System.Linq;", session);
                 return session;
             }
         }

@@ -37,6 +37,8 @@ namespace Alpha.Core.Buildings
                 OptionalElement("conditions",
                     e => e.Elements("condition").Select(c => new Condition<Settlement>(c)).ToList(),
                     new List<Condition<Settlement>>());
+            SetReplaceBuildings(new List<BuildingType>());
+            SetUnlocksBuildings(new List<BuildingType>());
         }
 
         public bool PreConditionsValidFor(Settlement settlement)

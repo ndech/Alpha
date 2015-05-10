@@ -30,7 +30,9 @@ namespace Alpha.Core.Buildings
         {
             Debug.Assert(_buildingTypes != null, "Building statuses not initialized");
             return
-                _buildingTypes.Except(settlement.Buildings.Select(b => b.Type))
+                _buildingTypes
+                    .Except(settlement.Buildings.Select(b => b.Type)) //Not already built
+                    .Where(type => (!type.ReplaceBuildings.Any() || type.ReplaceBuildings.Any(t=>settlement.Buildings.Select(b=>b.Type).Contains(t))))
                     .Where(type => type.PreConditionsValidFor(settlement));
         }
 

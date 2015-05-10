@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Alpha.Core.Buildings;
+using Alpha.Core.Events;
+using Alpha.Core.Realms;
 using Alpha.Core.Save;
 using Alpha.Toolkit;
 
 namespace Alpha.Core.Provinces
 {
-    public class Settlement : Component, IDailyUpdatableItem, ISavable
+    public class Settlement : Component, IDailyUpdatableItem, ISavable, IEventable
     {
         public String Name { get; private set; }
         public LandProvince Province { get; private set; }
@@ -24,6 +26,8 @@ namespace Alpha.Core.Provinces
             Buildings = new List<Building>();
             Population = new Population();
             Type = world.ProvinceManager.BaseSettlementTypes.RandomWeightedItem(t => t.Probability(province));
+            foreach (BuildingType type in BuildingTypes.AvailableFor(this))
+                Buildings.Add(new Building(this, type));
         }
 
         void IDailyUpdatableItem.DayUpdate()
@@ -57,6 +61,11 @@ namespace Alpha.Core.Provinces
         public void Load()
         {
             throw new NotImplementedException();
+        }
+
+        public Realm ResponsibleRealm
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

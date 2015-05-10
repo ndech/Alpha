@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Alpha.Toolkit
 {
@@ -27,7 +28,7 @@ namespace Alpha.Toolkit
         {
             List<String> result = new List<string>();
             String line;
-            using (var file = new System.IO.StreamReader(filename))
+            using (StreamReader file = new StreamReader(filename))
                 while ((line = file.ReadLine()) != null)
                     result.Add(line);
             return result;

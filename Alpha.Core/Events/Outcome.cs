@@ -18,11 +18,10 @@ namespace Alpha.Core.Events
 
         internal Outcome(XElement item)
         {
-            String identifier = typeof (T).Name;
-            _labelFunc = Engine.Execute<Func<T, String>>("(" + identifier + ")=>" + item.Element("label").Value, Engine.NewSession);
+            _labelFunc = item.OptionalElement("label", e => Engine.GetFunc<T, String>(e.Value, Engine.NewSession), x=>"No label");
             Session session = Engine.NewSession;
             Engine.Execute<String>("using Alpha.Core.Commands;", session);
-            _effects = item.Element("effects").Elements("effect").Select(e => Engine.Execute<Func<T, Command>>("(" + identifier + ")=> new " + e.Value, session)).ToList();
+            _effects = item.Element("effects").Elements("effect").Select(e => Engine.GetFunc<T, Command>("new " + e.Value, session)).ToList();
         }
 
         public String Label(T item)

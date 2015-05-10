@@ -24,7 +24,11 @@ namespace Alpha.Core.Provinces
 
         public abstract string Name { get; internal set; }
 
-        protected abstract string GenerateStringId(int id);
+        protected string GenerateStringId(int id)
+        {
+            return IdPrefix + "_"+ IdSequence;
+        }
+        protected abstract String IdPrefix { get; }
 
         private static int _idSequence;
         protected static int IdSequence { get { return ++_idSequence; } }

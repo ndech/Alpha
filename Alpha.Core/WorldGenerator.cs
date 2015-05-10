@@ -175,7 +175,7 @@ namespace Alpha.Core
             List<Zone> check = new List<Zone> { newCluster.RandomItem() };
             while (true)
             {
-                var x = check.SelectMany(p => p.Neighbourgs)
+                List<Zone> x = check.SelectMany(p => p.Neighbourgs)
                     .Where(newCluster.Contains).Where(b => !check.Contains(b)).Distinct().ToList();
                 if (!x.Any())
                     break;

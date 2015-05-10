@@ -14,7 +14,7 @@ namespace Alpha.Toolkit
             if(value == null)
                 throw new NullReferenceException("Value parameter can not be null");
             //Parse named color to a static member of Sharpdx's class Color if available
-            var property = typeof(Color).GetField(value, BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase);
+            FieldInfo property = typeof(Color).GetField(value, BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase);
             if (property != null)
             {
                 color = (Color)property.GetValue(null);
