@@ -11,7 +11,7 @@ using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.Controls.Custom
 {
-    class MapTooltip : Control
+    class MapTooltip : Control, IStylable<Label, LabelStyle>
     {
         private readonly GameScreen _gameScreen;
         private Zone _hoveredZone;
@@ -42,8 +42,9 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             _gameScreen = gameScreen;
             _rectangle = new TexturedExtensibleRectangle(context, new Vector2I(), context.TextureManager.Create("tooltip.png", "Data/UI/"), 8);
-            _text = context.TextManager.Create("Courrier", 14, "",
-                new Vector2I(400, 600), Color.Wheat, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(8));
+            LabelStyle style = Context.UiManager.StyleManager.GetStyle(this);
+            _text = Context.TextManager.Create(style.Font, style.FontSize, "", new Vector2I(400, 600), style.TextColor,
+                style.HorizontalAlignment, style.VerticalAlignment, style.Padding);
             _delay = .5f;
         }
 
@@ -74,8 +75,9 @@ namespace Alpha.DirectX.UI.Controls.Custom
             }
             if (_isVisible)
             {
-                _position = Context.UiManager.MousePosition + new Vector2I(20, 20);
                 UpdateContent();
+                _position = Context.UiManager.MousePosition + new Vector2I(20, 25);
+                _position -= new Vector2I(Math.Max(0, _position.X + _rectangle.Size.X + 10 - Context.ScreenSize.X),0);
             }
         }
 
@@ -90,7 +92,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 text += Environment.NewLine + province.Surface + " km²";
                 text += Environment.NewLine + Text.Text.EnphasizeAsPercentage(province.Capital.Population.YearlyGrowth);
                 text += " (" + Text.Text.Enphasize(province.Capital.Population.LastDayVariation) + ")";
-                text += Environment.NewLine + string.Join(", ", province.Resources.Select(r=>r.Type.Name).OrderBy(s=>s));
+                text += Environment.NewLine + "Resources : " +string.Join(", ", province.Resources.Select(r=>r.Type.Name).OrderBy(s=>s));
             }
             else
                 text = _hoveredZone.Province.Name;
@@ -111,7 +113,12 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         public override string ComponentType
         {
-            get { return "tooltip"; }
+            get { return "label"; }
+        }
+
+        public UiComponent Component
+        {
+            get { return this; }
         }
 
         protected override void DisposeItem()

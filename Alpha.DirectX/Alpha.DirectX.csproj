@@ -194,6 +194,9 @@
     <None Include="Data\Fonts\Arial-20px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Data\Fonts\CenturyGothic-22px.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Data\Fonts\Consolas-22px.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -212,6 +215,9 @@
     <Content Include="Data\Fonts\Arial-20px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Data\Fonts\CenturyGothic-22px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Data\Fonts\Consolas-22px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -339,6 +345,9 @@
     <Content Include="Data\UI\square_close_hovered.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Data\UI\Styles\Tooltip.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Data\UI\tooltip.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

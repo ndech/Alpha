@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<styles for="label">
+  <style in="map_tooltip">
+    <horizontalAlignment>Left</horizontalAlignment>
+    <verticalAlignment>Top</verticalAlignment>
+    <textColor>LightGray</textColor>
+    <font>CenturyGothic</font>
+    <fontSize>22</fontSize>
+    <padding>10</padding>
+  </style>
+</styles>
