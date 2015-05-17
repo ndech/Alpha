@@ -7,8 +7,8 @@ namespace Alpha.Toolkit
     public class Timer
     {
         private readonly Stopwatch _stopWatch;
-        private Int64 _elapsedMilliseconds;
-        private Int64 _deltaMilliseconds;
+        private long _elapsedMilliseconds;
+        private long _deltaMilliseconds;
 
         public Timer()
         {
@@ -18,7 +18,7 @@ namespace Alpha.Toolkit
 
         public double Tick()
         {
-            Int64 currentElapsed = _stopWatch.ElapsedMilliseconds;
+            long currentElapsed = _stopWatch.ElapsedMilliseconds;
             _deltaMilliseconds = currentElapsed - _elapsedMilliseconds;
             _elapsedMilliseconds = currentElapsed;
             return Delta;
@@ -34,7 +34,7 @@ namespace Alpha.Toolkit
             get { return _elapsedMilliseconds/1000.0; }
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             return _elapsedMilliseconds.ToString(CultureInfo.InvariantCulture);
         }

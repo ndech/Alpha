@@ -6,14 +6,10 @@ namespace Alpha.Core.Buildings
 {
     public class BuildingStatus
     {
-        internal int Order { get; set; }
-        private string Label { get; set; }
-        private Condition<Building> Condition { get; set; }
+        internal int Order { get; }
+        private string Label { get; }
+        private Condition<Building> Condition { get; }
         
-        public override string ToString()
-        {
-            return Label;
-        }
 
         internal BuildingStatus(XElement element)
         {
@@ -22,9 +18,7 @@ namespace Alpha.Core.Buildings
             Condition = element.OptionalElement("condition", (e) => new Condition<Building>(e), new Condition<Building>(true));
         }
 
-        internal bool IsValid(Building building)
-        {
-            return Condition.IsValid(building);
-        }
+        public override string ToString() => Label;
+        internal bool IsValid(Building building) => Condition.IsValid(building);
     }
 }

@@ -10,7 +10,7 @@ namespace Alpha.Core.Dynamic
     internal class DynamicValue<T>
     {
         private readonly List<IModifier<T>> _modifiers;
-        private readonly Double _base;
+        private readonly double _base;
 
         public double For(T item)
         {
@@ -18,10 +18,10 @@ namespace Alpha.Core.Dynamic
         }
         
         internal DynamicValue(XElement definition)
-            : this(definition, s => Double.Parse(s, CultureInfo.InvariantCulture))
+            : this(definition, s => double.Parse(s, CultureInfo.InvariantCulture))
         { }
 
-        internal DynamicValue(XElement definition, Func<String, double> baseValueParser)
+        internal DynamicValue(XElement definition, Func<string, double> baseValueParser)
         {
             _base = baseValueParser(definition.MandatoryElement("base", "A dynamic value is defined without base.").Value);
             _modifiers = new List<IModifier<T>>();
@@ -38,10 +38,10 @@ namespace Alpha.Core.Dynamic
                     continue;
                 if (xmlModifier.Attribute("factor") == null)
                     _modifiers.Add(new DynamicModifier<T>(
-                        Engine.GetFunc<T, Double>(xmlModifier.Value, Engine.NewSession), type));
+                        Engine.GetFunc<T, double>(xmlModifier.Value, Engine.NewSession), type));
                 else
-                    _modifiers.Add(new StaticModifier<T>(Double.Parse(xmlModifier.Attribute("factor").Value, CultureInfo.InvariantCulture),
-                        Engine.GetFunc<T, Boolean>(xmlModifier.Value, Engine.NewSession), type));
+                    _modifiers.Add(new StaticModifier<T>(double.Parse(xmlModifier.Attribute("factor").Value, CultureInfo.InvariantCulture),
+                        Engine.GetFunc<T, bool>(xmlModifier.Value, Engine.NewSession), type));
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Alpha.DirectX.UI
         private readonly MousePointer _mousePointer;
         private IInput _input;
         public Tooltip VisibleTooltip { get; set; }
-        public StyleManager StyleManager { get; private set; }
+        public StyleManager StyleManager { get; }
         public Vector2I MousePosition { get; private set; }
         public Vector2I RelativeMousePosition(Vector2I origin)
         {

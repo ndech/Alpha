@@ -8,17 +8,17 @@ namespace Alpha.Core.Save
 {
     class SaveGame
     {
-        private static String DirectoryPath
+        private static string DirectoryPath
         {
             get
             {
-                String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Alpha\Saves\";
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Alpha\Saves\";
                 Directory.CreateDirectory(path);
                 return path;
             }
         }
 
-        public SaveGame(String fileName, params ISavable[] items)
+        public SaveGame(string fileName, params ISavable[] items)
         {
             XElement save = new XElement("save", new XAttribute("version", "1.0.0"), items.Select(item=>item.Save()));
             save.Save(Path.Combine(DirectoryPath, fileName));

@@ -8,7 +8,7 @@ namespace Alpha.Core.Commands
         private readonly Fleet _fleet;
         private readonly string _newName;
 
-        public RenameFleetCommand(Fleet fleet, String newName)
+        public RenameFleetCommand(Fleet fleet, string newName)
         {
             _fleet = fleet;
             _newName = newName;

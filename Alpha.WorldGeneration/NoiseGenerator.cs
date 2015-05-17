@@ -4,7 +4,7 @@ namespace Alpha.WorldGeneration
 {
     static class NoiseGenerator
     {
-        public static int Seed { get; private set; }
+        public static int Seed { get; }
 
         public static int Octaves { get; set; }
 
@@ -18,7 +18,7 @@ namespace Alpha.WorldGeneration
         {
             Random r = new Random();
             //LOOOL
-            Seed = r.Next(Int32.MaxValue);
+            Seed = r.Next(int.MaxValue);
             Octaves = 8;
             Amplitude = 1;
             Frequency = 0.015;

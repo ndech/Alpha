@@ -25,7 +25,7 @@ namespace Alpha.DirectX.UI.Controls
         public ShaderResourceView HoveredTexture;
         protected ShaderResourceView CurrentTexture;
 
-        public Icon(IContext context, String id)
+        public Icon(IContext context, string id)
             : base(context, id, new UniRectangle())
         {
             Overlay = true;

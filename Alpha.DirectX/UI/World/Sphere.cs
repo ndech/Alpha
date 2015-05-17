@@ -25,7 +25,7 @@ namespace Alpha.DirectX.UI.World
                 Transform = transform;
             }
 
-            public Matrix Transform { get; set; }
+            public Matrix Transform { get; }
             public ShaderResourceView TerrainSrv { get; set; }
             public UnorderedAccessView TerrainUav { get; set; }
             public ShaderResourceView WaterSrv { get; set; }
@@ -258,7 +258,7 @@ namespace Alpha.DirectX.UI.World
                     };
 
             _indexCount = faceSubdivisions * faceSubdivisions * 6;
-            UInt32[] indices = new UInt32[_indexCount];
+            uint[] indices = new uint[_indexCount];
             for (int i = 0; i < (faceSubdivisions); i++)
                 for (int j = 0; j < (faceSubdivisions); j++)
                 {

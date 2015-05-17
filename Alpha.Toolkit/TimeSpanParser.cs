@@ -4,7 +4,7 @@ namespace Alpha.Toolkit
 {
     public static class TimeSpanParser
     {
-        public static int Parse(String timeSpan)
+        public static int Parse(string timeSpan)
         {
             int length = timeSpan.Length;
             int current = 0;
@@ -28,7 +28,7 @@ namespace Alpha.Toolkit
                         case 'y': multiplier = 365; break;
                         default:
                             throw new FormatException(
-                                String.Format(
+                                string.Format(
                                     "'{0}': Invalid duration character {1} at position {2}. Supported characters are s,m,h,d, and w", timeSpan, c, i));
                     }
                     days += current*multiplier;
@@ -39,7 +39,7 @@ namespace Alpha.Toolkit
             if (current != 0)
             {
                 throw new FormatException(
-                    String.Format("'{0}': missing duration specifier in the end of the string. Supported characters are s,m,h,d, and w", timeSpan));
+                    string.Format("'{0}': missing duration specifier in the end of the string. Supported characters are s,m,h,d, and w", timeSpan));
             }
             return days;
         }

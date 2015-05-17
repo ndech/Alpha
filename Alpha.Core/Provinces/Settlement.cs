@@ -11,9 +11,9 @@ namespace Alpha.Core.Provinces
 {
     public class Settlement : Component, IDailyUpdatableItem, ISavable, IEventable
     {
-        public String Name { get; private set; }
+        public string Name { get; }
         public LandProvince Province { get; private set; }
-        public BaseSettlementType Type { get; private set; }
+        public BaseSettlementType Type { get; }
         public List<Building> Buildings { get; internal set; }
         public List<Construction> Constructions { get; internal set; }
         public Population Population { get; internal set; }

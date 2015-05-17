@@ -8,11 +8,11 @@ namespace Alpha.DirectX.Shaders
     class WorldTerrainShader : Shader
     {
         private const string ShaderFileName = @"Data/Shaders/WorldTerrain.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        SamplerState SamplerStateMap { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        SamplerState SamplerStateMap { get; }
 
         public WorldTerrainShader(Device device)
         {

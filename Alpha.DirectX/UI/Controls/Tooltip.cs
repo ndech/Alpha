@@ -18,7 +18,7 @@ namespace Alpha.DirectX.UI.Controls
         private readonly Control _associatedControl;
         private Vector2I _position;
         
-        public virtual String Text
+        public virtual string Text
         {
             set
             {
@@ -47,7 +47,7 @@ namespace Alpha.DirectX.UI.Controls
             DisposeHelper.DisposeAndSetToNull(_text, _rectangle);
         }
 
-        public Tooltip(IContext context, String id, Control associatedControl, double delay, string text = null)
+        public Tooltip(IContext context, string id, Control associatedControl, double delay, string text = null)
             : base(context, id, new UniRectangle())
         {
             _associatedControl = associatedControl;

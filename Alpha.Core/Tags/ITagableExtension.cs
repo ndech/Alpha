@@ -10,12 +10,12 @@ namespace Alpha.Core.Tags
             tagable.Tags.Add(tag);
         }
 
-        public static void Tag(this ITagable tagable, String tag)
+        public static void Tag(this ITagable tagable, string tag)
         {
             tagable.Tag(new BaseTag(tag));
         }
 
-        public static void Tag(this ITagable tagable, String tag, int duration)
+        public static void Tag(this ITagable tagable, string tag, int duration)
         {
             tagable.Tag(new TimerTag(tag, duration));
         }
@@ -24,7 +24,7 @@ namespace Alpha.Core.Tags
         {
             return tagable.Tags.Contains(tag);
         }
-        public static bool HasTag(this ITagable tagable, String tag)
+        public static bool HasTag(this ITagable tagable, string tag)
         {
             return tagable.Tags.Any(t => t is BaseTag && ((BaseTag)t).Key == tag);
         }
@@ -34,7 +34,7 @@ namespace Alpha.Core.Tags
             return tagable.Tags.Pop(tag);
         }
 
-        public static int PopTag(this ITagable tagable, String tag)
+        public static int PopTag(this ITagable tagable, string tag)
         {
             return tagable.Tags.PopWhere(t => t is BaseTag && ((BaseTag) t).Key == tag);
         }

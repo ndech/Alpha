@@ -11,7 +11,7 @@ namespace Alpha.DirectX.UI.Controls
         public event CustomEventHandler Clicked;
         public Key? Shortcut { get; set; }
 
-        public IconButton(IContext context, String id)
+        public IconButton(IContext context, string id)
             : base(context, id)
         {
             Overlay = false;

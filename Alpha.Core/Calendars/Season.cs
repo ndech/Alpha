@@ -8,12 +8,12 @@ namespace Alpha.Core.Calendars
 {
     public class Season : IEquatable<Season>
     {
-        public String Id { get; private set; }
-        public String Name { get; private set; }
-        public int Order { get; private set; }
-        internal Func<Calendar, bool> Trigger { get; private set; }
+        public string Id { get; }
+        public string Name { get; }
+        public int Order { get; }
+        internal Func<Calendar, bool> Trigger { get; }
 
-        public Season(String id, String name, int order, Func<Calendar, bool> trigger)
+        public Season(string id, string name, int order, Func<Calendar, bool> trigger)
         {
             Id = id;
             Name = name;

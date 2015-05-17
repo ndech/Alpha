@@ -10,10 +10,10 @@ namespace Alpha.DirectX.Shaders
     class ColorShader : Shader
     {
         private const string ShaderFileName = @"Data/Shaders/Color.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
 
         public ColorShader(Device device)
         {

@@ -9,8 +9,8 @@ namespace Alpha.DirectX.UI.Controls
 {
     class Button : Control, IStylable<Button, ButtonStyle>
     {
-        private String _textValue;
-        public String Text
+        private string _textValue;
+        public string Text
         {
             get { return _textValue; }
             set
@@ -27,7 +27,7 @@ namespace Alpha.DirectX.UI.Controls
         public Key? Shortcut { get; set; }
 
 
-        public Button(IContext context, String id, UniRectangle coordinates, String text)
+        public Button(IContext context, string id, UniRectangle coordinates, string text)
             : base(context, id, coordinates)
         {
             _textValue = text;

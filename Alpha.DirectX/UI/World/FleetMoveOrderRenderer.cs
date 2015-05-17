@@ -15,13 +15,13 @@ namespace Alpha.DirectX.UI.World
     {
         private class MoveOrderRenderingItem : IDisposable
         {
-            public readonly Int32 VertexCount;
+            public readonly int VertexCount;
             public readonly Buffer VertexBuffer;
-            public Double Speed;
-            public Int32 VisiblePointsOffset;
-            public Int32 FilledPointsOffset;
+            public double Speed;
+            public int VisiblePointsOffset;
+            public int FilledPointsOffset;
 
-            public MoveOrderRenderingItem(Int32 vertexCount, Buffer vertexBuffer, Double speed)
+            public MoveOrderRenderingItem(int vertexCount, Buffer vertexBuffer, double speed)
             {
                 VertexBuffer = vertexBuffer;
                 VertexCount = vertexCount;

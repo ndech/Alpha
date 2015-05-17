@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Alpha.Core.Dynamic;
@@ -11,9 +10,9 @@ namespace Alpha.Core.Buildings
 {
     public class BuildingType
     {
-        public String Id { get; private set; }
-        public String Name { get; private set; }
-        public IReadOnlyCollection<ConstructionStep> ConstructionSteps { get; private set; }
+        public string Id { get; }
+        public string Name { get; }
+        public IReadOnlyCollection<ConstructionStep> ConstructionSteps { get; }
         public IReadOnlyCollection<BuildingType> ReplaceBuildings { get; private set; }
         public IReadOnlyCollection<BuildingType> UnlocksBuildings { get; private set; }
 
@@ -56,9 +55,6 @@ namespace Alpha.Core.Buildings
             UnlocksBuildings = types.ToReadOnly();
         }
 
-        public override string ToString()
-        {
-            return Name + " ("+Id+")";
-        }
+        public override string ToString() => Name + " ("+Id+")";
     }
 }

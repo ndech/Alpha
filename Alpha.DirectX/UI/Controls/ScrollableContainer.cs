@@ -83,7 +83,7 @@ namespace Alpha.DirectX.UI.Controls
 
         public void ShowLast()
         {
-            FirstVisibleItem = Int32.MaxValue;
+            FirstVisibleItem = int.MaxValue;
         }
     }
 }

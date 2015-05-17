@@ -8,7 +8,7 @@ namespace Alpha.Core.Commands
         private readonly Character _character;
         private readonly string _nickname;
 
-        public SetNickNameCommand(Character character, String nickname)
+        public SetNickNameCommand(Character character, string nickname)
         {
             _character = character;
             _nickname = nickname;

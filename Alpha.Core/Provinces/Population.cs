@@ -8,12 +8,12 @@ namespace Alpha.Core.Provinces
     {
         private double _value = 1000;
         public int LastDayVariation { get; private set; }
-        public Int32 Value
+        public int Value
         {
             get { return (int)_value; }
             set { _value = Math.Max(0.0f, value + (_value - Value)); }
         }
-        public double YearlyGrowth { get; private set; }
+        public double YearlyGrowth { get; }
 
         internal Population(int range = 1000)
         {

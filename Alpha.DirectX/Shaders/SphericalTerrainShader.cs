@@ -10,12 +10,12 @@ namespace Alpha.DirectX.Shaders
     class SphericalTerrainShader : Shader
     {
         private const string ShaderFileName = @"Data/Shaders/SphericalTerrain.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        SamplerState SamplerState { get; set; }
-        SamplerState VertexSamplerState { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        SamplerState SamplerState { get; }
+        SamplerState VertexSamplerState { get; }
 
         public SphericalTerrainShader(Device device)
         {

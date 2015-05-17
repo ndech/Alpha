@@ -8,9 +8,9 @@ namespace Alpha.Core.Calendars
 {
     public class Month : IEquatable<Month>, IComparable<Month>
     {
-        public String Name { get; private set; }
-        internal String Id { get; private set; }
-        public int Position { get; private set; }
+        public string Name { get; }
+        internal string Id { get; private set; }
+        public int Position { get; }
         internal Func<int, int> Length { get; private set; }
         public Month Next { get; private set; }
 

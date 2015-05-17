@@ -8,9 +8,9 @@ namespace Alpha.Core.Movement
     {
         public Zone Source { get; private set; }
         public Zone Destination { get; private set; }
-        public Double Distance { get; private set; }
+        public double Distance { get; }
 
-        public Double Duration(float speed)
+        public double Duration(float speed)
         {
             return Distance/speed;
         }

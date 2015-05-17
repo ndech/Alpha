@@ -21,7 +21,7 @@ namespace Alpha.DirectX.UI.Controls
             }
         }
         
-        public Panel(IContext context, String id, UniRectangle coordinates, Color color)
+        public Panel(IContext context, string id, UniRectangle coordinates, Color color)
             : base(context, id, coordinates)
         {
             _color = color;

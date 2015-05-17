@@ -35,14 +35,14 @@ namespace Alpha.DirectX.Shaders
         }
 
         private const string ShaderFileName = @"Data/Shaders/Water.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        Buffer ConstantTranslationBuffer { get; set; }
-        Buffer ConstantLightBuffer { get; set; }
-        SamplerState SamplerStateWrap { get; set; }
-        SamplerState SamplerStateBorder { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        Buffer ConstantTranslationBuffer { get; }
+        Buffer ConstantLightBuffer { get; }
+        SamplerState SamplerStateWrap { get; }
+        SamplerState SamplerStateBorder { get; }
 
         public WorldWaterShader(Device device)
         {

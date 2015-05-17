@@ -4,9 +4,9 @@ namespace Alpha.Toolkit
 {
     public class CustomColor
     {
-        public float Red { get; private set; }
-        public float Green { get; private set; }
-        public float Blue { get; private set; }
+        public float Red { get; }
+        public float Green { get; }
+        public float Blue { get; }
         public static CustomColor Random
         {
             get

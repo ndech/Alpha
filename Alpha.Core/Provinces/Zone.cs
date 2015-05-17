@@ -11,10 +11,10 @@ namespace Alpha.Core.Provinces
     {
         private static int _idSequence;
         private static int IdSequence { get { return ++_idSequence; } }
-        public Vector3D Center { get; private set; }
-        public bool IsWater { get; private set; }
-        public List<Vector3D> Points { get; private set; }
-        public String Id { get; private set; }
+        public Vector3D Center { get; }
+        public bool IsWater { get; }
+        public List<Vector3D> Points { get; }
+        public string Id { get; private set; }
 
         private readonly List<ZoneAdjacency> _adjacencies = new List<ZoneAdjacency>();
         public IEnumerable<ZoneAdjacency> Adjacencies { get { return _adjacencies; } }

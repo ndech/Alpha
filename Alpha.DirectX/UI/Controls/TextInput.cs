@@ -10,8 +10,8 @@ namespace Alpha.DirectX.UI.Controls
     class TextInput : Control, IStylable<TextInput, TextInputStyle>
     {
 
-        private String _textValue;
-        public String Text
+        private string _textValue;
+        public string Text
         {
             get { return _textValue; }
             set
@@ -23,7 +23,7 @@ namespace Alpha.DirectX.UI.Controls
 
         private Text.Text _text;
         private PlainRectangle _plainRectangle;
-        public CustomEventHandler<String> OnSubmit;
+        public CustomEventHandler<string> OnSubmit;
 
         public void Submit()
         {

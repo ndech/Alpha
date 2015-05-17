@@ -21,23 +21,23 @@ namespace Alpha.WorldGeneration
             Id = idSeed++;
         }
 
-        public Vector VoronoiCenter { get; private set; }
+        public Vector VoronoiCenter { get; }
         public Vector3D Center { get { return new Vector3D(VoronoiCenter[0], 0.0f, VoronoiCenter[1]); } }
         
-        public List<Vector> VoronoiPoints { get; private set; }
+        public List<Vector> VoronoiPoints { get; }
 
         public List<Vector3D> Points { get
         {
             return VoronoiPoints.Select(p => new Vector3D((float) p[0], 0.0f, (float) p[1])).ToList();
         } } 
-        public List<VoronoiEdge> Edges { get; private set; }
+        public List<VoronoiEdge> Edges { get; }
         public bool IsOnBorder { get; private set; }
         public bool IsWater { get; set; }
         public List<VoronoiSite> Neighbourgs { get; set; }
         public int ShoreDistance { get; set; }
         public Cluster Cluster { get; set; }
         private static int idSeed=0;
-        public int Id { get; set; }
+        public int Id { get; }
         public string ZoneId { get; set; }
 
         public const int DefaultShoreDistance = 10000;
@@ -61,7 +61,7 @@ namespace Alpha.WorldGeneration
                         continue;
                     if (isAIn || isBIn) // One point in in, needs to be clipped
                     {
-                        Double slope = edge.DirectionVector[1]/edge.DirectionVector[0];
+                        double slope = edge.DirectionVector[1]/edge.DirectionVector[0];
                         Vector pointIn = isAIn ? new Vector(edge.VVertexA) : new Vector(edge.VVertexB);
                         List<Vector> intersections = new List<Vector>();
                         //Test collision with (0,0) => (width,0) edge :

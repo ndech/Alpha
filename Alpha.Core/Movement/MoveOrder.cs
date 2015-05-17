@@ -11,9 +11,9 @@ namespace Alpha.Core.Movement
         private readonly List<Step> _steps;
         public IEnumerable<Step> Steps { get { return _steps; } }
  
-        public T Movable { get; private set; }
-        public Double ProgressToNextStep { get; set; }
-        public Int32 CurrentStepIndex { get; set; }
+        public T Movable { get; }
+        public double ProgressToNextStep { get; set; }
+        public int CurrentStepIndex { get; set; }
         public Step CurrentStep { get { return _steps[CurrentStepIndex]; } }
         
         public MoveOrder(T item, List<Step> steps)
@@ -42,8 +42,8 @@ namespace Alpha.Core.Movement
     {
         Zone Destination { get; }
         IEnumerable<Step> Steps { get; }
-        Double ProgressToNextStep { get; }
-        Int32 CurrentStepIndex { get; }
+        double ProgressToNextStep { get; }
+        int CurrentStepIndex { get; }
         Step CurrentStep { get; }
     }
 }

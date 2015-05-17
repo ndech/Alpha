@@ -13,7 +13,7 @@ namespace Alpha.Core.Provinces
         {
             Id = element.Attribute("id").Value;
             Name = element.Element("name").Value;
-            Value = Int32.Parse(element.Element("value").Value);
+            Value = int.Parse(element.Element("value").Value);
         }
     }
 }

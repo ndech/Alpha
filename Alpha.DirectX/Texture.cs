@@ -7,8 +7,8 @@ namespace Alpha.DirectX
 {
     class Texture : IDisposable
     {
-        public ShaderResourceView TextureResource { get; private set; }
-        public Texture(Device device, String fileName, String path = "Data/Textures/")
+        public ShaderResourceView TextureResource { get; }
+        public Texture(Device device, string fileName, string path = "Data/Textures/")
         {
             TextureResource = ShaderResourceView.FromFile(device, path + fileName);
         }

@@ -5,9 +5,9 @@ namespace Alpha.DirectX.UI
 {
     class Picker
     {
-        public Vector3 Origin { get; private set; }
+        public Vector3 Origin { get; }
         public Vector3 GroundIntersection { get; private set; }
-        public Vector3 RayDirection { get; private set; }
+        public Vector3 RayDirection { get; }
         public Picker(IContext context, Vector2I mousePosition)
         {
             ICamera camera = context.Camera;

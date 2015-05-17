@@ -12,10 +12,10 @@ namespace Alpha.Core.Events
             Parameters = parameters;
         }
         
-        private Int32 _delay;
+        private int _delay;
         public IEventable Target { get; private set; }
         public Event<IEventable> Event { get; private set; }
-        public Object[] Parameters { get; private set; }
+        public object[] Parameters { get; private set; }
         public bool IsReady { get { return _delay <= 0; } }
 
         public void DayUpdate()

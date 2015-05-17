@@ -18,7 +18,7 @@ namespace Alpha.DirectX.UI.Controls
         private readonly int _sliceNumber;
         private readonly Buffer _vertexBuffer;
         private readonly Texture1DShader _shader;
-        private readonly Func<List<Tuple<CustomColor, double, String, String>>> _valuesGenerator;
+        private readonly Func<List<Tuple<CustomColor, double, string, string>>> _valuesGenerator;
         private readonly ShaderResourceView _colorTexture;
         private readonly List<PieChartInfo> _data;
 
@@ -32,10 +32,10 @@ namespace Alpha.DirectX.UI.Controls
                 Tooltip = tooltip;
             }
 
-            public int SliceCount { get; private set; }
-            public CustomColor Color { get; private set; }
-            public String Label { get; private set; }
-            public String Tooltip { get; private set; }
+            public int SliceCount { get; }
+            public CustomColor Color { get; }
+            public string Label { get; }
+            public string Tooltip { get; private set; }
 
             public override string ToString()
             {

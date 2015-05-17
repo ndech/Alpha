@@ -8,12 +8,12 @@ namespace Alpha.DirectX.Shaders
     class TerrainShader : Shader
     {
         private const string ShaderFileName = @"Data/Shaders/Terrain.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        SamplerState SamplerStateBorder { get; set; }
-        SamplerState SamplerStateColor { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        SamplerState SamplerStateBorder { get; }
+        SamplerState SamplerStateColor { get; }
 
         public TerrainShader(Device device)
         {

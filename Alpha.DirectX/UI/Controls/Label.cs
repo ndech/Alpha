@@ -10,8 +10,8 @@ namespace Alpha.DirectX.UI.Controls
     {
         private LabelStyle _style;
         private Text.Text _text;
-        private String _textValue;
-        public String Text
+        private string _textValue;
+        public string Text
         {
             get { return _textValue; }
             set
@@ -23,7 +23,7 @@ namespace Alpha.DirectX.UI.Controls
 
         public Color TextColor { get { return _text.BaseColor; } set { _text.BaseColor = value; } }
 
-        public Label(IContext context, String id, UniRectangle coordinates, String text)
+        public Label(IContext context, string id, UniRectangle coordinates, string text)
             : base(context, id, coordinates)
         {
             _textValue = text;

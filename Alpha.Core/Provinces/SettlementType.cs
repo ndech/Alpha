@@ -4,11 +4,11 @@ namespace Alpha.Core.Provinces
 {
     public class SettlementType
     {
-        public String Id { get; private set; }
-        public String Name { get; private set; }
-        public String Description { get; private set; }
+        public string Id { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
 
-        public SettlementType(String id, String name, String description)
+        public SettlementType(string id, string name, string description)
         {
             Id = id;
             Name = name;

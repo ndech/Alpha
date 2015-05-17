@@ -13,7 +13,7 @@ namespace Alpha.DirectX.UI.Text
 {
     class SimpleText : IDisposable
     {
-        public SimpleText(IContext context, Font font, Int32 maxLength, Color color)
+        public SimpleText(IContext context, Font font, int maxLength, Color color)
         {
             Device device = context.DirectX.Device;
             Font = font;
@@ -22,9 +22,9 @@ namespace Alpha.DirectX.UI.Text
             _shader = context.Shaders.Get<FontShader>();
             _icons = new List<TexturedRectangle>();
             // The index buffer is static and do not change when the text changes
-            UInt32[] indices = new UInt32[maxLength * 6]; // 6 indices per character
+            uint[] indices = new uint[maxLength * 6]; // 6 indices per character
 
-            for (UInt32 i = 0; i < maxLength; i++)
+            for (uint i = 0; i < maxLength; i++)
             {
                 indices[i * 6] = i * 4;
                 indices[i * 6 + 1] = i * 4 + 1;
@@ -56,15 +56,15 @@ namespace Alpha.DirectX.UI.Text
         private readonly Buffer _indexBuffer;
         private Buffer _vertexBuffer;
         private FontShader _shader;
-        public int MaxLength { get; private set; }
+        public int MaxLength { get; }
 
         public Vector2I Size { get; private set; }
 
         private VertexDefinition.PositionTextureColor[] _vertices;
-        private String _content;
+        private string _content;
         private readonly List<TexturedRectangle> _icons;
 
-        public String Content
+        public string Content
         {
             get { return _content; }
             set
@@ -80,7 +80,7 @@ namespace Alpha.DirectX.UI.Text
         }
 
         public Color Color { get; set; }
-        public Font Font { get; private set; }
+        public Font Font { get; }
         
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix orthoMatrix)
         {

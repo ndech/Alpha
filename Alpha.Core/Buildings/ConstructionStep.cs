@@ -17,10 +17,7 @@ namespace Alpha.Core.Buildings
             return _resourceRequirements.Select(kvp => new ResourceRequirement(kvp.Key, (int)kvp.Value.For(location))).ToList();
         }
 
-        internal int ManPowerRequirementsFor(Settlement location)
-        {
-            return (int)_manpowerRequirement.For(location);
-        }
+        internal int ManPowerRequirementsFor(Settlement location) => (int)_manpowerRequirement.For(location);
 
         internal ConstructionStep(BuildingType buildingType, XElement element)
         {

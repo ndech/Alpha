@@ -15,9 +15,9 @@ namespace Alpha.DirectX.Input
     {
         Vector2I AbsoluteMousePosition { get; }
         event CustomEventHandler<Vector2I> MouseMoved;
-        event CustomEventHandler<Vector2I, Int32> MouseClicked;
-        event CustomEventHandler<Vector2I, Int32> MouseReleased;
-        event CustomEventHandler<Int32> MouseScrolled;
+        event CustomEventHandler<Vector2I, int> MouseClicked;
+        event CustomEventHandler<Vector2I, int> MouseReleased;
+        event CustomEventHandler<int> MouseScrolled;
         event CustomEventHandler<Key, char?, bool> KeyPressed;
         event CustomEventHandler<Key> KeyReleased;
         bool IsKeyPressed(Key key);
@@ -32,9 +32,9 @@ namespace Alpha.DirectX.Input
         private IContext _context;
 
         public event CustomEventHandler<Vector2I> MouseMoved;
-        public event CustomEventHandler<Vector2I, Int32> MouseClicked;
-        public event CustomEventHandler<Vector2I, Int32> MouseReleased;
-        public event CustomEventHandler<Int32> MouseScrolled;
+        public event CustomEventHandler<Vector2I, int> MouseClicked;
+        public event CustomEventHandler<Vector2I, int> MouseReleased;
+        public event CustomEventHandler<int> MouseScrolled;
         public event CustomEventHandler<Key, char?, bool> KeyPressed;
         public event CustomEventHandler<Key> KeyReleased;
 

@@ -12,7 +12,7 @@ namespace Alpha.Core.Fleets
 {
     public class Fleet : Component, IDailyUpdatableItem, IMovable, IEventable
     {
-        internal Fleet(World world, String name, Realm owner, Zone location, List<Ship> ships) : base(world)
+        internal Fleet(World world, string name, Realm owner, Zone location, List<Ship> ships) : base(world)
         {
             Id = IdSequence;
             Name = name;
@@ -21,7 +21,7 @@ namespace Alpha.Core.Fleets
             _ships = ships;
         }
 
-        public String Name { get; internal set; }
+        public string Name { get; internal set; }
         private readonly List<Ship> _ships;
         public IEnumerable<Ship> Ships { get { return _ships; } }
         public int ShipCount { get { return _ships.Count; } }

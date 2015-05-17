@@ -2,11 +2,11 @@
 
 namespace Alpha.DirectX.UI.Coordinates
 {
-    struct UniScalar : IEquatable<UniScalar>, IEquatable<Object>
+    struct UniScalar : IEquatable<UniScalar>, IEquatable<object>
     {
         public static readonly UniScalar Zero = new UniScalar();
-        public float Fraction { get; set; }
-        public int Offset { get; set; }
+        public float Fraction { get; }
+        public int Offset { get; }
 
         public UniScalar(float fraction, int offset = 0)
             : this()

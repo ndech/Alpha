@@ -11,13 +11,13 @@ namespace Alpha.DirectX.Shaders
     class PathShader : Shader, IDisposable
     {
         private const string FileName = @"Data/Shaders/Path.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        GeometryShader GeometryShader { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        Buffer ConstantPathDataBuffer { get; set; }
-        SamplerState SamplerState { get; set; }
-        InputLayout Layout { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        GeometryShader GeometryShader { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        Buffer ConstantPathDataBuffer { get; }
+        SamplerState SamplerState { get; }
+        InputLayout Layout { get; }
 
         [StructLayout(LayoutKind.Sequential)]
         private struct PathData

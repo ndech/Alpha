@@ -13,10 +13,10 @@ namespace Alpha.DirectX.UI
         protected readonly IContext Context;
         protected readonly List<Control> Controls;
         public UiComponent Parent { get; set; }
-        public abstract String ComponentType { get; }
-        public String Id { get; private set; }
+        public abstract string ComponentType { get; }
+        public string Id { get; private set; }
         
-        protected UiComponent(IContext context, String id)
+        protected UiComponent(IContext context, string id)
         {
             Context = context;
             Id = id;

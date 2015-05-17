@@ -2,11 +2,11 @@
 
 namespace Alpha.DirectX.UI.Coordinates
 {
-    struct UniRectangle : IEquatable<UniRectangle>, IEquatable<Object>
+    struct UniRectangle : IEquatable<UniRectangle>, IEquatable<object>
     {
         public static readonly UniRectangle Zero = new UniRectangle();
-        public UniVector Position { get; set; }
-        public UniVector Size { get; set; }
+        public UniVector Position { get; }
+        public UniVector Size { get; }
 
         public UniRectangle(UniVector position, UniVector size) : this()
         {

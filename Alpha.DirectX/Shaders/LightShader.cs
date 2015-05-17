@@ -28,13 +28,13 @@ namespace Alpha.DirectX.Shaders
             public float padding; // Structure size must be a multiple of 16 bytes
         }
         private const string ShaderFileName = @"Data/Shaders/Light.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        Buffer ConstantLightBuffer { get; set; }
-        Buffer ConstantCameraBuffer { get; set; }
-        SamplerState SamplerState { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        Buffer ConstantLightBuffer { get; }
+        Buffer ConstantCameraBuffer { get; }
+        SamplerState SamplerState { get; }
 
         public LightShader(Device device)
         {

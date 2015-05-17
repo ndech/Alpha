@@ -62,7 +62,7 @@ namespace Alpha.DirectX.UI.Styles
     }
     class FontStyleItem : StyleItem
     {
-        public String Font { get; private set; }
+        public string Font { get; private set; }
 
         public FontStyleItem(string name)
         {
@@ -71,11 +71,11 @@ namespace Alpha.DirectX.UI.Styles
     }
     class FontSizeStyleItem : StyleItem
     {
-        public Int32 FontSize { get; private set; }
+        public int FontSize { get; private set; }
 
         public FontSizeStyleItem(string name)
         {
-            FontSize = Int32.Parse(name);
+            FontSize = int.Parse(name);
         }
     }
     class PaddingStyleItem : StyleItem
@@ -84,7 +84,7 @@ namespace Alpha.DirectX.UI.Styles
 
         public PaddingStyleItem(string name)
         {
-            Padding = new Padding(Int32.Parse(name));
+            Padding = new Padding(int.Parse(name));
         }
     }
 
@@ -97,9 +97,9 @@ namespace Alpha.DirectX.UI.Styles
             Clicked
         }
         public Type TextureType { get; private set; }
-        public String Path { get; private set; }
+        public string Path { get; private set; }
 
-        public TextureStyleItem(Type type, String path)
+        public TextureStyleItem(Type type, string path)
         {
             TextureType = type;
             Path = path;

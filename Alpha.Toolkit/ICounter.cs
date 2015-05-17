@@ -4,6 +4,6 @@
     interface ICounter
     {
         float Value { get; }
-        String Unit { get; }
+        string Unit { get; }
     }
 }

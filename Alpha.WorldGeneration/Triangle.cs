@@ -8,7 +8,7 @@ namespace Alpha.WorldGeneration
         //Contains the tree points of the triangle in a clockwise order
         public readonly Vector2I[] Points = new Vector2I[3];
         public Edge[] Edges = new Edge[3];
-        public Int32 Id { get; private set; }
+        public int Id { get; }
         public Vector2I A { get { return Points[0]; } }
         public Vector2I B { get { return Points[1]; } }
         public Vector2I C { get { return Points[2]; } }
@@ -25,7 +25,7 @@ namespace Alpha.WorldGeneration
             }
         }
 
-        public static Int32 AutoIncrement = 0;
+        public static int AutoIncrement = 0;
         public Triangle(Vector2I a, Vector2I b, Vector2I c)
         {
             Points[0] = a;

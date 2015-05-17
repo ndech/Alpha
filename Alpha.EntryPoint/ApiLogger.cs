@@ -20,7 +20,7 @@ namespace Alpha.EntryPoint
                         continue;
                     file.WriteLine(type.Name);
                     foreach (ConstructorInfo member in type.GetConstructors())
-                        file.WriteLine(";Constructor"+"(" + (member.GetParameters().Any() ? String.Join(", ", member.GetParameters().Select(p => p.ParameterType.Name)) : "")+")");
+                        file.WriteLine(";Constructor"+"(" + (member.GetParameters().Any() ? string.Join(", ", member.GetParameters().Select(p => p.ParameterType.Name)) : "")+")");
                     foreach (MethodInfo member in type.GetMethods())
                     {
                         if (!(new[] { "ToString", "GetHashCode", "Equals", "GetType" }).Contains(member.Name))
@@ -32,7 +32,7 @@ namespace Alpha.EntryPoint
                             }
                             var toBeDeleted = new[] { "System.", "Collections.Generic.", "`1", "`2", "Alpha.Core.Realms.", "Alpha.Core.Provinces.", "Alpha.Core.Fleets.", "Alpha.Core.Commands.", "Alpha.Core.Calendars.", "Alpha.Toolkit.Math." };
                             string name = member.ToString();
-                            name = toBeDeleted.Aggregate(name, (current, value) => current.Replace(value, String.Empty));
+                            name = toBeDeleted.Aggregate(name, (current, value) => current.Replace(value, string.Empty));
                             name = name.Replace(" ", ";");
                             file.WriteLine(name);
                         }

@@ -22,7 +22,7 @@ namespace Alpha.EntryPoint
         private readonly ContinueFlag _continue = new ContinueFlag();
         private readonly List<Notification> _dailyNotifications = new List<Notification>();
         private readonly List<Notification> _liveNotifications = new List<Notification>();
-        public AutoResetEvent GenerateWorldEvent { get; private set; }
+        public AutoResetEvent GenerateWorldEvent { get; }
         private volatile string _loadingMessage = "";
         public string LoadingMessage { get { return _loadingMessage; } }
         private volatile bool _isWorldGenerationDone;

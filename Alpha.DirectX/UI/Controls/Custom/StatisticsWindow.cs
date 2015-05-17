@@ -97,7 +97,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Tab populationTab = tabContainer.RegisterTab(new Tab(Context, "stats_population_tab", "Population"));
         }
 
-        public List<Tuple<CustomColor, double, String, String>> PieChartValues()
+        public List<Tuple<CustomColor, double, string, string>> PieChartValues()
         {
             if (_selectedResourceType == null)
                 return new List<Tuple<CustomColor, double, string, string>> { new Tuple<CustomColor, double, string, string>(new CustomColor(0.2f, 0.2f, 0.2f), 1, "NA", "NA") };

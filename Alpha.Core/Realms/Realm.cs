@@ -16,7 +16,7 @@ namespace Alpha.Core.Realms
             Color = CustomColor.Random;
         }
         
-        public RealmEconomy Economy { get; private set; }
+        public RealmEconomy Economy { get; }
         public Realm Liege { get; internal set; }
         private readonly List<Realm> _vassals = new List<Realm>();
         private readonly List<LandProvince> _demesne = new List<LandProvince>();
@@ -28,7 +28,7 @@ namespace Alpha.Core.Realms
         } } 
         //public IEnumerable<Fleet> Fleets { get { return World.FleetManager.Fleets.Where(f => f.Owner.Equals(this)); } } 
         
-        public String Name { get; internal set; }
+        public string Name { get; }
 
         void IDailyUpdatableItem.DayUpdate()
         {
@@ -49,9 +49,9 @@ namespace Alpha.Core.Realms
         {
             return _vassals.Where(criteria).RandomItem();
         }
-        public Int32 DemesneSize { get { return _demesne.Count; } }
-        public Int32 DirectVassalCount { get { return _vassals.Count; } }
-        public Int32 TotalVassalCount { get { return DirectVassalCount + Vassals.Sum((v) => v.TotalVassalCount); } }
+        public int DemesneSize { get { return _demesne.Count; } }
+        public int DirectVassalCount { get { return _vassals.Count; } }
+        public int TotalVassalCount { get { return DirectVassalCount + Vassals.Sum((v) => v.TotalVassalCount); } }
 
         public void AddProvince(LandProvince province)
         {
@@ -95,7 +95,7 @@ namespace Alpha.Core.Realms
         }
         private static int _idSequence;
         protected static int IdSequence { get { return ++_idSequence; } }
-        public int Id { get; private set; }
+        public int Id { get; }
         public CustomColor Color { get; internal set; }
         public override string ToString()
         {

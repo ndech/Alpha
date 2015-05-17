@@ -9,18 +9,18 @@ namespace Alpha.DirectX.UI.Styles
 {
     class StyleManager
     {
-        private readonly Dictionary<String, Dictionary<String, List<StyleItem>>> _styles; 
+        private readonly Dictionary<string, Dictionary<string, List<StyleItem>>> _styles; 
         public StyleManager()
         {
-            _styles = new Dictionary<String, Dictionary<String, List<StyleItem>>>();
-            foreach (String file in Directory.GetFiles("Data/UI/Styles/"))
+            _styles = new Dictionary<string, Dictionary<string, List<StyleItem>>>();
+            foreach (string file in Directory.GetFiles("Data/UI/Styles/"))
             {
                 XDocument document = XDocument.Load(file);
                 foreach (XElement item in document.Descendants("style"))
                 {
                     if (item.Parent == null) continue;
-                    String targetTypeKey = item.Parent.Attribute("for").Value;
-                    String styleKey = item.Attribute("in") != null ? item.Attribute("in").Value : "default";
+                    string targetTypeKey = item.Parent.Attribute("for").Value;
+                    string styleKey = item.Attribute("in") != null ? item.Attribute("in").Value : "default";
                     List<StyleItem> styleItems = item.Elements().Select(StyleItem.Create).ToList();
                     if(!_styles.ContainsKey(targetTypeKey))
                         _styles[targetTypeKey] = new Dictionary<string, List<StyleItem>>();
@@ -39,7 +39,7 @@ namespace Alpha.DirectX.UI.Styles
             return style;
         }
 
-        private void ApplyStyle<T>(Style<T> style, UiComponent component, String type)
+        private void ApplyStyle<T>(Style<T> style, UiComponent component, string type)
             where T : Control
         {
             if (component.Parent != null)

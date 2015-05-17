@@ -6,7 +6,7 @@ namespace Alpha.DirectX.UI.Controls
 {
     internal class Tab : Panel
     {
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         public Tab(IContext context, string id, string title) : base(context, id, new UniRectangle(), Color.SkyBlue)
         {

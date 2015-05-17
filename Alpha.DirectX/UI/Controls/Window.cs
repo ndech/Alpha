@@ -7,12 +7,12 @@ namespace Alpha.DirectX.UI.Controls
 {
     abstract class Window : Panel
     {
-        public String Title { get; private set; }
+        public string Title { get; }
         private Label _titleLabel;
         private Panel _contentPanel;
         public abstract UniVector MinimumSize { get; }
 
-        public Window(IContext context, string id, UniRectangle coordinates, String title) : base(context, id, coordinates, Color.Wheat)
+        public Window(IContext context, string id, UniRectangle coordinates, string title) : base(context, id, coordinates, Color.Wheat)
         {
             Title = title ?? "No title";
         }

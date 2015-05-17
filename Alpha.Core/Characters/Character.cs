@@ -17,14 +17,14 @@ namespace Alpha.Core.Characters
     }
     public class Character : Component, IEventable, ITagable, ISavable
     {
-        public Date BirthDate { get; private set; }
+        public Date BirthDate { get; }
         public Date DeathDate { get; private set; }
         public bool IsAlive { get { return DeathDate == null; } }
         public int Age { get { return World.Calendar.AgeOf(BirthDate); } }
-        public String NickName { get; internal set; }
+        public string NickName { get; internal set; }
         public bool HasNickName { get { return NickName != null; } }
-        public String FirstName { get; private set; }
-        public String LastName { get; private set; }
+        public string FirstName { get; }
+        public string LastName { get; }
 
         private IList<Character> _children = new List<Character>();
         public IEnumerable<Character> Children { get { return _children; } }
@@ -33,11 +33,11 @@ namespace Alpha.Core.Characters
         public Character Father { get; private set; }
         public TagCollection Tags { get; set; }
 
-        public Sex Gender { get; private set; }
+        public Sex Gender { get; }
         public bool IsMale { get { return Gender == Sex.Male; } }
         public bool IsFemale { get { return Gender == Sex.Female; } }
 
-        internal Character(World world, String firstName, String lastName, Sex gender, Date birthDate) : base(world)
+        internal Character(World world, string firstName, string lastName, Sex gender, Date birthDate) : base(world)
         {
             FirstName = firstName;
             LastName = lastName;

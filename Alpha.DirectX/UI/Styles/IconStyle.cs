@@ -6,9 +6,9 @@ namespace Alpha.DirectX.UI.Styles
 {
     class IconStyle : Style<Icon>
     {
-        public String BaseTexture { get; private set; }
-        public String HoveredTexture { get; private set; }
-        public String ClickedTexture { get; private set; }
+        public string BaseTexture { get; private set; }
+        public string HoveredTexture { get; private set; }
+        public string ClickedTexture { get; private set; }
 
         internal override void Apply(IEnumerable<StyleItem> stylePartials)
         {

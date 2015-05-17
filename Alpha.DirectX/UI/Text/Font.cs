@@ -29,7 +29,7 @@ namespace Alpha.DirectX.UI.Text
         public SortedList<int, Character> Characters { get; set; }
         private readonly IContext _context;
 
-        public Font(IContext context, String font, int height)
+        public Font(IContext context, string font, int height)
         {
             _context = context;
             Texture = context.TextureManager.Create(font + "-" + height + "px.png", @"Data/Fonts/");
@@ -43,12 +43,12 @@ namespace Alpha.DirectX.UI.Text
                 while (reader.Read())
                     if (reader.Name == "chars")
                     {
-                        Characters = new SortedList<int, Character>(Int32.Parse(reader.GetAttribute("count") ?? "0"));
+                        Characters = new SortedList<int, Character>(int.Parse(reader.GetAttribute("count") ?? "0"));
                         break;
                     }
                 while (reader.Read())
                     if (reader.Name == "char")
-                        Characters.Add(Int32.Parse(reader.GetAttribute("id")), 
+                        Characters.Add(int.Parse(reader.GetAttribute("id")), 
                             new Character
                             { // x = 0 => left, y = 0 => top
                                 height = int.Parse(reader.GetAttribute("height")),
@@ -85,7 +85,7 @@ namespace Alpha.DirectX.UI.Text
                 {
                     if (text[i + 1] == '[')
                         continue;
-                    String token = text.Substring(i + 1, text.IndexOf(']', i + 1) - (i + 1));
+                    string token = text.Substring(i + 1, text.IndexOf(']', i + 1) - (i + 1));
                     if (!ColorParser.TryParse(token, out color))
                     {
                         if (token == "-")

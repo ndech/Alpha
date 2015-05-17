@@ -10,7 +10,7 @@ namespace Alpha.DirectX.UI.Controls
         public bool Hovered { get; protected set; }
         public bool Overlay { get; set; }
         public bool Visible { get; set; }
-        protected Control(IContext context, String id, UniRectangle coordinates)
+        protected Control(IContext context, string id, UniRectangle coordinates)
             : base(context, id)
         {
             Coordinates = coordinates;

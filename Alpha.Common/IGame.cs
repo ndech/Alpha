@@ -7,7 +7,7 @@ namespace Alpha.Common
     {
         void Exit();
         AutoResetEvent GenerateWorldEvent { get; }
-        String LoadingMessage { get; }
+        string LoadingMessage { get; }
         bool IsWorldGenerationDone { get; }
     }
 }

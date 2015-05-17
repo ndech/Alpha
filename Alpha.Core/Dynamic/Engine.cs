@@ -19,7 +19,7 @@ namespace Alpha.Core.Dynamic
             ScriptNameAttribute attribute =
                 (typeof (T).GetCustomAttributes(typeof (ScriptNameAttribute), false)).Cast<ScriptNameAttribute>()
                     .SingleOrDefault();
-            String scriptIdentifier = attribute == null ? typeof (T).Name : attribute.ScriptName;
+            string scriptIdentifier = attribute == null ? typeof (T).Name : attribute.ScriptName;
             return session.Execute<Func<T, T2>>("(" + scriptIdentifier + ") =>" + query);
         }
 
@@ -38,8 +38,8 @@ namespace Alpha.Core.Dynamic
                 Session session = _engine.CreateSession(ScriptContext);
                 session.AddReference(typeof(ScriptContext).Assembly);
                 session.AddReference("System.Core");
-                Execute<String>("using Alpha.Core.Tags;", session);
-                Execute<String>("using System.Linq;", session);
+                Execute<string>("using Alpha.Core.Tags;", session);
+                Execute<string>("using System.Linq;", session);
                 return session;
             }
         }

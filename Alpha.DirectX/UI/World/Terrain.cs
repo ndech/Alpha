@@ -100,7 +100,7 @@ namespace Alpha.DirectX.UI.World
         private void BuildBuffers(IContext context, IList<LandProvince> provinces)
         {
             _indexCount = provinces.SelectMany(p => p.Zones).Sum(z => z.Points.Count) * 3;
-            UInt32[] terrainIndices = new UInt32[_indexCount];
+            uint[] terrainIndices = new uint[_indexCount];
             VertexDefinition.TerrainVertex[] terrainVertices = new VertexDefinition.TerrainVertex[_indexCount];
             int index = 0;
             int maxId = provinces.Max(p => p.NumericId);

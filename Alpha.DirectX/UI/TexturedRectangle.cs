@@ -43,7 +43,7 @@ namespace Alpha.DirectX.UI
                 });
 
             IndexCount = 6;
-            UInt32[] indices = { 0, 1, 2, 0, 3, 1 };
+            uint[] indices = { 0, 1, 2, 0, 3, 1 };
             IndexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.IndexBuffer, indices);
             Size = size;
         }

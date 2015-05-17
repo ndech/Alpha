@@ -59,9 +59,9 @@ namespace Alpha.DirectX.UI
                 });
 
             _indexCount = 54;
-            UInt32[] indices = new UInt32[_indexCount];
-            for(UInt32 i=0; i< 3; i++)
-                for (UInt32 j = 0; j < 3; j++)
+            uint[] indices = new uint[_indexCount];
+            for(uint i=0; i< 3; i++)
+                for (uint j = 0; j < 3; j++)
                 {
                     indices[(i * 3 + j) * 6] = (i + 1) * 4 + j + 1;
                     indices[(i * 3 + j) * 6 + 1] = i * 4 + j + 1;

@@ -9,7 +9,7 @@ namespace Alpha.Toolkit
 {
     public static class ColorParser
     {
-        public static Boolean TryParse(String value, out Color color)
+        public static bool TryParse(string value, out Color color)
         {
             if(value == null)
                 throw new NullReferenceException("Value parameter can not be null");
@@ -23,7 +23,7 @@ namespace Alpha.Toolkit
             else if (Regex.Match(value, "^#([A-Fa-f0-9]{8})$").Success)
             {       
                 //Parse color submitted as #xxxxxxxx
-                int rgba = Int32.Parse(value.Replace("#", ""), NumberStyles.HexNumber);
+                int rgba = int.Parse(value.Replace("#", ""), NumberStyles.HexNumber);
                 color = new Color(rgba);
                 return true;
             }
@@ -32,7 +32,7 @@ namespace Alpha.Toolkit
         }
 
         [Pure]
-        public static Color Parse(String value)
+        public static Color Parse(string value)
         {
             Color color;
             if(!TryParse(value, out color))

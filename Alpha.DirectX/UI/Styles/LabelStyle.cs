@@ -10,8 +10,8 @@ namespace Alpha.DirectX.UI.Styles
         public VerticalAlignment VerticalAlignment { get; private set; }
         public HorizontalAlignment HorizontalAlignment { get; private set; }
         public Color TextColor { get; private set; }
-        public String Font { get; private set; }
-        public Int32 FontSize { get; private set; }
+        public string Font { get; private set; }
+        public int FontSize { get; private set; }
         public Padding Padding { get; private set; }
 
         internal override void Apply(IEnumerable<StyleItem> stylePartials)

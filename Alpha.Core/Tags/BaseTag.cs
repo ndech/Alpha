@@ -5,9 +5,9 @@ namespace Alpha.Core.Tags
 {
     class BaseTag : Tag
     {
-        public String Key { get; private set; }
+        public string Key { get; }
 
-        internal BaseTag(String key)
+        internal BaseTag(string key)
         {
             Key = key;
         }

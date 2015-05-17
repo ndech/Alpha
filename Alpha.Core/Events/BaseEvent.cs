@@ -8,13 +8,13 @@ namespace Alpha.Core.Events
 {
     public abstract class BaseEvent<T> : IEvent<T> where T : IEventable
     {
-        public String Id { get; private set; }
+        public string Id { get; }
         public abstract bool IsTriggeredOnly { get; }
         public abstract IEnumerable<Command> TryTrigger(T eventable);
         internal readonly IEnumerable<Condition<T>> Conditions;
         internal readonly IEnumerable<Outcome<T>> Outcomes; 
 
-        internal BaseEvent(String id, IEnumerable<Condition<T>> conditions, IEnumerable<Outcome<T>> outcomes)
+        internal BaseEvent(string id, IEnumerable<Condition<T>> conditions, IEnumerable<Outcome<T>> outcomes)
         {
             Id = id;
             Conditions = conditions;

@@ -38,7 +38,7 @@ namespace Alpha.DirectX
         public Matrix WorldMatrix { get; private set; }
         public Matrix OrthoMatrix { get; private set; }
         public int VideoCardMemorySize { get; private set; }
-        public String VideoCardName { get; private set; }
+        public string VideoCardName { get; private set; }
 
 
         public Dx11(RenderForm form)

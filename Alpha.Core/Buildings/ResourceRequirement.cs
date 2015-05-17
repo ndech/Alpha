@@ -1,4 +1,5 @@
 ﻿using Alpha.Core.Provinces;
+
 namespace Alpha.Core.Buildings
 {
     class ResourceRequirement
@@ -10,10 +11,10 @@ namespace Alpha.Core.Buildings
             CurrentValue = 0;
         }
 
-        public ResourceType ResourceType { get; private set; }
-        public int TargetValue { get; private set; }
+        public ResourceType ResourceType { get; }
+        public int TargetValue { get; }
         public double CurrentValue { get; internal set; }
-        public bool IsFullfilled { get { return TargetValue <= CurrentValue; } }
-        public double RemainingValue { get { return TargetValue - CurrentValue; } }
+        public bool IsFullfilled => TargetValue <= CurrentValue;
+        public double RemainingValue => TargetValue - CurrentValue;
     }
 }

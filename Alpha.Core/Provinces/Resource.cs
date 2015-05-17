@@ -4,7 +4,7 @@
     {
         public ResourceLevel Level { get; private set; }
         public ResourceType Type { get; private set; }
-        public Population Population { get; private set; }
+        public Population Population { get; }
         public int MaxPopulation { get { return 10000; } }
         public int StorageCapacity { get { return 1000; } }
         public double StorageLevel { get; set; }

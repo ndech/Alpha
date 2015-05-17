@@ -11,11 +11,11 @@ namespace Alpha.DirectX.Shaders
     {
         
         private const string ShaderFileName = @"Data/Shaders/Font.hlsl";
-        VertexShader VertexShader { get; set; }
-        PixelShader PixelShader { get; set; }
-        InputLayout Layout { get; set; }
-        Buffer ConstantMatrixBuffer { get; set; }
-        SamplerState SamplerState { get; set; }
+        VertexShader VertexShader { get; }
+        PixelShader PixelShader { get; }
+        InputLayout Layout { get; }
+        Buffer ConstantMatrixBuffer { get; }
+        SamplerState SamplerState { get; }
 
         public FontShader(Device device)
         {

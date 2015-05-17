@@ -8,7 +8,7 @@ namespace Alpha.Core.Provinces
     {
         private readonly DynamicValue<LandProvince> _probability;
 
-        private BaseSettlementType(String id, String name, String description, DynamicValue<LandProvince> probability)
+        private BaseSettlementType(string id, string name, string description, DynamicValue<LandProvince> probability)
             : base(id, name, description)
         {
             _probability = probability;

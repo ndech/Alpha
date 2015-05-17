@@ -7,7 +7,7 @@ namespace Alpha.Core.Dynamic
         private readonly Func<T, double> _expression;
         private readonly ModifierType _type;
 
-        public DynamicModifier(Func<T, Double> expression, ModifierType type = ModifierType.Multiplier)
+        public DynamicModifier(Func<T, double> expression, ModifierType type = ModifierType.Multiplier)
         {
             _expression = expression;
             _type = type;

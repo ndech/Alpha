@@ -3,10 +3,10 @@ using Alpha.Toolkit.Math;
 
 namespace Alpha.DirectX.UI.Coordinates
 {
-    struct UniVector : IEquatable<UniVector>, IEquatable<Object>
+    struct UniVector : IEquatable<UniVector>, IEquatable<object>
     {
-        public UniScalar X { get; set; }
-        public UniScalar Y { get; set; }
+        public UniScalar X { get; }
+        public UniScalar Y { get; }
 
         public static readonly UniVector Zero = new UniVector();
         public UniVector(UniScalar x, UniScalar y) : this()

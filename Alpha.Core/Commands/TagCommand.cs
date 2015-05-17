@@ -10,12 +10,12 @@ namespace Alpha.Core.Commands
         private readonly int? _duration;
 
 
-        public TagCommand(ITagable tagable, String tag)
+        public TagCommand(ITagable tagable, string tag)
         {
             _tagable = tagable;
             _tag = tag;
         }
-        public TagCommand(ITagable tagable, String tag, int duration)
+        public TagCommand(ITagable tagable, string tag, int duration)
         {
             _tagable = tagable;
             _tag = tag;

@@ -39,7 +39,7 @@ namespace Alpha.Core.Calendars
             return Day - other.Day;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             return Day + " " + Month + " " + Year;
         }

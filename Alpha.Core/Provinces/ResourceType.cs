@@ -13,8 +13,8 @@ namespace Alpha.Core.Provinces
             Building,
             Default
         }
-        public String Id { get; private set; }
-        public String Name { get; private set; }
+        public string Id { get; }
+        public string Name { get; private set; }
         internal DynamicValue<IScriptLandProvinceForResourcesGeneration> Probability { get; private set; }
         public ResourceCategory Category { get; private set; }
         

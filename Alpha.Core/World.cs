@@ -23,13 +23,13 @@ namespace Alpha.Core
         private readonly List<Notification> _liveNotifications;
         private readonly ConcurrentQueue<Command> _commands = new ConcurrentQueue<Command>();
         private HashSet<RealmToken> _interactiveModeRealms = new HashSet<RealmToken>();
-        private List<Manager> Managers { get; set; }
-        public FleetManager FleetManager { get; private set; }
-        public RealmManager RealmManager { get; private set; }
+        private List<Manager> Managers { get; }
+        public FleetManager FleetManager { get; }
+        public RealmManager RealmManager { get; }
         internal EventManager EventManager { get; private set; }
-        public ProvinceManager ProvinceManager { get; private set; }
-        public CharacterManager CharacterManager { get; private set; }
-        public Calendars.Calendar Calendar { get; private set; }
+        public ProvinceManager ProvinceManager { get; }
+        public CharacterManager CharacterManager { get; }
+        public Calendars.Calendar Calendar { get; }
         public Vector2I Size { get; set; }
 
         private event CustomEventHandler<RealmToken> NewRealm;
@@ -132,7 +132,7 @@ namespace Alpha.Core
             _dailyNotifications.Add(notification);
         }
 
-        public void Save(String fileName)
+        public void Save(string fileName)
         {
             new SaveGame(fileName, Calendar, CharacterManager);
         }

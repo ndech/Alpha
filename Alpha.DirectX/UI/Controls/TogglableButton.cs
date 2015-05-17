@@ -23,7 +23,7 @@ namespace Alpha.DirectX.UI.Controls
             Toggled
         }
 
-        public TogglableButton(IContext context, String id, UniRectangle coordinates, String normalTexturePath, String toggledTexturePath)
+        public TogglableButton(IContext context, string id, UniRectangle coordinates, string normalTexturePath, string toggledTexturePath)
             : base(context, id, coordinates)
         {
             _normalTexturePath = normalTexturePath;

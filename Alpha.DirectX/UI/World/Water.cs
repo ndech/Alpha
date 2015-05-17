@@ -47,7 +47,7 @@ namespace Alpha.DirectX.UI.World
         private void BuildBuffers(IContext context, IEnumerable<SeaProvince> provinces)
         {
             _indexCount = provinces.SelectMany(p=>p.Zones).Sum(z => z.Points.Count) * 3;
-            UInt32[] waterIndices = new UInt32[_indexCount];
+            uint[] waterIndices = new uint[_indexCount];
             VertexDefinition.WaterVertex[] waterVertices = new VertexDefinition.WaterVertex[_indexCount];
             int index = 0;
             foreach (Zone zone in provinces.SelectMany(p=>p.Zones))

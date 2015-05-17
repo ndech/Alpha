@@ -36,7 +36,7 @@ namespace Alpha.Core.Buildings
                     .Where(type => type.PreConditionsValidFor(settlement));
         }
 
-        public static BuildingType GetById(String id)
+        public static BuildingType GetById(string id)
         {
             Debug.Assert(_buildingTypes != null, "Building statuses not initialized");
             return _buildingTypes.Single(b => b.Id.Equals(id), "No building type with id ("+id+") is defined.");

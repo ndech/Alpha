@@ -107,7 +107,7 @@ namespace Alpha.Toolkit
                 yield return list[(step+i)%list.Count];
         }
 
-        public static T Single<T>(this IEnumerable<T> data, String exceptionMessage)
+        public static T Single<T>(this IEnumerable<T> data, string exceptionMessage)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Alpha.Toolkit
                 throw new InvalidOperationException(exceptionMessage, e);
             }
         }
-        public static T Single<T>(this IEnumerable<T> data, Func<T, bool> predicate, String exceptionMessage)
+        public static T Single<T>(this IEnumerable<T> data, Func<T, bool> predicate, string exceptionMessage)
         {
             try
             {

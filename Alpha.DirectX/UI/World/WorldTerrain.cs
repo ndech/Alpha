@@ -52,7 +52,7 @@ namespace Alpha.DirectX.UI.World
                     };
 
             _terrainIndexCount = width * height * 6;
-            UInt32[] terrainIndices = new UInt32[_terrainIndexCount];
+            uint[] terrainIndices = new uint[_terrainIndexCount];
             for (int i = 0; i < (height); i++)
                 for (int j = 0; j < (width); j++)
                 {
@@ -81,7 +81,7 @@ namespace Alpha.DirectX.UI.World
                     };
 
             _waterIndexCount = 6;
-            UInt32[] waterIndices = { 0, 3, 2, 0, 1, 3 };
+            uint[] waterIndices = { 0, 3, 2, 0, 1, 3 };
             _waterVertexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.VertexBuffer, waterVertices);
             _waterIndexBuffer = Buffer.Create(context.DirectX.Device, BindFlags.IndexBuffer, waterIndices);
         }

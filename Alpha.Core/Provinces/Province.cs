@@ -28,12 +28,12 @@ namespace Alpha.Core.Provinces
         {
             return IdPrefix + "_"+ IdSequence;
         }
-        protected abstract String IdPrefix { get; }
+        protected abstract string IdPrefix { get; }
 
         private static int _idSequence;
         protected static int IdSequence { get { return ++_idSequence; } }
         public int NumericId { get; set; }
-        public String Id { get; private set; }
+        public string Id { get; }
 
         private readonly List<Zone> _zones;
         public IEnumerable<Zone> Zones { get { return _zones; } }

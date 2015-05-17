@@ -9,7 +9,7 @@ namespace Alpha.Core.Commands
         private readonly string _tag;
 
 
-        public RemoveTagCommand(ITagable tagable, String tag)
+        public RemoveTagCommand(ITagable tagable, string tag)
         {
             _tagable = tagable;
             _tag = tag;

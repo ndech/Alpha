@@ -6,14 +6,14 @@ namespace Alpha.Toolkit
 {
     public static class NameGenerator
     {
-        private static List<String> provinceNames;
-        private static List<String> settlementNames;
+        private static List<string> provinceNames;
+        private static List<string> settlementNames;
 
-        public static String GetRandomProvinceName()
+        public static string GetRandomProvinceName()
         {
             return provinceNames.RandomItem();
         }
-        public static String GetSettlementName()
+        public static string GetSettlementName()
         {
             return provinceNames.RandomItem();
         }
@@ -24,10 +24,10 @@ namespace Alpha.Toolkit
             settlementNames = ReadFromFile(@"Data\SettlementNames.txt");
         }
 
-        public static List<String> ReadFromFile(String filename)
+        public static List<string> ReadFromFile(string filename)
         {
-            List<String> result = new List<string>();
-            String line;
+            List<string> result = new List<string>();
+            string line;
             using (StreamReader file = new StreamReader(filename))
                 while ((line = file.ReadLine()) != null)
                     result.Add(line);

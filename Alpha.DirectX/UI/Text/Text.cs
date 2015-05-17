@@ -17,7 +17,7 @@ namespace Alpha.DirectX.UI.Text
 
     class TextLine
     {
-        public List<String> Words { get; set; }
+        public List<string> Words { get; set; }
         public int WordCount { get; set; }
         public int Width { get; set; }
         public bool WordWrapped { get; set; }
@@ -35,9 +35,9 @@ namespace Alpha.DirectX.UI.Text
     {
         public VerticalAlignment VerticalAlignment { get; set; }
         public HorizontalAlignment HorizontalAlignment { get; set; }
-        private String _content;
-        private Boolean _isEmpty;
-        public String Content
+        private string _content;
+        private bool _isEmpty;
+        public string Content
         {
             get { return _content; }
             set
@@ -60,7 +60,7 @@ namespace Alpha.DirectX.UI.Text
                 Update();
             } 
         }
-        private Padding Padding { get; set; }
+        private Padding Padding { get; }
         private int _numberOfLetters;
         private int SpaceSize {get { return Font.Characters[' '].width; }}
         private const int LineSpacing = 3;
@@ -121,7 +121,7 @@ namespace Alpha.DirectX.UI.Text
                     spaceSize = SpaceSize + (float)(Size.X - Padding.Left - Padding.Right - line.Width)/(line.WordCount - 1);
                 for (int j = 0; j < line.Words.Count; j++)
                 {
-                    String word = line.Words[j];
+                    string word = line.Words[j];
                     for (int k = 0; k < word.Length; k ++)
                     {
                         char letter = word[k];
@@ -129,7 +129,7 @@ namespace Alpha.DirectX.UI.Text
                         {
                             if (word[k + 1] != '[')
                             {
-                                String token = word.Substring(k + 1, word.IndexOf(']', k + 1) - (k + 1));
+                                string token = word.Substring(k + 1, word.IndexOf(']', k + 1) - (k + 1));
                                 if (token == "-")
                                     color = BaseColor;
                                 else if(!ColorParser.TryParse(token, out color))
@@ -161,9 +161,9 @@ namespace Alpha.DirectX.UI.Text
 
         private void CreateIndexBuffer(Device device)
         {
-            UInt32[] indices = new UInt32[_numberOfLetters * 6]; // 6 indices per character
+            uint[] indices = new uint[_numberOfLetters * 6]; // 6 indices per character
 
-            for (UInt32 i = 0; i < _numberOfLetters; i++)
+            for (uint i = 0; i < _numberOfLetters; i++)
             {
                 indices[i * 6] = i * 4;
                 indices[i * 6 + 1] = i * 4 + 1;
@@ -183,7 +183,7 @@ namespace Alpha.DirectX.UI.Text
             List<TextLine> lines = new List<TextLine>();
             foreach (var stringLine in Content.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
             {
-                String[] words = stringLine.Split(new[] { ' ' });
+                string[] words = stringLine.Split(new[] { ' ' });
                 TextLine tempLine = new TextLine();
                 foreach (string word in words)
                 {
@@ -204,7 +204,7 @@ namespace Alpha.DirectX.UI.Text
             return lines;
         }
 
-        private int CalculateWordSize(String word, out int width)
+        private int CalculateWordSize(string word, out int width)
         {
             int letterCount = 0;
             width = 0;
@@ -237,7 +237,7 @@ namespace Alpha.DirectX.UI.Text
             _shader.Render(deviceContext, _numberOfLetters * 6, worldMatrix, viewMatrix, orthoMatrix, Font.Texture.TextureResource);
         }
 
-        public static String Escape(String text)
+        public static string Escape(string text)
         {
             return text.Replace("[", "[[");
         }

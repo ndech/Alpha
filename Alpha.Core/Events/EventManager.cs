@@ -203,15 +203,15 @@ namespace Alpha.Core.Events
 
         public List<IEvent<T>> LoadEvents<T>() where T : IEventable
         {
-            String identifier = typeof (T).Name;
+            string identifier = typeof (T).Name;
             List<IEvent<T>> events = new List<IEvent<T>>();
-            foreach (String fileName in Directory.GetFiles("Data/Events/"))
+            foreach (string fileName in Directory.GetFiles("Data/Events/"))
             {
                 XDocument document = XDocument.Load(fileName);
                 foreach (XElement xmlEvent in document.Descendants("event").Where(e=>e.Attribute("type").Value.Equals(identifier.ToLower())))
                 {
                     IEvent<T> newEvent;
-                    String eventId = (String)xmlEvent.Attribute("id").Mandatory("An event without id is defined in file " + fileName);
+                    string eventId = (string)xmlEvent.Attribute("id").Mandatory("An event without id is defined in file " + fileName);
                     bool isTriggeredOnly = xmlEvent.Attribute("triggered-only") != null &&
                                       xmlEvent.Attribute("triggered-only").Value.Equals("true");
                     IEnumerable<Condition<T>> conditions = xmlEvent.Element("conditions").Elements("condition")

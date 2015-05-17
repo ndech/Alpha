@@ -7,7 +7,7 @@ namespace Alpha.Core.Dynamic
     {
         public string ScriptName { get; private set; }
 
-        internal ScriptNameAttribute(String scriptName)
+        internal ScriptNameAttribute(string scriptName)
         {
             ScriptName = scriptName;
         }

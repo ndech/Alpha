@@ -9,8 +9,8 @@ namespace Alpha.DirectX.UI.Layouts
     {
         private class LayoutItem
         {
-            public Control Control { get; set; }
-            public int Width { get; set; }
+            public Control Control { get; }
+            public int Width { get; }
 
             public LayoutItem(Control control, int width)
             {
@@ -23,7 +23,7 @@ namespace Alpha.DirectX.UI.Layouts
         private readonly int _leftOffset;
         private readonly int _rightOffset;
         private readonly List<LayoutItem> _controls = new List<LayoutItem>(); 
-        public Control Parent { get; private set; }
+        public Control Parent { get; }
 
         public HorizontalLayout(Control parent, UniScalar verticalPosition, UniScalar height, int leftOffset = 0, int rightOffset = 0)
         {

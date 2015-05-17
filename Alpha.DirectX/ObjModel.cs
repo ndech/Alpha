@@ -15,13 +15,13 @@ namespace Alpha.DirectX
 {
     class ObjModel : IDisposable
     {
-        private Buffer VertexBuffer { get; set; }
-        private Buffer IndexBuffer { get; set; }
+        private Buffer VertexBuffer { get; }
+        private Buffer IndexBuffer { get; }
         public int VertexCount { get; private set; }
         public int IndexCount { get; private set; }
         public Texture Texture { get; private set; }
 
-        public ObjModel(Device device, String modelFileName, Texture texture)
+        public ObjModel(Device device, string modelFileName, Texture texture)
         {
             StreamReader reader = new StreamReader("Data/Models/"+modelFileName);
             List<Vector3> vertices = new List<Vector3>();
@@ -30,10 +30,10 @@ namespace Alpha.DirectX
             List<Tuple<int,int,int>> points = new List<Tuple<int, int, int>>();
             while (!reader.EndOfStream)
             {
-                String line = reader.ReadLine();
-                if (String.IsNullOrWhiteSpace(line) || line[0] =='#')
+                string line = reader.ReadLine();
+                if (string.IsNullOrWhiteSpace(line) || line[0] =='#')
                     continue;
-                String[] items = line.Split(' ');
+                string[] items = line.Split(' ');
                 if(items[0] == "v")
                     vertices.Add(new Vector3(float.Parse(items[1], CultureInfo.InvariantCulture), float.Parse(items[2], CultureInfo.InvariantCulture), -float.Parse(items[3], CultureInfo.InvariantCulture)));
                 if (items[0] == "vt")
@@ -44,8 +44,8 @@ namespace Alpha.DirectX
                 {
                     for (int i = 3; i >0; i--)
                     {
-                        String[] items2 = items[i].Split('/');
-                        points.Add(new Tuple<int, int, int>(Int32.Parse(items2[0], CultureInfo.InvariantCulture), Int32.Parse(items2[1], CultureInfo.InvariantCulture), Int32.Parse(items2[2], CultureInfo.InvariantCulture)));
+                        string[] items2 = items[i].Split('/');
+                        points.Add(new Tuple<int, int, int>(int.Parse(items2[0], CultureInfo.InvariantCulture), int.Parse(items2[1], CultureInfo.InvariantCulture), int.Parse(items2[2], CultureInfo.InvariantCulture)));
                     }
                 }
             }
@@ -57,7 +57,7 @@ namespace Alpha.DirectX
                 verticesDefinition[i].normal = normals[points[i].Item3-1];
             }
             VertexCount = points.Count;
-            Int32[] indicesDefinition = new int[points.Count];
+            int[] indicesDefinition = new int[points.Count];
             for (int i = 0; i < points.Count; i++)
                 indicesDefinition[i] = i;
             IndexCount = points.Count;

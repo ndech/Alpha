@@ -23,7 +23,7 @@ namespace Alpha.Core.Calendars
         }
         public int CurrentSeasonLength { get; private set; }
         public Date CurrentDate { get; private set; }
-        public TagCollection Tags { get; private set; }
+        public TagCollection Tags { get; }
 
         internal Calendar(World world) : base(world)
         {

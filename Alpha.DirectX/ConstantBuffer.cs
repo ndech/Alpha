@@ -7,7 +7,7 @@ namespace Alpha.DirectX
 {
     class ConstantBuffer<T> : IDisposable where T : struct
     {
-        public Buffer Buffer { get; private set; }
+        public Buffer Buffer { get; }
         private readonly DeviceContext _deviceContext;
 
         public ConstantBuffer(IContext context)

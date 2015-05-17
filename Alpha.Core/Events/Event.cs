@@ -27,10 +27,10 @@ namespace Alpha.Core.Events
             return null;
         }
 
-        private Func<T, String> LabelGenerator { get; set; }
+        private Func<T, string> LabelGenerator { get; set; }
 
         private readonly DynamicValue<T> _meanTimeToHappen;
-        public String Label(T item)
+        public string Label(T item)
         {
             return LabelGenerator(item);
         }

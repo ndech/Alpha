@@ -6,7 +6,7 @@ namespace Alpha.DirectX
 {
     class TextureManager : IDisposable
     {
-        private readonly Dictionary<String, Texture> _textureDictionary;
+        private readonly Dictionary<string, Texture> _textureDictionary;
         private readonly Device _device;
 
         public TextureManager(Device device)
@@ -17,13 +17,13 @@ namespace Alpha.DirectX
 
         public void Dispose()
         {
-            foreach (KeyValuePair<String, Texture> keyValuePair in _textureDictionary)
+            foreach (KeyValuePair<string, Texture> keyValuePair in _textureDictionary)
                 keyValuePair.Value.Dispose();
         }
 
-        public Texture Create(String fileName, String path = "Data/Textures/")
+        public Texture Create(string fileName, string path = "Data/Textures/")
         {
-            String key = path + fileName;
+            string key = path + fileName;
             if (!_textureDictionary.ContainsKey(key))
             {
                 Texture newTexture = new Texture(_device, fileName, path);

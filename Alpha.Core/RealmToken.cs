@@ -4,7 +4,7 @@ namespace Alpha.Core
 {
     public class RealmToken
     {
-        public Realm Realm { get; private set; }
+        public Realm Realm { get; }
 
         internal RealmToken(Realm realm)
         {

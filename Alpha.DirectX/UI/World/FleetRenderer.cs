@@ -19,12 +19,12 @@ namespace Alpha.DirectX.UI.World
         {
             public readonly Matrix WorldMatrix;
             public readonly Vector3 WorldPosition;
-            public Int32 ShipCount;
+            public int ShipCount;
             public readonly Text.Text Text;
             public readonly List<Fleet> Fleets;
             public Status CurrentStatus;
 
-            public Int32 FleetCount { get { return Fleets.Count; } }
+            public int FleetCount { get { return Fleets.Count; } }
 
             public enum Status
             {

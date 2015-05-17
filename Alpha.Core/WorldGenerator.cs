@@ -31,13 +31,13 @@ namespace Alpha.Core
             _dataLock = dataLock;
         }
 
-        IProcessableWorld IWorldGenerator.Generate(Action<String> feedback)
+        IProcessableWorld IWorldGenerator.Generate(Action<string> feedback)
         {
             feedback("Initializing Script Engine");
             Engine.Execute<bool>("true",Engine.NewSession);
             feedback("Creating world");
             World world = new World(_dailyNotifications, _liveNotifications, _dataLock);
-            Int32 zoneCount = ConfigurationManager.Config.NumberOfRegions;
+            int zoneCount = ConfigurationManager.Config.NumberOfRegions;
             feedback("Generating base shapes");
             world.Size = ConfigurationManager.Config.WorldSize;
             List<VoronoiSite> sites = Generator.Create(world.Size.X, world.Size.Y, zoneCount, 1, 1256);
