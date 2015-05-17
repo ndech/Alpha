@@ -1,94 +1,47 @@
 ﻿using System;
+using Alpha.Toolkit.Math;
 
 namespace Alpha.Common
 {
     public class ConfigurationManager
     {
-        private enum ScreenModes
+        private ScreenModeEnum ScreenMode { get; } = ScreenModeEnum.Large;
+        private WorldParameterEnum WorldParameter { get; } = WorldParameterEnum.Small;
+
+        public static ConfigurationManager Config { get; } = new ConfigurationManager();
+        public string Title => "Test DirectX";
+        public bool AntiAliasing { get; }
+        public bool WindowedMode => ScreenMode != ScreenModeEnum.Fullscreen;
+        public bool VSync { get; } = true;
+        public float NearLimit { get; } = 10;
+        public float FarLimit { get; } = 50000;
+        public Vector2I WorldSize => WorldParameter == WorldParameterEnum.Large ? new Vector2I(4000, 2000) : new Vector2I(2000, 1000);
+        public int NumberOfRegions => WorldParameter == WorldParameterEnum.Large ? 15000 : (WorldParameter == WorldParameterEnum.Medium ? 5000 : 1000);
+
+        public Vector2I ScreenSize
         {
-            Fullscreen,
-            Windowed,
-            Large
-        };
-        private enum WorldSize
-        {
-            Small,
-            Medium,
-            Large
-        };
+            get
+            {
+                switch (ScreenMode)
+                {
+                    case ScreenModeEnum.Fullscreen: return new Vector2I(1920, 1080);
+                    case ScreenModeEnum.Large:      return new Vector2I(1500, 800);
+                    case ScreenModeEnum.Windowed:   return new Vector2I(1024, 768);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         private ConfigurationManager()
         {
-            SetValues(ScreenModes.Large);
-            SetValues(WorldSize.Small);
 #if DEBUG
-            AntiAliasing = false;
+            AntiAliasing = false; 
 #else
-            AntiAliasing = true;
+            AntiAliasing = true; 
 #endif
-            FarLimit = 50000.0f;
-            NearLimit = 10f;
-            VSync = true;
         }
-
-        private void SetValues(WorldSize worldSize)
-        {
-            if (worldSize == WorldSize.Small)
-            {
-                NumberOfRegions = 1000;
-                WorldWidth = 2000;
-                WorldHeight = 1000;
-            }
-            else if (worldSize == WorldSize.Large)
-            {
-                NumberOfRegions = 15000;
-                WorldWidth = 4000;
-                WorldHeight = 2000;
-            }
-            else if (worldSize == WorldSize.Medium)
-            {
-                NumberOfRegions = 5000;
-                WorldWidth = 2000;
-                WorldHeight = 1000;
-            }
-        }
-
-        private void SetValues(ScreenModes screenMode)
-        {
-            if (screenMode == ScreenModes.Fullscreen)
-            {
-                WindowedMode = false;
-                Height = 1080;
-                Width = 1920;
-                
-            }
-            else if (screenMode == ScreenModes.Windowed)
-            {
-                WindowedMode = true;
-                Height = 768;
-                Width = 1024;
-            }
-            else if (screenMode == ScreenModes.Large)
-            {
-                WindowedMode = true;
-                Height = 800;
-                Width = 1500;
-            }
-        }
-
-        private static readonly ConfigurationManager Instance = new ConfigurationManager();
-        public static ConfigurationManager Config { get { return Instance; } }
-        public String Title { get { return "Test DirectX"; } }
-        public bool AntiAliasing { get; private set; }
-        public bool WindowedMode { get; private set; }
-        public bool VSync { get; private set; }
-        public int Height { get; private set; }
-        public int Width { get; private set; }
-        public float NearLimit { get; private set; }
-        public float FarLimit { get; private set; }
-
-        public int WorldWidth { get; private set; }
-        public int WorldHeight { get; private set; }
-        public int NumberOfRegions { get; private set; }
-
+        
+        private enum ScreenModeEnum { Fullscreen, Windowed, Large };
+        private enum WorldParameterEnum { Small, Medium, Large };
     }
 }

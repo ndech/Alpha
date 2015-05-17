@@ -70,8 +70,8 @@ namespace Alpha.DirectX
                 return new Rational(60, 1);
             return monitor.GetDisplayModeList(Format.R8G8B8A8_UNorm, DisplayModeEnumerationFlags.Interlaced).
                 Where(mode =>
-                        mode.Width == ConfigurationManager.Config.Width &&
-                        mode.Height == ConfigurationManager.Config.Height).Last().RefreshRate;
+                        mode.Width == ConfigurationManager.Config.ScreenSize.X &&
+                        mode.Height == ConfigurationManager.Config.ScreenSize.Y).Last().RefreshRate;
         }
 
         public void CreateDeviceAndSwapChain(RenderForm form)
@@ -114,8 +114,8 @@ namespace Alpha.DirectX
             //Create the depth/stencil buffer
 			var depthBufferDesc = new Texture2DDescription
 			{
-				Width = ConfigurationManager.Config.Width,
-				Height = ConfigurationManager.Config.Height,
+				Width = ConfigurationManager.Config.ScreenSize.X,
+				Height = ConfigurationManager.Config.ScreenSize.Y,
 				MipLevels = 1,
 				ArraySize = 1,
 				Format = Format.D24_UNorm_S8_UInt,
@@ -210,8 +210,8 @@ namespace Alpha.DirectX
             
             RenderToTextureDepthStencilView = new DepthStencilView(Device, new Texture2D(Device, new Texture2DDescription
 			{
-				Width = ConfigurationManager.Config.Width,
-				Height = ConfigurationManager.Config.Height,
+				Width = ConfigurationManager.Config.ScreenSize.X,
+				Height = ConfigurationManager.Config.ScreenSize.Y,
 				MipLevels = 1,
 				ArraySize = 1,
 				Format = Format.D24_UNorm_S8_UInt,
@@ -255,10 +255,10 @@ namespace Alpha.DirectX
 
             // Now set the rasterizer state.
             DeviceContext.Rasterizer.State = _rasterStateSolid;
-            DeviceContext.Rasterizer.SetScissorRectangle(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
+            DeviceContext.Rasterizer.SetScissorRectangle(0, 0, ConfigurationManager.Config.ScreenSize.X, ConfigurationManager.Config.ScreenSize.Y);
 
             // Setup and create the viewport for rendering.
-            DeviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.Width, ConfigurationManager.Config.Height);
+            DeviceContext.Rasterizer.SetViewport(0, 0, ConfigurationManager.Config.ScreenSize.X, ConfigurationManager.Config.ScreenSize.Y);
 
             var blendStateDescription = new BlendStateDescription();
             blendStateDescription.RenderTarget[0].IsBlendEnabled = true;
@@ -282,7 +282,7 @@ namespace Alpha.DirectX
             // Setup and create the projection matrix.
             ProjectionMatrix = Matrix.PerspectiveFovLH(
                 (float) (Math.PI/4),
-                ((float) ConfigurationManager.Config.Width/ConfigurationManager.Config.Height),
+                ((float) ConfigurationManager.Config.ScreenSize.X/ConfigurationManager.Config.ScreenSize.Y),
                 ConfigurationManager.Config.NearLimit, ConfigurationManager.Config.FarLimit);
 
             // Initialize the world matrix to the identity matrix.
@@ -290,8 +290,8 @@ namespace Alpha.DirectX
 
             // Create an orthographic projection matrix used for 2D rendering.
             OrthoMatrix = Matrix.OrthoLH(
-                ConfigurationManager.Config.Width,
-                ConfigurationManager.Config.Height,
+                ConfigurationManager.Config.ScreenSize.X,
+                ConfigurationManager.Config.ScreenSize.Y,
                 ConfigurationManager.Config.NearLimit,
                 ConfigurationManager.Config.FarLimit);
         }

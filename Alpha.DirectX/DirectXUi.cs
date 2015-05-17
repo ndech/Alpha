@@ -82,7 +82,7 @@ namespace Alpha.DirectX
         {
             _form = new RenderForm(ConfigurationManager.Config.Title)
             {
-                ClientSize = new Size(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height),
+                ClientSize = new Size(ConfigurationManager.Config.ScreenSize.X, ConfigurationManager.Config.ScreenSize.Y),
                 FormBorderStyle = FormBorderStyle.FixedSingle
             };
             _form.Show();

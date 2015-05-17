@@ -15,21 +15,21 @@ namespace Alpha.DirectX
     class Context : IContext
     {
         private readonly WorldContainer _worldContainer;
-        public IUiManager UiManager { get; private set; }
-        public Vector2I ScreenSize { get { return new Vector2I(ConfigurationManager.Config.Width, ConfigurationManager.Config.Height); } }
-        public RenderForm Form { get; private set; }
-        public Dx11 DirectX { get; private set; }
-        public IInput Input { get; private set; }
-        public TextManager TextManager { get; private set; }
-        public TextureManager TextureManager { get; private set; }
-        public ShaderManager Shaders { get; private set; }
-        public ICamera Camera { get; private set; }
-        public IGame Game { get; private set; }
-        public World World { get { return _worldContainer.World; } }
-        public Realm Realm { get { return _worldContainer.PlayerRealm; } }
-        public RealmToken RealmToken { get { return _worldContainer.PlayerRealm; } }
-        public NotificationResolver NotificationResolver { get; private set; }
-        public DataLock DataLock { get; private set; }
+        public IUiManager UiManager { get; }
+        public Vector2I ScreenSize => ConfigurationManager.Config.ScreenSize;
+        public RenderForm Form { get; }
+        public Dx11 DirectX { get; }
+        public IInput Input { get; }
+        public TextManager TextManager { get; }
+        public TextureManager TextureManager { get; }
+        public ShaderManager Shaders { get; }
+        public ICamera Camera { get; }
+        public IGame Game { get; }
+        public World World => _worldContainer.World;
+        public Realm Realm => _worldContainer.PlayerRealm;
+        public RealmToken RealmToken => _worldContainer.PlayerRealm;
+        public NotificationResolver NotificationResolver { get; }
+        public DataLock DataLock { get; }
 
         public void RegisterCommand(Command command)
         {
