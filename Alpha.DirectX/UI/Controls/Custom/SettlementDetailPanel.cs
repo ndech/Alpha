@@ -55,7 +55,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Visible = true;
             _settlement = settlement;
             _name.Text = settlement.Name;
-            _buildButton.Text = "Build "+ BuildingTypes.AvailableFor(_settlement).First().Name;
+            _buildButton.Text = "Build "+ BuildingTypes.AvailableFor(_settlement).FirstOrDefault()?.Name ?? "No building";
             _resourceScrollableContainer.Refresh(settlement.Province.Resources.OrderByDescending(r=>r.Level.Value).ToList());
         }
 
