@@ -5,7 +5,6 @@ using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit;
-using Alpha.Toolkit.Math;
 using SharpDX;
 using HorizontalAlignment = Alpha.DirectX.UI.Styles.HorizontalAlignment;
 
