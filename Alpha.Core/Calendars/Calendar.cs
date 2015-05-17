@@ -23,11 +23,10 @@ namespace Alpha.Core.Calendars
         }
         public int CurrentSeasonLength { get; private set; }
         public Date CurrentDate { get; private set; }
-        public TagCollection Tags { get; }
+        public TagCollection Tags { get; } = new TagCollection();
 
         internal Calendar(World world) : base(world)
         {
-            Tags = new TagCollection();
             _seasons = Season.LoadSeasons();
             _months = Month.LoadMonths();
             CurrentDate = new Date(28,_months.Skip(11).First(),2014);
@@ -76,9 +75,10 @@ namespace Alpha.Core.Calendars
         private readonly IEnumerable<Season> _seasons;
         private readonly IEnumerable<Month> _months;
         private List<IEvent<Calendar>> _events;
-        public int Year { get { return CurrentDate.Year; } }
-        public Month Month { get { return CurrentDate.Month; } }
-        public int Day { get { return CurrentDate.Day; } }
+        public int Year => CurrentDate.Year;
+        public Month Month => CurrentDate.Month;
+        public int Day => CurrentDate.Day;
+        public Date Today => CurrentDate;
 
         public Date Date(int day, int month, int year)
         {
@@ -90,7 +90,6 @@ namespace Alpha.Core.Calendars
             get { throw new System.NotImplementedException(); }
         }
 
-        public Date Today { get { return CurrentDate; } }
 
         public void Load()
         {

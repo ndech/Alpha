@@ -7,15 +7,15 @@ namespace Alpha.Toolkit.Math
     {
         public static readonly Matrix3x3 Zero = new Matrix3x3(0);
         public static readonly Matrix3x3 Identity = new Matrix3x3(1.0, 0, 0, 0, 1.0, 0, 0, 0, 1.0);
-        public double M11 { get; }
-        public double M12 { get; }
-        public double M13 { get; }
-        public double M21 { get; }
-        public double M22 { get; }
-        public double M23 { get; }
-        public double M31 { get; }
-        public double M32 { get; }
-        public double M33 { get; }
+        public double M11 { get; set; }
+        public double M12 { get; set; }
+        public double M13 { get; set; }
+        public double M21 { get; set; }
+        public double M22 { get; set; }
+        public double M23 { get; set; }
+        public double M31 { get; set; }
+        public double M32 { get; set; }
+        public double M33 { get; set; }
 
         public Matrix3x3(double value)
         {

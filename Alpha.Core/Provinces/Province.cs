@@ -45,7 +45,8 @@ namespace Alpha.Core.Provinces
             return Id == other.Id;
         }
 
-        protected abstract void DayUpdate();
+        protected virtual void DayUpdate() { }
+
         void IDailyUpdatableItem.DayUpdate()
         {
             DayUpdate();

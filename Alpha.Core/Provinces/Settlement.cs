@@ -11,12 +11,12 @@ namespace Alpha.Core.Provinces
 {
     public class Settlement : Component, IDailyUpdatableItem, ISavable, IEventable
     {
-        public string Name { get; }
-        public LandProvince Province { get; private set; }
-        public BaseSettlementType Type { get; }
-        public List<Building> Buildings { get; internal set; }
-        public List<Construction> Constructions { get; internal set; }
-        public Population Population { get; internal set; }
+        public string Name { get; internal set; }
+        public LandProvince Province { get; }
+        public BaseSettlementType Type { get; internal set; }
+        public List<Building> Buildings { get; }
+        public List<Construction> Constructions { get;}
+        public Population Population { get; }
 
         public Settlement(World world, LandProvince province) : base(world)
         {
@@ -47,11 +47,8 @@ namespace Alpha.Core.Provinces
             Constructions.Add(new Construction(building, this, World.Calendar.Today));
         }
 
-        public override string ToString()
-        {
-            return Type.Name + " of " + Name;
-        }
-        
+        public override string ToString() => Type.Name + " of " + Name;
+
         public XElement Save()
         {
             return new XElement("settlement",
