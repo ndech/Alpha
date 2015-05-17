@@ -128,7 +128,6 @@
     <Compile Include="Notifications\FleetMovedNotification.cs" />
     <Compile Include="Notifications\NewFleetMoveOrderNotification.cs" />
     <Compile Include="Notifications\NewFleetNotification.cs" />
-    <Compile Include="Notifications\NewSettlementNotification.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Dynamic\DynamicValue.cs" />
     <Compile Include="Provinces\IScriptLandProvinceForResourcesGeneration.cs" />

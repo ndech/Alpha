@@ -12,23 +12,25 @@ namespace Alpha
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Raise<T, T1, T2>(this CustomEventHandler<T, T1, T2> handler, T arg, T1 arg2, T2 arg3)
         {
-            if (handler != null) handler(arg, arg2, arg3);
+            handler?.Invoke(arg, arg2, arg3);
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Raise<T, T1>(this CustomEventHandler<T, T1> handler, T arg, T1 arg2)
         {
-            if (handler != null) handler(arg, arg2);
+            handler?.Invoke(arg, arg2);
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Raise<T>(this CustomEventHandler<T> handler, T arg)
         {
-            if (handler != null) handler(arg);
+            handler?.Invoke(arg);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Raise(this CustomEventHandler handler)
         {
-            if (handler != null) handler();
+            handler?.Invoke();
         }
     }
 }

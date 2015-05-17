@@ -4,15 +4,13 @@ namespace Alpha.Core.Notifications
 {
     public class NewFleetNotification : Notification
     {
-        public Fleet Fleet { get; private set; }
+        public Fleet Fleet { get; }
+
         internal NewFleetNotification(Fleet fleet)
         {
             Fleet = fleet;
         }
 
-        public override bool ValidForRealm(RealmToken realm)
-        {
-            return true;
-        }
+        public override bool ValidForRealm(RealmToken realm) => true;
     }
 }

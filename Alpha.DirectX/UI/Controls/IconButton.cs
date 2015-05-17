@@ -17,6 +17,12 @@ namespace Alpha.DirectX.UI.Controls
             Overlay = false;
         }
 
+        public IconButton(IContext context, string id, CustomEventHandler action)
+            : this(context, id)
+        {
+            Clicked += action;
+        }
+
         public override void Initialize()
         {
             base.Initialize();

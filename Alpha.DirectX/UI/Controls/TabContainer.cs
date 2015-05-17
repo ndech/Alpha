@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using Alpha.DirectX.UI.Coordinates;
 using SharpDX;
-using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI.Controls
 {
@@ -12,7 +10,7 @@ namespace Alpha.DirectX.UI.Controls
         private const int TabHeight = 30;
         private const int TabTitleSpacing = 4;
         private List<Tab> _tabs;
-        private List<TogglableButton> _titleButtons;
+        private readonly List<TogglableButton> _titleButtons;
         private TogglableButtonGroup _buttonGroup;
 
 
@@ -43,8 +41,8 @@ namespace Alpha.DirectX.UI.Controls
         private void CalculateTitlePosition()
         {
             int count = _titleButtons.Count;
-            float buttonWidth = (float)(Size.X - TabTitleSpacing*(count + 1))/count;
-            float position = TabTitleSpacing;
+            float buttonWidth = (float)(Size.X - TabTitleSpacing*(count + 1) - LeftOffset - RightOffset)/count;
+            float position = TabTitleSpacing + LeftOffset;
             for (int i = 0; i < count; i++)
             {
                 _titleButtons[i].Coordinates = new UniRectangle(Convert.ToInt32(position), TabTitleSpacing, Convert.ToInt32(buttonWidth), TabHeight - TabTitleSpacing);
@@ -56,6 +54,16 @@ namespace Alpha.DirectX.UI.Controls
         {
             CalculateTitlePosition();
             base.OnResize();
+        }
+
+        public int LeftOffset { get; private set; } = 0;
+        public int RightOffset { get; private set; } = 0;
+
+        public void SetOffset(int left=0, int right=0)
+        {
+            LeftOffset = left;
+            RightOffset = right;
+            Resize();
         }
     }
 }

@@ -19,23 +19,23 @@ namespace Alpha.Core.Characters
     {
         public Date BirthDate { get; }
         public Date DeathDate { get; private set; }
-        public bool IsAlive { get { return DeathDate == null; } }
-        public int Age { get { return World.Calendar.AgeOf(BirthDate); } }
+        public bool IsAlive => DeathDate == null;
+        public int Age => World.Calendar.AgeOf(BirthDate);
         public string NickName { get; internal set; }
-        public bool HasNickName { get { return NickName != null; } }
+        public bool HasNickName => NickName != null;
         public string FirstName { get; }
         public string LastName { get; }
 
         private IList<Character> _children = new List<Character>();
-        public IEnumerable<Character> Children { get { return _children; } }
-        public IEnumerable<Character> Heirs { get { return _children.Where(c => c.IsAlive); } }
-        public Character Mother { get; private set; }
-        public Character Father { get; private set; }
-        public TagCollection Tags { get; set; }
+        public IEnumerable<Character> Children => _children;
+        public IEnumerable<Character> Heirs => _children.Where(c => c.IsAlive);
+        public Character Mother { get; }
+        public Character Father { get;  }
+        public TagCollection Tags { get; } = new TagCollection();
 
         public Sex Gender { get; }
-        public bool IsMale { get { return Gender == Sex.Male; } }
-        public bool IsFemale { get { return Gender == Sex.Female; } }
+        public bool IsMale => Gender == Sex.Male;
+        public bool IsFemale => Gender == Sex.Female;
 
         internal Character(World world, string firstName, string lastName, Sex gender, Date birthDate) : base(world)
         {
@@ -43,7 +43,6 @@ namespace Alpha.Core.Characters
             LastName = lastName;
             BirthDate = birthDate;
             Gender = gender;
-            Tags = new TagCollection();
         }
 
         public Realm ResponsibleRealm { get { throw new NotImplementedException(); } }

@@ -5,6 +5,7 @@ using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Layouts;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit;
+using Alpha.Toolkit.Math;
 using SharpDX;
 using HorizontalAlignment = Alpha.DirectX.UI.Styles.HorizontalAlignment;
 
@@ -13,7 +14,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
     class ProvinceDetailPanel : Panel
     {
         private LandProvince _province;
-        private Label _name;
+        private Label _provinceName;
         private ScrollableContainer<SettlementScrollableItem, Settlement> _settlementScrollableContainer;
         private readonly SettlementDetailPanel _settlementDetailPanel;
 
@@ -27,32 +28,33 @@ namespace Alpha.DirectX.UI.Controls.Custom
         public override void Initialize()
         {
             base.Initialize();
+
             new PositionLayout(this, new UniScalar(1.0f,-50), 40, HorizontalAlignment.Center, VerticalAlignment.Top)
-                .Create(_name = new Label(Context, "province_name", new UniRectangle(),""));
-            IconButton closeButton;
+                .Create(_provinceName = new Label(Context, "province_name"));
+            
             new PositionLayout(this, 20,20, HorizontalAlignment.Right, VerticalAlignment.Top, new Padding(3))
-                .Create(closeButton = new IconButton(Context, "close_button"));
-            closeButton.Clicked += () => Visible = false;
+                .Create(new IconButton(Context, "close_button", () => Visible = false));
+
+            TabContainer container = Register(new TabContainer(Context, "province_tabs", new UniRectangle(0,150,1.0f, new UniScalar(1,-150))));
+            Tab overiewTab = container.RegisterTab(new Tab(Context, "province_overview_tab", "Overview"));
+            Tab economyTab = container.RegisterTab(new Tab(Context, "province_economy_tab", "Economy"));
+            Tab politicsTab = container.RegisterTab(new Tab(Context, "province_politics_tab", "Politics"));
+            container.SetOffset(250);
+
+
             _settlementScrollableContainer =
                 new ScrollableContainer<SettlementScrollableItem, Settlement>(Context, "settlements", 4,
                     c => new SettlementScrollableItem(c, _settlementDetailPanel));
             new PositionLayout(this, _settlementScrollableContainer.Size.X, _settlementScrollableContainer.Size.Y, 
-                               HorizontalAlignment.Center, VerticalAlignment.Middle)
+                               HorizontalAlignment.Center, VerticalAlignment.Bottom)
                               .Create(_settlementScrollableContainer);
-            Context.NotificationResolver.NewSettlement +=
-                s =>
-                {
-                    if (Visible && s.Province == _province) ShowProvince(_province);
-                    _settlementScrollableContainer.ShowLast();
-                };
-
         }
 
         public void ShowProvince(LandProvince province)
         {
             Visible = true;
             _province = province;
-            _name.Text = province.Name;
+            _provinceName.Text = "Province of " + province.Name;
             _settlementScrollableContainer.Refresh(province.Capital.Yield().ToList());
         }
 

@@ -29,6 +29,10 @@ namespace Alpha.DirectX.UI.Controls
             _textValue = text;
         }
 
+        public Label(IContext context, string id, string text="")
+            : this(context, id, new UniRectangle(), text)
+        { }
+
         public override string ComponentType
         {
             get { return "label"; }

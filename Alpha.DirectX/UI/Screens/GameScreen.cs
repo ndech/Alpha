@@ -52,7 +52,7 @@ namespace Alpha.DirectX.UI.Screens
             ExtraMinimapButtonPanel extraMinimapButtonPanel = new ExtraMinimapButtonPanel(context, () => minimapPanel.ExtraPanelVisible);
             new PositionLayout(this, 300, 200, HorizontalAlignment.Center, VerticalAlignment.Bottom).Create(extraMinimapButtonPanel);
             _settlementDetailPanel = new SettlementDetailPanel(context);
-            new PositionLayout(this, 500, 600, HorizontalAlignment.Left, VerticalAlignment.Bottom)
+            new PositionLayout(this, 800, 600, HorizontalAlignment.Left, VerticalAlignment.Bottom)
                 .Create(_provinceDetailPanel = new ProvinceDetailPanel(context, _settlementDetailPanel));
             new PositionLayout(this, 500, 600, HorizontalAlignment.Center, VerticalAlignment.Middle)
                 .Create(_settlementDetailPanel);
