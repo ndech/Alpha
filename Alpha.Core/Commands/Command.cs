@@ -6,9 +6,6 @@
 
         internal abstract void Execute();
 
-        internal virtual bool IsValid()
-        {
-            return true;
-        }
+        internal virtual bool IsValid() => true;
     }
 }

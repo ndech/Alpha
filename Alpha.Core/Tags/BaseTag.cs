@@ -17,24 +17,15 @@ namespace Alpha.Core.Tags
             return other is BaseTag && ((BaseTag) other).Key.Equals(Key);
         }
 
-        public override XElement Save()
-        {
-            return new XElement("baseTag", Key);
-        }
+        public override XElement Save() => new XElement("baseTag", Key);
 
         public override void Load()
         {
             throw new NotImplementedException();
         }
 
-        internal override bool IsValid()
-        {
-            return true;
-        }
+        internal override bool IsValid() => true;
 
-        public override string ToString()
-        {
-            return "BaseTag : " + Key;
-        }
+        public override string ToString() => "BaseTag : " + Key;
     }
 }

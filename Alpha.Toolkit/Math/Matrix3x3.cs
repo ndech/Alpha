@@ -3,10 +3,10 @@ using System.Globalization;
 
 namespace Alpha.Toolkit.Math
 {
-    internal class Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
+    internal class Matrix3X3 : IEquatable<Matrix3X3>, IFormattable
     {
-        public static readonly Matrix3x3 Zero = new Matrix3x3(0);
-        public static readonly Matrix3x3 Identity = new Matrix3x3(1.0, 0, 0, 0, 1.0, 0, 0, 0, 1.0);
+        public static readonly Matrix3X3 Zero = new Matrix3X3(0);
+        public static readonly Matrix3X3 Identity = new Matrix3X3(1.0, 0, 0, 0, 1.0, 0, 0, 0, 1.0);
         public double M11 { get; set; }
         public double M12 { get; set; }
         public double M13 { get; set; }
@@ -17,29 +17,29 @@ namespace Alpha.Toolkit.Math
         public double M32 { get; set; }
         public double M33 { get; set; }
 
-        public Matrix3x3(double value)
+        public Matrix3X3(double value)
         {
             M11 = M12 = M13 =
                 M21 = M22 = M23 =
                     M31 = M32 = M33 = value;
         }
 
-        public Matrix3x3(double M11, double M12, double M13,
-            double M21, double M22, double M23,
-            double M31, double M32, double M33)
+        public Matrix3X3(double m11, double m12, double m13,
+            double m21, double m22, double m23,
+            double m31, double m32, double m33)
         {
-            this.M11 = M11;
-            this.M12 = M12;
-            this.M13 = M13;
-            this.M21 = M21;
-            this.M22 = M22;
-            this.M23 = M23;
-            this.M31 = M31;
-            this.M32 = M32;
-            this.M33 = M33;
+            M11 = m11;
+            M12 = m12;
+            M13 = m13;
+            M21 = m21;
+            M22 = m22;
+            M23 = m23;
+            M31 = m31;
+            M32 = m32;
+            M33 = m33;
         }
 
-        public Matrix3x3(double[] values)
+        public Matrix3X3(double[] values)
         {
             if (values == null)
                 throw new ArgumentNullException("values");
@@ -245,9 +245,9 @@ namespace Alpha.Toolkit.Math
             return M11*M22*M33 + M12*M23*M31 + M13*M21*M32 - M13*M22*M31 - M12*M21*M33 - M11*M23*M32;
         }
 
-        public static Matrix3x3 Add(Matrix3x3 left, Matrix3x3 right)
+        public static Matrix3X3 Add(Matrix3X3 left, Matrix3X3 right)
         {
-            return new Matrix3x3(
+            return new Matrix3X3(
                 left.M11 + right.M11,
                 left.M12 + right.M12,
                 left.M13 + right.M13,
@@ -260,9 +260,9 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public static Matrix3x3 Substract(Matrix3x3 left, Matrix3x3 right)
+        public static Matrix3X3 Substract(Matrix3X3 left, Matrix3X3 right)
         {
-            return new Matrix3x3(
+            return new Matrix3X3(
                 left.M11 - right.M11,
                 left.M12 - right.M12,
                 left.M13 - right.M13,
@@ -275,9 +275,9 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public static Matrix3x3 Multiply(Matrix3x3 left, double multiplicator)
+        public static Matrix3X3 Multiply(Matrix3X3 left, double multiplicator)
         {
-            return new Matrix3x3(
+            return new Matrix3X3(
                 left.M11*multiplicator,
                 left.M12*multiplicator,
                 left.M13*multiplicator,
@@ -290,9 +290,9 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public static Matrix3x3 Multiply(Matrix3x3 left, Matrix3x3 right)
+        public static Matrix3X3 Multiply(Matrix3X3 left, Matrix3X3 right)
         {
-            return new Matrix3x3(
+            return new Matrix3X3(
                 (left.M11*right.M11) + (left.M12*right.M21) + (left.M13*right.M31),
                 (left.M11*right.M12) + (left.M12*right.M22) + (left.M13*right.M32),
                 (left.M11*right.M13) + (left.M12*right.M23) + (left.M13*right.M33),
@@ -305,7 +305,7 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public static Vector3D Multiply(Matrix3x3 left, Vector3D right)
+        public static Vector3D Multiply(Matrix3X3 left, Vector3D right)
         {
             return new Vector3D(
                 (left.M11*right.X) + (left.M12*right.Y) + (left.M13*right.Z),
@@ -314,16 +314,16 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public static Matrix3x3 Divide(Matrix3x3 left, double right)
+        public static Matrix3X3 Divide(Matrix3X3 left, double right)
         {
             if (right == 0.0)
                 throw new DivideByZeroException();
             return Multiply(left, 1.0/right);
         }
 
-        public static Matrix3x3 Negate(Matrix3x3 value)
+        public static Matrix3X3 Negate(Matrix3X3 value)
         {
-            return new Matrix3x3(
+            return new Matrix3X3(
                 -value.M11,
                 -value.M12,
                 -value.M13,
@@ -335,9 +335,9 @@ namespace Alpha.Toolkit.Math
                 -value.M33);
         }
 
-        public static Matrix3x3 Transpose(Matrix3x3 value)
+        public static Matrix3X3 Transpose(Matrix3X3 value)
         {
-            return new Matrix3x3(
+            return new Matrix3X3(
                 value.M11,
                 value.M21,
                 value.M31,
@@ -350,12 +350,12 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public Matrix3x3 Transpose()
+        public Matrix3X3 Transpose()
         {
             return Transpose(this);
         }
 
-        public static Matrix3x3 Invert(Matrix3x3 value)
+        public static Matrix3X3 Invert(Matrix3X3 value)
         {
             double determinant = value.Determinant();
             if (determinant == 0.0)
@@ -375,7 +375,7 @@ namespace Alpha.Toolkit.Math
             double d32 = (value.M11*value.M23) - (value.M13*value.M21);
             double d33 = (value.M11*value.M22) - (value.M12*value.M21);
 
-            return new Matrix3x3(
+            return new Matrix3X3(
                 d11*determinant,
                 -d21*determinant,
                 d31*determinant,
@@ -388,62 +388,62 @@ namespace Alpha.Toolkit.Math
                 );
         }
 
-        public Matrix3x3 Invert()
+        public Matrix3X3 Invert()
         {
             return Invert(this);
         }
 
-        public static Matrix3x3 operator +(Matrix3x3 left, Matrix3x3 right)
+        public static Matrix3X3 operator +(Matrix3X3 left, Matrix3X3 right)
         {
             return Add(left, right);
         }
 
-        public static Matrix3x3 operator +(Matrix3x3 value)
+        public static Matrix3X3 operator +(Matrix3X3 value)
         {
             return value;
         }
 
-        public static Matrix3x3 operator -(Matrix3x3 left, Matrix3x3 right)
+        public static Matrix3X3 operator -(Matrix3X3 left, Matrix3X3 right)
         {
             return Substract(left, right);
         }
 
-        public static Matrix3x3 operator -(Matrix3x3 value)
+        public static Matrix3X3 operator -(Matrix3X3 value)
         {
             return Negate(value);
         }
 
-        public static Matrix3x3 operator *(double left, Matrix3x3 right)
+        public static Matrix3X3 operator *(double left, Matrix3X3 right)
         {
             return Multiply(right, left);
         }
 
-        public static Matrix3x3 operator *(Matrix3x3 left, double right)
+        public static Matrix3X3 operator *(Matrix3X3 left, double right)
         {
             return Multiply(left, right);
         }
 
-        public static Matrix3x3 operator *(Matrix3x3 left, Matrix3x3 right)
+        public static Matrix3X3 operator *(Matrix3X3 left, Matrix3X3 right)
         {
             return Multiply(left, right);
         }
 
-        public static Vector3D operator *(Matrix3x3 left, Vector3D right)
+        public static Vector3D operator *(Matrix3X3 left, Vector3D right)
         {
             return Multiply(left, right);
         }
 
-        public static Matrix3x3 operator /(Matrix3x3 left, double right)
+        public static Matrix3X3 operator /(Matrix3X3 left, double right)
         {
             return Divide(left, right);
         }
 
-        public static bool operator ==(Matrix3x3 left, Matrix3x3 right)
+        public static bool operator ==(Matrix3X3 left, Matrix3X3 right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Matrix3x3 left, Matrix3x3 right)
+        public static bool operator !=(Matrix3X3 left, Matrix3X3 right)
         {
             return !left.Equals(right);
         }
@@ -512,7 +512,7 @@ namespace Alpha.Toolkit.Math
             }
         }
 
-        public static bool Equals(Matrix3x3 a, Matrix3x3 b)
+        public static bool Equals(Matrix3X3 a, Matrix3X3 b)
         {
             return
                 MathUtil.NearEqual(a.M11, b.M11) &&
@@ -527,7 +527,7 @@ namespace Alpha.Toolkit.Math
                 ;
         }
 
-        public bool Equals(Matrix3x3 other)
+        public bool Equals(Matrix3X3 other)
         {
             return Equals(this, other);
         }
@@ -536,9 +536,9 @@ namespace Alpha.Toolkit.Math
         {
             if (value == null)
                 return false;
-            if (!ReferenceEquals(value.GetType(), typeof (Matrix3x3)))
+            if (!ReferenceEquals(value.GetType(), typeof (Matrix3X3)))
                 return false;
-            return Equals((Matrix3x3) value);
+            return Equals((Matrix3X3) value);
         }
     }
 }

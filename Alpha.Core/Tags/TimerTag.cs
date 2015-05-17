@@ -16,10 +16,7 @@ namespace Alpha.Core.Tags
             _duration--;
         }
 
-        internal override bool IsValid()
-        {
-            return _duration > 0;
-        }
+        internal override bool IsValid() => _duration > 0;
 
         public override XElement Save()
         {

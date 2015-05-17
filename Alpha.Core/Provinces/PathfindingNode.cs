@@ -7,10 +7,10 @@ namespace Alpha.Core.Provinces
     class PathfindingNode : IComparable<PathfindingNode>
     {
         public Zone Zone { get; }
-        public PathfindingNode Parent { get; private set; }
-        public double PathLength { get; set; }
-        public double EstimateRemainingDistance { get; set; }
-        public double Cost { get { return PathLength + EstimateRemainingDistance; } }
+        public PathfindingNode Parent { get; }
+        public double PathLength { get; }
+        public double EstimateRemainingDistance { get; }
+        public double Cost => PathLength + EstimateRemainingDistance;
 
         public PathfindingNode(Zone zone, double estimateRemainingDistance, PathfindingNode parent = null)
         {

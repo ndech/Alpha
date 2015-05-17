@@ -2,7 +2,7 @@
 
 namespace Alpha.Core.Commands
 {
-    public class ChangeBuildingConditionCommand: EventOnlyCommand
+    public class ChangeBuildingConditionCommand : EventOnlyCommand
     {
         private readonly Building _building;
         private readonly double _value;

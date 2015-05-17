@@ -9,6 +9,7 @@ namespace Alpha.Core.Dynamic
     {
         private static ScriptContext _scriptContext;
         private static readonly ScriptEngine _engine = new ScriptEngine();
+
         public static T Execute<T>(string query, Session session)
         {
             return session.Execute<T>(query);
@@ -23,13 +24,7 @@ namespace Alpha.Core.Dynamic
             return session.Execute<Func<T, T2>>("(" + scriptIdentifier + ") =>" + query);
         }
 
-        private static ScriptContext ScriptContext
-        {
-            get
-            {
-                return _scriptContext ?? (_scriptContext = new ScriptContext());
-            }
-        }
+        private static ScriptContext ScriptContext => _scriptContext ?? (_scriptContext = new ScriptContext());
 
         public static Session NewSession
         {

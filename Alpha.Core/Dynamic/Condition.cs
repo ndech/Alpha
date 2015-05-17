@@ -9,18 +9,14 @@ namespace Alpha.Core.Dynamic
 
         internal Condition(XElement element)
         {
-            string scriptIdentifier = typeof(T).Name;
-            _expression = Engine.Execute<Func<T, bool>>("(" + scriptIdentifier + ") => " + element.Value, Engine.NewSession);
+            _expression = Engine.GetFunc<T, bool>(element.Value, Engine.NewSession);
         }
 
-        public Condition(bool expression)
+        public Condition(bool fixedValue)
         {
-            _expression = s => expression;
+            _expression = t => fixedValue;
         }
 
-        public bool IsValid(T item)
-        {
-            return _expression(item);
-        }
+        public bool IsValid(T item) => _expression(item);
     }
 }

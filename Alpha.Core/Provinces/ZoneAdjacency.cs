@@ -17,9 +17,9 @@ namespace Alpha.Core.Provinces
             };
         }
 
-        public Zone Zone { get; private set; }
-        public Zone Neighbourg { get; private set; }
-        public List<Vector3D> PassingPoints { get; private set; }
-        public List<Vector3D> CommonPoints { get; private set; } 
+        public Zone Zone { get; }
+        public Zone Neighbourg { get; }
+        public List<Vector3D> PassingPoints { get; }
+        public List<Vector3D> CommonPoints { get; } 
     }
 }

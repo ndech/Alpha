@@ -24,19 +24,16 @@ namespace Alpha.Core.Provinces
 
         public abstract string Name { get; internal set; }
 
-        protected string GenerateStringId(int id)
-        {
-            return IdPrefix + "_"+ IdSequence;
-        }
+        protected string GenerateStringId(int id) => IdPrefix + "_"+ IdSequence;
         protected abstract string IdPrefix { get; }
 
         private static int _idSequence;
-        protected static int IdSequence { get { return ++_idSequence; } }
+        protected static int IdSequence => ++_idSequence;
         public int NumericId { get; set; }
         public string Id { get; }
 
         private readonly List<Zone> _zones;
-        public IEnumerable<Zone> Zones { get { return _zones; } }
+        public IEnumerable<Zone> Zones => _zones;
 
         public Vector3D Center { get; private set; }
 
@@ -52,9 +49,6 @@ namespace Alpha.Core.Provinces
             DayUpdate();
         }
         
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }
