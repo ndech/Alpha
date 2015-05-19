@@ -50,7 +50,7 @@ namespace Alpha.DirectX.UI
             Size = size;
         }
 
-        public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
             int stride = Utilities.SizeOf<VertexDefinition.PositionColor>(); //Gets or sets the stride between vertex elements in the buffer (in bytes). 
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(VertexBuffer, stride, 0));
@@ -79,7 +79,7 @@ namespace Alpha.DirectX.UI
             DeviceContext.UnmapSubresource(VertexBuffer, 0);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer);
         }

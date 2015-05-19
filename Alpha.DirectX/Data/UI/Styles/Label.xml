@@ -39,4 +39,18 @@
     <font>Courrier</font>
     <fontSize>14</fontSize>
   </style>
+  <style in="province_tabs">
+    <horizontalAlignment>Center</horizontalAlignment>
+    <verticalAlignment>Middle</verticalAlignment>
+    <textColor>White</textColor>
+    <font>CenturyGothic</font>
+    <fontSize>22</fontSize>
+  </style>
+  <style in="province_name">
+    <horizontalAlignment>Center</horizontalAlignment>
+    <verticalAlignment>Middle</verticalAlignment>
+    <textColor>White</textColor>
+    <font>CenturyGothic</font>
+    <fontSize>22</fontSize>
+  </style>
 </styles>

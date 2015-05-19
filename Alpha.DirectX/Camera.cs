@@ -40,11 +40,11 @@ namespace Alpha.DirectX
             set { _targetPosition = value; }
         }
 
-        public Camera()
+        public Camera(Vector3 position, Vector3 orientation)
         {
-            _targetPosition = new Vector3(0, 200, 0);
-            _currentPosition = new Vector3(0, 200, 0);
-            _orientation = new Vector3(0, 0.7f, 0);
+            _targetPosition = position;
+            _currentPosition = position;
+            _orientation = orientation;
             Calculate();
         }
 

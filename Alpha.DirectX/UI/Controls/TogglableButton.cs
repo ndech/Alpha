@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Alpha.DirectX.UI.Coordinates;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -10,8 +9,9 @@ namespace Alpha.DirectX.UI.Controls
     {
         private readonly string _normalTexturePath;
         private readonly string _toggledTexturePath;
-        private TexturedRectangle _iconToggled;
-        private TexturedRectangle _iconNormal;
+        private readonly int _radius;
+        private Rectangle _iconToggled;
+        private Rectangle _iconNormal;
         public State CurrentState { get; private set; }
         public Key? Shortcut { get; set; }
         public TogglableButtonGroup Group { get; set; }
@@ -23,18 +23,27 @@ namespace Alpha.DirectX.UI.Controls
             Toggled
         }
 
-        public TogglableButton(IContext context, string id, UniRectangle coordinates, string normalTexturePath, string toggledTexturePath)
+        public TogglableButton(IContext context, string id, UniRectangle coordinates, string normalTexturePath, string toggledTexturePath, int radius = 0)
             : base(context, id, coordinates)
         {
             _normalTexturePath = normalTexturePath;
             _toggledTexturePath = toggledTexturePath;
+            _radius = radius;
             CurrentState = State.Normal;
         }
 
         public override void Initialize()
         {
-            _iconNormal = new TexturedRectangle(Context, Context.TextureManager.Create(_normalTexturePath,""), Size);
-            _iconToggled = new TexturedRectangle(Context, Context.TextureManager.Create(_toggledTexturePath,""), Size);
+            if (_radius == 0)
+            {
+                _iconNormal = new TexturedRectangle(Context, Context.TextureManager.Create(_normalTexturePath, ""), Size);
+                _iconToggled = new TexturedRectangle(Context, Context.TextureManager.Create(_toggledTexturePath, ""), Size);
+            }
+            else
+            {
+                _iconNormal = new TexturedExtensibleRectangle(Context, Size, Context.TextureManager.Create(_normalTexturePath,""), _radius);
+                _iconToggled = new TexturedExtensibleRectangle(Context, Size, Context.TextureManager.Create(_toggledTexturePath, ""), _radius);
+            }
         }
         
         public override void OnMouseClicked()

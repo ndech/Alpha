@@ -81,6 +81,7 @@
     <Compile Include="Light.cs" />
     <Compile Include="MousePointer.cs" />
     <Compile Include="ObjModel.cs" />
+    <Compile Include="RenderTexture.cs" />
     <Compile Include="Shaders\ColorShader.cs" />
     <Compile Include="Shaders\FontShader.cs" />
     <Compile Include="Shaders\LightShader.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="UI\Controls\Custom\BuildingScrollableItem.cs" />
     <Compile Include="UI\Controls\Custom\ExtraMinimapButtonPanel.cs" />
     <Compile Include="UI\Controls\Custom\HintPanel.cs" />
+    <Compile Include="UI\Controls\Custom\ProvinceMap.cs" />
     <Compile Include="UI\Controls\Custom\ResourceScrollableItem.cs" />
     <Compile Include="UI\Controls\Custom\StatisticsWindow.cs" />
     <Compile Include="UI\Controls\Custom\SettlementDetailPanel.cs" />
@@ -347,6 +349,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Data\UI\Styles\Tooltip.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\UI\tab.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\UI\tab_toggled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Data\UI\tooltip.png">

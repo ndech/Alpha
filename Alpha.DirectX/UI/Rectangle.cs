@@ -1,4 +1,5 @@
 ﻿using Alpha.Toolkit.Math;
+using SharpDX;
 using SharpDX.Direct3D11;
 
 namespace Alpha.DirectX.UI
@@ -25,5 +26,9 @@ namespace Alpha.DirectX.UI
         }
 
         public abstract void Update();
+
+        public abstract void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix);
+
+        public abstract void Dispose();
     }
 }

@@ -5,6 +5,7 @@ using Alpha.Core;
 using Alpha.DirectX.UI;
 using Alpha.DirectX.UI.Screens;
 using Alpha.Toolkit;
+using SharpDX;
 using SharpDX.Windows;
 
 namespace Alpha.DirectX
@@ -40,7 +41,7 @@ namespace Alpha.DirectX
             _directX = new Dx11(_form);
             _uiManager = new UiManager();
             _input = new Input.Input();
-            _camera = new Camera();
+            _camera = new Camera(new Vector3(0, 200, 0), new Vector3(0, 0.7f, 0));
             _context = new Context(_form, _directX, _game, _worldContainer, _uiManager, _input, _camera, _notificationResolver, dataLock);
             _camera.Initialize(_context);
             _input.Initialize(_context);

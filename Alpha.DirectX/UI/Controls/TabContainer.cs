@@ -7,8 +7,8 @@ namespace Alpha.DirectX.UI.Controls
 {
     class TabContainer : Panel
     {
-        private const int TabHeight = 30;
-        private const int TabTitleSpacing = 4;
+        public int TabHeight { get; } = 35;
+        public int TabTitleSpacing { get; } = 4;
         private List<Tab> _tabs;
         private readonly List<TogglableButton> _titleButtons;
         private TogglableButtonGroup _buttonGroup;
@@ -16,7 +16,8 @@ namespace Alpha.DirectX.UI.Controls
 
         public TabContainer(IContext context, string id) : this(context, id, new UniRectangle(0, 0, 1.0f, 1.0f))
         { }
-        public TabContainer(IContext context, string id, UniRectangle coordinates) : base(context, id, coordinates, Color.Silver)
+
+        public TabContainer(IContext context, string id, UniRectangle coordinates) : base(context, id, coordinates, Color.Transparent)
         {
             _tabs = new List<Tab>();
             _titleButtons = new List<TogglableButton>();
@@ -27,7 +28,7 @@ namespace Alpha.DirectX.UI.Controls
             tab.Coordinates = new UniRectangle(0, TabHeight, 1.0f, new UniScalar(1.0f, -TabHeight));
             Register(tab);
             _tabs.Add(tab);
-            TogglableButton button = Register(new TogglableButton(Context, "tab_text", new UniRectangle(), "Data/UI/default.png", "Data/UI/tooltip.png"));
+            TogglableButton button = Register(new TogglableButton(Context, "tab_text", new UniRectangle(), "Data/UI/tab.png", "Data/UI/tab_toggled.png", 8));
             button.Register(new Label(Context, "tabLabel", new UniRectangle(0, 0, 1.0f, 1.0f), tab.Title) {Overlay = true});
             if(_buttonGroup ==null)
                 _buttonGroup = new TogglableButtonGroup(button);
