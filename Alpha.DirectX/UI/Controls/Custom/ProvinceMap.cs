@@ -17,7 +17,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         public LandProvince SelectedProvince
         {
-            set { _camera.Position = (Vector3)value.Center + new Vector3(0,200,0) - new Vector3(-Size.X/2*5, 0, -Size.Y/2*5); }
+            set { _camera.Position = (Vector3) value.Center + new Vector3(125, 200, -90) /*+ new Vector3(-125,0,90)*/ ; }
         }
 
         private Camera _camera;
@@ -32,7 +32,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _rectangle = new TexturedRectangle(Context, _texture.ShaderResourceView, Size);
             _camera = new Camera(new Vector3(0,200,0), new Vector3(0, MathUtil.PiOverTwo, 0));
             _terrain = new Terrain(Context, Context.World.ProvinceManager.LandProvinces.ToList());
-            _orthoProjectionMatrix = Matrix.OrthoLH(Size.X*5, Size.Y*5, ConfigurationManager.Config.NearLimit,
+            _orthoProjectionMatrix = Matrix.OrthoLH(250, 180, ConfigurationManager.Config.NearLimit,
                 ConfigurationManager.Config.FarLimit);
         }
 
@@ -47,9 +47,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
         {
             _texture.ClearRenderTarget(Context.DirectX.DeviceContext, 0, 0, 0.5f, 1);
             _texture.SetRenderTarget(Context.DirectX.DeviceContext);
-
-            Vector3 position = Context.Camera.Position;
-
+            
             _terrain.Render(deviceContext, Matrix.Identity, _camera.ViewMatrix, _orthoProjectionMatrix);
 
             Context.DirectX.SetBackBufferAsRenderTarget();

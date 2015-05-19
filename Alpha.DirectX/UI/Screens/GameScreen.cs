@@ -60,6 +60,7 @@ namespace Alpha.DirectX.UI.Screens
             new PositionLayout(this, 100, 25, HorizontalAlignment.Left, VerticalAlignment.Top).Create(new RealmInfo(context));
             Register(
                 _statisticsWindow = new StatisticsWindow(context, new UniRectangle(200, 200, 400, 200)));
+            _statisticsWindow.Visible = false;
         }
 
         protected override void Update(double delta)
