@@ -10,5 +10,6 @@ namespace Alpha.DirectX
         void Move(int x, int y);
         void Rotate(int tick);
         void Zoom(int tick);
+        void ForcePosition(Vector3 position);
     }
 }

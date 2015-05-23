@@ -30,6 +30,11 @@ namespace Alpha.DirectX
             _targetDistance += 10*tick;
         }
 
+        public void ForcePosition(Vector3 position)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Rotate(int tick)
         {
             _orientation.X += tick*-0.02f;
@@ -39,8 +44,7 @@ namespace Alpha.DirectX
         public Vector3 Position
         {
             get { return new Vector3((float)_distance); }
-            set { //_targetPosition = value; 
-            }
+            set { }
         }
 
         public SphericalWorldCamera()

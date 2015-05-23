@@ -40,6 +40,12 @@ namespace Alpha.DirectX
             set { _targetPosition = value; }
         }
 
+        public void ForcePosition(Vector3 position)
+        {
+            _targetPosition = position;
+            _currentPosition = position;
+        }
+
         public Camera(Vector3 position, Vector3 orientation)
         {
             _targetPosition = position;
