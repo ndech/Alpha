@@ -6,7 +6,7 @@ namespace Alpha.Common
 {
     public class ConfigurationManager
     {
-        private ScreenModeEnum ScreenMode { get; } = ScreenModeEnum.Fullscreen;
+        private ScreenModeEnum ScreenMode { get; } = ScreenModeEnum.Large;
         private WorldParameterEnum WorldParameter { get; } = WorldParameterEnum.Small;
 
         public static ConfigurationManager Config { get; } = new ConfigurationManager();
