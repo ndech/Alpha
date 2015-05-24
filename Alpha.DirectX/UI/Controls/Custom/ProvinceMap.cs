@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Alpha.Common;
 using Alpha.Core.Provinces;
 using Alpha.DirectX.UI.Coordinates;
@@ -11,27 +12,20 @@ namespace Alpha.DirectX.UI.Controls.Custom
 {
     class ProvinceMap : Control
     {
+        private readonly Action<LandProvince> _changeProvinceCallBack;
         private TexturedRectangle _rectangle;
         private RenderTexture _texture;
         private Terrain _terrain;
         private Matrix _orthoProjectionMatrix;
         private LandProvince _selectedProvince;
+        private TexturedRectangle _water;
 
-        private int _ratioX = 10;
+        private int _ratioX = 15;
         private int _ratioY = 10;
         private int _screenX;
         private int _screenY;
         private const float Scaling = 0.02f;
-
-        public LandProvince SelectedProvince
-        {
-            set
-            {
-                _selectedProvince = value;
-                MoveCamera((Vector3)value.Center);
-            }
-        }
-
+        
         public void MoveCamera(Vector3 worldPosition, bool immediate = true)
         {
             Vector3 cameraPosition = worldPosition*Scaling + new Vector3(_ratioX, 200, -_ratioY) +
@@ -45,8 +39,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         private Camera _camera;
 
-        public ProvinceMap(IContext context) : base(context, "province_map", new UniRectangle())
-        { }
+        public ProvinceMap(IContext context, Action<LandProvince> changeProvinceCallBack) : base(context, "province_map", new UniRectangle())
+        {
+            _changeProvinceCallBack = changeProvinceCallBack;
+        }
 
         public override void Initialize()
         {
@@ -58,6 +54,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
             _terrain = new Terrain(Context, Context.World.ProvinceManager.LandProvinces.ToList());
             _orthoProjectionMatrix = Matrix.OrthoLH(2*_ratioX, 2*_ratioY, ConfigurationManager.Config.NearLimit,
                 ConfigurationManager.Config.FarLimit);
+            _water = new TexturedRectangle(Context, Context.TextureManager.Create("dark_paper.png", "Data/UI/"), ConfigurationManager.Config.WorldSize * Scaling);
+            _water.TextureRepeat(new Vector2I(4,2));
             IconButton centerButton = new IconButton(Context, "province_map_center");
             centerButton.Coordinates = new UniRectangle(new UniScalar(1.0f, -35), 5, 30, 30);
             centerButton.Clicked += () => MoveCamera((Vector3) _selectedProvince.Center);
@@ -73,8 +71,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         protected override void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            _texture.ClearRenderTarget(Context.DirectX.DeviceContext, 0.1f, 0.1f, 0.5f, 1);
+            _texture.ClearRenderTarget(Context.DirectX.DeviceContext, 0.4f, 0.4f, 0.4f, 1);
             _texture.SetRenderTarget(Context.DirectX.DeviceContext);
+
+            _water.Render(deviceContext, Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(0,0,ConfigurationManager.Config.WorldSize.Y*Scaling), _camera.ViewMatrix, _orthoProjectionMatrix);
             
             _terrain.Render(deviceContext, Matrix.Scaling(Scaling), _camera.ViewMatrix, _orthoProjectionMatrix);
 
@@ -96,13 +96,19 @@ namespace Alpha.DirectX.UI.Controls.Custom
             Province province = ProvincePicker.ClosestProvince(pickingPosition);
 
             if (province is LandProvince)
-                MoveCamera((Vector3) province.Center, false);
+                _changeProvinceCallBack(province as LandProvince);
         }
 
         protected override void DisposeItem()
         {
             _texture.Dispose();
             _rectangle.Dispose();
+        }
+
+        public void Select(LandProvince province, bool immediateMapChange)
+        {
+            _selectedProvince = province;
+            MoveCamera((Vector3)province.Center, immediateMapChange);
         }
     }
 }

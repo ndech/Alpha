@@ -16,6 +16,7 @@ namespace Alpha.DirectX.UI
         private readonly VertexDefinition.PositionTexture[] _vertices;
         private readonly ShaderResourceView _texture;
         private readonly DeviceContext _deviceContext;
+        private Vector2I _textureRepeat = new Vector2I(1,1);
 
         public TexturedRectangle(IContext context, Texture texture) : this(context, texture.TextureResource, texture.Size)
         { }
@@ -71,9 +72,9 @@ namespace Alpha.DirectX.UI
             float bottom = Size.Y;
 
             _vertices[0] = new VertexDefinition.PositionTexture { position = new Vector3(left, top, 0.0f), texture = new Vector2(0,0)};
-            _vertices[1] = new VertexDefinition.PositionTexture { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(1, 1) };
-            _vertices[2] = new VertexDefinition.PositionTexture { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0, 1) };
-            _vertices[3] = new VertexDefinition.PositionTexture { position = new Vector3(right, top, 0.0f), texture = new Vector2(1, 0) };
+            _vertices[1] = new VertexDefinition.PositionTexture { position = new Vector3(right, bottom, 0.0f), texture = new Vector2(_textureRepeat.X, _textureRepeat.Y) };
+            _vertices[2] = new VertexDefinition.PositionTexture { position = new Vector3(left, bottom, 0.0f), texture = new Vector2(0, _textureRepeat.Y) };
+            _vertices[3] = new VertexDefinition.PositionTexture { position = new Vector3(right, top, 0.0f), texture = new Vector2(_textureRepeat.X, 0) };
 
             DataStream mappedResource;
                    _deviceContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None,
@@ -85,6 +86,12 @@ namespace Alpha.DirectX.UI
         public override void Dispose()
         {
             DisposeHelper.DisposeAndSetToNull(VertexBuffer, IndexBuffer);
+        }
+
+        public void TextureRepeat(Vector2I textureRepeat)
+        {
+            _textureRepeat = textureRepeat;
+            Update();
         }
     }
 }

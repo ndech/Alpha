@@ -37,6 +37,12 @@ namespace Alpha.Toolkit.Math
         {
             return new Vector2I((int)(v1.X / i2), (int)(v1.Y / i2));
         }
+
+        public static Vector2I operator *(Vector2I v1, float i2)
+        {
+            return new Vector2I(Convert.ToInt32(v1.X * i2), Convert.ToInt32(v1.Y * i2));
+        }
+
         public static Vector2I operator +(Vector2I v1, Vector2I v2)
         {
             return

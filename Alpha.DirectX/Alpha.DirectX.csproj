@@ -273,6 +273,9 @@
     <Content Include="Data\UI\city.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\dark_paper.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -283,6 +286,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\money.dds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\UI\paper.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\UI\population.dds">

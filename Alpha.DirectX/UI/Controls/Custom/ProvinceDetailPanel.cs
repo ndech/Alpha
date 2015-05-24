@@ -37,7 +37,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
             container.SetOffset(256-container.TabTitleSpacing);
             
             new PositionLayout(this, 250, 150 + container.TabHeight - 6, HorizontalAlignment.Left, VerticalAlignment.Top, new Padding(3))
-                .Create(_provinceMap = new ProvinceMap(Context))
+                .Create(_provinceMap = new ProvinceMap(Context, ShowProvinceFromMap))
                 .Right(40, VerticalAlignment.Top, new Padding(3))
                 .Create(_provinceName = new Label(Context, "province_name"));
 
@@ -52,13 +52,18 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 .Create(new IconButton(Context, "close_button", () => Visible = false));
         }
 
-        public void ShowProvince(LandProvince province)
+        public void ShowProvince(LandProvince province, bool immediateMapChange = true)
         {
             Visible = true;
             _province = province;
             _provinceName.Text = "Province of " + province.Name;
             _settlementScrollableContainer.Refresh(province.Capital.Yield().ToList());
-            _provinceMap.SelectedProvince = province;
+            _provinceMap.Select(province, immediateMapChange);
+        }
+
+        private void ShowProvinceFromMap(LandProvince province)
+        {
+            ShowProvince(province, false);
         }
 
         protected override bool OnKeyPressed(Key key, char? character, bool repeat)
