@@ -88,6 +88,7 @@
     <Compile Include="Shaders\PathShader.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderManager.cs" />
+    <Compile Include="Shaders\TerrainMinimapShader.cs" />
     <Compile Include="Shaders\TerrainShader.cs" />
     <Compile Include="Shaders\Texture1DShader.cs" />
     <Compile Include="Shaders\SphericalTerrainShader.cs" />
@@ -262,6 +263,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Shaders\TerrainCompute.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Shaders\MinimapTerrain.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Data\UI\base_settlement.dds">

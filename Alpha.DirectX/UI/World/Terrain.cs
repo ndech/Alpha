@@ -18,10 +18,13 @@ namespace Alpha.DirectX.UI.World
         private Buffer _indexBuffer;
         private int _indexCount;
         private readonly ShaderResourceView _borderTexture;
+        private readonly ShaderResourceView _paperTexture;
+
         private readonly ShaderResourceView _provinceColorTexture;
         private readonly ShaderResourceView _realmColorTexture;
         private readonly ShaderResourceView _foodAvailabilityTexture;
         private readonly TerrainShader _shader;
+        private readonly TerrainMinimapShader _minimapShader;
         public RenderingMode CurrentRenderingMode { get; set; }
 
         public enum RenderingMode
@@ -34,7 +37,9 @@ namespace Alpha.DirectX.UI.World
         public Terrain(IContext context, IList<LandProvince> provinces)
         {
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
+            _paperTexture = context.TextureManager.Create("paper.png", "Data/UI/").TextureResource;
             _shader = context.Shaders.Get<TerrainShader>();
+            _minimapShader = context.Shaders.Get<TerrainMinimapShader>();
             BuildBuffers(context, provinces);
             _provinceColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Color);
             _realmColorTexture = GenerateProvinceTexture(context, provinces, p=>p.Owner.Color);
@@ -81,7 +86,7 @@ namespace Alpha.DirectX.UI.World
 
         public void Render(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
         {
-            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.WaterVertex>(), 0));
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.TerrainVertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             ShaderResourceView currentTexture;
@@ -93,7 +98,16 @@ namespace Alpha.DirectX.UI.World
                 currentTexture = _foodAvailabilityTexture;
             _shader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, currentTexture);
         }
-        
+
+
+        public void RenderForMinimap(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        {
+            deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.TerrainVertex>(), 0));
+            deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
+            deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+            _minimapShader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, _paperTexture);
+        }
+
         public void Update(double delta)
         { }
 
