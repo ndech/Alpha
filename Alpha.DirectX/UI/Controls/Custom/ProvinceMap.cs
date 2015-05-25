@@ -20,11 +20,11 @@ namespace Alpha.DirectX.UI.Controls.Custom
         private LandProvince _selectedProvince;
         private TexturedRectangle _water;
 
-        private int _ratioX = 15;
-        private int _ratioY = 10;
+        private int _ratioX;
+        private int _ratioY;
         private int _screenX;
         private int _screenY;
-        private const float Scaling = 0.02f;
+        private const float Scaling = 0.7f;
         
         public void MoveCamera(Vector3 worldPosition, bool immediate = true)
         {
@@ -46,6 +46,8 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
         public override void Initialize()
         {
+            _ratioX = Size.X;
+            _ratioY = Size.Y;
             _screenX = ConfigurationManager.Config.ScreenSize.X;
             _screenY = ConfigurationManager.Config.ScreenSize.Y;
             _texture = new RenderTexture(Context.DirectX.Device, Size);
@@ -56,8 +58,10 @@ namespace Alpha.DirectX.UI.Controls.Custom
                 ConfigurationManager.Config.FarLimit);
             _water = new TexturedRectangle(Context, Context.TextureManager.Create("dark_paper.png", "Data/UI/"), ConfigurationManager.Config.WorldSize * Scaling);
             _water.TextureRepeat(new Vector2I(4,2));
-            IconButton centerButton = new IconButton(Context, "province_map_center");
-            centerButton.Coordinates = new UniRectangle(new UniScalar(1.0f, -35), 5, 30, 30);
+            IconButton centerButton = new IconButton(Context, "province_map_center")
+            {
+                Coordinates = new UniRectangle(new UniScalar(1.0f, -35), 5, 30, 30)
+            };
             centerButton.Clicked += () => MoveCamera((Vector3) _selectedProvince.Center);
             Register(centerButton);
         }

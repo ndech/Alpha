@@ -286,6 +286,9 @@
     <Content Include="Data\UI\hatch.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\UI\hatch2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\UI\MinimapIcons\food_map.dds">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

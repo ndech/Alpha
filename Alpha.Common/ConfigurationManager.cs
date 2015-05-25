@@ -7,7 +7,7 @@ namespace Alpha.Common
     public class ConfigurationManager
     {
         private ScreenModeEnum ScreenMode { get; } = ScreenModeEnum.Large;
-        private WorldParameterEnum WorldParameter { get; } = WorldParameterEnum.Small;
+        private WorldParameterEnum WorldParameter { get; } = WorldParameterEnum.Medium;
 
         public static ConfigurationManager Config { get; } = new ConfigurationManager();
         public string Title => "Test DirectX";

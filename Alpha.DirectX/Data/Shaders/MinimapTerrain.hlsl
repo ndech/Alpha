@@ -56,10 +56,11 @@ Texture2D hatchTexture    : register(t2);
 
 float4 MinimapTerrainPixelShader(PixelInputType input) : SV_TARGET
 {
-	float4 color = paperTexture.Sample(SampleColor, input.positionTex / 1.5);
-	float4 hatch = hatchTexture.Sample(SampleColor, input.positionTex / 4) *(selection == input.provinceInfo.x);
+	float4 color = paperTexture.Sample(SampleColor, input.positionTex / 25);
+	float4 hatch = hatchTexture.Sample(SampleColor, input.positionTex /35) *(selection == input.provinceInfo.x);
 	color = lerp(color, hatch, hatch.w);
-	float4 border = borderTexture.Sample(SampleBorder, float2(1.5f*input.borderTex.x, input.borderTex.y));
-	
+	bool largeBorder = (selection == input.provinceInfo.x) || (selection == input.provinceInfo.y);
+	float borderSize = largeBorder ? 0.5f : 1.5f;
+	float4 border = borderTexture.Sample(SampleBorder, float2(borderSize*input.borderTex.x, input.borderTex.y));
 	return lerp(color, float4(0.0f, 0.0f, 0.0f, 1), border.w * 2);
 }

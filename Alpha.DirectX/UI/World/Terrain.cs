@@ -39,7 +39,7 @@ namespace Alpha.DirectX.UI.World
         {
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
             _paperTexture = context.TextureManager.Create("paper.png", "Data/UI/").TextureResource;
-            _hatchTexture = context.TextureManager.Create("hatch.png", "Data/UI/").TextureResource;
+            _hatchTexture = context.TextureManager.Create("hatch2.png", "Data/UI/").TextureResource;
             _shader = context.Shaders.Get<TerrainShader>();
             _minimapShader = context.Shaders.Get<TerrainMinimapShader>();
             BuildBuffers(context, provinces);

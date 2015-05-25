@@ -1,5 +1,4 @@
-﻿using System;
-using Alpha.DirectX.UI.Coordinates;
+﻿using Alpha.DirectX.UI.Coordinates;
 using Alpha.DirectX.UI.Styles;
 using Alpha.Toolkit;
 using Alpha.Toolkit.Math;
