@@ -73,7 +73,7 @@ namespace Alpha.DirectX.Shaders
 
             var samplerDescColor = new SamplerStateDescription
             {
-                Filter = Filter.ComparisonAnisotropic,
+                Filter = Filter.Anisotropic,
                 AddressU = TextureAddressMode.Wrap,
                 AddressV = TextureAddressMode.Wrap,
                 AddressW = TextureAddressMode.Wrap,
@@ -92,12 +92,12 @@ namespace Alpha.DirectX.Shaders
         public void Render(DeviceContext deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ShaderResourceView borderTexture, ShaderResourceView paperTexture, ShaderResourceView hatchTexture, float selected)
         {
             UpdateMatrixBuffer(deviceContext, ConstantMatrixBuffer, worldMatrix, viewMatrix, projectionMatrix);
-            //UpdateBuffer(deviceContext, ConstantSelectionBuffer, new SelectionBuffer(selected));
+            UpdateBuffer(deviceContext, ConstantSelectionBuffer, new SelectionBuffer(selected));
 
             deviceContext.InputAssembler.InputLayout = Layout;
             deviceContext.VertexShader.Set(VertexShader);
             deviceContext.VertexShader.SetConstantBuffer(0, ConstantMatrixBuffer);
-            //deviceContext.PixelShader.SetConstantBuffer(1, ConstantSelectionBuffer);
+            deviceContext.PixelShader.SetConstantBuffer(1, ConstantSelectionBuffer);
             deviceContext.PixelShader.Set(PixelShader);
             deviceContext.PixelShader.SetSampler(0, SamplerStateBorder);
             deviceContext.PixelShader.SetSampler(1, SamplerStateColor);

@@ -29,7 +29,7 @@ namespace Alpha.Core.Provinces
 
         private static int _idSequence;
         protected static int IdSequence => ++_idSequence;
-        public int NumericId { get; set; }
+        public int NumericId { get; }
         public string Id { get; }
 
         private readonly List<Zone> _zones;

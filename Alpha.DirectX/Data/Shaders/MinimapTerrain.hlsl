@@ -5,11 +5,11 @@ cbuffer MatrixBuffer : register (b0)
 	matrix projectionMatrix;
 };
 
-//cbuffer SelectionBuffer : register (b1)
-//{
-//	float selection;
-//	float3 padding;
-//};
+cbuffer SelectionBuffer : register (b1)
+{
+	float selection;
+	float3 padding;
+};
 
 struct VertexInputType
 {
@@ -57,7 +57,7 @@ Texture2D hatchTexture    : register(t2);
 float4 MinimapTerrainPixelShader(PixelInputType input) : SV_TARGET
 {
 	float4 color = paperTexture.Sample(SampleColor, input.positionTex / 1.5);
-	float4 hatch = hatchTexture.Sample(SampleColor, input.positionTex / 4);// *(selection == input.provinceInfo.x);
+	float4 hatch = hatchTexture.Sample(SampleColor, input.positionTex / 4) *(selection == input.provinceInfo.x);
 	color = lerp(color, hatch, hatch.w);
 	float4 border = borderTexture.Sample(SampleBorder, float2(1.5f*input.borderTex.x, input.borderTex.y));
 	
