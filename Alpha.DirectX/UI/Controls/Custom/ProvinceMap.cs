@@ -76,7 +76,7 @@ namespace Alpha.DirectX.UI.Controls.Custom
 
             _water.Render(deviceContext, Matrix.RotationX(-MathUtil.PiOverTwo) * Matrix.Translation(0,0,ConfigurationManager.Config.WorldSize.Y*Scaling), _camera.ViewMatrix, _orthoProjectionMatrix);
             
-            _terrain.RenderForMinimap(deviceContext, Matrix.Scaling(Scaling), _camera.ViewMatrix, _orthoProjectionMatrix);
+            _terrain.RenderForMinimap(deviceContext, Matrix.Scaling(Scaling), _camera.ViewMatrix, _orthoProjectionMatrix, (float)_selectedProvince.NumericId/Context.World.ProvinceManager.Provinces.Max(p=>p.NumericId));
 
             Context.DirectX.SetBackBufferAsRenderTarget();
             _rectangle.Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);

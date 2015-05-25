@@ -52,21 +52,22 @@ namespace Alpha.DirectX.Shaders
             worldMatrix.Transpose();
             viewMatrix.Transpose();
             projectionMatrix.Transpose();
-            // Lock the constant memory buffer so it can be written to.
-            DataStream mappedResource;
-            deviceContext.MapSubresource(constantMatrixBuffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
-
-            // Copy the transposed matrices (because they are stored in column-major order on the GPU by default) into the constant buffer.
             var matrixBuffer = new MatrixBuffer
             {
                 world = worldMatrix,
                 view = viewMatrix,
                 projection = projectionMatrix
             };
-            mappedResource.Write(matrixBuffer);
 
-            // Unlock the constant buffer.
-            deviceContext.UnmapSubresource(constantMatrixBuffer, 0);
+            UpdateBuffer(deviceContext, constantMatrixBuffer, matrixBuffer);
+        }
+
+        public void UpdateBuffer<T>(DeviceContext deviceContext, Buffer buffer, T value) where T : struct
+        {
+            DataStream mappedResource;
+            deviceContext.MapSubresource(buffer, MapMode.WriteDiscard, MapFlags.None, out mappedResource);
+            mappedResource.Write(value);
+            deviceContext.UnmapSubresource(buffer, 0);
         }
 
         public SamplerStateDescription WrapSamplerStateDescription

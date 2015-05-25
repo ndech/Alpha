@@ -19,6 +19,7 @@ namespace Alpha.DirectX.UI.World
         private int _indexCount;
         private readonly ShaderResourceView _borderTexture;
         private readonly ShaderResourceView _paperTexture;
+        private readonly ShaderResourceView _hatchTexture;
 
         private readonly ShaderResourceView _provinceColorTexture;
         private readonly ShaderResourceView _realmColorTexture;
@@ -38,6 +39,7 @@ namespace Alpha.DirectX.UI.World
         {
             _borderTexture = context.TextureManager.Create("Border.png").TextureResource;
             _paperTexture = context.TextureManager.Create("paper.png", "Data/UI/").TextureResource;
+            _hatchTexture = context.TextureManager.Create("hatch.png", "Data/UI/").TextureResource;
             _shader = context.Shaders.Get<TerrainShader>();
             _minimapShader = context.Shaders.Get<TerrainMinimapShader>();
             BuildBuffers(context, provinces);
@@ -100,12 +102,12 @@ namespace Alpha.DirectX.UI.World
         }
 
 
-        public void RenderForMinimap(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+        public void RenderForMinimap(DeviceContext deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, float selected)
         {
             deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<VertexDefinition.TerrainVertex>(), 0));
             deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R32_UInt, 0);
             deviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            _minimapShader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, _paperTexture);
+            _minimapShader.Render(deviceContext, _indexCount, worldMatrix, viewMatrix, projectionMatrix, _borderTexture, _paperTexture, _hatchTexture, selected);
         }
 
         public void Update(double delta)
